@@ -11,7 +11,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #fff9f1;
+  // background-color: #fff9f1;
 `;
 
 const SelectionsTitle = styled.h2`

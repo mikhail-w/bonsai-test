@@ -31,7 +31,7 @@ const CardContainer = styled.div`
 
 const CardContent = styled.div`
   padding: 20px;
-  background-color: #fff9f1;
+  // background-color: #fff9f1;
   display: flex;
   flex-direction: column;
   justify-content: center;
