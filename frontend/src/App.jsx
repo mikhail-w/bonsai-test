@@ -8,9 +8,9 @@ import './index.css';
 function App() {
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <Outlet />
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

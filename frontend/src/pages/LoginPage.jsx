@@ -1,14 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
-import { Form, Button, Row, Col, Container } from 'react-bootstrap';
+import {
+  Button,
+  Flex,
+  Text,
+  FormControl,
+  FormLabel,
+  Heading,
+  Input,
+  Stack,
+  Image,
+  useToast,
+} from '@chakra-ui/react';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
-import FormContainer from '../components/FormContainer';
 import { login } from '../actions/userActions';
-import '../assets/styles/LogPages.css';
+import BackButton from '../components/BackButton';
+import LoginImage from '../assets/images/b6.jpg';
 
 function LoginPage() {
+  const toast = useToast();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -24,54 +36,93 @@ function LoginPage() {
     if (userInfo) {
       navigate(redirect);
     }
-  }, [history, userInfo, redirect]);
+  }, [userInfo, redirect]);
 
-  const submitHandler = e => {
-    console.log('Submitted');
+  const handleSubmit = e => {
+    console.log('Email', email);
     e.preventDefault();
+    if (!email || !password) {
+      toast({
+        title: 'Error',
+        description: 'Please enter both email and password.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+    console.log('Submitted');
     dispatch(login(email, password));
   };
-
   return (
-    <Container className="formContainer ">
-      <FormContainer>
-        <h1>Log In </h1>
-        {error && <Message variant="danger">{error}</Message>}
-        {loading && <Loader />}
-        <Form onSubmit={submitHandler}>
-          <Form.Group controlId="email" id="p" className="mt-5">
-            <Form.Label>Email Address</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="Enter Email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
-
-          <Form.Group controlId="password" className="mt-5">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Enter Password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
-
-          <Button type="submit" variant="primary" className="mt-5 " id="btn">
-            Sign In
-          </Button>
-        </Form>
-
-        <Row className="py-3">
-          <Col>
-            New Customer? <Link to={'/register/'}>Register</Link>
-          </Col>
-        </Row>
-      </FormContainer>
-    </Container>
+    <>
+      {error && <Message variant="danger">{error}</Message>}
+      {loading && <Loader />}
+      <Stack minH={'100vh'} direction={{ base: 'column', md: 'row' }}>
+        <Flex
+          p={8}
+          flex={1}
+          align={'center'}
+          justify={'center'}
+          direction={'column'}
+        >
+          <Stack spacing={4} w={'full'} maxW={'md'}>
+            <Heading fontSize={'2xl'}>Sign in to your account</Heading>
+            <form onSubmit={handleSubmit}>
+              <FormControl id="email" isRequired>
+                <FormLabel>Email address</FormLabel>
+                <Input
+                  type="email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                />
+              </FormControl>
+              <FormControl id="password" isRequired>
+                <FormLabel>Password</FormLabel>
+                <Input
+                  type="password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  placeholder="Enter your password"
+                />
+              </FormControl>
+              <Stack spacing={6}>
+                <Stack
+                  direction={{ base: 'column', sm: 'row' }}
+                  align={'start'}
+                  justify={'space-between'}
+                ></Stack>
+                <Button
+                  colorScheme="green"
+                  size="lg"
+                  type="submit"
+                  width="full"
+                  mt={4}
+                >
+                  Sign In
+                </Button>
+                <BackButton nav={navigate} />
+              </Stack>
+            </form>
+            <Text textAlign="center" mt={4} color="gray.500">
+              New Customer?{' '}
+              <Button variant="link" colorScheme="green">
+                <Link to={'/register/'}>Register</Link>
+              </Button>
+            </Text>
+          </Stack>
+        </Flex>
+        <Flex flex={1}>
+          <Image
+            boxSize="100vh"
+            objectFit="cover"
+            alt={'Login Image'}
+            src={LoginImage}
+          />
+        </Flex>
+      </Stack>
+    </>
   );
 }
-
 export default LoginPage;

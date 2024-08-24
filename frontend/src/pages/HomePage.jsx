@@ -10,6 +10,9 @@ import Features from '../components/Features';
 import ScrollToTop from '../components/ScrollToTop';
 import HeroSection from '../components/HeroSection';
 
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+
 function HomePage() {
   const dispatch = useDispatch();
   const productList = useSelector(state => state.productList);
@@ -23,10 +26,11 @@ function HomePage() {
 
   return (
     <>
+      <Header />
       <HeroSection />
-      {/* <div className="heroSection">{!keyword && <ProductCarousel />}</div> */}
       <Features />
       <ScrollToTop />
+      <Footer />
     </>
   );
 }
