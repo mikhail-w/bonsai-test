@@ -1,0 +1,10 @@
+.productsContainer {
+  min-height: 90vh;
+  margin-top: 100px;
+  /* outline: 2px solid red; */
+}
+
+.productContainer {
+  margin-top: 100px;
+  min-height: 90vh;
+}

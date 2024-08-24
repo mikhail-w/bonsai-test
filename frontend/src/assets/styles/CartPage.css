@@ -1,0 +1,42 @@
+.cartContainer {
+  min-height: 90vh;
+  /* outline: 2px solid red; */
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#bg {
+  background-color: #fff9f1;
+  outline: .5px solid #e2ddd7;
+  border-radius: 20px;
+  margin: 5px;
+}
+
+#row {
+  align-items: center;
+}
+
+#button {
+  background-color: #17B169;
+  border-color: #17B169;
+}
+
+.continueButton {
+  font-family: "Varela Round", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  padding: 10px;
+  background-color: #ececec;
+  gap: .5px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+.continueButton:hover {
+  cursor: pointer;
+  background-color: #d4d1d1;
+}

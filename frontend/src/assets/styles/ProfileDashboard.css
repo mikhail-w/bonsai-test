@@ -1,0 +1,26 @@
+body, html, h3, h4, p, strong {
+  font-family: "Varela Round", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.profileContainer {
+  margin-top: 100px;
+  min-height: 90vh;
+}
+
+.ordersTable {
+  border-radius: 20px;
+}
+
+.box {
+  /* outline: 2px solid red; */
+}
+
+.weatherContainer {
+  margin: 20px;
+  margin-top: 20px;
+  height: 400px;
+  max-width: 400px;
+  /* outline: 2px solid rgb(0, 4, 255); */
+}

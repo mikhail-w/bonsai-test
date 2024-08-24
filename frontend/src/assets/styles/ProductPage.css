@@ -1,0 +1,26 @@
+body, html, h3, h4, p, strong {
+  font-family: "Varela Round", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+#content, #content2, #content3, #content4, #content5, #content6, #content7, #content8 {
+  background-color: #fff9f1;
+}
+
+.productContainer {
+  min-height: 90vh;
+}
+
+/* .mainRow {
+  outline: 2px solid green;
+} */
+/* .imageContainer {
+  outline: 2px solid red;
+} */
+/* .discriptionContainer {
+  outline: 2px solid green;
+} */
+/* .priceContainer {
+  outline: 2px solid green;
+} */

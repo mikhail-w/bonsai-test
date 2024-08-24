@@ -1,0 +1,8 @@
+#backButton {
+  font-family: "Varela Round", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  padding: 10px;
+  background-color: #ececec;
+  gap: .5px;
+}

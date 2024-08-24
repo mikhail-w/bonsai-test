@@ -1,0 +1,23 @@
+.ordersContainer {
+  margin-top: 100px;
+  min-height: 90vh;
+  max-height: 50px;
+}
+
+/* .ordersTable {
+  max-height: 200px;
+  overflow-y: hidden;
+} */
+.fixed-header-table {
+  height: 300px;
+  /* Limit the height of the table container */
+  overflow-y: auto;
+  /* Enable vertical scrolling */
+}
+
+.fixedHeaderTable thead tr th {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1;
+}

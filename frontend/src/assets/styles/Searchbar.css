@@ -1,0 +1,11 @@
+#searchbar {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+#search:hover {
+  outline-color: transparent;
+  outline-style: solid;
+  box-shadow: 0 0 0 4px #aeeaba;
+}

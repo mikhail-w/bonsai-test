@@ -1,0 +1,59 @@
+.logo-container {
+  height: 50px;
+}
+
+.logo-container img {
+  height: 50%;
+  padding-left: 5px;
+  color: black;
+}
+
+.navbar {
+  font-family: "Varela Round", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: black;
+}
+
+#username {
+  text-transform: capitalize;
+}
+
+#title-text {
+  display: flex;
+  align-items: center;
+  color: black;
+}
+
+#menu-title, #username, #basic-nav-dropdown, #login, #adminmenue {
+  color: black;
+}
+
+#cartLogo {
+  color: black;
+  /* outline: 2px solid red; */
+  display: flex;
+  gap: 5px;
+  align-items: start;
+}
+
+#menu-button {
+  background-color: black;
+}
+
+#nav {
+  align-items: center;
+  /* justify-content: center; */
+}
+
+#search {
+  font-family: "Varela Round", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  background-color: #17b169;
+  border: #17b169;
+}
+
+.navbar {
+  background-color: #fff9f1;
+}

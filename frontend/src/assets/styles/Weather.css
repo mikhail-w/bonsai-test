@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+.weatherBg {
+  /* background-color: rgb(229, 241, 217); */
+  margin-top: 15px;
+  max-width: 320px;
+}
+
+p {
+  /* font-family: "Varela Round", sans-serif; */
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: black;
+}
+
+.input {
+  max-width: 150px;
+}
+
+button {
+  /* border-radius: 20px; */
+  /* border: none;
+  background-color: #4582ec;
+  margin: 5px;
+  color: aliceblue;*/
+  padding: 5px 10px;
+}

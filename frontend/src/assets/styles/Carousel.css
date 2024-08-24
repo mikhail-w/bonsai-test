@@ -1,0 +1,16 @@
+.carousel {
+  /* outline: 1px solid red; */
+  max-width: 370px;
+  margin-left: 100px;
+}
+
+#carousel {
+  text-align: center;
+  height: 550px;
+  background-color: #fff9f1;
+}
+
+#image {
+  height: 90%;
+  margin-bottom: 100px;
+}

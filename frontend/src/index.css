@@ -1,0 +1,15 @@
+#root {
+  background-color: #fff9f1;
+}
+
+.listContainer {
+  /* outline: 2px solid red; */
+  margin-top: 100px;
+  min-height: 90vh;
+}
+
+#out {
+  display: flex;
+  align-items: center;
+  /* outline: 3px solid green; */
+}

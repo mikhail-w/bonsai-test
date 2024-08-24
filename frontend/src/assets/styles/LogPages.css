@@ -1,0 +1,11 @@
+body, html, p, h1, h2, span, #p, #btn {
+  font-family: "Varela Round", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.formContainer {
+  min-height: 90vh;
+  margin-top: 90px;
+  /* outline: 2px solid red; */
+}

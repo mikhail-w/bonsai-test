@@ -1,0 +1,25 @@
+.cardBody {
+  background-color: #fff9f1;
+  /* background-color: #f4f2f0; */
+}
+
+#line {
+  margin: 0;
+  padding: 0;
+}
+
+.card-x {
+  min-height: 570px;
+}
+
+.image-container {
+  background-color: #fff9f1;
+  display: flex;
+  min-height: 390px;
+  align-items: center;
+}
+
+.cardTitleContainer {
+  /* outline: 2px solid red; */
+  min-height: 53px;
+}
