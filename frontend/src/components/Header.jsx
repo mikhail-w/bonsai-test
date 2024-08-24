@@ -7,7 +7,8 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { LinkContainer } from 'react-router-bootstrap';
 import { logout } from '../actions/userActions';
-import logo from '../assets/images/logo-icon.png';
+// import logo from '../assets/images/logo-icon.png';
+import logo from '../assets/images/bonsai-tree-logo.png';
 import '../assets/styles/Header.css';
 import { useNavigate } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa6';
@@ -38,7 +39,7 @@ function Header() {
         <Container fluid id="nav">
           <LinkContainer to="/">
             <Navbar.Brand className="logo-container" id={'title-text'}>
-              PLANTIS<img src={logo}></img>
+              BONSAI<img src={logo}></img>
             </Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle

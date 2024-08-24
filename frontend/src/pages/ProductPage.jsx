@@ -73,7 +73,7 @@ function ProductPage() {
       ) : error ? (
         <Message variant={'danger'}>{error}</Message>
       ) : (
-        <Container fluid="sm" className="pt-3 productContainer">
+        <Container fluid="sm" className="pt-3 ">
           <BackButton />
           <Row className="mainRow mb-5">
             <Col className="imageContainer m-3">

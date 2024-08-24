@@ -9,7 +9,8 @@ body, html, h3, h4, p, strong {
 }
 
 .productContainer {
-  min-height: 90vh;
+  /* min-height: 30vh; */
+  outline: 2px solid red;
 }
 
 /* .mainRow {

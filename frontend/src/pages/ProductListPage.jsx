@@ -74,7 +74,7 @@ function ProductListPage() {
   };
 
   return (
-    <Container className="productContainer">
+    <Container className="productsContainer">
       <Row className="align-items-center">
         <Col>
           <h1>Products</h1>
