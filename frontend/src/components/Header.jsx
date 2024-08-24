@@ -7,7 +7,6 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { LinkContainer } from 'react-router-bootstrap';
 import { logout } from '../actions/userActions';
-// import logo from '../assets/images/logo-icon.png';
 import logo from '../assets/images/bonsai-tree-logo.png';
 import '../assets/styles/Header.css';
 import { useNavigate } from 'react-router-dom';

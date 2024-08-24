@@ -1,14 +1,14 @@
 import ProductCarousel from '../components/ProductCarousel';
-import { Col, Container } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import '../assets/styles/HeroSection.css';
 
 function HeroSection() {
   return (
     <Container className="heroSection">
-      <Col className="title"> As Interesting as a Plant</Col>
-      <Col>
+      <Row className="title"> As Interesting as a Plant</Row>
+      <Row className="heroCarousel">
         <ProductCarousel />
-      </Col>
+      </Row>
     </Container>
   );
 }
