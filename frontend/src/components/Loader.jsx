@@ -1,5 +1,3 @@
-import React from 'react';
-import { Spinner } from 'react-bootstrap';
 import { helix } from 'ldrs';
 import '../assets/styles/Loader.css';
 
