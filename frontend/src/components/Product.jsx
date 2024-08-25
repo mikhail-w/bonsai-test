@@ -104,9 +104,18 @@ import {
 import { BsStar, BsStarFill, BsStarHalf } from 'react-icons/bs';
 import { FiShoppingCart } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart } from '../actions/cartActions';
 
 const Product = ({ product }) => {
+  const dispatch = useDispatch();
   const roundedRating = Math.round(product.rating * 2) / 2;
+
+  const addToCartHandler = () => {
+    if (product._id) {
+      dispatch(addToCart(product._id, 1));
+    }
+  };
 
   return (
     <Flex p={4} w="full" alignItems="center" justifyContent="center">
@@ -165,7 +174,7 @@ const Product = ({ product }) => {
               color={'gray.800'}
               fontSize={'1.2em'}
             >
-              <chakra.a href={'#'} display={'flex'}>
+              <chakra.a href={'#'} display={'flex'} onClick={addToCartHandler}>
                 <Icon as={FiShoppingCart} h={7} w={7} alignSelf={'center'} />
               </chakra.a>
             </Tooltip>

@@ -79,7 +79,7 @@ function Header() {
               rightIcon={<ChevronDownIcon />}
               variant="gholst"
               fontWeight="bold"
-              color="'#304732'"
+              color="#304732"
               _hover={{
                 bg: 'transparent',
                 color: '#48bb78',
@@ -118,7 +118,7 @@ function Header() {
             <Button
               variant="link"
               color="#304732"
-              _hover={{ color: ' #48bb78' }}
+              _hover={{ color: '#48bb78' }}
             >
               About
             </Button>
@@ -128,34 +128,37 @@ function Header() {
         {/* Right Section: Profile, Cart, Login/Logout */}
         <Flex alignItems="center">
           <RouterLink to="/cart">
-            <IconButton
-              aria-label="Shopping Cart"
-              icon={<ShoppingCart />}
-              size="lg"
-              variant="link"
-              color="'#304732'"
-              _hover={{
-                bg: 'transparent',
-                transform: 'scale(1.05)',
-              }}
-              _active={{
-                bg: 'transparent',
-                transform: 'scale(0.95)',
-              }}
-              mr={4}
-            />
-            {cartItems.length > 0 && (
-              <Badge
-                colorScheme="red"
-                borderRadius="full"
-                position="absolute"
-                top="1"
-                right="1"
-                fontSize="0.8em"
-              >
-                {cartItems.reduce((acc, item) => acc + item.qty, 0)}
-              </Badge>
-            )}
+            <Box position="relative">
+              <IconButton
+                aria-label="Shopping Cart"
+                icon={<ShoppingCart />}
+                size="lg"
+                variant="link"
+                color="#304732"
+                _hover={{
+                  bg: 'transparent',
+                  transform: 'scale(1.05)',
+                }}
+                _active={{
+                  bg: 'transparent',
+                  transform: 'scale(0.95)',
+                }}
+                mr={4}
+              />
+              {cartItems.length > 0 && (
+                <Badge
+                  colorScheme="red"
+                  borderRadius="full"
+                  position="absolute"
+                  top="0"
+                  right="0"
+                  transform="translate(50%, -50%)"
+                  fontSize="0.8em"
+                >
+                  {cartItems.reduce((acc, item) => acc + item.qty, 0)}
+                </Badge>
+              )}
+            </Box>
           </RouterLink>
 
           {userInfo ? (
