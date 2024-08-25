@@ -136,7 +136,8 @@ function NavBar() {
                 variant="link"
                 color="#304732"
                 _hover={{
-                  bg: 'transparent',
+                  // bg: 'transparent',
+                  bg: 'red',
                   transform: 'scale(1.05)',
                 }}
                 _active={{
@@ -147,11 +148,11 @@ function NavBar() {
               />
               {cartItems.length > 0 && (
                 <Badge
-                  colorScheme="red"
+                  colorScheme="green"
                   borderRadius="full"
                   position="absolute"
                   top="0"
-                  right="0"
+                  right="6"
                   transform="translate(50%, -50%)"
                   fontSize="0.8em"
                 >
