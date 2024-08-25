@@ -27,7 +27,7 @@ function HomePage() {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <HeroSection />
       <Features />
       <ScrollToTop />

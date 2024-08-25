@@ -20,16 +20,18 @@ import {
   Link,
 } from '@chakra-ui/react';
 import { HamburgerIcon, ChevronDownIcon } from '@chakra-ui/icons';
-import { FaUser } from 'react-icons/fa'; // Correct import for FaUser
+import { FaUser } from 'react-icons/fa';
 import { ShoppingCart } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom';
 import { logout } from '../actions/userActions';
 import { clearCart } from '../actions/cartActions';
 import logo from '../assets/images/bonsai-tree-logo.png';
 import SearchBar from './SearchBar';
+const withouSidebarRoutes = ['/login', '/register'];
 
 function Header() {
+  const { pathname } = useLocation();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -45,6 +47,8 @@ function Header() {
     dispatch(clearCart());
     navigate('/');
   };
+
+  if (withouSidebarRoutes.some(item => pathname.includes(item))) return null;
 
   return (
     <Box
@@ -78,10 +82,25 @@ function Header() {
         {/* Menu Section */}
         <HStack as="nav" spacing={4} display={{ base: 'none', md: 'flex' }}>
           <Menu>
-            <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+            <MenuButton
+              as={Button}
+              rightIcon={<ChevronDownIcon />}
+              bgGradient="linear(to-r, teal.500, green.500)"
+              color="white"
+              borderRadius="full"
+              boxShadow="lg"
+              _hover={{
+                bgGradient: 'linear(to-r, teal.600, green.600)',
+                transform: 'scale(1.05)',
+              }}
+              _active={{
+                bgGradient: 'linear(to-r, teal.700, green.700)',
+                transform: 'scale(0.95)',
+              }}
+            >
               Shop
             </MenuButton>
-            <MenuList>
+            <MenuList boxShadow="lg" borderRadius="md">
               <MenuItem as={RouterLink} to="/plants">
                 Potted Plants
               </MenuItem>
@@ -103,7 +122,16 @@ function Header() {
               aria-label="Shopping Cart"
               icon={<ShoppingCart />}
               size="lg"
-              variant="outline"
+              variant="link" // Change variant to 'link' to avoid border and background
+              color="white" // You can adjust the color to match your theme
+              _hover={{
+                bg: 'transparent', // Ensure background is transparent on hover
+                transform: 'scale(1.05)', // Optional: slight scale on hover
+              }}
+              _active={{
+                bg: 'transparent', // Ensure background is transparent on active
+                transform: 'scale(0.95)', // Optional: slight scale on active
+              }}
               mr={4}
             />
             {cartItems.length > 0 && (
@@ -140,17 +168,8 @@ function Header() {
               </MenuList>
             </Menu>
           ) : (
-            // <Button
-            //   as={RouterLink}
-            //   to="/login"
-            //   variant="outline"
-            //   colorScheme="teal"
-            //   mr={4}
-            // >
-            //   <FaUser /> Login
-            // </Button>
             <Button
-              as={Link}
+              as={RouterLink}
               to="/login"
               leftIcon={<FaUser />}
               variant="solid"
@@ -167,6 +186,7 @@ function Header() {
                 bgGradient: 'linear(to-r, teal.700, green.700)',
                 transform: 'scale(0.95)',
               }}
+              ml={4}
             >
               Login
             </Button>
@@ -190,10 +210,25 @@ function Header() {
               alignItems="start"
             >
               <Menu>
-                <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                <MenuButton
+                  as={Button}
+                  rightIcon={<ChevronDownIcon />}
+                  bgGradient="linear(to-r, teal.500, green.500)"
+                  color="white"
+                  borderRadius="full"
+                  boxShadow="lg"
+                  _hover={{
+                    bgGradient: 'linear(to-r, teal.600, green.600)',
+                    transform: 'scale(1.05)',
+                  }}
+                  _active={{
+                    bgGradient: 'linear(to-r, teal.700, green.700)',
+                    transform: 'scale(0.95)',
+                  }}
+                >
                   Shop
                 </MenuButton>
-                <MenuList>
+                <MenuList boxShadow="lg" borderRadius="md">
                   <MenuItem as={RouterLink} to="/plants">
                     Potted Plants
                   </MenuItem>
