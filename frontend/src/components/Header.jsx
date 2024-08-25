@@ -28,7 +28,8 @@ import { logout } from '../actions/userActions';
 import { clearCart } from '../actions/cartActions';
 import logo from '../assets/images/bonsai-tree-logo.png';
 import SearchBar from './SearchBar';
-const withouSidebarRoutes = ['/login', '/register'];
+
+const withoutSidebarRoutes = ['/login', '/register'];
 
 function Header() {
   const { pathname } = useLocation();
@@ -48,7 +49,7 @@ function Header() {
     navigate('/');
   };
 
-  if (withouSidebarRoutes.some(item => pathname.includes(item))) return null;
+  if (withoutSidebarRoutes.some(item => pathname.includes(item))) return null;
 
   return (
     <Box
@@ -60,41 +61,30 @@ function Header() {
       zIndex={10}
     >
       <Flex h={16} alignItems="center" justifyContent="space-between">
-        {/* Brand Logo */}
-        <IconButton
-          size="md"
-          icon={<HamburgerIcon />}
-          aria-label="Open Menu"
-          display={{ md: 'none' }}
-          onClick={onOpen}
-        />
+        {/* Left Section: Logo and Navigation Links */}
         <HStack spacing={8} alignItems="center">
           <RouterLink to="/">
             <HStack>
-              <Box fontSize="xl" fontWeight="bold">
+              <Box fontSize="xl" fontWeight="bold" color="white">
                 BONSAI
               </Box>
               <img src={logo} alt="Bonsai logo" style={{ height: '40px' }} />
             </HStack>
           </RouterLink>
-        </HStack>
 
-        {/* Menu Section */}
-        <HStack as="nav" spacing={4} display={{ base: 'none', md: 'flex' }}>
+          {/* Shop Menu Button */}
           <Menu>
             <MenuButton
               as={Button}
               rightIcon={<ChevronDownIcon />}
-              bgGradient="linear(to-r, teal.500, green.500)"
+              variant="ghost"
               color="white"
-              borderRadius="full"
-              boxShadow="lg"
               _hover={{
-                bgGradient: 'linear(to-r, teal.600, green.600)',
-                transform: 'scale(1.05)',
+                bg: 'transparent',
+                color: 'teal.300',
               }}
               _active={{
-                bgGradient: 'linear(to-r, teal.700, green.700)',
+                bg: 'transparent',
                 transform: 'scale(0.95)',
               }}
             >
@@ -112,25 +102,36 @@ function Header() {
               </MenuItem>
             </MenuList>
           </Menu>
+
+          {/* Blog and About Links */}
+          <RouterLink to="/blog">
+            <Button variant="link" color="white" _hover={{ color: 'teal.300' }}>
+              Blog
+            </Button>
+          </RouterLink>
+          <RouterLink to="/about">
+            <Button variant="link" color="white" _hover={{ color: 'teal.300' }}>
+              About
+            </Button>
+          </RouterLink>
         </HStack>
 
         {/* Right Section: Profile, Cart, Login/Logout */}
         <Flex alignItems="center">
-          {/* Shopping Cart with Badge */}
           <RouterLink to="/cart">
             <IconButton
               aria-label="Shopping Cart"
               icon={<ShoppingCart />}
               size="lg"
-              variant="link" // Change variant to 'link' to avoid border and background
-              color="white" // You can adjust the color to match your theme
+              variant="link"
+              color="white"
               _hover={{
-                bg: 'transparent', // Ensure background is transparent on hover
-                transform: 'scale(1.05)', // Optional: slight scale on hover
+                bg: 'transparent',
+                transform: 'scale(1.05)',
               }}
               _active={{
-                bg: 'transparent', // Ensure background is transparent on active
-                transform: 'scale(0.95)', // Optional: slight scale on active
+                bg: 'transparent',
+                transform: 'scale(0.95)',
               }}
               mr={4}
             />
@@ -148,7 +149,6 @@ function Header() {
             )}
           </RouterLink>
 
-          {/* Profile or Login/Logout */}
           {userInfo ? (
             <Menu>
               <MenuButton
@@ -202,7 +202,6 @@ function Header() {
           <DrawerHeader>MENU</DrawerHeader>
           <DrawerBody>
             <SearchBar />
-
             <HStack
               as="nav"
               spacing={4}
