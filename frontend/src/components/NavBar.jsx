@@ -136,8 +136,7 @@ function NavBar() {
                 variant="link"
                 color="#304732"
                 _hover={{
-                  // bg: 'transparent',
-                  bg: 'red',
+                  bg: 'transparent',
                   transform: 'scale(1.05)',
                 }}
                 _active={{
