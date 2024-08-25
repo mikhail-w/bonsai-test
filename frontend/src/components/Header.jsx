@@ -65,7 +65,7 @@ function Header() {
         <HStack spacing={8} alignItems="center">
           <RouterLink to="/">
             <HStack>
-              <Box fontSize="xl" fontWeight="bold" color="white">
+              <Box fontSize="xl" fontWeight="bold" color="#304732">
                 BONSAI
               </Box>
               <img src={logo} alt="Bonsai logo" style={{ height: '40px' }} />
@@ -77,11 +77,12 @@ function Header() {
             <MenuButton
               as={Button}
               rightIcon={<ChevronDownIcon />}
-              variant="ghost"
-              color="white"
+              variant="gholst"
+              fontWeight="bold"
+              color="'#304732'"
               _hover={{
                 bg: 'transparent',
-                color: 'teal.300',
+                color: '#48bb78',
               }}
               _active={{
                 bg: 'transparent',
@@ -105,12 +106,20 @@ function Header() {
 
           {/* Blog and About Links */}
           <RouterLink to="/blog">
-            <Button variant="link" color="white" _hover={{ color: 'teal.300' }}>
+            <Button
+              variant="link"
+              color="#304732"
+              _hover={{ color: '#48bb78' }}
+            >
               Blog
             </Button>
           </RouterLink>
           <RouterLink to="/about">
-            <Button variant="link" color="white" _hover={{ color: 'teal.300' }}>
+            <Button
+              variant="link"
+              color="#304732"
+              _hover={{ color: ' #48bb78' }}
+            >
               About
             </Button>
           </RouterLink>
@@ -124,7 +133,7 @@ function Header() {
               icon={<ShoppingCart />}
               size="lg"
               variant="link"
-              color="white"
+              color="'#304732'"
               _hover={{
                 bg: 'transparent',
                 transform: 'scale(1.05)',

@@ -1,20 +1,3 @@
-// import ProductCarousel from '../components/ProductCarousel';
-// import { Col, Container, Row } from 'react-bootstrap';
-// import '../assets/styles/HeroSection.css';
-
-// function HeroSection() {
-//   return (
-//     <Container className="heroSection">
-//       <Row className="title"> As Interesting as a Plant</Row>
-//       <Row className="heroCarousel">
-//         <ProductCarousel />
-//       </Row>
-//     </Container>
-//   );
-// }
-
-// export default HeroSection;
-
 import {
   Box,
   Heading,
@@ -23,7 +6,12 @@ import {
   Stack,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { motion } from 'framer-motion';
 import Hero from '../assets/images/hero.jpg';
+
+const MotionBox = motion(Box);
+const MotionStack = motion(Stack);
+
 function HeroSection() {
   return (
     <Box
@@ -33,19 +21,30 @@ function HeroSection() {
       bgSize={'cover'}
       bgPosition={'center center'}
     >
-      <Box
+      <MotionBox
         w={'full'}
         h={'100vh'}
         display={'flex'}
         alignItems={'center'}
-        justifyContent={'center'}
+        justifyContent={'flex-start'} // Align to the left
+        px={8} // Add some padding for spacing
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 2 }}
       >
-        <Stack spacing={6} textAlign={'center'} maxW={'lg'} align={'center'}>
+        <MotionStack
+          spacing={6}
+          textAlign={'left'} // Align text to the left
+          maxW={'lg'}
+          initial={{ x: -100, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 1.5 }}
+        >
           <Heading
             fontSize={{ base: '3xl', md: '4xl', lg: '5xl' }}
             color={useColorModeValue('gray.800', 'white')}
           >
-            Welcome to Our Bonsai Shop
+            Welcome to Bonsai
           </Heading>
           <Text
             fontSize={{ base: 'md', lg: 'lg' }}
@@ -72,9 +71,10 @@ function HeroSection() {
               Learn More
             </Button>
           </Stack>
-        </Stack>
-      </Box>
+        </MotionStack>
+      </MotionBox>
     </Box>
   );
 }
+
 export default HeroSection;
