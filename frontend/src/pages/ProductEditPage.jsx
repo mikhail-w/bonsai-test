@@ -88,6 +88,7 @@ function ProductEditPage() {
       };
 
       const { data } = await axios.post(
+        // 'http://127.0.0.1:8000/api/products/upload/',
         'http://127.0.0.1:8000/api/products/upload/',
         formData,
         config

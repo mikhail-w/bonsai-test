@@ -108,6 +108,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../actions/cartActions';
 
 const Product = ({ product }) => {
+  // console.log('Product Image:', product.image);
   const dispatch = useDispatch();
   const roundedRating = Math.round(product.rating * 2) / 2;
 
