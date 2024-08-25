@@ -15,7 +15,6 @@ function ProductsPage() {
   const navigate = useNavigate();
   const productList = useSelector(state => state.productList);
   const { error, loading, products, page, pages } = productList;
-  // console.log('Products List:', productList);
 
   let keyword = location.search;
 

@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { listOrders } from '../actions/orderActions';
-import Header from '../components/Header';
 import Footer from '../components/Footer';
 import '../assets/styles/OrdersListPage.css';
 
@@ -30,7 +29,6 @@ function OrderListPage() {
 
   return (
     <>
-      <Header />
       <Container className="ordersContainer">
         <h1>Orders</h1>
         {loading ? (

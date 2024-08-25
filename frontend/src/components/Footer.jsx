@@ -12,8 +12,11 @@ import {
   Image,
   HStack,
 } from '@chakra-ui/react';
+import { useLocation } from 'react-router-dom';
+
 import { FaFacebook, FaInstagram, FaTwitter } from 'react-icons/fa';
 import bonsaiLogo from '../assets/images/bonsai-tree-logo.png'; // replace with your logo path
+const withoutSidebarRoutes = ['/login', '/register'];
 
 const SocialButton = ({ label, href, icon }) => {
   return (
@@ -38,6 +41,8 @@ const SocialButton = ({ label, href, icon }) => {
 };
 
 function Footer() {
+  const { pathname } = useLocation();
+  if (withoutSidebarRoutes.some(item => pathname.includes(item))) return null;
   return (
     <Box
       bg={useColorModeValue('gray.50', 'gray.900')}

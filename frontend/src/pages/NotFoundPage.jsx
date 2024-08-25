@@ -1,5 +1,3 @@
-import React from 'react';
-import Header from '../components/Header';
 import notFound from '../assets/images/404.svg';
 import '../assets/styles/NotFoundPage.css';
 import BackButton from '../components/BackButton';
@@ -7,7 +5,6 @@ import BackButton from '../components/BackButton';
 function NotFoundPage() {
   return (
     <>
-      <Header />
       <BackButton />
       <div className="notFoundContainer">
         <img src={notFound}></img>

@@ -31,7 +31,7 @@ import SearchBar from './SearchBar';
 
 const withoutSidebarRoutes = ['/login', '/register'];
 
-function Header() {
+function NavBar() {
   const { pathname } = useLocation();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
@@ -289,4 +289,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default NavBar;

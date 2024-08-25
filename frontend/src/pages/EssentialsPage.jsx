@@ -6,8 +6,6 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Paginate from '../components/Paginate';
 import { listEssentialProducts } from '../actions/productActions';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import '../index.css';
 
 function EssentialsPage() {
@@ -22,8 +20,6 @@ function EssentialsPage() {
   }, [dispatch]);
   return (
     <>
-      <Header />
-
       {loading ? (
         // <h2>Loading...</h2>
         <Loader />
@@ -45,7 +41,6 @@ function EssentialsPage() {
         </>
       )}
       <Paginate page={page} pages={pages} keyword={keyword} />
-      <Footer />
     </>
   );
 }
