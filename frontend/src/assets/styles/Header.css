@@ -31,7 +31,6 @@
 
 #cartLogo {
   color: black;
-  /* outline: 2px solid red; */
   display: flex;
   gap: 5px;
   align-items: start;
@@ -41,10 +40,6 @@
   background-color: black;
 }
 
-/* #nav {
-  align-items: center;
-  justify-content: center;
-} */
 #search {
   font-family: "Varela Round", sans-serif;
   font-weight: 400;
