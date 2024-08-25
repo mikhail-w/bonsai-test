@@ -10,6 +10,7 @@ import Features from '../components/Features';
 import ScrollToTop from '../components/ScrollToTop';
 import HeroSection from '../components/HeroSection';
 
+// import Navbar2 from '../components/NavBar2';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
