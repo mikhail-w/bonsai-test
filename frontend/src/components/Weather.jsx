@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import '../assets/styles/Weather.css';
-// const API_KEY = import.meta.env.REVITE_WEATHER_API_KEY;
 import { Container } from 'react-bootstrap';
 
 function Weather() {
+  const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
+
   const [city, setCity] = useState('');
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState(null);
-
-  const API_KEY = 'dadc5becf69af9fe36fcc7470638d048';
 
   const fetchWeather = async () => {
     try {

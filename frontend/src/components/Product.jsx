@@ -65,8 +65,8 @@ const Product = ({ product }) => {
             src={`http://127.0.0.1:8000${product.image}`}
             alt={`Picture of ${product.name}`}
             roundedTop="lg"
-            objectFit="cover"
-            height="200px" // Fixed height for uniformity
+            objectFit="scaledown"
+            height="300px" // Fixed height for uniformity
             width="100%"
             transition="all 0.3s ease"
             // _hover={{ opacity: 0.8 }}
