@@ -144,7 +144,7 @@ const Product = ({ product }) => {
                   );
                 })}
               <Box as="span" ml="2" color="gray.600" fontSize="sm">
-                {product.numReviews} review{product.numReviews > 1 && 's'}
+                {product.numReviews} review{product.numReviews != 1 && 's'}
               </Box>
             </Box>
             <Box fontSize="xl" color={useColorModeValue('gray.800', 'white')}>
