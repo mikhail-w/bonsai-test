@@ -1,8 +1,7 @@
 import { FaLeaf } from 'react-icons/fa';
 import '../assets/styles/Rating.css';
 
-function Rating({ value, text, color = 'green', card = 'false' }) {
-  console.log('Card:', card);
+function Rating({ value, text, color = 'green' }) {
   const leafStyle = { verticalAlign: 'middle' };
 
   const fullLeaf = <FaLeaf style={{ color, ...leafStyle }} />;

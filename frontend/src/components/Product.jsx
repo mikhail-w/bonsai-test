@@ -80,57 +80,7 @@ const Product = ({ product }) => {
 
           <Flex justifyContent="space-between" alignItems="center" mt={2}>
             <Box display="flex" alignItems="center">
-              {/* {Array(5)
-                .fill('')
-                .map((_, i) => {
-                  if (roundedRating - i >= 1) {
-                    return (
-                      <FaLeaf
-                        key={i}
-                        style={{ marginLeft: '2px' }}
-                        color="#17b169"
-                      />
-                    );
-                  } else if (roundedRating - i === 0.5) {
-                    return (
-                      <Box
-                        key={i}
-                        position="relative"
-                        display="inline-block"
-                        width="14px" // Adjust width to match leaf size
-                        height="14px"
-                      >
-                        <FaLeaf
-                          style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            clipPath: 'inset(0 50% 0 0)',
-                          }}
-                          color="#17b169"
-                        />
-                        <FaLeaf
-                          style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            clipPath: 'inset(0 0 0 50%)',
-                          }}
-                          color="#bbbdbf"
-                        />
-                      </Box>
-                    );
-                  } else {
-                    return (
-                      <FaLeaf
-                        key={i}
-                        style={{ marginLeft: '2px' }}
-                        color="#bbbdbf"
-                      />
-                    );
-                  }
-                })} */}
-              <Rating card={'true'} value={roundedRating} color="#008b4a" />
+              <Rating value={roundedRating} color="#008b4a" />
               <Box as="span" ml="2" color="gray.600" fontSize="sm">
                 {product.numReviews} review{product.numReviews !== 1 && 's'}
               </Box>
