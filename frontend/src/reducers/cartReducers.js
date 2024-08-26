@@ -9,6 +9,7 @@ import {
 export const cartReducer = (state = { cartItems: [] }, action) => {
   switch (action.type) {
     case CART_ADD_ITEM: {
+      console.log('Current State:', state);
       const item = action.payload;
       const existItem = state.cartItems.find(x => x.product === item.product);
 

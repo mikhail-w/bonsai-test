@@ -41,7 +41,7 @@ function NavBar() {
         <Container fluid id="nav">
           <LinkContainer to="/">
             <Navbar.Brand className="logo-container" id={'title-text'}>
-              PLANTIS<img src={logo} alt="logo"></img>
+              BONSAI<img src={logo} alt="logo"></img>
             </Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle

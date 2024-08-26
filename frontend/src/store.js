@@ -1,7 +1,5 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
-// import { configureStore } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import { thunk } from 'redux-thunk';
-import { composeWithDevTools } from '@redux-devtools/extension';
 import {
   productListReducer,
   productDetailsReducer,
@@ -36,7 +34,8 @@ import {
   orderDeliverReducer,
 } from './reducers/orderReducers';
 
-const reducer = combineReducers({
+// Combine reducers
+const rootReducer = {
   productList: productListReducer,
   productDetails: productDetailsReducer,
   productDelete: productDeleteReducer,
@@ -63,8 +62,9 @@ const reducer = combineReducers({
   orderListMy: orderListMyReducer,
   orderList: orderListReducer,
   orderDeliver: orderDeliverReducer,
-});
+};
 
+// Load initial state from localStorage
 const cartItemsFromStorage = localStorage.getItem('cartItems')
   ? JSON.parse(localStorage.getItem('cartItems'))
   : [];
@@ -85,12 +85,11 @@ const initialState = {
   userLogin: { userInfo: userInfoFromStorage },
 };
 
-const middleware = [thunk];
-
-const store = createStore(
-  reducer,
-  initialState,
-  composeWithDevTools(applyMiddleware(...middleware))
-);
+// Create store with configureStore
+const store = configureStore({
+  reducer: rootReducer,
+  preloadedState: initialState,
+  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(thunk),
+});
 
 export default store;
