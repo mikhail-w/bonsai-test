@@ -30,9 +30,10 @@ function ProductsPage() {
         marginBottom={50}
         minH={'80vh'}
         justifyContent={'space-between'}
+        alignContent={'center'}
       >
         <h1 className="title">All Products</h1>
-        <SimpleGrid minChildWidth="120px" spacing="40px">
+        <SimpleGrid minChildWidth="120px" spacing="20px">
           {loading ? (
             <Loader />
           ) : error ? (
