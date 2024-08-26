@@ -6,11 +6,12 @@
 }
 
 .rating span {
-  font-size: 1.5rem;
+  font-size: 1rem;
   /* Size of the leaves */
 }
 
-.rating i {
-  margin-right: 4px;
+.rating {
+  display: inline-flex;
+  margin-right: 5px;
   /* Space between the leaves and text */
 }
