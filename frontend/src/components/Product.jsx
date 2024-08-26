@@ -11,6 +11,8 @@ import {
   Button,
 } from '@chakra-ui/react';
 import { BsStar, BsStarFill, BsStarHalf } from 'react-icons/bs';
+import { FaLeaf } from 'react-icons/fa';
+import { BiLeaf } from 'react-icons/bi';
 import { FiShoppingCart } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -74,13 +76,13 @@ const Product = ({ product }) => {
         </Link>
 
         <Box p="6">
-          <Box display="flex" alignItems="baseline" mb={2}>
+          {/* <Box display="flex" alignItems="baseline" mb={2}>
             {product.isNew && (
               <Badge rounded="full" px="2" fontSize="0.8em" colorScheme="red">
                 New
               </Badge>
             )}
-          </Box>
+          </Box> */}
 
           <Flex mt="1" justifyContent="space-between" alignItems="center">
             <Box
@@ -117,17 +119,29 @@ const Product = ({ product }) => {
                 .map((_, i) => {
                   if (roundedRating - i >= 1) {
                     return (
-                      <BsStarFill
+                      <FaLeaf
                         key={i}
                         style={{ marginLeft: '2px' }}
-                        color={i < product.rating ? 'teal.500' : 'gray.300'}
+                        color={i < product.rating ? '#17b169' : '#bbbdbf'}
                       />
                     );
                   }
                   if (roundedRating - i === 0.5) {
-                    return <BsStarHalf key={i} style={{ marginLeft: '2px' }} />;
+                    return (
+                      <FaLeaf
+                        color="#94d9b9"
+                        key={i}
+                        style={{ marginLeft: '2px' }}
+                      />
+                    );
                   }
-                  return <BsStar key={i} style={{ marginLeft: '2px' }} />;
+                  return (
+                    <FaLeaf
+                      color="#bbbdbf"
+                      key={i}
+                      style={{ marginLeft: '2px' }}
+                    />
+                  );
                 })}
               <Box as="span" ml="2" color="gray.600" fontSize="sm">
                 {product.numReviews} review{product.numReviews > 1 && 's'}

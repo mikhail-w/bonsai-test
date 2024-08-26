@@ -95,7 +95,7 @@ function ProductPage() {
                     text={`${product.numReviews} ${
                       product.reviews.length == 1 ? 'review' : 'reviews'
                     }`}
-                    color={'#f8e825'}
+                    color={'#008b4a'}
                   />
                 </ListGroup.Item>
 
@@ -175,7 +175,7 @@ function ProductPage() {
                 {product.reviews.map(review => (
                   <ListGroup.Item key={review._id}>
                     <strong>{review.name}</strong>
-                    <Rating value={review.rating} color="#f8e825" />
+                    <Rating value={review.rating} color="#008b4a" />
                     <p>{review.createdAt.substring(0, 10)}</p>
                     <p>{review.comment}</p>
                   </ListGroup.Item>

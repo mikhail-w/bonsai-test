@@ -1,0 +1,16 @@
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  /* Spacing between leaves */
+}
+
+.rating span {
+  font-size: 1.5rem;
+  /* Size of the leaves */
+}
+
+.rating i {
+  margin-right: 4px;
+  /* Space between the leaves and text */
+}

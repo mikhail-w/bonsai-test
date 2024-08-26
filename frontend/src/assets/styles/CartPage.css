@@ -21,6 +21,7 @@
 #button {
   background-color: #17B169;
   border-color: #17B169;
+  border-color: #008b4a;
 }
 
 .continueButton {
@@ -28,7 +29,7 @@
   font-weight: 400;
   font-style: normal;
   padding: 10px;
-  background-color: #ececec;
+  /* background-color: #ffffff; */
   gap: .5px;
   border-radius: 20px;
   margin-bottom: 20px;
