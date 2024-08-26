@@ -6,6 +6,7 @@ import {
   Button,
   Icon,
   useColorModeValue,
+  Divider,
 } from '@chakra-ui/react';
 import { FaLeaf } from 'react-icons/fa';
 import { FiShoppingCart } from 'react-icons/fi';
@@ -35,11 +36,10 @@ const Product = ({ product }) => {
         position="relative"
         overflow="hidden"
         transition="all 0.3s ease"
-        // boxShadow="outline"
         _hover={{
           transform: 'scale(1.02)',
           shadow: 'xl',
-          boxShadow: '0 0 0 4px  rgba(141, 237, 155, 0.6)',
+          boxShadow: '0 0 0 4px  rgba(210, 215, 211, 0.808)',
         }}
       >
         <Link to={`/product/${product._id}`}>
@@ -53,7 +53,7 @@ const Product = ({ product }) => {
             transition="all 0.3s ease"
           />
         </Link>
-
+        <Divider />
         <Box p="6">
           <Flex mt="1" justifyContent="space-between" alignItems="center">
             <Box

@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Row, Col } from 'react-bootstrap';
 import Product from '../components/Product';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
@@ -8,8 +7,7 @@ import Paginate from '../components/Paginate';
 import { useNavigate } from 'react-router-dom';
 import { listProducts } from '../actions/productActions';
 import '../assets/styles/ProductsPage.css';
-// import '../index.css';
-import { SimpleGrid, Center } from '@chakra-ui/react';
+import { SimpleGrid, Center, Box } from '@chakra-ui/react';
 
 function ProductsPage() {
   const dispatch = useDispatch();
@@ -22,37 +20,34 @@ function ProductsPage() {
   useEffect(() => {
     dispatch(listProducts(keyword));
   }, [dispatch, keyword]);
+
   return (
-    <>
-      <Center
-        flexDirection={'column'}
-        marginTop={50}
-        marginBottom={50}
-        minH={'80vh'}
-        justifyContent={'space-between'}
-        alignContent={'center'}
+    <Center
+      flexDirection={'column'}
+      marginTop={50}
+      marginBottom={50}
+      minH={'80vh'}
+      justifyContent={'space-between'}
+    >
+      <h1 className="title">All Products</h1>
+      <SimpleGrid
+        columns={{ base: 1, sm: 2, md: 3, lg: 4 }} // Responsive column layout
+        spacing="10px"
+        width="90%"
+        px={5} // Padding to add spacing on small screens
       >
-        <h1 className="title">All Products</h1>
-        <SimpleGrid minChildWidth="120px" spacing="20px">
-          {loading ? (
-            <Loader />
-          ) : error ? (
-            <Message variant={'danger'}>{error}</Message>
-          ) : (
-            <>
-              <Row>
-                {products.map(product => (
-                  <Col key={product._id}>
-                    <Product product={product} />
-                  </Col>
-                ))}
-              </Row>
-            </>
-          )}
-        </SimpleGrid>
-        <Paginate page={page} pages={pages} keyword={keyword} />
-      </Center>
-    </>
+        {loading ? (
+          <Loader />
+        ) : error ? (
+          <Message variant={'danger'}>{error}</Message>
+        ) : (
+          products.map(product => (
+            <Product key={product._id} product={product} />
+          ))
+        )}
+      </SimpleGrid>
+      <Paginate page={page} pages={pages} keyword={keyword} />
+    </Center>
   );
 }
 
