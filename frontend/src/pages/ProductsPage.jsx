@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { listProducts } from '../actions/productActions';
 import '../assets/styles/ProductsPage.css';
 // import '../index.css';
+import { SimpleGrid } from '@chakra-ui/react';
 
 function ProductsPage() {
   const dispatch = useDispatch();
@@ -23,8 +24,9 @@ function ProductsPage() {
   }, [dispatch, keyword]);
   return (
     <>
-      <Container className="productsContainer">
-        <h1 className="title">All Products</h1>
+      {/* <Container className="productsContainer"> */}
+      <h1 className="title">All Products</h1>
+      <SimpleGrid minChildWidth="120px" spacing="40px">
         {loading ? (
           <Loader />
         ) : error ? (
@@ -40,8 +42,9 @@ function ProductsPage() {
             </Row>
           </>
         )}
-        <Paginate page={page} pages={pages} keyword={keyword} />
-      </Container>
+      </SimpleGrid>
+      <Paginate page={page} pages={pages} keyword={keyword} />
+      {/* </Container> */}
     </>
   );
 }

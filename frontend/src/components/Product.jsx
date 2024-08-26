@@ -28,14 +28,19 @@ const Product = ({ product }) => {
     <Flex p={4} w="full" alignItems="center" justifyContent="center">
       <Box
         bg={useColorModeValue('white', 'gray.800')}
-        minW={300}
+        maxW={300}
         borderWidth="1px"
         rounded="lg"
         shadow="lg"
         position="relative"
         overflow="hidden"
         transition="all 0.3s ease"
-        _hover={{ transform: 'scale(1.02)', shadow: 'xl' }}
+        // boxShadow="outline"
+        _hover={{
+          transform: 'scale(1.02)',
+          shadow: 'xl',
+          boxShadow: '0 0 0 4px  rgba(141, 237, 155, 0.6)',
+        }}
       >
         <Link to={`/product/${product._id}`}>
           <Image
