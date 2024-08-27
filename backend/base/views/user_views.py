@@ -1,4 +1,5 @@
 from django.contrib.auth.hashers import make_password
+from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from django.shortcuts import render
 from rest_framework import status
@@ -8,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
+from base.models import CustomUser  # Import your custom user model
 from base.serializers import UserSerializer, UserSerializerWithToken
 
 
@@ -30,20 +32,21 @@ class MyTokenObtainPairView(TokenObtainPairView):
 def registerUser(request):
     data = request.data
     try:
-        print("3 user_views.py")
-        user = User.objects.create(
-            first_name=data["name"],
-            username=data["email"],
+        # print("3 user_views.py")
+        user = CustomUser.objects.create(
+            name=data["email"],
             email=data["email"],
+            city=data.get("city", ""),
+            state=data.get("state", ""),
+            profile_image=data.get("profile_image", None),
             password=make_password(data["password"]),
         )
 
         serializer = UserSerializerWithToken(user, many=False)
         return Response(serializer.data)
-    except:
+    except Exception as e:
         message = {"detail": "User with this email already exists"}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
-        raise
 
 
 @api_view(["PUT"])
@@ -53,9 +56,11 @@ def updateUserProfile(request):
     serializer = UserSerializerWithToken(user, many=False)
 
     data = request.data
-    user.first_name = data["name"]
-    user.username = data["email"]
+    user.name = data["email"]
     user.email = data["email"]
+    user.city = data.get("city", user.city)
+    user.state = data.get("state", user.state)
+    user.profile_image = data.get("profile_image", user.profile_image)
 
     if data["password"] != "":
         user.password = make_password(data["password"])
@@ -76,7 +81,7 @@ def getUserProfile(request):
 @api_view(["GET"])
 @permission_classes([IsAdminUser])
 def getUsers(request):
-    users = User.objects.all()
+    users = CustomUser.objects.all()
     serializer = UserSerializer(users, many=True)
     return Response(serializer.data)
 
@@ -84,7 +89,7 @@ def getUsers(request):
 @api_view(["GET"])
 @permission_classes([IsAdminUser])
 def getUserById(request, pk):
-    user = User.objects.get(id=pk)
+    user = get_object_or_404(CustomUser, id=pk)
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
 
@@ -92,14 +97,18 @@ def getUserById(request, pk):
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
 def updateUser(request, pk):
-    user = User.objects.get(id=pk)
+    # user = User.objects.get(id=pk)
+    user = get_object_or_404(CustomUser, id=pk)
 
     data = request.data
 
-    user.first_name = data["name"]
+    user.name = data["name"]
     user.username = data["email"]
     user.email = data["email"]
     user.is_staff = data["isAdmin"]
+
+    if data.get("password", ""):
+        user.password = make_password(data["password"])
 
     user.save()
 
@@ -111,6 +120,7 @@ def updateUser(request, pk):
 @api_view(["DELETE"])
 @permission_classes([IsAdminUser])
 def deleteUser(request, pk):
-    userForDeletion = User.objects.get(id=pk)
+    # userForDeletion = User.objects.get(id=pk)
+    userForDeletion = get_object_or_404(CustomUser, id=pk)
     userForDeletion.delete()
     return Response("User was deleted")

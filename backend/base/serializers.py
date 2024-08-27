@@ -1,8 +1,8 @@
-from rest_framework import serializers
 from django.contrib.auth.models import User
-
+from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Product, Order, OrderItem, ShippingAddress, Review, CustomUser
+
+from .models import CustomUser, Order, OrderItem, Product, Review, ShippingAddress
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -13,8 +13,6 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        # fields = ["id", "username", "email"]
-        # fields = ["id", "_id", "username", "email", "name", "isAdmin"]
         fields = [
             "id",
             "_id",

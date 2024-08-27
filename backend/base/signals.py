@@ -7,4 +7,4 @@ from .models import CustomUser  # Import your custom user model
 def updateUser(sender, instance, **kwargs):
     # print("Signal Triggered")
     if instance.email:
-        instance.username = instance.email
+        instance.name = instance.email

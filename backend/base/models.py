@@ -7,15 +7,6 @@ from django.contrib.auth.models import (
 
 # Create your models here.
 
-
-# class SiteUsers(models.Model):
-#     user = models.OneToOneField(User, on_delete=models.CASCADE)
-#     city = models.CharField(max_length=200, null=True, blank=True)
-#     state = models.CharField(max_length=200, null=True, blank=True)
-#     profileImage = models.ImageField(
-#         null=True, blank=True, default="/avatar.png", upload_to="profile_pictures"
-#     )
-# Custom User Manager
 class CustomUserManager(BaseUserManager):
     def create_user(
         self,
