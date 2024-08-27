@@ -1,12 +1,10 @@
 from django.db.models.signals import pre_save
-from django.contrib.auth.models import User
+from django.dispatch import receiver
+from .models import CustomUser  # Import your custom user model
 
 
+@receiver(pre_save, sender=CustomUser)
 def updateUser(sender, instance, **kwargs):
     # print("Signal Triggered")
-    user = instance
-    if user.email != "":
-        user.username = user.email
-
-
-pre_save.connect(updateUser, sender=User)
+    if instance.email:
+        instance.username = instance.email

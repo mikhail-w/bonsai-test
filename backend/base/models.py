@@ -1,11 +1,89 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    BaseUserManager,
+    PermissionsMixin,
+)
 
 # Create your models here.
 
 
+# class SiteUsers(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
+#     city = models.CharField(max_length=200, null=True, blank=True)
+#     state = models.CharField(max_length=200, null=True, blank=True)
+#     profileImage = models.ImageField(
+#         null=True, blank=True, default="/avatar.png", upload_to="profile_pictures"
+#     )
+# Custom User Manager
+class CustomUserManager(BaseUserManager):
+    def create_user(
+        self,
+        email,
+        name,
+        password=None,
+        city=None,
+        state=None,
+        profile_image=None,
+        **extra_fields
+    ):
+        if not email:
+            raise ValueError("The Email field must be set")
+        email = self.normalize_email(email)
+        user = self.model(
+            email=email,
+            name=name,
+            city=city,
+            state=state,
+            profile_image=profile_image,
+            **extra_fields
+        )
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(
+        self,
+        email,
+        name,
+        password=None,
+        city=None,
+        state=None,
+        profile_image=None,
+        **extra_fields
+    ):
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+
+        return self.create_user(
+            email, name, password, city, state, profile_image, **extra_fields
+        )
+
+
+# Custom User Model
+class CustomUser(AbstractBaseUser, PermissionsMixin):
+    name = models.CharField(max_length=200, null=True, blank=True)
+    email = models.EmailField(unique=True)
+    city = models.CharField(max_length=100, null=True, blank=True)
+    state = models.CharField(max_length=100, null=True, blank=True)
+    profile_image = models.ImageField(
+        null=True, blank=True, upload_to="profile_images/"
+    )
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    date_joined = models.DateTimeField(auto_now_add=True)
+
+    objects = CustomUserManager()
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["name"]
+
+    def __str__(self):
+        return self.email
+
+
 class Product(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200, null=True, blank=True)
     image = models.ImageField(null=True, blank=True, default="/placeholder.png")
     _type = models.CharField(max_length=200, null=True, blank=True)
@@ -24,7 +102,7 @@ class Product(models.Model):
 
 class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200, null=True, blank=True)
     rating = models.IntegerField(null=True, blank=True, default=0)
     comment = models.TextField(null=True, blank=True)
@@ -36,7 +114,7 @@ class Review(models.Model):
 
 
 class Order(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True)
     paymentMethod = models.CharField(max_length=200, null=True, blank=True)
     taxPrice = models.DecimalField(
         max_digits=7, decimal_places=2, null=True, blank=True

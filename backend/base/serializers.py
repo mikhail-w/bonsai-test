@@ -2,18 +2,29 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Product, Order, OrderItem, ShippingAddress, Review
+from .models import Product, Order, OrderItem, ShippingAddress, Review, CustomUser
 
 
 class UserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
     _id = serializers.SerializerMethodField(read_only=True)
     isAdmin = serializers.SerializerMethodField(read_only=True)
+    profile_image = serializers.ImageField(source="profile_image", read_only=True)
 
     class Meta:
-        model = User
+        model = CustomUser
         # fields = ["id", "username", "email"]
-        fields = ["id", "_id", "username", "email", "name", "isAdmin"]
+        # fields = ["id", "_id", "username", "email", "name", "isAdmin"]
+        fields = [
+            "id",
+            "_id",
+            "email",
+            "name",
+            "isAdmin",
+            "profile_image",
+            "city",
+            "state",
+        ]
 
     def get__id(self, obj):
         return obj.id
@@ -22,19 +33,25 @@ class UserSerializer(serializers.ModelSerializer):
         return obj.is_staff
 
     def get_name(self, obj):
-        name = obj.first_name
-        if name == "":
-            name = obj.email
-
-        return name
+        return obj.name if obj.name else obj.email
 
 
 class UserSerializerWithToken(UserSerializer):
     token = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
-        model = User
-        fields = ["id", "_id", "username", "email", "name", "isAdmin", "token"]
+        model = CustomUser
+        fields = [
+            "id",
+            "_id",
+            "email",
+            "name",
+            "isAdmin",
+            "token",
+            "profile_image",
+            "city",
+            "state",
+        ]
 
     def get_token(self, obj):
         token = RefreshToken.for_user(obj)

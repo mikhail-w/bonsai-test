@@ -42,11 +42,15 @@ INSTALLED_APPS = [
     "base",
 ]
 
+
+AUTH_USER_MODEL = "base.CustomUser"
+
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     )
 }
+
 
 from datetime import timedelta
 
