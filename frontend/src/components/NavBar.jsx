@@ -14,7 +14,7 @@ import { FaUser } from 'react-icons/fa6';
 import { ShoppingCart } from 'lucide-react';
 import { clearCart } from '../actions/cartActions';
 
-const withoutSidebarRoutes = ['/login', '/register'];
+const withoutSidebarRoutes = ['/profile', '/login', '/register'];
 
 function NavBar() {
   const { pathname } = useLocation();
@@ -32,7 +32,7 @@ function NavBar() {
     navigate('/');
   };
 
-  const withoutSidebarRoutes = ['/login', '/register'];
+  const withoutSidebarRoutes = ['/profile', '/login', '/register'];
   if (withoutSidebarRoutes.some(item => pathname.includes(item))) return null;
 
   return (

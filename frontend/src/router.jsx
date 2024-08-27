@@ -20,6 +20,7 @@ import OrderListPage from './pages/OrderListPage.jsx';
 import ProductEditPage from './pages/ProductEditPage.jsx';
 import ProductsPage from './pages/ProductsPage.jsx';
 import ProfileDashboard from './pages/ProfileDashboard.jsx';
+import Dashboard from './pages/Dashboard.jsx';
 
 const router = createBrowserRouter([
   {
@@ -40,7 +41,8 @@ const router = createBrowserRouter([
       },
       {
         path: '/profile',
-        element: <ProfileDashboard />,
+        // element: <ProfileDashboard />,
+        element: <Dashboard />,
       },
       {
         path: '/cart/:id?',

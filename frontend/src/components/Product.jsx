@@ -30,6 +30,7 @@ const Product = ({ product }) => {
       <Box
         bg={useColorModeValue('white', 'gray.800')}
         maxW={300}
+        minW={300}
         borderWidth="1px"
         rounded="lg"
         shadow="lg"

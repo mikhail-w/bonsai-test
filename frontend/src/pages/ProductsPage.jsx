@@ -31,7 +31,7 @@ function ProductsPage() {
     >
       <h1 className="title">All Products</h1>
       <SimpleGrid
-        columns={{ base: 1, sm: 2, md: 3, lg: 4 }} // Responsive column layout
+        columns={{ base: 1, sm: 1, md: 2, lg: 4 }} // Responsive column layout
         spacing="10px"
         width="90%"
         px={5} // Padding to add spacing on small screens
