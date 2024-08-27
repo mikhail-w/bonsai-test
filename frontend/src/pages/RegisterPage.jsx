@@ -89,7 +89,16 @@ function RegisterPage() {
   }, [navigate, userInfo, redirect]);
 
   const handleSubmit = e => {
-    console.log('Email', email);
+    console.log(
+      'Handle Submit:',
+      name,
+      email,
+      password,
+      city,
+      state,
+      profileImage
+    );
+    // console.log('Email', email);
     e.preventDefault();
     if (password != confirmPassword) {
       setMessage('Passwords do not match');

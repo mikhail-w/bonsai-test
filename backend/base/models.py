@@ -7,6 +7,7 @@ from django.contrib.auth.models import (
 
 # Create your models here.
 
+
 class CustomUserManager(BaseUserManager):
     def create_user(
         self,
@@ -57,9 +58,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     city = models.CharField(max_length=100, null=True, blank=True)
     state = models.CharField(max_length=100, null=True, blank=True)
-    profile_image = models.ImageField(
-        null=True, blank=True, upload_to="profile_images/"
-    )
+    profile_image = models.ImageField(null=True, blank=True, default="/placeholder.png")
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)

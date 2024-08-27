@@ -76,6 +76,8 @@ export const logout = () => dispatch => {
 export const register =
   (name, email, password, city, state, profileImage) => async dispatch => {
     try {
+      console.log('Inside userActions.js Register Function');
+
       dispatch({
         type: USER_REGISTER_REQUEST,
       });
@@ -93,10 +95,13 @@ export const register =
           password: password,
           city: city,
           state: state,
-          profileImage: profileImage,
+          profile_image: profileImage,
         },
         config
       );
+
+      console.log('userActions.js Dispatch Success');
+
       dispatch({
         type: USER_REGISTER_SUCCESS,
         payload: data,
@@ -108,6 +113,8 @@ export const register =
 
       localStorage.setItem('userInfo', JSON.stringify(data));
     } catch (error) {
+      console.log('userActions.js Dispatch Fail', error);
+
       dispatch({
         type: USER_REGISTER_FAIL,
         payload:

@@ -8,6 +8,7 @@ import '../assets/styles/HomePage.css';
 import Features from '../components/Features';
 import ScrollToTop from '../components/ScrollToTop';
 import HeroSection from '../components/HeroSection';
+import ProductsPage from './ProductsPage';
 
 function HomePage() {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ function HomePage() {
   return (
     <>
       <HeroSection />
+      {/* <ProductsPage /> */}
       <Features />
       <ScrollToTop />
     </>

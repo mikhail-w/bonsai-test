@@ -49,12 +49,14 @@ export const userLoginReducer = (state = {}, action) => {
 export const userRegisterReducer = (state = {}, action) => {
   switch (action.type) {
     case USER_REGISTER_REQUEST:
+      console.log('Inside userReducers.js User Register Request');
       return { loading: true };
 
     case USER_REGISTER_SUCCESS:
       return { loading: false, userInfo: action.payload };
 
     case USER_REGISTER_FAIL:
+      console.log('Inside userReducers.js User Register Fail');
       return { loading: false, error: action.payload };
 
     case USER_LOGOUT:

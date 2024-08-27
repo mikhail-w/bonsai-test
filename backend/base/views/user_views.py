@@ -32,7 +32,8 @@ class MyTokenObtainPairView(TokenObtainPairView):
 def registerUser(request):
     data = request.data
     try:
-        # print("3 user_views.py")
+        print("3 user_views.py Request", request)
+        print("Data:", data)
         user = CustomUser.objects.create(
             name=data["email"],
             email=data["email"],
@@ -42,11 +43,26 @@ def registerUser(request):
             password=make_password(data["password"]),
         )
 
+        print("USER:", user)
+
         serializer = UserSerializerWithToken(user, many=False)
         return Response(serializer.data)
     except Exception as e:
         message = {"detail": "User with this email already exists"}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST"])
+def uploadImage(request):
+    data = request.data
+    print("Data:", data)
+    # profile_image = data["profile_image"]
+    # product = Product.objects.get(_id=product_id)
+
+    # product.image = request.FILES.get("image")
+    # product.save()
+
+    return Response("Image was uploaded")
 
 
 @api_view(["PUT"])
