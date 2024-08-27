@@ -6,7 +6,6 @@ from django.contrib.auth.admin import UserAdmin
 # Register your models here.
 
 
-# admin.site.register(UserProfile)
 class UserProfileInline(admin.StackedInline):
     model = UserProfile
     can_delete = False
