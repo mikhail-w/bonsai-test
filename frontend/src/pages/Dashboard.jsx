@@ -162,7 +162,8 @@ const MobileNav = ({ onOpen, ...rest }) => {
               <HStack>
                 <Avatar
                   size={'sm'}
-                  src={`https://www.befunky.com/images/wp/wp-2021-01-linkedin-profile-picture-after.jpg?auto=avif,webp&format=jpg&width=944`}
+                  // src={`https://www.befunky.com/images/wp/wp-2021-01-linkedin-profile-picture-after.jpg?auto=avif,webp&format=jpg&width=944`}
+                  src={userInfo.profile_picture}
                 />
                 <VStack
                   display={{ base: 'none', md: 'flex' }}

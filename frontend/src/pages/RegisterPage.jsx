@@ -70,6 +70,7 @@ function RegisterPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
+  const [profileImage, setProfileImage] = useState(null);
   const [message, setMessage] = useState('');
 
   const dispatch = useDispatch();
@@ -101,7 +102,11 @@ function RegisterPage() {
       });
       return;
     }
-    dispatch(register(name, email, password));
+    dispatch(register(name, email, password, city, state, profileImage));
+  };
+
+  const handleProfileImageChange = e => {
+    setProfileImage(e.target.files[0]);
   };
 
   return (
@@ -185,6 +190,17 @@ function RegisterPage() {
                     placeholder=""
                   />
                   <FormLabel>Enter your State</FormLabel>
+                </FormControl>
+                <FormControl mb={10} id="profileImage">
+                  <FormLabel>Upload Profile Image</FormLabel>
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleProfileImageChange}
+                  />
+                  <FormHelperText>
+                    Optional: Upload your profile image.
+                  </FormHelperText>
                 </FormControl>
                 <Stack spacing={6}>
                   <Stack
