@@ -1,7 +1,8 @@
+import React, { useEffect } from 'react';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../actions/userActions';
 import { clearCart } from '../actions/cartActions';
-import { useNavigate, useLocation } from 'react-router-dom';
 import { Link as RouterLink } from 'react-router-dom';
 import {
   IconButton,
@@ -34,13 +35,7 @@ import {
   FiSettings,
   FiUser,
 } from 'react-icons/fi';
-import { FaInfo } from 'react-icons/fa6';
-import { Outlet } from 'react-router-dom';
-import Explore from './Explore';
-import Trending from './Trending';
-import Favorites from './Favorites';
-import { ShoppingCart } from 'lucide-react';
-import logo from '../assets/images/bonsai-tree-logo.png';
+
 const LinkItems = [
   { name: 'Home', icon: FiHome, path: '/' },
   { name: 'Your Info', icon: FiUser, path: '/profile/info' },
@@ -211,6 +206,15 @@ const MobileNav = ({ onOpen, ...rest }) => {
 };
 const Dashboard = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Automatically navigate to /profile/info if the path is /profile
+  useEffect(() => {
+    if (location.pathname === '/profile') {
+      navigate('/profile/info');
+    }
+  }, [location, navigate]);
 
   return (
     <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
@@ -232,7 +236,7 @@ const Dashboard = () => {
       </Drawer>
       <MobileNav onOpen={onOpen} />
       {/* Your dashboard content goes here */}
-      <Box ml={{ base: 0, md: 60 }} p="4" boxShadow="outline">
+      <Box ml={{ base: 0, md: 60 }} p="4">
         <Outlet />
       </Box>
     </Box>

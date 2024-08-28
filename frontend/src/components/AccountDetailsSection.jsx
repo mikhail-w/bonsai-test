@@ -15,7 +15,7 @@ const AccountDetailsSection = () => {
       bg="white"
       p={6}
       borderRadius="md"
-      boxShadow="sm"
+      boxShadow="md"
       w={{ base: '100%', md: '65%' }}
     >
       <VStack spacing={4}>

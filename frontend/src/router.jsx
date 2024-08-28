@@ -19,14 +19,12 @@ import ProductListPage from './pages/ProductListPage.jsx';
 import OrderListPage from './pages/OrderListPage.jsx';
 import ProductEditPage from './pages/ProductEditPage.jsx';
 import ProductsPage from './pages/ProductsPage.jsx';
-// import ProfileDashboard from './pages/ProfileDashboard.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import Trending from './pages/Trending.jsx';
 import Explore from './pages/Explore.jsx';
 import Favorites from './pages/Favorites.jsx';
 import Settings from './pages/Settings.jsx';
 import YourInfo from './pages/YourInfo.jsx';
-// import Planet from './components/Planet.jsx';
 
 const router = createBrowserRouter([
   {
