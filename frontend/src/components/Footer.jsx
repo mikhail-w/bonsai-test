@@ -16,7 +16,7 @@ import { useLocation } from 'react-router-dom';
 
 import { FaFacebook, FaInstagram, FaTwitter } from 'react-icons/fa';
 import bonsaiLogo from '../assets/images/bonsai-tree-logo.png'; // replace with your logo path
-const withoutSidebarRoutes = ['/login', '/register'];
+const withoutSidebarRoutes = ['/login', '/register', '/profile'];
 
 const SocialButton = ({ label, href, icon }) => {
   return (

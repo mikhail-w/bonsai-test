@@ -24,7 +24,7 @@ import Trending from './pages/Trending.jsx';
 import Explore from './pages/Explore.jsx';
 import Favorites from './pages/Favorites.jsx';
 import Settings from './pages/Settings.jsx';
-import YourInfo from './pages/YourInfo.jsx';
+import YourInfo from './pages/MyInfo.jsx';
 
 const router = createBrowserRouter([
   {

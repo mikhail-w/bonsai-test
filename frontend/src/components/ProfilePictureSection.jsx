@@ -24,8 +24,10 @@ const ProfilePictureSection = () => {
           src={`http://127.0.0.1:8000${userInfo.avatar}`}
           mb={4}
         />
-        <Text mb={2}>Upload/Change Your Profile Image</Text>
-        <Button colorScheme="blue" variant="solid">
+        <Text mb={2} className="text">
+          Upload/Change Your Profile Image
+        </Text>
+        <Button className="text" colorScheme="blue" variant="solid">
           Upload Avatar
         </Button>
       </Box>

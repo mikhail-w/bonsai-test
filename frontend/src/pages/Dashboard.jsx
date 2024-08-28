@@ -38,7 +38,7 @@ import {
 
 const LinkItems = [
   { name: 'Home', icon: FiHome, path: '/' },
-  { name: 'Your Info', icon: FiUser, path: '/profile/info' },
+  { name: 'My Info', icon: FiUser, path: '/profile/info' },
   { name: 'Trending', icon: FiTrendingUp, path: '/profile/trending' },
   { name: 'Explore', icon: FiCompass, path: '/profile/explore' },
   { name: 'Favorites', icon: FiStar, path: '/profile/favorites' },
@@ -158,7 +158,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
               transition="all 0.3s"
               _focus={{ boxShadow: 'none' }}
             >
-              <HStack>
+              <HStack alignItems={'end'}>
                 <Avatar
                   size={'md'}
                   src={`http://127.0.0.1:8000${userInfo.avatar}`}
@@ -172,7 +172,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
                   <Text fontSize="sm">
                     {userInfo ? userInfo.name : 'Guest'}
                   </Text>
-                  {userInfo && (
+                  {userInfo.isAdmin && (
                     <Text fontSize="xs" color="gray.600">
                       Admin
                     </Text>

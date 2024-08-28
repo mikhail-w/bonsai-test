@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../assets/styles/Weather.css';
 import { Container } from 'react-bootstrap';
@@ -10,7 +10,8 @@ function Weather() {
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState(null);
 
-  const fetchWeather = async () => {
+  // Function to fetch weather based on city name
+  const fetchWeatherByCity = async () => {
     try {
       const response = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=imperial`
@@ -23,9 +24,40 @@ function Weather() {
     }
   };
 
+  // Function to fetch weather based on coordinates
+  const fetchWeatherByCoords = async (lat, lon) => {
+    try {
+      const response = await axios.get(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=imperial`
+      );
+      setWeather(response.data);
+      setError(null); // Clear any previous error
+    } catch (err) {
+      setError('Unable to retrieve weather data.');
+      setWeather(null); // Clear previous weather data
+    }
+  };
+
+  // UseEffect to fetch weather by location on component mount
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const { latitude, longitude } = position.coords;
+          fetchWeatherByCoords(latitude, longitude);
+        },
+        error => {
+          setError('Geolocation not enabled or denied.');
+        }
+      );
+    } else {
+      setError('Geolocation is not supported by this browser.');
+    }
+  }, []);
+
   const handleSubmit = e => {
     e.preventDefault();
-    fetchWeather();
+    fetchWeatherByCity();
   };
 
   return (
