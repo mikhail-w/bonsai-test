@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from base.models import UserProfile  # Import UserProfile model
 
 from base.serializers import UserSerializer, UserSerializerWithToken
 
@@ -30,13 +31,16 @@ class MyTokenObtainPairView(TokenObtainPairView):
 def registerUser(request):
     data = request.data
     try:
-        print("3 user_views.py")
+
         user = User.objects.create(
             first_name=data["name"],
             username=data["email"],
             email=data["email"],
             password=make_password(data["password"]),
         )
+
+        # Create a UserProfile with the default avatar
+        UserProfile.objects.create(user=user)
 
         serializer = UserSerializerWithToken(user, many=False)
         return Response(serializer.data)
@@ -69,7 +73,7 @@ def updateUserProfile(request):
 @permission_classes([IsAuthenticated])
 def getUserProfile(request):
     user = request.user
-    serializer = UserSerializer(user, many=False)
+    serializer = UserSerializerWithToken(user, many=False)
     return Response(serializer.data)
 
 
