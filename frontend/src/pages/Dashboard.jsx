@@ -118,6 +118,8 @@ const MobileNav = ({ onOpen, ...rest }) => {
     navigate('/');
   };
 
+  console.log('Avatar Path', userInfo.avatar);
+
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -161,9 +163,9 @@ const MobileNav = ({ onOpen, ...rest }) => {
             >
               <HStack>
                 <Avatar
-                  size={'sm'}
+                  size={'md'}
                   // src={`https://www.befunky.com/images/wp/wp-2021-01-linkedin-profile-picture-after.jpg?auto=avif,webp&format=jpg&width=944`}
-                  src={userInfo.profile_picture}
+                  src={`http://127.0.0.1:8000${userInfo.avatar}`}
                 />
                 <VStack
                   display={{ base: 'none', md: 'flex' }}

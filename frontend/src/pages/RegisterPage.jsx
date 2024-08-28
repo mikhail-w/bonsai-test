@@ -89,9 +89,9 @@ function RegisterPage() {
   }, [navigate, userInfo, redirect]);
 
   const handleSubmit = e => {
-    console.log('Email', email);
+    console.log('INFO:', name, email, password, avatar);
     e.preventDefault();
-    if (password != confirmPassword) {
+    if (password !== confirmPassword) {
       setMessage('Passwords do not match');
       toast({
         title: 'Error',

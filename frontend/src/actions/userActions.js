@@ -79,16 +79,34 @@ export const register = (name, email, password, avatar) => async dispatch => {
       type: USER_REGISTER_REQUEST,
     });
 
+    // const config = {
+    //   headers: {
+    //     'Content-type': 'application/json',
+    //   },
+    // };
+    // const { data } = await axios.post(
+    //   '/api/users/register/',
+    //   { name: name, email: email, password: password, avatar: avatar },
+    //   config
+    // );
+
+    // Create FormData object to handle file upload
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('email', email);
+    formData.append('password', password);
+    if (avatar) {
+      formData.append('avatar', avatar);
+    }
+
     const config = {
       headers: {
-        'Content-type': 'application/json',
+        'Content-Type': 'multipart/form-data',
       },
     };
-    const { data } = await axios.post(
-      '/api/users/register/',
-      { name: name, email: email, password: password, avatar: avatar },
-      config
-    );
+
+    const { data } = await axios.post('/api/users/register/', formData, config);
+
     dispatch({
       type: USER_REGISTER_SUCCESS,
       payload: data,

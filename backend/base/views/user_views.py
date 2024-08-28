@@ -39,10 +39,12 @@ def registerUser(request):
             password=make_password(data["password"]),
         )
 
-        # Create a UserProfile with the default avatar
+        # Handle the avatar file
+        avatar = request.FILES.get("avatar")
+        # Create the user profile (no need to store it in a variable)
         UserProfile.objects.create(
-            user=user, avatar=request.FILES.get("avatar")
-        )  # Save the uploaded avatar
+            user=user, avatar=avatar  # If avatar is None, default will be used
+        )
 
         serializer = UserSerializerWithToken(user, many=False)
         return Response(serializer.data)
