@@ -56,7 +56,7 @@ const Product = ({ product }) => {
         </Link>
         <Divider />
         <Box p="6">
-          <Flex mt="1" justifyContent="space-between" alignItems="center">
+          <Flex mt="1" justifyContent="space-between" alignItems="end">
             <Box
               fontSize="xl"
               fontWeight="bold"
@@ -78,8 +78,17 @@ const Product = ({ product }) => {
                 onClick={addToCartHandler}
                 variant="ghost"
                 aria-label="Add to cart"
+                _hover={{ bg: 'transparent' }}
               >
-                <Icon as={FiShoppingCart} h={7} w={7} />
+                <Icon
+                  as={FiShoppingCart}
+                  h={7}
+                  w={7}
+                  _hover={{
+                    transform: 'scale(1.2)',
+                    transition: 'transform 0.2s',
+                  }}
+                />
               </Button>
             </Tooltip>
           </Flex>

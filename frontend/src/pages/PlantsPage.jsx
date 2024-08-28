@@ -29,7 +29,7 @@ function PlantsPage() {
       >
         <h1 className="title">Latest Plants</h1>
         <SimpleGrid
-          columns={{ base: 1, sm: 2, md: 3, lg: 4 }} // Responsive column layout
+          minChildWidth={300}
           spacing="10px"
           width="100%"
           px={5} // Padding to add spacing on small screens

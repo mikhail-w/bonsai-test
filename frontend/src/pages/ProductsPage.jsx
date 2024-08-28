@@ -22,32 +22,34 @@ function ProductsPage() {
   }, [dispatch, keyword]);
 
   return (
-    <Center
-      flexDirection={'column'}
-      marginTop={50}
-      marginBottom={50}
-      minH={'80vh'}
-      justifyContent={'space-between'}
-    >
-      <h1 className="title">All Products</h1>
-      <SimpleGrid
-        columns={{ base: 1, sm: 1, md: 2, lg: 4 }} // Responsive column layout
-        spacing="10px"
-        width="90%"
-        px={5} // Padding to add spacing on small screens
+    <>
+      <Center
+        flexDirection={'column'}
+        marginTop={50}
+        marginBottom={50}
+        minH={'80vh'}
+        justifyContent={'space-between'}
       >
-        {loading ? (
-          <Loader />
-        ) : error ? (
-          <Message variant={'danger'}>{error}</Message>
-        ) : (
-          products.map(product => (
-            <Product key={product._id} product={product} />
-          ))
-        )}
-      </SimpleGrid>
-      <Paginate page={page} pages={pages} keyword={keyword} />
-    </Center>
+        <h1 className="title">All Products</h1>
+        <SimpleGrid
+          minChildWidth={300}
+          spacing="10px"
+          width="90%"
+          px={5} // Padding to add spacing on small screens
+        >
+          {loading ? (
+            <Loader />
+          ) : error ? (
+            <Message variant={'danger'}>{error}</Message>
+          ) : (
+            products.map(product => (
+              <Product key={product._id} product={product} />
+            ))
+          )}
+        </SimpleGrid>
+        <Paginate page={page} pages={pages} keyword={keyword} />
+      </Center>
+    </>
   );
 }
 
