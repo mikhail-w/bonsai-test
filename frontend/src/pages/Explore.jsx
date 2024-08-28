@@ -3,7 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { Environment, OrbitControls } from '@react-three/drei';
 import Earth from '../../public/Earth'; // Adjust the path to where your Earth component is
 
-function Planet() {
+function Explore() {
   return (
     <>
       <div className="container">
@@ -20,4 +20,4 @@ function Planet() {
   );
 }
 
-export default Planet;
+export default Explore;

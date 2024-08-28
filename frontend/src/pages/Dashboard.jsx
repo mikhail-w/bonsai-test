@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../actions/userActions';
 import { clearCart } from '../actions/cartActions';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import {
   IconButton,
   Avatar,
@@ -33,15 +33,18 @@ import {
   FiStar,
   FiSettings,
 } from 'react-icons/fi';
-import Planet from '../components/Planet';
+import { Outlet } from 'react-router-dom';
+import Explore from './Explore';
+import Trending from './Trending';
+import Favorites from './Favorites';
 import { ShoppingCart } from 'lucide-react';
 import logo from '../assets/images/bonsai-tree-logo.png';
 const LinkItems = [
   { name: 'Home', icon: FiHome, path: '/' },
-  { name: 'Trending', icon: FiTrendingUp, path: '/trending' },
-  { name: 'Explore', icon: FiCompass, path: '/explore' },
-  { name: 'Favourites', icon: FiStar, path: '/favourites' },
-  { name: 'Settings', icon: FiSettings, path: '/settings' },
+  { name: 'Trending', icon: FiTrendingUp, path: '/profile/trending' },
+  { name: 'Explore', icon: FiCompass, path: '/profile/explore' },
+  { name: 'Favorites', icon: FiStar, path: '/profile/favorites' },
+  { name: 'Settings', icon: FiSettings, path: '/profile/settings' },
 ];
 
 const SidebarContent = ({ onClose, ...rest }) => {
@@ -80,7 +83,7 @@ const NavItem = ({ icon, children, path, ...rest }) => {
     //   _focus={{ boxShadow: 'none' }}
     //   boxShadow="outline"
     // >
-    <Link to={path} style={{ textDecoration: 'none' }}>
+    <RouterLink to={path} style={{ textDecoration: 'none' }}>
       <Flex
         align="center"
         p="4"
@@ -106,7 +109,7 @@ const NavItem = ({ icon, children, path, ...rest }) => {
         )}
         {children}
       </Flex>
-    </Link>
+    </RouterLink>
     // </Box>
   );
 };
@@ -236,7 +239,7 @@ const Dashboard = () => {
       <MobileNav onOpen={onOpen} />
       {/* Your dashboard content goes here */}
       <Box ml={{ base: 0, md: 60 }} p="4" boxShadow="outline">
-        <Planet />
+        <Outlet />
       </Box>
     </Box>
   );

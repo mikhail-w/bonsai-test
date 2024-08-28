@@ -19,9 +19,13 @@ import ProductListPage from './pages/ProductListPage.jsx';
 import OrderListPage from './pages/OrderListPage.jsx';
 import ProductEditPage from './pages/ProductEditPage.jsx';
 import ProductsPage from './pages/ProductsPage.jsx';
-import ProfileDashboard from './pages/ProfileDashboard.jsx';
+// import ProfileDashboard from './pages/ProfileDashboard.jsx';
 import Dashboard from './pages/Dashboard.jsx';
-import Planet from './components/Planet.jsx';
+import Trending from './pages/Trending.jsx';
+import Explore from './pages/Explore.jsx';
+import Favorites from './pages/Favorites.jsx';
+import Settings from './pages/Settings.jsx';
+// import Planet from './components/Planet.jsx';
 
 const router = createBrowserRouter([
   {
@@ -42,12 +46,13 @@ const router = createBrowserRouter([
       },
       {
         path: '/profile',
-        // element: <ProfileDashboard />,
         element: <Dashboard />,
-      },
-      {
-        path: '/explore',
-        element: <Planet />,
+        children: [
+          { path: 'trending', element: <Trending /> },
+          { path: 'explore', element: <Explore /> },
+          { path: 'favorites', element: <Favorites /> },
+          { path: 'settings', element: <Settings /> },
+        ],
       },
       {
         path: '/cart/:id?',

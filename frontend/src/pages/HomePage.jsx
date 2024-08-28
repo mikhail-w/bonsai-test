@@ -8,7 +8,7 @@ import '../assets/styles/HomePage.css';
 import Features from '../components/Features';
 import ScrollToTop from '../components/ScrollToTop';
 import HeroSection from '../components/HeroSection';
-import Planet from '../components/Planet';
+import Planet from './Explore';
 
 function HomePage() {
   const dispatch = useDispatch();
