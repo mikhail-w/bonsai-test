@@ -79,13 +79,6 @@ const SidebarContent = ({ onClose, ...rest }) => {
 };
 const NavItem = ({ icon, children, path, ...rest }) => {
   return (
-    // <Box
-    //   as="a"
-    //   href={path}
-    //   style={{ textDecoration: 'none' }}
-    //   _focus={{ boxShadow: 'none' }}
-    //   boxShadow="outline"
-    // >
     <RouterLink to={path} style={{ textDecoration: 'none' }}>
       <Flex
         align="center"
@@ -113,7 +106,6 @@ const NavItem = ({ icon, children, path, ...rest }) => {
         {children}
       </Flex>
     </RouterLink>
-    // </Box>
   );
 };
 const MobileNav = ({ onOpen, ...rest }) => {
@@ -174,7 +166,6 @@ const MobileNav = ({ onOpen, ...rest }) => {
               <HStack>
                 <Avatar
                   size={'md'}
-                  // src={`https://www.befunky.com/images/wp/wp-2021-01-linkedin-profile-picture-after.jpg?auto=avif,webp&format=jpg&width=944`}
                   src={`http://127.0.0.1:8000${userInfo.avatar}`}
                 />
                 <VStack
