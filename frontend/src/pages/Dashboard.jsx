@@ -32,7 +32,9 @@ import {
   FiCompass,
   FiStar,
   FiSettings,
+  FiUser,
 } from 'react-icons/fi';
+import { FaInfo } from 'react-icons/fa6';
 import { Outlet } from 'react-router-dom';
 import Explore from './Explore';
 import Trending from './Trending';
@@ -41,6 +43,7 @@ import { ShoppingCart } from 'lucide-react';
 import logo from '../assets/images/bonsai-tree-logo.png';
 const LinkItems = [
   { name: 'Home', icon: FiHome, path: '/' },
+  { name: 'Your Info', icon: FiUser, path: '/profile/info' },
   { name: 'Trending', icon: FiTrendingUp, path: '/profile/trending' },
   { name: 'Explore', icon: FiCompass, path: '/profile/explore' },
   { name: 'Favorites', icon: FiStar, path: '/profile/favorites' },

@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import Empty from '../assets/images/empty-cart.png';
+// import Empty from '../assets/images/empty-cart.png';
+import EmptyCart from '../assets/images/empty-cart.svg';
 import {
   Row,
   Col,
@@ -57,7 +58,7 @@ function CartPage() {
           <Col>
             {cartItems.length === 0 ? (
               <div className="empty">
-                <img src={Empty} />
+                <img src={EmptyCart} />
                 <div className="continueButton" onClick={continueHandler}>
                   <i className="fa fa-arrow-left"></i>
                   <span>{'  Continue Shopping'}</span>

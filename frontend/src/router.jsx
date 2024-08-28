@@ -25,6 +25,7 @@ import Trending from './pages/Trending.jsx';
 import Explore from './pages/Explore.jsx';
 import Favorites from './pages/Favorites.jsx';
 import Settings from './pages/Settings.jsx';
+import YourInfo from './pages/YourInfo.jsx';
 // import Planet from './components/Planet.jsx';
 
 const router = createBrowserRouter([
@@ -48,6 +49,7 @@ const router = createBrowserRouter([
         path: '/profile',
         element: <Dashboard />,
         children: [
+          { path: 'info', element: <YourInfo /> },
           { path: 'trending', element: <Trending /> },
           { path: 'explore', element: <Explore /> },
           { path: 'favorites', element: <Favorites /> },
