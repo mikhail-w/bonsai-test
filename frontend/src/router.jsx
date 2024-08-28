@@ -21,6 +21,7 @@ import ProductEditPage from './pages/ProductEditPage.jsx';
 import ProductsPage from './pages/ProductsPage.jsx';
 import ProfileDashboard from './pages/ProfileDashboard.jsx';
 import Dashboard from './pages/Dashboard.jsx';
+import Planet from './components/Planet.jsx';
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
         path: '/profile',
         // element: <ProfileDashboard />,
         element: <Dashboard />,
+      },
+      {
+        path: '/explore',
+        element: <Planet />,
       },
       {
         path: '/cart/:id?',

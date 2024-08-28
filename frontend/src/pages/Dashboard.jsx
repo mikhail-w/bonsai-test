@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../actions/userActions';
 import { clearCart } from '../actions/cartActions';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   IconButton,
   Avatar,
@@ -32,6 +33,7 @@ import {
   FiStar,
   FiSettings,
 } from 'react-icons/fi';
+import Planet from '../components/Planet';
 import { ShoppingCart } from 'lucide-react';
 import logo from '../assets/images/bonsai-tree-logo.png';
 const LinkItems = [
@@ -52,6 +54,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
       w={{ base: 'full', md: 60 }}
       pos="fixed"
       h="full"
+      // boxShadow="outline"
       {...rest}
     >
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
@@ -70,12 +73,14 @@ const SidebarContent = ({ onClose, ...rest }) => {
 };
 const NavItem = ({ icon, children, path, ...rest }) => {
   return (
-    <Box
-      as="a"
-      href={path}
-      style={{ textDecoration: 'none' }}
-      _focus={{ boxShadow: 'none' }}
-    >
+    // <Box
+    //   as="a"
+    //   href={path}
+    //   style={{ textDecoration: 'none' }}
+    //   _focus={{ boxShadow: 'none' }}
+    //   boxShadow="outline"
+    // >
+    <Link to={path} style={{ textDecoration: 'none' }}>
       <Flex
         align="center"
         p="4"
@@ -101,7 +106,8 @@ const NavItem = ({ icon, children, path, ...rest }) => {
         )}
         {children}
       </Flex>
-    </Box>
+    </Link>
+    // </Box>
   );
 };
 const MobileNav = ({ onOpen, ...rest }) => {
@@ -117,8 +123,6 @@ const MobileNav = ({ onOpen, ...rest }) => {
     dispatch(clearCart());
     navigate('/');
   };
-
-  console.log('Avatar Path', userInfo.avatar);
 
   return (
     <Flex
@@ -230,8 +234,9 @@ const Dashboard = () => {
         </DrawerContent>
       </Drawer>
       <MobileNav onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} p="4">
-        {/* Your dashboard content goes here */}
+      {/* Your dashboard content goes here */}
+      <Box ml={{ base: 0, md: 60 }} p="4" boxShadow="outline">
+        <Planet />
       </Box>
     </Box>
   );
