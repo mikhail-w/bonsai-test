@@ -233,7 +233,7 @@ function RegisterPage() {
               </Text>
             </Stack>
           </Flex>
-          <Flex flex={1}>
+          <Flex flex={1} display={{ base: 'none', lg: 'block' }}>
             <Image
               boxSize="100vh"
               objectFit="cover"

@@ -5,7 +5,7 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Paginate from '../components/Paginate';
 import { listPlantProducts } from '../actions/productActions';
-import { SimpleGrid, Center, Container } from '@chakra-ui/react';
+import { SimpleGrid, Center, Container, Text } from '@chakra-ui/react';
 
 function PlantsPage() {
   const dispatch = useDispatch();

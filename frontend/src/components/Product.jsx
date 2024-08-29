@@ -8,7 +8,6 @@ import {
   useColorModeValue,
   Divider,
 } from '@chakra-ui/react';
-import { FaLeaf } from 'react-icons/fa';
 import { FiShoppingCart } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -54,7 +53,7 @@ const Product = ({ product }) => {
             transition="all 0.3s ease"
           />
         </Link>
-        <Divider />
+        {/* <Divider /> */}
         <Box p="6">
           <Flex mt="1" justifyContent="space-between" alignItems="end">
             <Box

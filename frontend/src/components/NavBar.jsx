@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import {
   Box,
   Flex,
@@ -25,6 +26,7 @@ import SearchBar from './SearchBar';
 import logo from '../assets/images/bonsai-tree-logo.png';
 
 function NavBar() {
+  const [scrolled, setScrolled] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -35,6 +37,18 @@ function NavBar() {
 
   const cart = useSelector(state => state.cart);
   const { cartItems } = cart;
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -48,15 +62,17 @@ function NavBar() {
   return (
     <Box
       as="nav"
-      bg="transparent"
+      bg={scrolled ? 'white' : 'transparent'}
       px={4}
       py={2}
-      boxShadow="none"
+      boxShadow={scrolled ? 'md' : 'none'}
       position="fixed"
       top={0}
       left={0}
       right={0}
       zIndex="10"
+      transition="background-color 0.3s ease, box-shadow 0.3s ease"
+      className="chakra-navbar"
     >
       <Flex h={16} alignItems="center" justifyContent="space-between">
         <HStack spacing={8} alignItems="center">
@@ -69,13 +85,15 @@ function NavBar() {
                 fontSize="xl"
                 id="title-text"
                 color="black"
-                // pr={5}
               >
                 BONSAI
               </Box>
-              <SearchBar />
             </HStack>
           </RouterLink>
+          {/* Show SearchBar only on larger screens */}
+          <Box display={{ base: 'none', md: 'block' }}>
+            <SearchBar />
+          </Box>
         </HStack>
         <HStack spacing={8} alignItems="center">
           <HStack
@@ -117,8 +135,8 @@ function NavBar() {
                   colorScheme="teal"
                   borderRadius="full"
                   position="absolute"
-                  top="-1"
-                  right="-1"
+                  top="-3"
+                  right="-2"
                   fontSize="xs"
                   px={2}
                   py={1}
@@ -183,7 +201,7 @@ function NavBar() {
       </Flex>
 
       {isOpen ? (
-        <Box pb={4} display={{ md: 'none' }}>
+        <Box pb={4} display={{ md: 'none' }} bg={'white'}>
           <Stack as="nav" spacing={4}>
             <SearchBar />
             <RouterLink to="/plants">
