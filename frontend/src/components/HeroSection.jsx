@@ -19,7 +19,7 @@ function HeroSection() {
       h={'100vh'}
       bgImage={Hero}
       bgSize={'cover'}
-      bgPosition={'center center'}
+      // bgPosition={'center center'}
     >
       <MotionBox
         w={'full'}

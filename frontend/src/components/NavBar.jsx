@@ -12,6 +12,7 @@ import {
   Image,
   useDisclosure,
   Stack,
+  Badge,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
@@ -50,8 +51,11 @@ function NavBar() {
       bg="transparent"
       px={4}
       py={2}
-      boxShadow="none" // Removed shadow for full transparency
-      position="relative"
+      boxShadow="none"
+      position="fixed"
+      top={0}
+      left={0}
+      right={0}
       zIndex="10"
     >
       <Flex h={16} alignItems="center" justifyContent="space-between">
@@ -59,17 +63,34 @@ function NavBar() {
           <RouterLink to="/">
             <HStack>
               <Image src={logo} alt="logo" boxSize="40px" />
-              <Box as="span" fontWeight="bold" fontSize="xl" id="title-text">
+              <Box
+                as="span"
+                fontWeight="bold"
+                fontSize="xl"
+                id="title-text"
+                color="black"
+                // pr={5}
+              >
                 BONSAI
               </Box>
+              <SearchBar />
             </HStack>
           </RouterLink>
         </HStack>
         <HStack spacing={8} alignItems="center">
-          <HStack as="nav" spacing={4} display={{ base: 'none', md: 'flex' }}>
-            <SearchBar />
+          <HStack
+            as="nav"
+            spacing={4}
+            display={{ base: 'none', md: 'flex' }}
+            color="black"
+          >
             <Menu>
-              <MenuButton as={Button} variant="link" cursor="pointer">
+              <MenuButton
+                as={Button}
+                variant="link"
+                cursor="pointer"
+                color="black"
+              >
                 Shop
               </MenuButton>
               <MenuList>
@@ -85,14 +106,35 @@ function NavBar() {
               </MenuList>
             </Menu>
             <RouterLink to="/cart">
-              <Button variant="link" id="cartLogo">
+              <Button
+                variant="link"
+                id="cartLogo"
+                color="black"
+                position="relative"
+              >
                 <ShoppingCart />
-                {` ${cartItems.reduce((acc, item) => acc + item.qty, 0)}`}
+                <Badge
+                  colorScheme="teal"
+                  borderRadius="full"
+                  position="absolute"
+                  top="-1"
+                  right="-1"
+                  fontSize="xs"
+                  px={2}
+                  py={1}
+                >
+                  {cartItems.reduce((acc, item) => acc + item.qty, 0)}
+                </Badge>
               </Button>
             </RouterLink>
             {userInfo ? (
               <Menu>
-                <MenuButton as={Button} variant="link" cursor="pointer">
+                <MenuButton
+                  as={Button}
+                  variant="link"
+                  cursor="pointer"
+                  color="black"
+                >
                   {`Welcome ${userInfo.name}`}
                 </MenuButton>
                 <MenuList>
@@ -156,7 +198,18 @@ function NavBar() {
             <RouterLink to="/cart">
               <Button variant="link" id="cartLogo">
                 <ShoppingCart />
-                {` ${cartItems.reduce((acc, item) => acc + item.qty, 0)}`}
+                <Badge
+                  colorScheme="teal"
+                  borderRadius="full"
+                  position="absolute"
+                  top="-1"
+                  right="-1"
+                  fontSize="xs"
+                  px={2}
+                  py={1}
+                >
+                  {cartItems.reduce((acc, item) => acc + item.qty, 0)}
+                </Badge>
               </Button>
             </RouterLink>
             {userInfo ? (
