@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from .models import Post
 from .serializers import PostSerializer
 from rest_framework.pagination import PageNumberPagination
-from django.core.exceptions import PermissionDenied
+
 
 
 class StandardResultsSetPagination(PageNumberPagination):
