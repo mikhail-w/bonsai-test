@@ -1,30 +1,39 @@
+import {
+  Box,
+  Flex,
+  HStack,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
+  Button,
+  Image,
+  useDisclosure,
+  Stack,
+} from '@chakra-ui/react';
+import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import SearchBar from './SearchBar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import Offcanvas from 'react-bootstrap/Offcanvas';
-import { LinkContainer } from 'react-router-bootstrap';
-import { logout } from '../actions/userActions';
-import logo from '../assets/images/bonsai-tree-logo.png';
-import '../assets/styles/Header.css';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa6';
 import { ShoppingCart } from 'lucide-react';
+import { logout } from '../actions/userActions';
 import { clearCart } from '../actions/cartActions';
-
-const withoutSidebarRoutes = ['/profile', '/login', '/register'];
+import SearchBar from './SearchBar';
+import logo from '../assets/images/bonsai-tree-logo.png';
 
 function NavBar() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { pathname } = useLocation();
+
   const userLogin = useSelector(state => state.userLogin);
   const { userInfo } = userLogin;
+
   const cart = useSelector(state => state.cart);
   const { cartItems } = cart;
-  const navigate = useNavigate();
-
-  const dispatch = useDispatch();
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -36,92 +45,154 @@ function NavBar() {
   if (withoutSidebarRoutes.some(item => pathname.includes(item))) return null;
 
   return (
-    <>
-      <Navbar expand={'lg'} className="transparent-navbar navbar-dark">
-        <Container fluid id="nav">
-          <LinkContainer to="/">
-            <Navbar.Brand className="logo-container" id={'title-text'}>
-              BONSAI<img src={logo} alt="logo"></img>
-            </Navbar.Brand>
-          </LinkContainer>
-          <Navbar.Toggle
-            aria-controls={`offcanvasNavbar-expand-md`}
-            id="menu-button"
+    <Box
+      as="nav"
+      bg="transparent"
+      px={4}
+      py={2}
+      boxShadow="none" // Removed shadow for full transparency
+      position="relative"
+      zIndex="10"
+    >
+      <Flex h={16} alignItems="center" justifyContent="space-between">
+        <HStack spacing={8} alignItems="center">
+          <RouterLink to="/">
+            <HStack>
+              <Image src={logo} alt="logo" boxSize="40px" />
+              <Box as="span" fontWeight="bold" fontSize="xl" id="title-text">
+                BONSAI
+              </Box>
+            </HStack>
+          </RouterLink>
+        </HStack>
+        <HStack spacing={8} alignItems="center">
+          <HStack as="nav" spacing={4} display={{ base: 'none', md: 'flex' }}>
+            <SearchBar />
+            <Menu>
+              <MenuButton as={Button} variant="link" cursor="pointer">
+                Shop
+              </MenuButton>
+              <MenuList>
+                <RouterLink to="/plants">
+                  <MenuItem>Potted Plants</MenuItem>
+                </RouterLink>
+                <RouterLink to="/planters">
+                  <MenuItem>Planters</MenuItem>
+                </RouterLink>
+                <RouterLink to="/essentials">
+                  <MenuItem>Essentials</MenuItem>
+                </RouterLink>
+              </MenuList>
+            </Menu>
+            <RouterLink to="/cart">
+              <Button variant="link" id="cartLogo">
+                <ShoppingCart />
+                {` ${cartItems.reduce((acc, item) => acc + item.qty, 0)}`}
+              </Button>
+            </RouterLink>
+            {userInfo ? (
+              <Menu>
+                <MenuButton as={Button} variant="link" cursor="pointer">
+                  {`Welcome ${userInfo.name}`}
+                </MenuButton>
+                <MenuList>
+                  <RouterLink to="/profile">
+                    <MenuItem>Profile</MenuItem>
+                  </RouterLink>
+                  <MenuDivider />
+                  <MenuItem onClick={logoutHandler}>Logout</MenuItem>
+                </MenuList>
+              </Menu>
+            ) : (
+              <RouterLink to="/login">
+                <Button variant="link" id="login">
+                  <FaUser />
+                  Login
+                </Button>
+              </RouterLink>
+            )}
+            {userInfo && userInfo.isAdmin && (
+              <Menu>
+                <MenuButton as={Button} variant="link" cursor="pointer">
+                  Admin
+                </MenuButton>
+                <MenuList>
+                  <RouterLink to="/admin/userlist">
+                    <MenuItem>Users</MenuItem>
+                  </RouterLink>
+                  <RouterLink to="/admin/productlist">
+                    <MenuItem>Products</MenuItem>
+                  </RouterLink>
+                  <RouterLink to="/admin/orderlist">
+                    <MenuItem>Orders</MenuItem>
+                  </RouterLink>
+                </MenuList>
+              </Menu>
+            )}
+          </HStack>
+          <IconButton
+            size="md"
+            icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+            aria-label="Open Menu"
+            display={{ md: 'none' }}
+            onClick={isOpen ? onClose : onOpen}
           />
-          <Navbar.Offcanvas
-            id={`offcanvasNavbar-expand-md`}
-            aria-labelledby={`offcanvasNavbarLabel-expand-md`}
-            placement="end"
-          >
-            <Offcanvas.Header closeButton>
-              <Offcanvas.Title id={`offcanvasNavbarLabel-expand-md`}>
-                MENU
-              </Offcanvas.Title>
-            </Offcanvas.Header>
-            <Offcanvas.Body>
-              <SearchBar />
+        </HStack>
+      </Flex>
 
-              <Nav className="justify-content-end flex-grow-1 pe-3 ">
-                <NavDropdown title="Shop" id="basic-nav-dropdown">
-                  <LinkContainer to="/plants">
-                    <NavDropdown.Item>Potted Plants</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/planters">
-                    <NavDropdown.Item>Planters</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/essentials">
-                    <NavDropdown.Item>Essentials</NavDropdown.Item>
-                  </LinkContainer>
-                </NavDropdown>
-                <LinkContainer to="/cart">
-                  <Nav.Link id={'cartLogo'}>
-                    <ShoppingCart />{' '}
-                    {`${cartItems.reduce((acc, item) => acc + item.qty, 0)}`}
-                  </Nav.Link>
-                </LinkContainer>
-
-                {userInfo ? (
-                  <NavDropdown
-                    title={`Welcome ${' '} ${userInfo.name}`}
-                    id="username"
-                  >
-                    <LinkContainer to="/profile">
-                      <NavDropdown.Item>Profile</NavDropdown.Item>
-                    </LinkContainer>
-                    <NavDropdown.Item onClick={logoutHandler}>
-                      Logout
-                    </NavDropdown.Item>
-                  </NavDropdown>
-                ) : (
-                  <LinkContainer to="/login" className="d-flex">
-                    <Nav.Link id={'login'}>
-                      <FaUser />
-                      Login
-                    </Nav.Link>
-                  </LinkContainer>
-                )}
-
-                {userInfo && userInfo.isAdmin && (
-                  <NavDropdown title="Admin" id="adminmenue">
-                    <LinkContainer to="/admin/userlist">
-                      <NavDropdown.Item>Users</NavDropdown.Item>
-                    </LinkContainer>
-
-                    <LinkContainer to="/admin/productlist">
-                      <NavDropdown.Item>Products</NavDropdown.Item>
-                    </LinkContainer>
-
-                    <LinkContainer to="/admin/orderlist">
-                      <NavDropdown.Item>Orders</NavDropdown.Item>
-                    </LinkContainer>
-                  </NavDropdown>
-                )}
-              </Nav>
-            </Offcanvas.Body>
-          </Navbar.Offcanvas>
-        </Container>
-      </Navbar>
-    </>
+      {isOpen ? (
+        <Box pb={4} display={{ md: 'none' }}>
+          <Stack as="nav" spacing={4}>
+            <SearchBar />
+            <RouterLink to="/plants">
+              <Button variant="link">Potted Plants</Button>
+            </RouterLink>
+            <RouterLink to="/planters">
+              <Button variant="link">Planters</Button>
+            </RouterLink>
+            <RouterLink to="/essentials">
+              <Button variant="link">Essentials</Button>
+            </RouterLink>
+            <RouterLink to="/cart">
+              <Button variant="link" id="cartLogo">
+                <ShoppingCart />
+                {` ${cartItems.reduce((acc, item) => acc + item.qty, 0)}`}
+              </Button>
+            </RouterLink>
+            {userInfo ? (
+              <>
+                <RouterLink to="/profile">
+                  <Button variant="link">Profile</Button>
+                </RouterLink>
+                <Button variant="link" onClick={logoutHandler}>
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <RouterLink to="/login">
+                <Button variant="link" id="login">
+                  <FaUser />
+                  Login
+                </Button>
+              </RouterLink>
+            )}
+            {userInfo && userInfo.isAdmin && (
+              <>
+                <RouterLink to="/admin/userlist">
+                  <Button variant="link">Users</Button>
+                </RouterLink>
+                <RouterLink to="/admin/productlist">
+                  <Button variant="link">Products</Button>
+                </RouterLink>
+                <RouterLink to="/admin/orderlist">
+                  <Button variant="link">Orders</Button>
+                </RouterLink>
+              </>
+            )}
+          </Stack>
+        </Box>
+      ) : null}
+    </Box>
   );
 }
 
