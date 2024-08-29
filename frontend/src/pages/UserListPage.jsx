@@ -13,6 +13,9 @@ import {
   Button,
   IconButton,
   useToast,
+  VStack,
+  Box,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CheckIcon, CloseIcon, EditIcon, DeleteIcon } from '@chakra-ui/icons';
@@ -55,66 +58,77 @@ function UserListPage() {
   };
 
   return (
-    <Container maxW="container.lg" mt={5} minH={'80vh'}>
-      {loading ? (
-        <Loader />
-      ) : error ? (
-        <Message variant="danger">{error}</Message>
-      ) : (
-        <>
-          <Heading as="h1" size="lg" mb={5}>
-            Users
-          </Heading>
-          <TableContainer>
-            <Table variant="striped" colorScheme="teal">
-              <Thead>
-                <Tr>
-                  <Th>ID</Th>
-                  <Th>NAME</Th>
-                  <Th>EMAIL</Th>
-                  <Th>ADMIN</Th>
-                  <Th>ACTIONS</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {users.map(user => (
-                  <Tr key={user._id}>
-                    <Td>{user._id}</Td>
-                    <Td>{user.name}</Td>
-                    <Td>{user.email}</Td>
-                    <Td>
-                      {user.isAdmin ? (
-                        <CheckIcon color="green.500" />
-                      ) : (
-                        <CloseIcon color="red.500" />
-                      )}
-                    </Td>
-                    <Td>
-                      <IconButton
-                        as="a"
-                        href={`/admin/user/${user._id}/edit`}
-                        icon={<EditIcon />}
-                        size="sm"
-                        variant="outline"
-                        aria-label="Edit User"
-                        mr={2}
-                      />
-                      <IconButton
-                        icon={<DeleteIcon />}
-                        size="sm"
-                        colorScheme="red"
-                        variant="outline"
-                        aria-label="Delete User"
-                        onClick={() => deleteHandler(user._id)}
-                      />
-                    </Td>
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
-          </TableContainer>
-        </>
-      )}
+    <Container maxW="container.lg" mt={5} minH={'100vh'}>
+      <VStack align="stretch" spacing={5} p={5}>
+        <Heading as="h1" size="lg" mb={5}>
+          Users
+        </Heading>
+        {loading ? (
+          <Loader />
+        ) : error ? (
+          <Message variant="danger">{error}</Message>
+        ) : (
+          <>
+            <Box
+              maxH="500px"
+              overflowY="auto"
+              overflowX="auto"
+              border="1px"
+              borderColor={useColorModeValue('gray.200', 'gray.700')}
+              rounded="md"
+            >
+              <TableContainer>
+                <Table variant="striped" colorScheme="teal">
+                  <Thead>
+                    <Tr>
+                      <Th>ID</Th>
+                      <Th>NAME</Th>
+                      <Th>EMAIL</Th>
+                      <Th>ADMIN</Th>
+                      <Th>ACTIONS</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {users.map(user => (
+                      <Tr key={user._id}>
+                        <Td>{user._id}</Td>
+                        <Td>{user.name}</Td>
+                        <Td>{user.email}</Td>
+                        <Td>
+                          {user.isAdmin ? (
+                            <CheckIcon color="green.500" />
+                          ) : (
+                            <CloseIcon color="red.500" />
+                          )}
+                        </Td>
+                        <Td>
+                          <IconButton
+                            as="a"
+                            href={`/admin/user/${user._id}/edit`}
+                            icon={<EditIcon />}
+                            size="sm"
+                            variant="outline"
+                            aria-label="Edit User"
+                            mr={2}
+                          />
+                          <IconButton
+                            icon={<DeleteIcon />}
+                            size="sm"
+                            colorScheme="red"
+                            variant="outline"
+                            aria-label="Delete User"
+                            onClick={() => deleteHandler(user._id)}
+                          />
+                        </Td>
+                      </Tr>
+                    ))}
+                  </Tbody>
+                </Table>
+              </TableContainer>
+            </Box>
+          </>
+        )}
+      </VStack>
     </Container>
   );
 }

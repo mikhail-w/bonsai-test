@@ -1,13 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { LinkContainer } from 'react-router-bootstrap';
-import { Link, useParams, useNavigate } from 'react-router-dom';
-import { Table, Button, Container } from 'react-bootstrap';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import {
+  Box,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  TableContainer,
+  Container,
+  Heading,
+  Button,
+  Icon,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
+import { FaCheck, FaTimes } from 'react-icons/fa';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { listOrders } from '../actions/orderActions';
 import Footer from '../components/Footer';
-import '../assets/styles/OrdersListPage.css';
 
 function OrderListPage() {
   const dispatch = useDispatch();
@@ -29,79 +42,76 @@ function OrderListPage() {
 
   return (
     <>
-      <Container className="ordersContainer">
-        <h1>Orders</h1>
+      <Container maxW="container.lg" mt={5} minH={'100vh'}>
+        <Heading as="h1" size="lg" mb={5}>
+          Orders
+        </Heading>
         {loading ? (
           <Loader />
         ) : error ? (
           <Message variant="danger">{error}</Message>
         ) : (
-          <div
-            style={{
-              height: '500px',
-              overflowY: 'scroll',
-              overflowX: 'scroll',
-            }}
-            className="fixedHeaderTable"
+          <Box
+            maxH="500px"
+            overflowY="auto"
+            overflowX="auto"
+            border="1px"
+            borderColor={useColorModeValue('gray.200', 'gray.700')}
+            rounded="md"
           >
-            <Table striped bordered hover responsive>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>USER</th>
-                  <th>DATE</th>
-                  <th>TOTAL</th>
-                  <th>PAID</th>
-                  <th>DELIVERED</th>
-                  <th>DETAILS</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {orders.map(order => (
-                  <tr key={order._id}>
-                    <td>{order._id}</td>
-                    <td>{order.user && order.user.name}</td>
-                    <td>{order.createdAt.substring(0, 10)}</td>
-                    <td>${order.totalPrice}</td>
-
-                    <td>
-                      {order.isPaid ? (
-                        order.paidAt.substring(0, 10)
-                      ) : (
-                        <i
-                          className="fas fa-check"
-                          style={{ color: 'red' }}
-                        ></i>
-                      )}
-                    </td>
-
-                    <td>
-                      {order.isDelivered ? (
-                        order.deliveredAt.substring(0, 10)
-                      ) : (
-                        <i
-                          className="fas fa-check"
-                          style={{ color: 'red' }}
-                        ></i>
-                      )}
-                    </td>
-
-                    <td>
-                      <LinkContainer to={`/order/${order._id}`}>
-                        <Button variant="light" className="btn-sm">
+            <TableContainer>
+              <Table variant="striped" colorScheme="teal">
+                <Thead>
+                  <Tr>
+                    <Th>ID</Th>
+                    <Th>USER</Th>
+                    <Th>DATE</Th>
+                    <Th>TOTAL</Th>
+                    <Th>PAID</Th>
+                    <Th>DELIVERED</Th>
+                    <Th>DETAILS</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {orders.map(order => (
+                    <Tr key={order._id}>
+                      <Td>{order._id}</Td>
+                      <Td>{order.user && order.user.name}</Td>
+                      <Td>{order.createdAt.substring(0, 10)}</Td>
+                      <Td>${order.totalPrice}</Td>
+                      <Td>
+                        {order.isPaid ? (
+                          order.paidAt.substring(0, 10)
+                        ) : (
+                          <Icon as={FaTimes} color="red.500" />
+                        )}
+                      </Td>
+                      <Td>
+                        {order.isDelivered ? (
+                          order.deliveredAt.substring(0, 10)
+                        ) : (
+                          <Icon as={FaTimes} color="red.500" />
+                        )}
+                      </Td>
+                      <Td>
+                        <Button
+                          as={RouterLink}
+                          to={`/order/${order._id}`}
+                          size="sm"
+                          variant="outline"
+                          colorScheme="teal"
+                        >
                           Details
                         </Button>
-                      </LinkContainer>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          </div>
+                      </Td>
+                    </Tr>
+                  ))}
+                </Tbody>
+              </Table>
+            </TableContainer>
+          </Box>
         )}
       </Container>
-      <Footer />
     </>
   );
 }
