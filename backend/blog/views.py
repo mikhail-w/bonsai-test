@@ -85,3 +85,16 @@ class CommentCreateView(generics.CreateAPIView):
         post_id = self.kwargs.get('post_id')
         post = Post.objects.get(id=post_id)
         serializer.save(user=self.request.user, post=post)
+
+
+
+class PostCommentsListView(generics.ListAPIView):
+    serializer_class = CommentSerializer
+    pagination_class = StandardResultsSetPagination
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        post_id = self.kwargs.get('post_id')
+        return Comment.objects.filter(post_id=post_id).order_by('created_at')
+
+
