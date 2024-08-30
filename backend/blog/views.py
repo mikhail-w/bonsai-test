@@ -1,8 +1,8 @@
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
-from .models import Post
-from .serializers import PostSerializer
+from .models import Post, Comment
+from .serializers import PostSerializer, CommentSerializer
 from rest_framework.pagination import PageNumberPagination
 import bleach
 
@@ -25,23 +25,16 @@ class CreatePostView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        # Retrieve the content from the serializer's validated data
         content = serializer.validated_data.get('content', '')
-
-        # Define allowed tags and attributes for sanitization
         allowed_tags = ['b', 'i', 'u', 'a', 'p', 'strong', 'em', 'ul', 'li', 'ol', 'br']
         allowed_attrs = {
             'a': ['href', 'title'],
         }
-
-        # Sanitize the content using bleach
         sanitized_content = bleach.clean(
             content,
             tags=allowed_tags,
             attributes=allowed_attrs
         )
-
-        # Save the post with the sanitized content
         serializer.save(
             user=self.request.user if not serializer.validated_data.get('anonymous', False) else None,
             content=sanitized_content
@@ -61,12 +54,12 @@ class PostDetailView(generics.RetrieveAPIView):
     
 
 
-class PostLikeUnlikeView(generics.UpdateAPIView):
+class PostLikeUnlikeView(generics.GenericAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated]
 
-    def update(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         post = self.get_object()
         user = request.user
 
@@ -76,7 +69,19 @@ class PostLikeUnlikeView(generics.UpdateAPIView):
         else:
             post.likes.add(user)
             message = 'Post liked'
-
         post.save()
         serializer = self.get_serializer(post)
         return Response({'message': message, 'post': serializer.data}, status=status.HTTP_200_OK)
+    
+
+
+
+class CommentCreateView(generics.CreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        post_id = self.kwargs.get('post_id')
+        post = Post.objects.get(id=post_id)
+        serializer.save(user=self.request.user, post=post)
