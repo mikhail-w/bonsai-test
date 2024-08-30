@@ -1,5 +1,4 @@
 import { helix } from 'ldrs';
-import '../assets/styles/Loader.css';
 
 helix.register();
 

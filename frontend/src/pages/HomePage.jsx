@@ -1,10 +1,8 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-// import { useNavigate } from 'react-router-dom';
 import { listProducts } from '../actions/productActions';
 import '../index.css';
-import '../assets/styles/HomePage.css';
 import Features from '../components/Features';
 import ScrollToTop from '../components/ScrollToTop';
 import HeroSection from '../components/HeroSection';

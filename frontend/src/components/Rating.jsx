@@ -1,5 +1,4 @@
 import { FaLeaf } from 'react-icons/fa';
-import '../assets/styles/Rating.css';
 
 function Rating({ value, text, color = 'green' }) {
   const leafStyle = { verticalAlign: 'middle' };

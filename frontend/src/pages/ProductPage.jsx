@@ -17,7 +17,6 @@ import {
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink, useParams, useNavigate } from 'react-router-dom';
-import '../assets/styles/ProductPage.css';
 import {
   listProductDetails,
   createProductReview,
