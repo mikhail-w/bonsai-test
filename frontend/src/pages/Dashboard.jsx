@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../actions/userActions';
 import { clearCart } from '../actions/cartActions';
 import { Link as RouterLink } from 'react-router-dom';
+import { ShoppingCart } from 'lucide-react';
 import {
   IconButton,
   Avatar,
@@ -23,6 +24,8 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
+  Badge,
+  Button,
 } from '@chakra-ui/react';
 import {
   FiMenu,
@@ -55,11 +58,12 @@ const SidebarContent = ({ onClose, ...rest }) => {
       w={{ base: 'full', md: 60 }}
       pos="fixed"
       h="full"
+      fontFamily="rale"
       // boxShadow="outline"
       {...rest}
     >
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
+        <Text fontSize="2xl" fontFamily="rale" fontWeight="bold">
           BONSAI
         </Text>
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
@@ -139,18 +143,34 @@ const MobileNav = ({ onOpen, ...rest }) => {
       <Text
         display={{ base: 'flex', md: 'none' }}
         fontSize="2xl"
-        fontFamily="monospace"
+        fontFamily="rale"
         fontWeight="bold"
       >
         BONSAI
       </Text>
-      <HStack spacing={{ base: '0', md: '6' }}>
-        <IconButton
-          size="lg"
-          variant="ghost"
-          aria-label="open menu"
-          icon={<FiBell />}
-        />
+      <HStack spacing={{ base: '3', md: '6' }}>
+        <RouterLink to="/cart">
+          <Button
+            variant="link"
+            id="cartLogo"
+            color="black"
+            position="relative"
+          >
+            <ShoppingCart />
+            <Badge
+              colorScheme="teal"
+              borderRadius="full"
+              position="absolute"
+              top="-3"
+              right="-2"
+              fontSize="xs"
+              px={2}
+              py={1}
+            >
+              {cartItems.reduce((acc, item) => acc + item.qty, 0)}
+            </Badge>
+          </Button>
+        </RouterLink>
         <Flex alignItems={'center'}>
           <Menu>
             <MenuButton
@@ -169,7 +189,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">
+                  <Text fontSize="sm" fontFamily="rale">
                     {userInfo ? userInfo.name : 'Guest'}
                   </Text>
                   {userInfo.isAdmin && (
