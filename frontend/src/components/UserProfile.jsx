@@ -16,11 +16,12 @@ const UserProfile = () => {
         p={6}
         bg="gray.50"
         borderRadius="md"
-        boxShadow="sm"
+        boxShadow="lg"
         gap={8}
+        fontFamily="rale"
       >
         <Text fontFamily="rale" ml={7} className="text">
-          Welcome Back {userInfo.name}
+          Welcome Back <span>{userInfo.name}</span>
         </Text>
         <Flex
           direction={{ base: 'column', md: 'row' }}

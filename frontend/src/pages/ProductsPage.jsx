@@ -6,7 +6,7 @@ import Message from '../components/Message';
 import Paginate from '../components/Paginate';
 import { useNavigate } from 'react-router-dom';
 import { listProducts } from '../actions/productActions';
-import '../assets/styles/ProductsPage.css';
+// import '../assets/styles/ProductsPage.css';
 import { SimpleGrid, Center, Box, Container } from '@chakra-ui/react';
 
 function ProductsPage() {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../assets/styles/Weather.css';
+// import '../assets/styles/Weather.css';
 import { Container } from 'react-bootstrap';
 
 function Weather() {
