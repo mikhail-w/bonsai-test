@@ -1,6 +1,7 @@
 import ReactDOM from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
+import theme from './theme';
 
 import { Provider } from 'react-redux';
 import store from './store.js';
@@ -10,7 +11,7 @@ import './index.css';
 import '../bootstrap.min.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <ChakraProvider>
+  <ChakraProvider theme={theme}>
     <Provider store={store}>
       <RouterProvider router={router} />
     </Provider>

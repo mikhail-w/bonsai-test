@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 import ProfilePictureSection from './ProfilePictureSection';
 import AccountDetailsSection from './AccountDetailsSection';
 import { useSelector } from 'react-redux';
@@ -19,9 +19,9 @@ const UserProfile = () => {
         boxShadow="sm"
         gap={8}
       >
-        <Box ml={7} className="text">
+        <Text fontFamily="rale" ml={7} className="text">
           Welcome Back {userInfo.name}
-        </Box>
+        </Text>
         <Flex
           direction={{ base: 'column', md: 'row' }}
           align="flex-start"

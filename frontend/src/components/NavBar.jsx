@@ -173,7 +173,12 @@ function NavBar() {
             )}
             {userInfo && userInfo.isAdmin && (
               <Menu>
-                <MenuButton as={Button} variant="link" cursor="pointer">
+                <MenuButton
+                  as={Button}
+                  variant="link"
+                  cursor="pointer"
+                  color="black"
+                >
                   Admin
                 </MenuButton>
                 <MenuList>
