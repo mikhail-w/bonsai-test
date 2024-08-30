@@ -18,20 +18,20 @@ const Map = () => {
   });
 
   const [center, setCenter] = useState({
-    lat: 37.7749, // defaults to san francisco 
-    lng: -122.4194, // defaults to san francisco 
+    lat: 37.7749, // defaults to San Francisco 
+    lng: -122.4194, // defaults to San Francisco 
   });
 
   useEffect(() => {
     if (isLoaded && mapRef.current) {
       const map = mapRef.current;
-      const service = new google.maps.places.PlacesService(map); //fetching thru the api, not using
+      const service = new google.maps.places.PlacesService(map);
 
       const request = {
-        location: new google.maps.LatLng(center.lat, center.lng), //
-        radius: "5000", //size of how far we grab the info of...
-        type: ["places"], //of the type of places
-        keyword: "plants", //finding places that have the word plant
+        location: new google.maps.LatLng(center.lat, center.lng),
+        radius: "100000", //size of how far we grab the info
+        type: ["place"], //places of type 'store'
+        keyword: "plants", //finding places that have the word 'plants'
       };
 
       service.nearbySearch(request, (results, status) => {
@@ -40,11 +40,11 @@ const Map = () => {
             results.map((place) => ({
               id: place.place_id, 
               name: place.name, //grab the place name and set the marker to that name
-              position: place.geometry.location, //grab position.
+              position: place.geometry.location, //grab position
             }))
           );
         } else {
-          setError(`Error fetching food places: ${status}`);
+          setError(`Error fetching plant shops: ${status}`);
         }
       });
     }
