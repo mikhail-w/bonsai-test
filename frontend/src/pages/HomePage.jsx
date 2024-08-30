@@ -11,6 +11,7 @@ import CardSection from '../components/CardSection';
 import ScrollToTop from '../components/ScrollToTop';
 import Footer from '../components/Footer';
 import HeroSection from '../components/HeroSection';
+import Map from '../components/Map'
 
 function HomePage() {
   const dispatch = useDispatch();
@@ -31,6 +32,7 @@ function HomePage() {
       <Features />
       <CardSection />
       <ScrollToTop />
+      <Map/>
     </>
   );
 }
