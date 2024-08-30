@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 
-const libraries = ["places"];
+const libraries = ["places"]; 
 const mapContainerStyle = {
   height: "50vh",
   width: "100%",
@@ -18,7 +18,7 @@ const Map = () => {
   });
 
   const [center, setCenter] = useState({
-    lat: 37.7749, // defaults to San Francisco 
+    lat: 37.7749, // defaults to San Francisco
     lng: -122.4194, // defaults to San Francisco 
   });
 
@@ -30,7 +30,7 @@ const Map = () => {
       const request = {
         location: new google.maps.LatLng(center.lat, center.lng),
         radius: "100000", //size of how far we grab the info
-        type: ["place"], //places of type 'store'
+        type: ["place"], //places of type 'store' #test
         keyword: "plants", //finding places that have the word 'plants'
       };
 
