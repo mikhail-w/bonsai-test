@@ -5,7 +5,7 @@ from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
 from rest_framework.pagination import PageNumberPagination
 import bleach
-
+from rest_framework.exceptions import PermissionDenied
 
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 10  
@@ -98,3 +98,14 @@ class PostCommentsListView(generics.ListAPIView):
         return Comment.objects.filter(post_id=post_id).order_by('created_at')
 
 
+
+
+class PostDeleteView(generics.DestroyAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_destroy(self, instance):
+        if instance.user != self.request.user:
+            raise PermissionDenied("You do not have permission to delete this post.")
+        instance.delete()
