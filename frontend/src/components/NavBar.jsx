@@ -85,6 +85,7 @@ function NavBar() {
                 fontSize="xl"
                 id="title-text"
                 color="black"
+                fontFamily="rale"
               >
                 BONSAI
               </Box>
@@ -108,10 +109,11 @@ function NavBar() {
                 variant="link"
                 cursor="pointer"
                 color="black"
+                fontFamily="rale"
               >
                 Shop
               </MenuButton>
-              <MenuList>
+              <MenuList fontFamily="rale">
                 <RouterLink to="/plants">
                   <MenuItem>Potted Plants</MenuItem>
                 </RouterLink>
@@ -165,7 +167,12 @@ function NavBar() {
               </Menu>
             ) : (
               <RouterLink to="/login">
-                <Button variant="link" id="login">
+                <Button
+                  variant="link"
+                  id="login"
+                  color="black"
+                  fontFamily="rale"
+                >
                   <FaUser />
                   Login
                 </Button>

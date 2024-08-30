@@ -60,7 +60,7 @@ function OrderListPage() {
             rounded="md"
           >
             <TableContainer>
-              <Table variant="striped" colorScheme="teal">
+              <Table variant="striped" colorScheme="green">
                 <Thead>
                   <Tr>
                     <Th>ID</Th>

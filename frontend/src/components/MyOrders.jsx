@@ -14,6 +14,7 @@ import {
   Spinner,
   Alert,
   AlertIcon,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { FaTimes } from 'react-icons/fa';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
@@ -52,53 +53,62 @@ const MyOrders = () => {
           {errorOrders}
         </Alert>
       ) : (
-        <TableContainer>
-          <Table variant="striped" size="sm">
-            <Thead>
-              <Tr>
-                <Th>ID</Th>
-                <Th>Date</Th>
-                <Th>Total</Th>
-                <Th>Paid</Th>
-                <Th>Delivered</Th>
-                <Th>Details</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {orders.map(order => (
-                <Tr key={order._id}>
-                  <Td>{order._id}</Td>
-                  <Td>{order.createdAt.substring(0, 10)}</Td>
-                  <Td>${order.totalPrice}</Td>
-                  <Td>
-                    {order.isPaid ? (
-                      order.paidAt.substring(0, 10)
-                    ) : (
-                      <Icon as={FaTimes} color="red.500" />
-                    )}
-                  </Td>
-                  <Td>
-                    {order.isDelivered ? (
-                      order.deliveredAt.substring(0, 10)
-                    ) : (
-                      <Icon as={FaTimes} color="red.500" />
-                    )}
-                  </Td>
-                  <Td>
-                    <Button
-                      as={RouterLink}
-                      to={`/order/${order._id}`}
-                      size="sm"
-                      colorScheme="teal"
-                    >
-                      Details
-                    </Button>
-                  </Td>
+        <Box
+          maxH="500px"
+          overflowY="auto"
+          overflowX="auto"
+          border="1px"
+          borderColor={useColorModeValue('gray.200', 'gray.700')}
+          rounded="md"
+        >
+          <TableContainer>
+            <Table variant="striped" size="sm" colorScheme="green">
+              <Thead>
+                <Tr>
+                  <Th>ID</Th>
+                  <Th>Date</Th>
+                  <Th>Total</Th>
+                  <Th>Paid</Th>
+                  <Th>Delivered</Th>
+                  <Th>Details</Th>
                 </Tr>
-              ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
+              </Thead>
+              <Tbody>
+                {orders.map(order => (
+                  <Tr key={order._id}>
+                    <Td>{order._id}</Td>
+                    <Td>{order.createdAt.substring(0, 10)}</Td>
+                    <Td>${order.totalPrice}</Td>
+                    <Td>
+                      {order.isPaid ? (
+                        order.paidAt.substring(0, 10)
+                      ) : (
+                        <Icon as={FaTimes} color="red.500" />
+                      )}
+                    </Td>
+                    <Td>
+                      {order.isDelivered ? (
+                        order.deliveredAt.substring(0, 10)
+                      ) : (
+                        <Icon as={FaTimes} color="red.500" />
+                      )}
+                    </Td>
+                    <Td>
+                      <Button
+                        as={RouterLink}
+                        to={`/order/${order._id}`}
+                        size="sm"
+                        colorScheme="teal"
+                      >
+                        Details
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        </Box>
       )}
     </Box>
   );

@@ -1,7 +1,8 @@
 import React from 'react';
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Box, Flex, Heading, Text } from '@chakra-ui/react';
 import ProfilePictureSection from './ProfilePictureSection';
 import AccountDetailsSection from './AccountDetailsSection';
+import Weather from './Weather';
 import { useSelector } from 'react-redux';
 
 import MyOrders from './MyOrders';
@@ -20,13 +21,17 @@ const UserProfile = () => {
         gap={8}
         fontFamily="rale"
       >
-        <Text fontFamily="rale" ml={7} className="text">
-          Welcome Back <span>{userInfo.name}</span>
+        <Text fontFamily="rale" fontWeight="300">
+          Welcome Back{' '}
+          <Text as="span" fontSize="xl" fontWeight="bold">
+            {userInfo.name}
+          </Text>
         </Text>
         <Flex
+          // direction={{ base: 'column', md: 'row' }}
           direction={{ base: 'column', md: 'row' }}
-          align="flex-start"
-          // p={6}
+          align="center"
+          p={6}
           bg="gray.50"
           borderRadius="md"
           boxShadow="sm"
@@ -35,7 +40,8 @@ const UserProfile = () => {
           <ProfilePictureSection />
           <AccountDetailsSection />
         </Flex>
-        <h2>My Orders</h2>
+        <Weather />
+        <Heading fontFamily="rale">My Orders</Heading>
         <Flex mb={20}>
           <MyOrders />
         </Flex>

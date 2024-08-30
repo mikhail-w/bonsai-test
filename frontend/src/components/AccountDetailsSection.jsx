@@ -12,11 +12,12 @@ import {
 const AccountDetailsSection = () => {
   return (
     <Box
+      // boxShadow="outline"
       bg="white"
       p={6}
       borderRadius="md"
-      boxShadow="md"
-      w={{ base: '100%', md: '65%' }}
+      // boxShadow="md"
+      w={{ base: '100%', md: '65%', sm: '100%' }}
     >
       <VStack spacing={4}>
         <FormControl id="name">
