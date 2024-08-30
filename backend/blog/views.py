@@ -58,3 +58,25 @@ class PostDetailView(generics.RetrieveAPIView):
         instance.save()
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
+    
+
+
+class PostLikeUnlikeView(generics.UpdateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [IsAuthenticated]
+
+    def update(self, request, *args, **kwargs):
+        post = self.get_object()
+        user = request.user
+
+        if user in post.likes.all():
+            post.likes.remove(user)
+            message = 'Post unliked'
+        else:
+            post.likes.add(user)
+            message = 'Post liked'
+
+        post.save()
+        serializer = self.get_serializer(post)
+        return Response({'message': message, 'post': serializer.data}, status=status.HTTP_200_OK)
