@@ -53,7 +53,7 @@ const Product = ({ product }) => {
             transition="all 0.3s ease"
           />
         </Link>
-        {/* <Divider /> */}
+        <Divider />
         <Box p="6">
           <Flex mt="1" justifyContent="space-between" alignItems="end">
             <Box
@@ -63,6 +63,7 @@ const Product = ({ product }) => {
               lineHeight="tight"
               isTruncated
               color={useColorModeValue('gray.800', 'white')}
+              fontFamily="rale"
             >
               {product.name}
             </Box>
@@ -95,15 +96,25 @@ const Product = ({ product }) => {
           <Flex justifyContent="space-between" alignItems="center" mt={2}>
             <Box display="flex" alignItems="center">
               <Rating value={roundedRating} color="#008b4a" />
-              <Box as="span" ml="2" color="gray.600" fontSize="sm">
+              <Box
+                as="span"
+                ml="2"
+                color="gray.600"
+                fontSize="sm"
+                fontFamily="rale"
+              >
                 {product.numReviews} review{product.numReviews !== 1 && 's'}
               </Box>
             </Box>
             <Box fontSize="xl" color={useColorModeValue('gray.800', 'white')}>
-              <Box as="span" color="gray.600" fontSize="lg">
-                $
+              <Box
+                as="span"
+                color="gray.600"
+                fontSize="lg"
+                fontFamily="heading"
+              >
+                ${product.price}
               </Box>
-              {product.price}
             </Box>
           </Flex>
         </Box>
