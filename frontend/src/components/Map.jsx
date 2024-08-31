@@ -44,6 +44,7 @@ const Map = () => {
   const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedMarker, setSelectedMarker] = useState(null);
+  const [infoWindowVisible, setInfoWindowVisible] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { isLoaded, loadError } = useLoadScript({
@@ -106,6 +107,15 @@ const Map = () => {
       setMarkers([]);
       setLocationList([]);
     }
+  };
+
+  const handleMarkerMouseOver = marker => {
+    setSelectedMarker(marker);
+    setInfoWindowVisible(true);
+  };
+
+  const handleMarkerMouseOut = () => {
+    setInfoWindowVisible(false);
   };
 
   if (loadError) return <Text color="red.500">Error loading maps</Text>;
@@ -239,7 +249,7 @@ const Map = () => {
         overflow="hidden"
       >
         <GoogleMap
-          mapContainerStyle={{ height: '90%', width: '100%' }}
+          mapContainerStyle={{ height: '100%', width: '100%' }}
           zoom={11}
           center={center}
           onLoad={map => (mapRef.current = map)}
@@ -252,32 +262,91 @@ const Map = () => {
                 url: CustomMarker,
                 scaledSize: new window.google.maps.Size(38, 95),
               }}
-              onMouseOver={() => setSelectedMarker(marker)}
-              onMouseOut={() => setSelectedMarker(null)}
+              onMouseOver={() => handleMarkerMouseOver(marker)}
+              onMouseOut={handleMarkerMouseOut}
             />
           ))}
 
-          {selectedMarker && (
+          {selectedMarker && infoWindowVisible && (
             <InfoWindow
               position={selectedMarker.position}
               options={{
                 disableAutoPan: true,
-                pixelOffset: new window.google.maps.Size(0, -30),
+                pixelOffset: new window.google.maps.Size(0, -90),
                 closeBoxURL: '', // Hide the close button
               }}
-              onCloseClick={() => setSelectedMarker(null)}
+              onCloseClick={() => setInfoWindowVisible(false)}
             >
-              <Box>
-                <Image
-                  src={selectedMarker.photo}
-                  alt={`${selectedMarker.name} thumbnail`}
-                  boxSize="100px"
-                  mb={2}
-                />
-                <Text fontFamily="rale" fontWeight="bold">
-                  {selectedMarker.name}
-                </Text>
-                <Text fontFamily="rale">{selectedMarker.address}</Text>
+              <Box
+                p={2}
+                borderRadius="md"
+                boxShadow="lg"
+                bg={useColorModeValue('white', 'gray.700')}
+                maxWidth="300px" // Set a maximum width for the InfoWindow
+              >
+                <HStack spacing={2} align="start">
+                  <Box flexShrink={0} borderRadius="md" overflow="hidden">
+                    <Image
+                      src={selectedMarker.photo}
+                      alt={`${selectedMarker.name} thumbnail`}
+                      boxSize="100px"
+                      objectFit="cover"
+                    />
+                  </Box>
+                  <VStack align="start" spacing={1} flex="1">
+                    <Text
+                      fontFamily="rale"
+                      fontWeight="bold"
+                      fontSize="md"
+                      noOfLines={1}
+                      isTruncated
+                    >
+                      {selectedMarker.name}
+                    </Text>
+                    <HStack spacing={1}>
+                      <Text fontFamily="rale" fontSize="sm" color="yellow.500">
+                        ★
+                      </Text>
+                      <Text fontFamily="rale" fontSize="sm">
+                        4.7
+                      </Text>
+                      <Text fontFamily="rale" fontSize="sm" color="gray.500">
+                        (72)
+                      </Text>
+                    </HStack>
+                    <Text
+                      fontFamily="rale"
+                      fontSize="sm"
+                      color={useColorModeValue('gray.600', 'gray.300')}
+                      noOfLines={1}
+                      isTruncated
+                    >
+                      Florist
+                    </Text>
+                    <HStack spacing={2} mt={1}>
+                      <Text
+                        fontFamily="rale"
+                        fontSize="xs"
+                        color={useColorModeValue('green.500', 'green.300')}
+                      >
+                        Open
+                      </Text>
+                      <Text fontFamily="rale" fontSize="xs" color="gray.500">
+                        · Closes 6 PM
+                      </Text>
+                    </HStack>
+                    <Text
+                      fontFamily="rale"
+                      fontSize="sm"
+                      color={useColorModeValue('gray.600', 'gray.300')}
+                      mt={1}
+                      noOfLines={1}
+                      isTruncated
+                    >
+                      {selectedMarker.address}
+                    </Text>
+                  </VStack>
+                </HStack>
               </Box>
             </InfoWindow>
           )}
