@@ -212,10 +212,6 @@ const Map = () => {
                   cursor: 'pointer',
                 }}
                 onClick={() => {
-                  console.log('Location:', location);
-                  // console.log('Selected Location:', selectedLocation);
-                  // console.log('Location:', location);
-                  // console.log('Photo:', location.photos[0].getUrl());
                   setCenter({
                     lat: location.geometry.location.lat(),
                     lng: location.geometry.location.lng(),
@@ -224,8 +220,6 @@ const Map = () => {
               >
                 <HStack align="center" width="100%" spacing={0} px={4} py={2}>
                   <Box
-                    // flexShrink={0}
-                    // boxSize={{ base: '60px', md: '75px' }}
                     boxSize={'100px'}
                     borderRadius="lg"
                     overflow="hidden"
@@ -305,6 +299,11 @@ const Map = () => {
                 }}
                 onMouseOver={() => handleMarkerMouseOver(marker)}
                 onMouseOut={handleMarkerMouseOut}
+                onClick={() => {
+                  // setSideImg(location.photos[0].getUrl());
+                  console.log('Marker:', marker);
+                  handleIconClick(location);
+                }}
               />
             ))}
             {selectedMarker && infoWindowVisible && (
@@ -423,13 +422,13 @@ const Map = () => {
           />
           {selectedLocation && (
             <VStack align="start" spacing={4}>
-              <Box width={'100%'}>
+              <Box width={'100%'} height={'300px'}>
                 <Image
                   src={sideImg}
                   alt={`${selectedLocation.name} thumbnail`}
                   borderRadius="md"
                   width="100%" // Ensures the image takes up the full width of the Box
-                  height="auto" // Maintains the aspect ratio
+                  height="100%" // Maintains the aspect ratio
                   objectFit="cover"
                 />
               </Box>
