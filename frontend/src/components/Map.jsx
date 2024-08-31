@@ -1,5 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
+import {
+  GoogleMap,
+  useLoadScript,
+  Marker,
+  InfoWindow,
+} from '@react-google-maps/api';
 import {
   Box,
   Text,
@@ -14,7 +19,7 @@ import {
   Image,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { FaMapMarkerAlt, FaSearch } from 'react-icons/fa';
+import { FaSearch } from 'react-icons/fa';
 import CustomMarker from '../assets/images/leaf-green.png';
 
 const libraries = ['places'];
@@ -30,6 +35,8 @@ const Map = () => {
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
   const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const [hoveredMarkerId, setHoveredMarkerId] = useState(null);
+
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
     libraries,
@@ -124,7 +131,7 @@ const Map = () => {
           </HStack>
 
           <Box>
-            <Heading size="md" mb={4}>
+            <Heading size="md" mb={4} fontFamily="rale">
               Nearby Bonsai Locations:
             </Heading>
             <List spacing={4}>
@@ -158,8 +165,12 @@ const Map = () => {
                       alt={`${location.name} thumbnail`}
                     />
                     <VStack align="start" spacing={1}>
-                      <Text fontWeight="bold">{location.name}</Text>
-                      <Text fontSize="sm">{location.vicinity}</Text>
+                      <Text fontFamily="rale" fontWeight="bold">
+                        {location.name}
+                      </Text>
+                      <Text fontFamily="rale" fontSize="sm">
+                        {location.vicinity}
+                      </Text>
                     </VStack>
                   </HStack>
                 </ListItem>
@@ -180,17 +191,27 @@ const Map = () => {
             <Marker
               key={marker.id}
               position={marker.position}
-              label={{
-                text: marker.name,
-                color: useColorModeValue('black', 'white'),
-                fontSize: '14px',
-                fontWeight: 'bold',
-              }}
               icon={{
-                url: CustomMarker, // Customize marker icon
+                url: CustomMarker,
                 scaledSize: new window.google.maps.Size(38, 95),
               }}
-            />
+              onMouseOver={() => setHoveredMarkerId(marker.id)}
+              onMouseOut={() => setHoveredMarkerId(null)}
+            >
+              {hoveredMarkerId === marker.id && (
+                <InfoWindow>
+                  <div
+                    style={{
+                      fontSize: '14px',
+                      fontWeight: 'bold',
+                      color: 'black',
+                    }}
+                  >
+                    {marker.name}
+                  </div>
+                </InfoWindow>
+              )}
+            </Marker>
           ))}
         </GoogleMap>
       </Box>
