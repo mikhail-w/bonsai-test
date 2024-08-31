@@ -4,9 +4,9 @@ import Map from '../components/Map';
 function Explore() {
   return (
     <>
-      <Globe />
       <div>
         <Map />
+        <Globe />
       </div>
     </>
   );

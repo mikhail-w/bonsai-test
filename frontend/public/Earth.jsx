@@ -13,7 +13,7 @@ const Earth = () => {
   // Rotate the Earth model
   useFrame(() => {
     if (earthRef.current) {
-      earthRef.current.rotation.y += 0.01; // Rotate on the y-axis
+      earthRef.current.rotation.y += 0.001; // Rotate on the y-axis
     }
   });
 

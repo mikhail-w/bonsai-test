@@ -3,15 +3,33 @@ import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Environment, OrbitControls } from '@react-three/drei';
 import Earth from '../../public/Earth';
-import { Center } from '@chakra-ui/react';
+import { Center, useBreakpointValue } from '@chakra-ui/react';
 
 function Globe() {
+  const containerSize = useBreakpointValue({
+    base: '300px', // Mobile devices
+    sm: '400px', // Small screens (e.g., tablets)
+    md: '600px', // Medium screens (e.g., small desktops)
+    lg: '800px', // Large screens
+  });
+
   return (
-    <Canvas>
-      <ambientLight intensity={1.5} />
-      <directionalLight position={[5, 5, 5]} />
-      <Earth />
-    </Canvas>
+    <div>
+      <Center
+        // boxShadow={'outline'}
+        width={containerSize}
+        height={containerSize}
+      >
+        <Canvas className="earthContainer">
+          <ambientLight intensity={1} />
+          <OrbitControls enableZoom={true} />
+          <Suspense fallback={<div>Loading...</div>}>
+            <Earth />
+          </Suspense>
+          <Environment preset="sunset" />
+        </Canvas>
+      </Center>
+    </div>
   );
 }
 
