@@ -317,6 +317,11 @@ const Map = () => {
             position={'absolute'}
             right={5}
             color={'white'}
+            filter="brightness(3.2) contrast(1.1)"
+            bg="rgba(0, 0, 0, 0.7)"
+            _hover={{
+              transform: 'scale(1.2)',
+            }}
           />
           {selectedLocation && (
             <VStack align="start" spacing={4}>
@@ -325,7 +330,8 @@ const Map = () => {
                   src={sideImg}
                   alt={`${selectedLocation.name} thumbnail`}
                   borderRadius="md"
-                  // boxSize="150px"
+                  width="100%" // Ensures the image takes up the full width of the Box
+                  height="auto" // Maintains the aspect ratio
                   objectFit="cover"
                 />
               </Box>
