@@ -125,6 +125,15 @@ const Map = () => {
     }
   };
 
+  const handleMarkerMouseOver = marker => {
+    setSelectedMarker(marker);
+    setInfoWindowVisible(true);
+  };
+
+  const handleMarkerMouseOut = () => {
+    setInfoWindowVisible(false);
+  };
+
   const handleIconClick = location => {
     setSelectedLocation(location);
     setPanelOpen(true); // Open the panel
@@ -294,8 +303,97 @@ const Map = () => {
                   url: CustomMarker,
                   scaledSize: new window.google.maps.Size(38, 95),
                 }}
+                onMouseOver={() => handleMarkerMouseOver(marker)}
+                onMouseOut={handleMarkerMouseOut}
               />
             ))}
+            {selectedMarker && infoWindowVisible && (
+              <InfoWindow
+                position={selectedMarker.position}
+                options={{
+                  disableAutoPan: true,
+                  pixelOffset: new window.google.maps.Size(0, -90),
+                  closeBoxURL: '', // Hide the close button
+                }}
+                onCloseClick={() => setInfoWindowVisible(false)}
+              >
+                <Box
+                  p={2}
+                  borderRadius="md"
+                  boxShadow="lg"
+                  bg={useColorModeValue('white', 'gray.700')}
+                  minWidth="350px" // Set a maximum width for the InfoWindow
+                >
+                  <HStack spacing={2} align="start">
+                    <Box flexShrink={0} borderRadius="md" overflow="hidden">
+                      <Image
+                        src={selectedMarker.photo}
+                        alt={`${selectedMarker.name} thumbnail`}
+                        boxSize="100px"
+                        objectFit="cover"
+                      />
+                    </Box>
+                    <VStack align="start" spacing={1} flex="1">
+                      <Text
+                        fontFamily="rale"
+                        fontWeight="bold"
+                        fontSize="md"
+                        noOfLines={1}
+                        isTruncated
+                      >
+                        {selectedMarker.name}
+                      </Text>
+                      <HStack spacing={1}>
+                        <Text
+                          fontFamily="rale"
+                          fontSize="sm"
+                          color="yellow.500"
+                        >
+                          ★
+                        </Text>
+                        <Text fontFamily="rale" fontSize="sm">
+                          4.7
+                        </Text>
+                        <Text fontFamily="rale" fontSize="sm" color="gray.500">
+                          (72)
+                        </Text>
+                      </HStack>
+                      <Text
+                        fontFamily="rale"
+                        fontSize="sm"
+                        color={useColorModeValue('gray.600', 'gray.300')}
+                        noOfLines={1}
+                        isTruncated
+                      >
+                        Florist
+                      </Text>
+                      <HStack spacing={2} mt={1}>
+                        <Text
+                          fontFamily="rale"
+                          fontSize="xs"
+                          color={useColorModeValue('green.500', 'green.300')}
+                        >
+                          Open
+                        </Text>
+                        <Text fontFamily="rale" fontSize="xs" color="gray.500">
+                          · Closes 6 PM
+                        </Text>
+                      </HStack>
+                      <Text
+                        fontFamily="rale"
+                        fontSize="sm"
+                        color={useColorModeValue('gray.600', 'gray.300')}
+                        mt={1}
+                        noOfLines={1}
+                        isTruncated
+                      >
+                        {selectedMarker.address}
+                      </Text>
+                    </VStack>
+                  </HStack>
+                </Box>
+              </InfoWindow>
+            )}
           </GoogleMap>
         )}
       </Box>
@@ -339,23 +437,14 @@ const Map = () => {
                 {selectedLocation.name}
               </Text>
               <Text fontFamily="rale" fontSize="md">
-                {selectedLocation.vicinity}
+                Address: {selectedLocation.vicinity}
               </Text>
               <Text fontFamily="rale" fontSize="md">
-                is Open:{' '}
+                Currently:{' '}
                 {selectedLocation.opening_hours.isOpen()
                   ? 'Open Now'
                   : 'Closed'}
               </Text>
-              {/* <VStack align="start" spacing={1}>
-                {selectedLocation.opening_hours.weekday_text.map(
-                  (day, index) => (
-                    <Text fontFamily="rale" fontSize="sm" key={index}>
-                      {day}
-                    </Text>
-                  )
-                )}
-              </VStack> */}
               <Text fontFamily="rale" fontSize="md">
                 Status: {selectedLocation.business_status}
               </Text>
