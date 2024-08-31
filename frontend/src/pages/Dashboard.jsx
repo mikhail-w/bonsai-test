@@ -87,7 +87,7 @@ const NavItem = ({ icon, children, path, ...rest }) => {
         role="group"
         cursor="pointer"
         _hover={{
-          bg: 'cyan.400',
+          bg: 'green.300',
           color: 'white',
         }}
         {...rest}
@@ -158,7 +158,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
           >
             <ShoppingCart />
             <Badge
-              colorScheme="teal"
+              colorScheme="green"
               borderRadius="full"
               position="absolute"
               top="-3"

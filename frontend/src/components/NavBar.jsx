@@ -229,7 +229,7 @@ function NavBar() {
               <Button variant="link" id="cartLogo">
                 <ShoppingCart />
                 <Badge
-                  colorScheme="red"
+                  colorScheme="green"
                   borderRadius="full"
                   position="absolute"
                   top="-1"

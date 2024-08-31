@@ -49,6 +49,7 @@ const Map = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [infoWindowVisible, setInfoWindowVisible] = useState(false);
+  const [sideImg, setSideImg] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [isPanelOpen, setPanelOpen] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -57,6 +58,14 @@ const Map = () => {
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
     libraries,
   });
+
+  // Handle errors in loading Google Maps
+  useEffect(() => {
+    if (loadError) {
+      console.error('Error loading Google Maps:', loadError);
+      setError('Error loading Google Maps');
+    }
+  }, [loadError]);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -93,33 +102,27 @@ const Map = () => {
               id: place.place_id,
               name: place.name,
               position: place.geometry.location,
-              type: place.types || [], // Default to an empty array if undefined
+              type: place.types || [],
               address: place.vicinity,
               photo: place.photos ? place.photos[0].getUrl() : DefaultImg,
             }))
           );
-          setLocationList(results);
+          // Only set this once on initial load or search, prevent unnecessary updates
+          if (!locationList.length) {
+            setLocationList(results);
+          }
         } else {
           setError(`Error fetching places: ${status}`);
         }
       });
     }
-  }, [isLoaded, searchTerm]);
+  }, [isLoaded, center.lat, center.lng, searchTerm]);
 
   const handleSearch = () => {
     if (searchTerm.trim()) {
-      setMarkers([]);
-      setLocationList([]);
+      setMarkers([]); // Clear markers to repopulate
+      setLocationList([]); // Clear list to repopulate
     }
-  };
-
-  const handleMarkerMouseOver = marker => {
-    setSelectedMarker(marker);
-    setInfoWindowVisible(true);
-  };
-
-  const handleMarkerMouseOut = () => {
-    setInfoWindowVisible(false);
   };
 
   const handleIconClick = location => {
@@ -131,11 +134,8 @@ const Map = () => {
     setPanelOpen(false);
   };
 
-  if (loadError) return <Text color="red.500">Error loading maps</Text>;
+  if (error) return <Text color="red.500">{error}</Text>;
   if (!isLoaded) return <Spinner size="xl" />;
-
-  console.log('SELECTED MARKER:', selectedMarker);
-  console.log('Location List:', location);
 
   return (
     <Box
@@ -186,11 +186,12 @@ const Map = () => {
         </Box>
 
         <Box mt={4}>
-          <List spacing={0}>
+          <List spacing={0} pl={0}>
             {locationList.map(location => (
               <ListItem
                 key={location.place_id}
                 p={0}
+                mt={5}
                 borderRadius="lg"
                 width="100%"
                 bg={useColorModeValue('white', 'gray.700')}
@@ -202,6 +203,10 @@ const Map = () => {
                   cursor: 'pointer',
                 }}
                 onClick={() => {
+                  console.log('Location:', location);
+                  // console.log('Selected Location:', selectedLocation);
+                  // console.log('Location:', location);
+                  // console.log('Photo:', location.photos[0].getUrl());
                   setCenter({
                     lat: location.geometry.location.lat(),
                     lng: location.geometry.location.lng(),
@@ -210,8 +215,9 @@ const Map = () => {
               >
                 <HStack align="center" width="100%" spacing={0} px={4} py={2}>
                   <Box
-                    flexShrink={0}
-                    boxSize={{ base: '60px', md: '75px' }}
+                    // flexShrink={0}
+                    // boxSize={{ base: '60px', md: '75px' }}
+                    boxSize={'100px'}
                     borderRadius="lg"
                     overflow="hidden"
                     bg="gray.200"
@@ -219,6 +225,7 @@ const Map = () => {
                     <Image
                       boxSize="100%"
                       objectFit="cover"
+                      // src={location.photo}
                       src={
                         location.photos
                           ? location.photos[0].getUrl()
@@ -254,7 +261,10 @@ const Map = () => {
                       transform: 'scale(1.2)', // Increase size by 20% on hover
                     }}
                     transition="transform 0.2s" // Smooth transition
-                    onClick={() => handleIconClick(location)}
+                    onClick={() => {
+                      setSideImg(location.photos[0].getUrl());
+                      handleIconClick(location);
+                    }}
                   />
                 </HStack>
               </ListItem>
@@ -269,108 +279,25 @@ const Map = () => {
         height={{ base: 'calc(100vh - 56px)', md: '100vh' }}
         overflow="hidden"
       >
-        <GoogleMap
-          mapContainerStyle={{ height: '100%', width: '100%' }}
-          zoom={11}
-          center={center}
-          onLoad={map => (mapRef.current = map)}
-        >
-          {markers.map(marker => (
-            <Marker
-              key={marker.id}
-              position={marker.position}
-              icon={{
-                url: CustomMarker,
-                scaledSize: new window.google.maps.Size(38, 95),
-              }}
-              onMouseOver={() => handleMarkerMouseOver(marker)}
-              onMouseOut={handleMarkerMouseOut}
-            />
-          ))}
-          {selectedMarker && infoWindowVisible && (
-            <InfoWindow
-              position={selectedMarker.position}
-              options={{
-                disableAutoPan: true,
-                pixelOffset: new window.google.maps.Size(0, -90),
-                closeBoxURL: '', // Hide the close button
-              }}
-              onCloseClick={() => setInfoWindowVisible(false)}
-            >
-              <Box
-                p={2}
-                borderRadius="md"
-                boxShadow="lg"
-                bg={useColorModeValue('white', 'gray.700')}
-                minWidth="350px" // Set a maximum width for the InfoWindow
-              >
-                <HStack spacing={2} align="start">
-                  <Box flexShrink={0} borderRadius="md" overflow="hidden">
-                    <Image
-                      src={selectedMarker.photo}
-                      alt={`${selectedMarker.name} thumbnail`}
-                      boxSize="100px"
-                      objectFit="cover"
-                    />
-                  </Box>
-                  <VStack align="start" spacing={1} flex="1">
-                    <Text
-                      fontFamily="rale"
-                      fontWeight="bold"
-                      fontSize="md"
-                      noOfLines={1}
-                      isTruncated
-                    >
-                      {selectedMarker.name}
-                    </Text>
-                    <HStack spacing={1}>
-                      <Text fontFamily="rale" fontSize="sm" color="yellow.500">
-                        ★
-                      </Text>
-                      <Text fontFamily="rale" fontSize="sm">
-                        4.7
-                      </Text>
-                      <Text fontFamily="rale" fontSize="sm" color="gray.500">
-                        (72)
-                      </Text>
-                    </HStack>
-                    <Text
-                      fontFamily="rale"
-                      fontSize="sm"
-                      color={useColorModeValue('gray.600', 'gray.300')}
-                      noOfLines={1}
-                      isTruncated
-                    >
-                      Florist
-                    </Text>
-                    <HStack spacing={2} mt={1}>
-                      <Text
-                        fontFamily="rale"
-                        fontSize="xs"
-                        color={useColorModeValue('green.500', 'green.300')}
-                      >
-                        Open
-                      </Text>
-                      <Text fontFamily="rale" fontSize="xs" color="gray.500">
-                        · Closes 6 PM
-                      </Text>
-                    </HStack>
-                    <Text
-                      fontFamily="rale"
-                      fontSize="sm"
-                      color={useColorModeValue('gray.600', 'gray.300')}
-                      mt={1}
-                      noOfLines={1}
-                      isTruncated
-                    >
-                      {selectedMarker.address}
-                    </Text>
-                  </VStack>
-                </HStack>
-              </Box>
-            </InfoWindow>
-          )}
-        </GoogleMap>
+        {isLoaded && (
+          <GoogleMap
+            mapContainerStyle={{ height: '100%', width: '100%' }}
+            zoom={11}
+            center={center}
+            onLoad={map => (mapRef.current = map)}
+          >
+            {markers.map(marker => (
+              <Marker
+                key={marker.id}
+                position={marker.position}
+                icon={{
+                  url: CustomMarker,
+                  scaledSize: new window.google.maps.Size(38, 95),
+                }}
+              />
+            ))}
+          </GoogleMap>
+        )}
       </Box>
 
       {/* Slide panel for more information */}
@@ -385,37 +312,51 @@ const Map = () => {
           top={20}
           right={0}
         >
-          <Flex justifyContent={'end'}>
-            <CloseButton onClick={closePanel} />
-          </Flex>
+          <CloseButton
+            onClick={closePanel}
+            position={'absolute'}
+            right={5}
+            color={'white'}
+          />
           {selectedLocation && (
             <VStack align="start" spacing={4}>
-              <Image
-                // src={selectedLocation.photo}
-                src={selectedMarker.photo}
-                alt={`${selectedLocation.name} thumbnail`}
-                borderRadius="md"
-                boxSize="150px"
-                objectFit="cover"
-              />
+              <Box width={'100%'}>
+                <Image
+                  src={sideImg}
+                  alt={`${selectedLocation.name} thumbnail`}
+                  borderRadius="md"
+                  // boxSize="150px"
+                  objectFit="cover"
+                />
+              </Box>
               <Text fontFamily="rale" fontWeight="bold" fontSize="lg">
-                STATUS: {selectedLocation.business_status}
+                {selectedLocation.name}
               </Text>
               <Text fontFamily="rale" fontSize="md">
-                {selectedLocation.address}
+                {selectedLocation.vicinity}
               </Text>
               <Text fontFamily="rale" fontSize="md">
-                {selectedLocation.address}
+                is Open:{' '}
+                {selectedLocation.opening_hours.isOpen()
+                  ? 'Open Now'
+                  : 'Closed'}
               </Text>
-              <Text fontFamily="rale" fontSize="sm" color="gray.500">
-                {selectedLocation.type
-                  ? selectedLocation.type.join(', ')
-                  : 'No Type Available'}
+              {/* <VStack align="start" spacing={1}>
+                {selectedLocation.opening_hours.weekday_text.map(
+                  (day, index) => (
+                    <Text fontFamily="rale" fontSize="sm" key={index}>
+                      {day}
+                    </Text>
+                  )
+                )}
+              </VStack> */}
+              <Text fontFamily="rale" fontSize="md">
+                Status: {selectedLocation.business_status}
               </Text>
               <Button
                 as="a"
                 href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-                  selectedLocation.address
+                  selectedLocation.vicinity
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -455,7 +396,7 @@ const Map = () => {
           <DrawerCloseButton />
           <DrawerHeader>Nearby Bonsai Locations</DrawerHeader>
           <DrawerBody>
-            <List spacing={4}>
+            <List spacing={4} pl={0}>
               {locationList.map(location => (
                 <ListItem
                   key={location.place_id}
@@ -482,7 +423,7 @@ const Map = () => {
                       src={
                         location.photos
                           ? location.photos[0].getUrl()
-                          : '/path/to/default-thumbnail.jpg'
+                          : selectedMarker.photo
                       }
                       alt={`${location.name} thumbnail`}
                     />
