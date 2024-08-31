@@ -112,13 +112,18 @@ const Map = () => {
   if (!isLoaded) return <Spinner size="xl" />;
 
   return (
-    <Box display={{ md: 'flex' }} height="100vh" position="relative">
+    <Box
+      display={{ md: 'flex' }}
+      height="90vh"
+      position="relative"
+      overflow="hidden"
+    >
       {/* Sidebar for desktop view */}
       <Box
         width={{ base: '100%', md: '30%' }}
         minW={{ md: '350px' }} // Set a minimum width for the sidebar
         display={{ base: 'none', md: 'block' }}
-        maxH="100vh"
+        maxH="90vh"
         bg={useColorModeValue('gray.50', 'gray.800')}
         p={4}
         boxShadow="lg"
@@ -154,7 +159,7 @@ const Map = () => {
           </Heading>
         </Box>
 
-        <Box mt={4} boxShadow="outline">
+        <Box mt={4}>
           <List spacing={0}>
             {locationList.map(location => (
               <ListItem
@@ -229,11 +234,12 @@ const Map = () => {
 
       <Box
         flex="1"
-        mb={{ base: 4, md: 0 }}
+        mb={{ base: 0, md: 0 }}
         height={{ base: 'calc(100vh - 56px)', md: '100vh' }} // Adjusted height for mobile
+        overflow="hidden"
       >
         <GoogleMap
-          mapContainerStyle={{ height: '100%', width: '100%' }}
+          mapContainerStyle={{ height: '90%', width: '100%' }}
           zoom={11}
           center={center}
           onLoad={map => (mapRef.current = map)}
