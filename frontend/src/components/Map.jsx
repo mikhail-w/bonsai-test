@@ -27,12 +27,12 @@ import {
   useDisclosure,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { FaSearch, FaBars } from 'react-icons/fa';
+import { FaSearch, FaBars, FaChevronRight } from 'react-icons/fa';
 import CustomMarker from '../assets/images/leaf-green.png';
 
 const libraries = ['places'];
 const mapContainerStyle = {
-  height: '60vh',
+  height: '80vh',
   width: '100%',
 };
 
@@ -112,26 +112,35 @@ const Map = () => {
   if (!isLoaded) return <Spinner size="xl" />;
 
   return (
-    <Box display={{ md: 'flex' }}>
+    <Box display={{ md: 'flex' }} height="100vh" position="relative">
       {/* Sidebar for desktop view */}
       <Box
         width={{ base: '100%', md: '30%' }}
+        minW={{ md: '350px' }} // Set a minimum width for the sidebar
         display={{ base: 'none', md: 'block' }}
-        overflowY="auto"
-        maxH="60vh"
+        maxH="100vh"
         bg={useColorModeValue('gray.50', 'gray.800')}
         p={4}
         boxShadow="lg"
+        overflowY="auto"
       >
-        <VStack spacing={4} align="stretch">
+        {/* Sticky container for the search bar and heading */}
+        <Box
+          position="sticky"
+          top="0"
+          bg={useColorModeValue('gray.50', 'gray.800')}
+          zIndex="1"
+          p={4}
+        >
           <HStack>
             <Input
               placeholder="Search bonsai locations..."
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
               bg={useColorModeValue('white', 'gray.700')}
-              borderRadius="md"
+              borderRadius="lg"
               boxShadow="sm"
+              _focus={{ borderColor: 'green.400' }}
             />
             <IconButton
               icon={<FaSearch />}
@@ -140,34 +149,45 @@ const Map = () => {
               aria-label="Search"
             />
           </HStack>
+          <Heading size="md" mt={4} fontFamily="rale">
+            Nearby Bonsai Locations:
+          </Heading>
+        </Box>
 
-          <Box>
-            <Heading size="md" mb={4} fontFamily="rale">
-              Nearby Bonsai Locations:
-            </Heading>
-            <List spacing={4}>
-              {locationList.map(location => (
-                <ListItem
-                  key={location.place_id}
-                  p={3}
-                  borderRadius="md"
-                  boxShadow="sm"
-                  bg={useColorModeValue('white', 'gray.700')}
-                  _hover={{
-                    bg: useColorModeValue('gray.100', 'gray.600'),
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => {
-                    setCenter({
-                      lat: location.geometry.location.lat(),
-                      lng: location.geometry.location.lng(),
-                    });
-                  }}
-                >
-                  <HStack>
+        <Box mt={4} boxShadow="outline">
+          <List spacing={0}>
+            {locationList.map(location => (
+              <ListItem
+                key={location.place_id}
+                p={0} // Remove padding to eliminate extra space
+                borderRadius="lg"
+                width="100%" // Ensure the list item takes up the full width
+                bg={useColorModeValue('white', 'gray.700')}
+                transition="all 0.3s"
+                _hover={{
+                  bg: useColorModeValue('green.50', 'gray.600'),
+                  transform: 'scale(1.02)',
+                  boxShadow: 'xl',
+                  cursor: 'pointer',
+                }}
+                onClick={() => {
+                  setCenter({
+                    lat: location.geometry.location.lat(),
+                    lng: location.geometry.location.lng(),
+                  });
+                }}
+              >
+                <HStack align="center" width="100%" spacing={0} px={4} py={2}>
+                  <Box
+                    flexShrink={0}
+                    boxSize={{ base: '60px', md: '75px' }}
+                    borderRadius="lg"
+                    overflow="hidden"
+                    bg="gray.200"
+                  >
                     <Image
-                      boxSize="50px"
-                      borderRadius="md"
+                      boxSize="100%"
+                      objectFit="cover"
                       src={
                         location.photos
                           ? location.photos[0].getUrl()
@@ -175,25 +195,45 @@ const Map = () => {
                       }
                       alt={`${location.name} thumbnail`}
                     />
-                    <VStack align="start" spacing={1}>
-                      <Text fontFamily="rale" fontWeight="bold">
-                        {location.name}
-                      </Text>
-                      <Text fontFamily="rale" fontSize="sm">
-                        {location.vicinity}
-                      </Text>
-                    </VStack>
-                  </HStack>
-                </ListItem>
-              ))}
-            </List>
-          </Box>
-        </VStack>
+                  </Box>
+                  <VStack align="start" spacing={1} flex="1" ml={4}>
+                    <Text
+                      fontFamily="rale"
+                      fontWeight="bold"
+                      fontSize={{ base: 'md', md: 'lg' }}
+                    >
+                      {location.name}
+                    </Text>
+                    <Text
+                      fontFamily="rale"
+                      fontSize={{ base: 'sm', md: 'md' }}
+                      color={useColorModeValue('gray.600', 'gray.300')}
+                    >
+                      {location.vicinity}
+                    </Text>
+                  </VStack>
+                  <IconButton
+                    icon={<FaChevronRight />}
+                    aria-label="More details"
+                    colorScheme="green"
+                    variant="ghost"
+                    size="sm"
+                    display={{ base: 'none', md: 'inline-flex' }}
+                  />
+                </HStack>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
       </Box>
 
-      <Box flex="1" mb={{ base: 4, md: 0 }}>
+      <Box
+        flex="1"
+        mb={{ base: 4, md: 0 }}
+        height={{ base: 'calc(100vh - 56px)', md: '100vh' }} // Adjusted height for mobile
+      >
         <GoogleMap
-          mapContainerStyle={mapContainerStyle}
+          mapContainerStyle={{ height: '100%', width: '100%' }}
           zoom={11}
           center={center}
           onLoad={map => (mapRef.current = map)}
@@ -239,7 +279,12 @@ const Map = () => {
       </Box>
 
       {/* Mobile view button to toggle location list */}
-      <Box display={{ base: 'block', md: 'none' }} width="100%" mt={4}>
+      <Box
+        display={{ base: 'block', md: 'none' }}
+        width="100%"
+        position="absolute"
+        bottom="0"
+      >
         <Button
           onClick={onOpen}
           colorScheme="green"
