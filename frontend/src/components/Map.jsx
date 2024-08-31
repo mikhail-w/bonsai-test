@@ -28,6 +28,7 @@ import {
   useColorModeValue,
   Slide,
   CloseButton,
+  Flex,
 } from '@chakra-ui/react';
 import { FaSearch, FaBars, FaChevronRight } from 'react-icons/fa';
 import CustomMarker from '../assets/images/leaf-green.png';
@@ -133,6 +134,9 @@ const Map = () => {
   if (loadError) return <Text color="red.500">Error loading maps</Text>;
   if (!isLoaded) return <Spinner size="xl" />;
 
+  console.log('SELECTED MARKER:', selectedMarker);
+  console.log('Location List:', location);
+
   return (
     <Box
       display={{ md: 'flex' }}
@@ -218,7 +222,7 @@ const Map = () => {
                       src={
                         location.photos
                           ? location.photos[0].getUrl()
-                          : '/path/to/default-thumbnail.jpg'
+                          : selectedMarker.photo
                       }
                       alt={`${location.name} thumbnail`}
                     />
@@ -378,21 +382,27 @@ const Map = () => {
           height="100%"
           width={{ base: '100%', md: '400px' }}
           position="fixed"
-          top={0}
+          top={20}
           right={0}
         >
-          <CloseButton onClick={closePanel} />
+          <Flex justifyContent={'end'}>
+            <CloseButton onClick={closePanel} />
+          </Flex>
           {selectedLocation && (
             <VStack align="start" spacing={4}>
               <Image
-                src={selectedLocation.photo}
+                // src={selectedLocation.photo}
+                src={selectedMarker.photo}
                 alt={`${selectedLocation.name} thumbnail`}
                 borderRadius="md"
                 boxSize="150px"
                 objectFit="cover"
               />
               <Text fontFamily="rale" fontWeight="bold" fontSize="lg">
-                {selectedLocation.name}
+                STATUS: {selectedLocation.business_status}
+              </Text>
+              <Text fontFamily="rale" fontSize="md">
+                {selectedLocation.address}
               </Text>
               <Text fontFamily="rale" fontSize="md">
                 {selectedLocation.address}
