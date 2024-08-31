@@ -4,10 +4,8 @@ import Map from '../components/Map';
 function Explore() {
   return (
     <>
-      <div>
-        <Map />
-        <Globe />
-      </div>
+      <Map />
+      {/* <Globe /> */}
     </>
   );
 }

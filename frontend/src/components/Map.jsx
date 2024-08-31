@@ -9,12 +9,17 @@ import {
   ListItem,
   Spinner,
   Heading,
+  IconButton,
+  Input,
+  Image,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { FaMapMarkerAlt, FaSearch } from 'react-icons/fa';
+import CustomMarker from '../assets/images/leaf-green.png';
 
 const libraries = ['places'];
 const mapContainerStyle = {
-  height: '50vh',
+  height: '60vh',
   width: '100%',
 };
 
@@ -24,6 +29,7 @@ const Map = () => {
   const [locationList, setLocationList] = useState([]);
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
   const [error, setError] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
     libraries,
@@ -52,9 +58,9 @@ const Map = () => {
 
       const request = {
         location: new google.maps.LatLng(center.lat, center.lng),
-        radius: '10000',
+        radius: '20000',
         type: ['store'],
-        keyword: 'bonsai OR garden OR club OR potter',
+        keyword: searchTerm || 'bonsai OR garden OR club OR potter',
       };
 
       service.nearbySearch(request, (results, status) => {
@@ -66,6 +72,9 @@ const Map = () => {
               position: place.geometry.location,
               type: place.types,
               address: place.vicinity,
+              photo: place.photos
+                ? place.photos[0].getUrl()
+                : '/path/to/default-thumbnail.jpg', // Default thumbnail if no photo
             }))
           );
           setLocationList(results);
@@ -74,58 +83,118 @@ const Map = () => {
         }
       });
     }
-  }, [isLoaded, center]);
+  }, [isLoaded, center, searchTerm]);
+
+  const handleSearch = () => {
+    if (searchTerm.trim()) {
+      setMarkers([]);
+      setLocationList([]);
+    }
+  };
 
   if (loadError) return <Text color="red.500">Error loading maps</Text>;
   if (!isLoaded) return <Spinner size="xl" />;
 
   return (
-    <Box
+    <HStack
+      spacing={4}
       px={{ base: 4, md: 8 }}
       py={{ base: 6, md: 10 }}
       bg={useColorModeValue('gray.50', 'gray.800')}
       borderRadius="lg"
       boxShadow="lg"
     >
-      <GoogleMap
-        mapContainerStyle={mapContainerStyle}
-        zoom={14}
-        center={center}
-        onLoad={map => (mapRef.current = map)}
-      >
-        {markers.map(marker => (
-          <Marker
-            key={marker.id}
-            position={marker.position}
-            label={marker.name}
-          />
-        ))}
-      </GoogleMap>
-
-      <Box mt={6}>
-        <Heading size="md" mb={4} fontFamily="rale">
-          Nearby Bonsai Locations:
-        </Heading>
-        <List spacing={4} fontFamily="rale">
-          {locationList.map(location => (
-            <ListItem
-              fontFamily="rale"
-              key={location.place_id}
-              p={2}
-              borderRadius="md"
+      <Box width={{ base: '100%', md: '30%' }} overflowY="auto" maxH="60vh">
+        <VStack spacing={4} align="stretch">
+          <HStack>
+            <Input
+              placeholder="Search bonsai locations..."
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
               bg={useColorModeValue('white', 'gray.700')}
-            >
-              <HStack justify="space-between">
-                <Text fontFamily="rale" fontWeight="bold">
-                  {location.name}
-                </Text>
-                <Text fontFamily="rale">{location.vicinity}</Text>
-              </HStack>
-            </ListItem>
-          ))}
-        </List>
+              borderRadius="md"
+              boxShadow="sm"
+            />
+            <IconButton
+              icon={<FaSearch />}
+              onClick={handleSearch}
+              colorScheme="green"
+              aria-label="Search"
+            />
+          </HStack>
+
+          <Box>
+            <Heading size="md" mb={4}>
+              Nearby Bonsai Locations:
+            </Heading>
+            <List spacing={4}>
+              {locationList.map(location => (
+                <ListItem
+                  key={location.place_id}
+                  p={3}
+                  borderRadius="md"
+                  boxShadow="sm"
+                  bg={useColorModeValue('white', 'gray.700')}
+                  _hover={{
+                    bg: useColorModeValue('gray.100', 'gray.600'),
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => {
+                    setCenter({
+                      lat: location.geometry.location.lat(),
+                      lng: location.geometry.location.lng(),
+                    });
+                  }}
+                >
+                  <HStack>
+                    <Image
+                      boxSize="50px"
+                      borderRadius="md"
+                      src={
+                        location.photos
+                          ? location.photos[0].getUrl()
+                          : '/path/to/default-thumbnail.jpg'
+                      }
+                      alt={`${location.name} thumbnail`}
+                    />
+                    <VStack align="start" spacing={1}>
+                      <Text fontWeight="bold">{location.name}</Text>
+                      <Text fontSize="sm">{location.vicinity}</Text>
+                    </VStack>
+                  </HStack>
+                </ListItem>
+              ))}
+            </List>
+          </Box>
+        </VStack>
       </Box>
-    </Box>
+
+      <Box flex="1">
+        <GoogleMap
+          mapContainerStyle={mapContainerStyle}
+          zoom={11}
+          center={center}
+          onLoad={map => (mapRef.current = map)}
+        >
+          {markers.map(marker => (
+            <Marker
+              key={marker.id}
+              position={marker.position}
+              label={{
+                text: marker.name,
+                color: useColorModeValue('black', 'white'),
+                fontSize: '14px',
+                fontWeight: 'bold',
+              }}
+              icon={{
+                url: CustomMarker, // Customize marker icon
+                scaledSize: new window.google.maps.Size(38, 95),
+              }}
+            />
+          ))}
+        </GoogleMap>
+      </Box>
+    </HStack>
   );
 };
 
