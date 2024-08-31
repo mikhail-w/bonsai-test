@@ -618,3 +618,594 @@ function Header() {
 }
 
 export default Header;
+**************************************MAP*******************************
+
+
+import React, { useState, useEffect, useRef } from 'react';
+import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
+
+const libraries = ['places'];
+const mapContainerStyle = {
+  height: '50vh',
+  width: '100%',
+};
+
+const Map = () => {
+  const mapRef = useRef(null); // references to google map instance
+  const [markers, setMarkers] = useState([]);
+  const [error, setError] = useState('');
+
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY, // grabs secret key
+    libraries,
+  });
+
+  const [center, setCenter] = useState({
+    lat: 37.7749, // defaults to san francisco
+    lng: -122.4194, // defaults to san francisco
+  });
+
+  useEffect(() => {
+    if (isLoaded && mapRef.current) {
+      const map = mapRef.current;
+      const service = new google.maps.places.PlacesService(map); //fetching thru the api, not using
+
+      const request = {
+        location: new google.maps.LatLng(center.lat, center.lng), //
+        radius: '5000', //size of how far we grab the info of...
+        type: ['places'], //of the type of places
+        keyword: 'plants', //finding places that have the word plant
+      };
+
+      service.nearbySearch(request, (results, status) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          setMarkers(
+            results.map(place => ({
+              id: place.place_id,
+              name: place.name, //grab the place name and set the marker to that name
+              position: place.geometry.location, //grab position.
+            }))
+          );
+        } else {
+          setError(`Error fetching food places: ${status}`);
+        }
+      });
+    }
+  }, [isLoaded, center]);
+
+  if (loadError) return <div>Error loading maps</div>;
+  if (!isLoaded) return <div>Loading Maps...</div>;
+
+  return (
+    <div>
+      {error && <div style={{ color: 'red' }}>{error}</div>}
+      <GoogleMap
+        mapContainerStyle={mapContainerStyle}
+        zoom={14}
+        center={center}
+        onLoad={map => (mapRef.current = map)}
+      >
+        {markers.map(marker => (
+          <Marker
+            key={marker.id}
+            position={marker.position}
+            label={marker.name}
+          />
+        ))}
+      </GoogleMap>
+    </div>
+  );
+};
+
+export default Map;
+
+
+***********************************GPT MAP**********************************
+
+
+import React, { useState, useEffect, useRef } from 'react';
+import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
+
+const libraries = ['places'];
+const mapContainerStyle = {
+  height: '50vh',
+  width: '100%',
+};
+
+// Custom icons for different types of locations
+const icons = {
+  bonsaiShop: '../assets/images/location-pin.png',
+  bonsaiClub: '../assets/images/location-pin.png',
+  bonsaiPotter: '../assets/images/location-pin.png',
+  garden: '../assets/images/location-pin.png',
+};
+
+const Map = () => {
+  const mapRef = useRef(null);
+  const [markers, setMarkers] = useState([]);
+  const [error, setError] = useState('');
+
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+    libraries,
+  });
+
+  const [center, setCenter] = useState({
+    lat: 37.7749,
+    lng: -122.4194,
+  });
+
+  useEffect(() => {
+    if (isLoaded && mapRef.current) {
+      const map = mapRef.current;
+      const service = new google.maps.places.PlacesService(map);
+
+      const requests = [
+        {
+          location: new google.maps.LatLng(center.lat, center.lng),
+          radius: '5000',
+          keyword: 'bonsai shop',
+        },
+        {
+          location: new google.maps.LatLng(center.lat, center.lng),
+          radius: '5000',
+          keyword: 'bonsai club',
+        },
+        {
+          location: new google.maps.LatLng(center.lat, center.lng),
+          radius: '5000',
+          keyword: 'bonsai potter',
+        },
+        {
+          location: new google.maps.LatLng(center.lat, center.lng),
+          radius: '5000',
+          keyword: 'garden',
+        },
+      ];
+
+      requests.forEach((request, index) => {
+        service.nearbySearch(request, (results, status) => {
+          if (status === google.maps.places.PlacesServiceStatus.OK) {
+            setMarkers(prevMarkers => [
+              ...prevMarkers,
+              ...results.map(place => ({
+                id: place.place_id,
+                name: place.name,
+                position: place.geometry.location,
+                icon:
+                  index === 0
+                    ? icons.bonsaiShop
+                    : index === 1
+                    ? icons.bonsaiClub
+                    : index === 2
+                    ? icons.bonsaiPotter
+                    : icons.garden,
+              })),
+            ]);
+          } else {
+            setError(`Error fetching places: ${status}`);
+          }
+        });
+      });
+    }
+  }, [isLoaded, center]);
+
+  if (loadError) return <div>Error loading maps</div>;
+  if (!isLoaded) return <div>Loading Maps...</div>;
+
+  return (
+    <div>
+      {error && <div style={{ color: 'red' }}>{error}</div>}
+      <GoogleMap
+        mapContainerStyle={mapContainerStyle}
+        zoom={14}
+        center={center}
+        onLoad={map => (mapRef.current = map)}
+      >
+        {markers.map(marker => (
+          <Marker
+            key={marker.id}
+            position={marker.position}
+            icon={{
+              url: marker.icon,
+              scaledSize: new window.google.maps.Size(30, 30), // Adjust the size as needed
+            }}
+            label={{
+              text: marker.name,
+              fontSize: '12px',
+              fontWeight: 'bold',
+            }}
+          />
+        ))}
+      </GoogleMap>
+    </div>
+  );
+};
+
+export default Map;
+
+******************************* WOrking a Bit ****************************
+
+import React, { useState, useEffect, useRef } from 'react';
+import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
+
+const libraries = ['places'];
+const mapContainerStyle = {
+  height: '50vh',
+  width: '100%',
+};
+
+const Map = () => {
+  const mapRef = useRef(null); // references to google map instance
+  const [markers, setMarkers] = useState([]);
+  const [error, setError] = useState('');
+
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY, // grabs secret key
+    libraries,
+  });
+
+  const [center, setCenter] = useState({
+    lat: 37.7749, // defaults to San Francisco
+    lng: -122.4194, // defaults to San Francisco
+  });
+
+  useEffect(() => {
+    if (isLoaded && mapRef.current) {
+      const map = mapRef.current;
+      const service = new google.maps.places.PlacesService(map);
+
+      const request = {
+        location: new google.maps.LatLng(center.lat, center.lng),
+        radius: '100000', //size of how far we grab the info
+        type: ['place'], //places of type 'store' #test
+        keyword: 'plants', //finding places that have the word 'plants'
+      };
+
+      service.nearbySearch(request, (results, status) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          setMarkers(
+            results.map(place => ({
+              id: place.place_id,
+              name: place.name, //grab the place name and set the marker to that name
+              position: place.geometry.location, //grab position
+            }))
+          );
+        } else {
+          setError(`Error fetching plant shops: ${status}`);
+        }
+      });
+    }
+  }, [isLoaded, center]);
+
+  if (loadError) return <div>Error loading maps</div>;
+  if (!isLoaded) return <div>Loading Maps...</div>;
+
+  return (
+    <div>
+      {error && <div style={{ color: 'red' }}>{error}</div>}
+      <GoogleMap
+        mapContainerStyle={mapContainerStyle}
+        zoom={14}
+        center={center}
+        onLoad={map => (mapRef.current = map)}
+      >
+        {markers.map(marker => (
+          <Marker
+            key={marker.id}
+            position={marker.position}
+            label={marker.name}
+          />
+        ))}
+      </GoogleMap>
+    </div>
+  );
+};
+
+export default Map;
+
+
+
+************************** Updated ***********************
+
+import React, { useState, useEffect, useRef } from 'react';
+import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
+import {
+  Box,
+  Text,
+  VStack,
+  HStack,
+  List,
+  ListItem,
+  Spinner,
+  Heading,
+} from '@chakra-ui/react';
+
+const libraries = ['places'];
+const mapContainerStyle = {
+  height: '50vh',
+  width: '100%',
+};
+
+const Map = () => {
+  const mapRef = useRef(null);
+  const [markers, setMarkers] = useState([]);
+  const [locationList, setLocationList] = useState([]);
+  const [center, setCenter] = useState({ lat: 0, lng: 0 });
+  const [error, setError] = useState('');
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+    libraries,
+  });
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const { latitude, longitude } = position.coords;
+          setCenter({ lat: latitude, lng: longitude });
+        },
+        error => {
+          setError('Geolocation not enabled or denied.');
+        }
+      );
+    } else {
+      setError('Geolocation is not supported by this browser.');
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isLoaded && center.lat && center.lng) {
+      const map = mapRef.current;
+      const service = new google.maps.places.PlacesService(map);
+
+      const request = {
+        location: new google.maps.LatLng(center.lat, center.lng),
+        radius: '10000',
+        type: ['store'], // Search for general stores; you can add multiple types in an array
+        keyword: 'bonsai OR garden OR club OR potter',
+      };
+
+      service.nearbySearch(request, (results, status) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          setMarkers(
+            results.map(place => ({
+              id: place.place_id,
+              name: place.name,
+              position: place.geometry.location,
+              type: place.types,
+              address: place.vicinity,
+            }))
+          );
+          setLocationList(results);
+        } else {
+          setError(`Error fetching places: ${status}`);
+        }
+      });
+    }
+  }, [isLoaded, center]);
+
+  if (loadError) return <Text color="red.500">Error loading maps</Text>;
+  if (!isLoaded) return <Spinner size="xl" />;
+
+  return (
+    <Box>
+      <GoogleMap
+        mapContainerStyle={mapContainerStyle}
+        zoom={14}
+        center={center}
+        onLoad={map => (mapRef.current = map)}
+      >
+        {markers.map(marker => (
+          <Marker
+            key={marker.id}
+            position={marker.position}
+            label={marker.name}
+          />
+        ))}
+      </GoogleMap>
+
+      <Box mt={4}>
+        <Heading size="md" mb={2}>
+          Nearby Bonsai Locations:
+        </Heading>
+        <List spacing={2}>
+          {locationList.map(location => (
+            <ListItem key={location.place_id}>
+              <HStack justify="space-between">
+                <Text fontWeight="bold">{location.name}</Text>
+                <Text>{location.vicinity}</Text>
+              </HStack>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
+    </Box>
+  );
+};
+
+export default Map;
+
+
+*****************Updated 2***********************
+
+import React, { useState, useEffect, useRef } from 'react';
+import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
+import {
+  Box,
+  Text,
+  VStack,
+  HStack,
+  List,
+  ListItem,
+  Spinner,
+  Heading,
+  useColorModeValue,
+} from '@chakra-ui/react';
+
+const libraries = ['places'];
+const mapContainerStyle = {
+  height: '50vh',
+  width: '100%',
+};
+
+const Map = () => {
+  const mapRef = useRef(null);
+  const [markers, setMarkers] = useState([]);
+  const [locationList, setLocationList] = useState([]);
+  const [center, setCenter] = useState({ lat: 0, lng: 0 });
+  const [error, setError] = useState('');
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+    libraries,
+  });
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const { latitude, longitude } = position.coords;
+          setCenter({ lat: latitude, lng: longitude });
+        },
+        error => {
+          setError('Geolocation not enabled or denied.');
+        }
+      );
+    } else {
+      setError('Geolocation is not supported by this browser.');
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isLoaded && center.lat && center.lng) {
+      const map = mapRef.current;
+      const service = new google.maps.places.PlacesService(map);
+
+      const request = {
+        location: new google.maps.LatLng(center.lat, center.lng),
+        radius: '10000',
+        type: ['store'],
+        keyword: 'bonsai OR garden OR club OR potter',
+      };
+
+      service.nearbySearch(request, (results, status) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          setMarkers(
+            results.map(place => ({
+              id: place.place_id,
+              name: place.name,
+              position: place.geometry.location,
+              type: place.types,
+              address: place.vicinity,
+            }))
+          );
+          setLocationList(results);
+        } else {
+          setError(`Error fetching places: ${status}`);
+        }
+      });
+    }
+  }, [isLoaded, center]);
+
+  if (loadError) return <Text color="red.500">Error loading maps</Text>;
+  if (!isLoaded) return <Spinner size="xl" />;
+
+  return (
+    <Box
+      px={{ base: 4, md: 8 }}
+      py={{ base: 6, md: 10 }}
+      bg={useColorModeValue('gray.50', 'gray.800')}
+      borderRadius="lg"
+      boxShadow="lg"
+    >
+      <GoogleMap
+        mapContainerStyle={mapContainerStyle}
+        zoom={14}
+        center={center}
+        onLoad={map => (mapRef.current = map)}
+      >
+        {markers.map(marker => (
+          <Marker
+            key={marker.id}
+            position={marker.position}
+            label={marker.name}
+          />
+        ))}
+      </GoogleMap>
+
+      <Box mt={6}>
+        <Heading size="md" mb={4} fontFamily="rale">
+          Nearby Bonsai Locations:
+        </Heading>
+        <List spacing={4} fontFamily="rale">
+          {locationList.map(location => (
+            <ListItem
+              fontFamily="rale"
+              key={location.place_id}
+              p={2}
+              borderRadius="md"
+              bg={useColorModeValue('white', 'gray.700')}
+            >
+              <HStack justify="space-between">
+                <Text fontFamily="rale" fontWeight="bold">
+                  {location.name}
+                </Text>
+                <Text fontFamily="rale">{location.vicinity}</Text>
+              </HStack>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
+    </Box>
+  );
+};
+
+export default Map;
+********************* EARTH************************
+
+// /*
+// Auto-generated by: https://github.com/pmndrs/gltfjsx
+// Command: npx gltfjsx@6.5.0 earth.gltf
+// Author: PatelDev (https://sketchfab.com/PatelDev)
+// License: CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+// Source: https://sketchfab.com/3d-models/earth-f7a76c63ff1846afb2d606e5c8369c15
+// Title: Earth
+// */
+
+import React from 'react';
+import { useGLTF } from '@react-three/drei';
+
+export default function Model(props) {
+  const { nodes, materials } = useGLTF('/earth.gltf');
+  return (
+    <group {...props} dispose={null}>
+      <mesh
+        geometry={nodes.Object_4.geometry}
+        material={materials['Scene_-_Root']}
+        scale={3}
+      />
+    </group>
+  );
+}
+
+useGLTF.preload('/earth.gltf');
+// import { useRef } from 'react';
+// import { useFrame } from '@react-three/fiber';
+// import { Sphere } from '@react-three/drei';
+
+// function Earth() {
+//   const earthRef = useRef();
+
+//   useFrame(() => {
+//     // Rotate the Earth model
+//     earthRef.current.rotation.y += 0.01;
+//   });
+
+//   return (
+//     <Sphere ref={earthRef} args={[1, 32, 32]}>
+//       <meshStandardMaterial color="blue" />
+//     </Sphere>
+//   );
+// }
+
+// export default Earth;
