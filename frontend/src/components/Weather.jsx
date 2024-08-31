@@ -10,11 +10,73 @@ import {
   Image,
   VStack,
   HStack,
-  Icon,
-  Flex,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { FaCloud, FaCloudSun, FaCloudMoon } from 'react-icons/fa'; // Icons for weather
+
+// Component to display weather information
+const WeatherDisplay = ({ weather }) => {
+  return (
+    <VStack
+      spacing={4}
+      p={6}
+      borderRadius="lg"
+      boxShadow="xl"
+      bgGradient="linear(to-br, teal.200, green.200, blue.200, blue.300)"
+      bgSize="cover"
+      bgPos="center"
+      color={useColorModeValue('gray.800', 'gray.200')}
+    >
+      <Heading fontSize="2xl" fontFamily="rale">
+        {weather.name}
+      </Heading>
+
+      {/* Weather Icon */}
+      <Image
+        src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
+        alt={weather.weather[0].description}
+        boxSize="80px"
+      />
+
+      {/* Temperature and Description */}
+      <HStack spacing={2}>
+        <Text fontSize="5xl" fontWeight="bold" fontFamily="rale">
+          {Math.round(weather.main.temp)}°F
+        </Text>
+        <Text fontSize="lg" fontFamily="rale">
+          {weather.weather[0].description.charAt(0).toUpperCase() +
+            weather.weather[0].description.slice(1)}
+        </Text>
+      </HStack>
+
+      {/* Additional Details */}
+      <HStack justify="space-between" w="full">
+        <VStack spacing={0}>
+          <Text fontSize="lg" fontFamily="rale">
+            Feels like
+          </Text>
+          <Text fontSize="2xl" fontWeight="bold" fontFamily="rale">
+            {Math.round(weather.main.feels_like)}°F
+          </Text>
+        </VStack>
+        <VStack spacing={0}>
+          <Text fontSize="lg" fontFamily="rale">
+            Humidity
+          </Text>
+          <Text fontSize="2xl" fontWeight="bold" fontFamily="rale">
+            {weather.main.humidity}%
+          </Text>
+        </VStack>
+      </HStack>
+    </VStack>
+  );
+};
+
+// Component to display error messages
+const ErrorMessage = ({ message }) => (
+  <Text color="red.500" mt={4}>
+    {message}
+  </Text>
+);
 
 function Weather() {
   const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
@@ -59,7 +121,7 @@ function Weather() {
           const { latitude, longitude } = position.coords;
           fetchWeatherByCoords(latitude, longitude);
         },
-        error => {
+        () => {
           setError('Geolocation not enabled or denied.');
         }
       );
@@ -80,16 +142,14 @@ function Weather() {
           <Heading fontSize="2xl" fontFamily="rale">
             Weather in
           </Heading>
-          <HStack>
-            <form onSubmit={handleSubmit}>
-              <Input
-                placeholder="What City?"
-                value={city}
-                onChange={e => setCity(e.target.value)}
-                borderRadius="full"
-                bg={useColorModeValue('gray.100', 'gray.700')}
-              />
-            </form>
+          <HStack as="form" onSubmit={handleSubmit}>
+            <Input
+              placeholder="What City?"
+              value={city}
+              onChange={e => setCity(e.target.value)}
+              borderRadius="full"
+              bg={useColorModeValue('gray.100', 'gray.700')}
+            />
             <Button
               minW="fit-content"
               type="submit"
@@ -102,63 +162,9 @@ function Weather() {
         </VStack>
       </Box>
 
-      {error && (
-        <Text color="red.500" mt={4}>
-          {error}
-        </Text>
-      )}
+      {error && <ErrorMessage message={error} />}
 
-      {weather && (
-        <VStack
-          spacing={4}
-          p={6}
-          borderRadius="lg"
-          boxShadow="xl"
-          bg={useColorModeValue('white', 'gray.700')}
-        >
-          <Heading fontSize="2xl" fontFamily="rale">
-            {weather.name}
-          </Heading>
-
-          {/* Weather Icon */}
-          <Image
-            src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
-            alt={weather.weather[0].description}
-            boxSize="80px"
-          />
-
-          {/* Temperature and Description */}
-          <HStack spacing={2}>
-            <Text fontSize="5xl" fontWeight="bold" fontFamily="rale">
-              {Math.round(weather.main.temp)}°F
-            </Text>
-            <Text fontSize="lg" color="gray.600" fontFamily="rale">
-              {weather.weather[0].description.charAt(0).toUpperCase() +
-                weather.weather[0].description.slice(1)}
-            </Text>
-          </HStack>
-
-          {/* Additional Details */}
-          <HStack justify="space-between" w="full">
-            <VStack spacing={0}>
-              <Text fontSize="lg" color="gray.600" fontFamily="rale">
-                Feels like
-              </Text>
-              <Text fontSize="2xl" fontWeight="bold" fontFamily="rale">
-                {Math.round(weather.main.feels_like)}°C
-              </Text>
-            </VStack>
-            <VStack spacing={0}>
-              <Text fontSize="lg" color="gray.600" fontFamily="rale">
-                Humidity
-              </Text>
-              <Text fontSize="2xl" fontWeight="bold" fontFamily="rale">
-                {weather.main.humidity}%
-              </Text>
-            </VStack>
-          </HStack>
-        </VStack>
-      )}
+      {weather && <WeatherDisplay weather={weather} />}
     </Container>
   );
 }

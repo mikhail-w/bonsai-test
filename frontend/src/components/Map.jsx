@@ -284,7 +284,7 @@ const Map = () => {
       >
         {isLoaded && (
           <GoogleMap
-            mapContainerStyle={{ height: '100%', width: '100%' }}
+            mapContainerStyle={{ height: '90%', width: '100%' }}
             zoom={11}
             center={center}
             onLoad={map => (mapRef.current = map)}
@@ -299,11 +299,11 @@ const Map = () => {
                 }}
                 onMouseOver={() => handleMarkerMouseOver(marker)}
                 onMouseOut={handleMarkerMouseOut}
-                onClick={() => {
-                  // setSideImg(location.photos[0].getUrl());
-                  console.log('Marker:', marker);
-                  handleIconClick(location);
-                }}
+                // onClick={() => {
+                //   // setSideImg(location.photos[0].getUrl());
+                //   console.log('Marker:', marker);
+                //   handleIconClick(location);
+                // }}
               />
             ))}
             {selectedMarker && infoWindowVisible && (
