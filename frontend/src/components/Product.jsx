@@ -28,18 +28,19 @@ const Product = ({ product }) => {
     <Flex p={4} w="full" alignItems="center" justifyContent="center">
       <Box
         bg={useColorModeValue('white', 'gray.800')}
-        maxW={300}
-        minW={300}
+        maxW="300px"
+        minW="300px"
         borderWidth="1px"
+        borderColor={useColorModeValue('gray.200', 'gray.700')}
         rounded="lg"
         shadow="lg"
         position="relative"
         overflow="hidden"
         transition="all 0.3s ease"
         _hover={{
-          transform: 'scale(1.02)',
+          transform: 'scale(1.05)',
           shadow: 'xl',
-          boxShadow: '0 0 0 4px  rgba(210, 215, 211, 0.808)',
+          borderColor: useColorModeValue('green.500', 'green.300'),
         }}
       >
         <Link to={`/product/${product._id}`}>
@@ -47,23 +48,24 @@ const Product = ({ product }) => {
             src={`http://127.0.0.1:8000${product.image}`}
             alt={`Picture of ${product.name}`}
             roundedTop="lg"
-            objectFit="scaledown"
+            objectFit="cover"
             height="300px"
             width="100%"
             transition="all 0.3s ease"
+            _hover={{ transform: 'scale(1.1)' }}
           />
         </Link>
         <Divider />
         <Box p="6">
-          <Flex mt="1" justifyContent="space-between" alignItems="end">
+          <Flex mt="2" justifyContent="space-between" alignItems="center">
             <Box
-              fontSize="xl"
+              fontSize="lg"
               fontWeight="bold"
               as="h4"
               lineHeight="tight"
               isTruncated
               color={useColorModeValue('gray.800', 'white')}
-              fontFamily="rale"
+              fontFamily="sans-serif"
             >
               {product.name}
             </Box>
@@ -72,23 +74,21 @@ const Product = ({ product }) => {
               bg="white"
               placement="top"
               color="gray.800"
-              fontSize="1.2em"
+              fontSize="md"
             >
               <Button
                 onClick={addToCartHandler}
-                variant="ghost"
+                variant="solid"
+                colorScheme="green"
                 aria-label="Add to cart"
-                _hover={{ bg: 'transparent' }}
+                _hover={{
+                  bg: 'green.600',
+                  transform: 'scale(1.2)',
+                  transition: 'transform 0.2s',
+                }}
+                size="sm"
               >
-                <Icon
-                  as={FiShoppingCart}
-                  h={7}
-                  w={7}
-                  _hover={{
-                    transform: 'scale(1.2)',
-                    transition: 'transform 0.2s',
-                  }}
-                />
+                <Icon as={FiShoppingCart} h={5} w={5} />
               </Button>
             </Tooltip>
           </Flex>
@@ -101,12 +101,12 @@ const Product = ({ product }) => {
                 ml="2"
                 color="gray.600"
                 fontSize="sm"
-                fontFamily="rale"
+                fontFamily="sans-serif"
               >
                 {product.numReviews} review{product.numReviews !== 1 && 's'}
               </Box>
             </Box>
-            <Box fontSize="xl" color={useColorModeValue('gray.800', 'white')}>
+            <Box fontSize="lg" color={useColorModeValue('gray.800', 'white')}>
               <Box
                 as="span"
                 color="gray.600"
