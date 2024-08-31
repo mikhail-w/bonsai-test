@@ -32,7 +32,7 @@ import {
 } from '@chakra-ui/react';
 import { FaSearch, FaBars, FaChevronRight } from 'react-icons/fa';
 import CustomMarker from '../assets/images/leaf-green.png';
-import DefatultImg from '../assets/images/bonsai-tree-logo.png';
+import DefaultImg from '../assets/images/bonsai-tree-logo.png';
 
 const libraries = ['places'];
 const mapContainerStyle = {
@@ -95,7 +95,7 @@ const Map = () => {
               position: place.geometry.location,
               type: place.types || [], // Default to an empty array if undefined
               address: place.vicinity,
-              photo: place.photos ? place.photos[0].getUrl() : DefatultImg,
+              photo: place.photos ? place.photos[0].getUrl() : DefaultImg,
             }))
           );
           setLocationList(results);
@@ -104,7 +104,7 @@ const Map = () => {
         }
       });
     }
-  }, [isLoaded, center, searchTerm]);
+  }, [isLoaded, searchTerm]);
 
   const handleSearch = () => {
     if (searchTerm.trim()) {
@@ -158,7 +158,7 @@ const Map = () => {
         {/* Sticky container for the search bar and heading */}
         <Box
           position="sticky"
-          top="0"
+          top="-5"
           bg={useColorModeValue('gray.50', 'gray.800')}
           zIndex="1"
           p={4}
