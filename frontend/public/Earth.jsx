@@ -1,17 +1,30 @@
-import React from 'react';
-import { useGLTF } from '@react-three/drei';
+import React, { useRef } from 'react';
+import { useFrame } from '@react-three/fiber';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { useLoader } from '@react-three/fiber';
 
-export default function Model(props) {
-  const { nodes, materials } = useGLTF('/earth.gltf');
+const Earth = () => {
+  // Load the GLTF model
+  const gltf = useLoader(GLTFLoader, '/earth.gltf');
+
+  // Reference to the Earth model
+  const earthRef = useRef();
+
+  // Rotate the Earth model
+  useFrame(() => {
+    if (earthRef.current) {
+      earthRef.current.rotation.y += 0.01; // Rotate on the y-axis
+    }
+  });
+
   return (
-    <group {...props} dispose={null}>
-      <mesh
-        geometry={nodes.Object_4.geometry}
-        material={materials['Scene_-_Root']}
-        scale={3}
-      />
-    </group>
+    <primitive
+      ref={earthRef}
+      object={gltf.scene}
+      scale={[3, 3, 3]} // Scale the model uniformly (3 times larger)
+      rotation={[0, 0, 0]} // Initial rotation [x, y, z]
+    />
   );
-}
+};
 
-useGLTF.preload('/earth.gltf');
+export default Earth;

@@ -21,7 +21,6 @@ function HomePage() {
     <>
       <HeroSection />
       <Features />
-      <Planet />
       <ScrollToTop />
     </>
   );

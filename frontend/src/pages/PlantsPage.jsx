@@ -5,7 +5,7 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Paginate from '../components/Paginate';
 import { listPlantProducts } from '../actions/productActions';
-import { SimpleGrid, Center, Container, Text } from '@chakra-ui/react';
+import { SimpleGrid, Center, Container, Text, Heading } from '@chakra-ui/react';
 
 function PlantsPage() {
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ function PlantsPage() {
           minH={'100vh'}
           justifyContent={'space-between'}
         >
-          <h1 className="title">Latest Plants</h1>
+          <Heading fontFamily="rale">Latest Plants</Heading>
           <SimpleGrid
             minChildWidth={300}
             spacing="10px"
