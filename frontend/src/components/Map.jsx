@@ -17,9 +17,17 @@ import {
   IconButton,
   Input,
   Image,
+  Drawer,
+  DrawerBody,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  Button,
+  useDisclosure,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { FaSearch } from 'react-icons/fa';
+import { FaSearch, FaBars } from 'react-icons/fa';
 import CustomMarker from '../assets/images/leaf-green.png';
 
 const libraries = ['places'];
@@ -35,7 +43,8 @@ const Map = () => {
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
   const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const [hoveredMarkerId, setHoveredMarkerId] = useState(null);
+  const [selectedMarker, setSelectedMarker] = useState(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
@@ -103,15 +112,17 @@ const Map = () => {
   if (!isLoaded) return <Spinner size="xl" />;
 
   return (
-    <HStack
-      spacing={4}
-      px={{ base: 4, md: 8 }}
-      py={{ base: 6, md: 10 }}
-      bg={useColorModeValue('gray.50', 'gray.800')}
-      borderRadius="lg"
-      boxShadow="lg"
-    >
-      <Box width={{ base: '100%', md: '30%' }} overflowY="auto" maxH="60vh">
+    <Box display={{ md: 'flex' }}>
+      {/* Sidebar for desktop view */}
+      <Box
+        width={{ base: '100%', md: '30%' }}
+        display={{ base: 'none', md: 'block' }}
+        overflowY="auto"
+        maxH="60vh"
+        bg={useColorModeValue('gray.50', 'gray.800')}
+        p={4}
+        boxShadow="lg"
+      >
         <VStack spacing={4} align="stretch">
           <HStack>
             <Input
@@ -180,7 +191,7 @@ const Map = () => {
         </VStack>
       </Box>
 
-      <Box flex="1">
+      <Box flex="1" mb={{ base: 4, md: 0 }}>
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
           zoom={11}
@@ -195,27 +206,105 @@ const Map = () => {
                 url: CustomMarker,
                 scaledSize: new window.google.maps.Size(38, 95),
               }}
-              onMouseOver={() => setHoveredMarkerId(marker.id)}
-              onMouseOut={() => setHoveredMarkerId(null)}
-            >
-              {hoveredMarkerId === marker.id && (
-                <InfoWindow>
-                  <div
-                    style={{
-                      fontSize: '14px',
-                      fontWeight: 'bold',
-                      color: 'black',
-                    }}
-                  >
-                    {marker.name}
-                  </div>
-                </InfoWindow>
-              )}
-            </Marker>
+              onMouseOver={() => setSelectedMarker(marker)}
+              onMouseOut={() => setSelectedMarker(null)}
+            />
           ))}
+
+          {selectedMarker && (
+            <InfoWindow
+              position={selectedMarker.position}
+              options={{
+                disableAutoPan: true,
+                pixelOffset: new window.google.maps.Size(0, -30),
+                closeBoxURL: '', // Hide the close button
+              }}
+              onCloseClick={() => setSelectedMarker(null)}
+            >
+              <Box>
+                <Image
+                  src={selectedMarker.photo}
+                  alt={`${selectedMarker.name} thumbnail`}
+                  boxSize="100px"
+                  mb={2}
+                />
+                <Text fontFamily="rale" fontWeight="bold">
+                  {selectedMarker.name}
+                </Text>
+                <Text fontFamily="rale">{selectedMarker.address}</Text>
+              </Box>
+            </InfoWindow>
+          )}
         </GoogleMap>
       </Box>
-    </HStack>
+
+      {/* Mobile view button to toggle location list */}
+      <Box display={{ base: 'block', md: 'none' }} width="100%" mt={4}>
+        <Button
+          onClick={onOpen}
+          colorScheme="green"
+          size="lg"
+          width="100%"
+          leftIcon={<FaBars />}
+        >
+          Nearby Bonsai Locations
+        </Button>
+      </Box>
+
+      {/* Mobile view drawer for the location list */}
+      <Drawer placement="bottom" onClose={onClose} isOpen={isOpen}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerHeader>Nearby Bonsai Locations</DrawerHeader>
+          <DrawerBody>
+            <List spacing={4}>
+              {locationList.map(location => (
+                <ListItem
+                  key={location.place_id}
+                  p={3}
+                  borderRadius="md"
+                  boxShadow="sm"
+                  bg={useColorModeValue('white', 'gray.700')}
+                  _hover={{
+                    bg: useColorModeValue('gray.100', 'gray.600'),
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => {
+                    setCenter({
+                      lat: location.geometry.location.lat(),
+                      lng: location.geometry.location.lng(),
+                    });
+                    onClose(); // Close the drawer after selecting a location
+                  }}
+                >
+                  <HStack>
+                    <Image
+                      boxSize="50px"
+                      borderRadius="md"
+                      src={
+                        location.photos
+                          ? location.photos[0].getUrl()
+                          : '/path/to/default-thumbnail.jpg'
+                      }
+                      alt={`${location.name} thumbnail`}
+                    />
+                    <VStack align="start" spacing={1}>
+                      <Text fontFamily="rale" fontWeight="bold">
+                        {location.name}
+                      </Text>
+                      <Text fontFamily="rale" fontSize="sm">
+                        {location.vicinity}
+                      </Text>
+                    </VStack>
+                  </HStack>
+                </ListItem>
+              ))}
+            </List>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+    </Box>
   );
 };
 

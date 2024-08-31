@@ -256,7 +256,7 @@ const Dashboard = () => {
       </Drawer>
       <MobileNav onOpen={onOpen} />
       {/* Your dashboard content goes here */}
-      <Box ml={{ base: 0, md: 60 }} p="4">
+      <Box ml={{ base: 0, md: 60 }}>
         <Outlet />
       </Box>
     </Box>
