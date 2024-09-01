@@ -154,15 +154,18 @@ function NavBar() {
                   variant="link"
                   cursor="pointer"
                   color="black"
+                  fontFamily="rale"
                 >
                   {`Welcome ${userInfo.name}`}
                 </MenuButton>
-                <MenuList>
+                <MenuList fontFamily="rale">
                   <RouterLink to="/profile">
                     <MenuItem>Profile</MenuItem>
                   </RouterLink>
                   <MenuDivider />
-                  <MenuItem onClick={logoutHandler}>Logout</MenuItem>
+                  <MenuItem fontFamily="rale" onClick={logoutHandler}>
+                    Logout
+                  </MenuItem>
                 </MenuList>
               </Menu>
             ) : (
@@ -185,6 +188,7 @@ function NavBar() {
                   variant="link"
                   cursor="pointer"
                   color="black"
+                  fontFamily="rale"
                 >
                   Admin
                 </MenuButton>

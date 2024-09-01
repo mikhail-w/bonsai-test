@@ -14,7 +14,7 @@ function SearchBar() {
   const navigate = useNavigate();
 
   const submitHandler = e => {
-    console.log('SEARCH:', e);
+    // console.log('SEARCH:', e);
     e.preventDefault();
     if (keyword.trim()) {
       navigate(`/products/?keyword=${keyword.trim()}&page=1`);
@@ -29,6 +29,7 @@ function SearchBar() {
       <form onSubmit={submitHandler}>
         <InputGroup size="sm">
           <Input
+            fontFamily="rale"
             type="text"
             placeholder="Search plants"
             value={keyword}
@@ -46,7 +47,7 @@ function SearchBar() {
               type="submit"
               aria-label="Search"
               icon={<SearchIcon />}
-              colorScheme="teal"
+              colorScheme="teagreenl"
               variant="ghost"
               size="sm"
               onClick={submitHandler}
