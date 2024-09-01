@@ -1,18 +1,76 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
-import { Form, Button, Row, Col, Container } from 'react-bootstrap';
+import {
+  ChakraProvider,
+  Button,
+  Flex,
+  Text,
+  FormControl,
+  FormLabel,
+  Heading,
+  Input,
+  Stack,
+  Image,
+  useToast,
+  FormErrorMessage,
+  FormHelperText,
+  extendTheme,
+  Box,
+} from '@chakra-ui/react';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
-import FormContainer from '../components/FormContainer';
 import { register } from '../actions/userActions';
-import '../assets/styles/LogPages.css';
+import ResgisterPageImage from '../assets/images/b7.jpg';
+import BackButton from '../components/BackButton';
+
+const activeLabelStyles = {
+  transform: 'scale(0.85) translateY(-24px)',
+};
+
+export const theme = extendTheme({
+  components: {
+    Form: {
+      variants: {
+        floating: {
+          container: {
+            _focusWithin: {
+              label: {
+                ...activeLabelStyles,
+              },
+            },
+            'input:not(:placeholder-shown) + label, .chakra-select__wrapper + label, textarea:not(:placeholder-shown) ~ label':
+              {
+                ...activeLabelStyles,
+              },
+            label: {
+              top: 0,
+              left: 0,
+              zIndex: 2,
+              position: 'absolute',
+              backgroundColor: 'white',
+              pointerEvents: 'none',
+              mx: 3,
+              px: 1,
+              my: 2,
+              transformOrigin: 'left top',
+            },
+          },
+        },
+      },
+    },
+  },
+});
 
 function RegisterPage() {
+  const toast = useToast();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
+  const [avatar, setAvatar] = useState(null);
   const [message, setMessage] = useState('');
 
   const dispatch = useDispatch();
@@ -30,84 +88,162 @@ function RegisterPage() {
     }
   }, [navigate, userInfo, redirect]);
 
-  const submitHandler = e => {
+  const handleSubmit = e => {
+    console.log('INFO:', name, email, password, avatar);
     e.preventDefault();
-
-    if (password != confirmPassword) {
+    if (password !== confirmPassword) {
       setMessage('Passwords do not match');
-    } else {
-      dispatch(register(name, email, password));
+      toast({
+        title: 'Error',
+        description: 'Passwords do not match.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
     }
+    // dispatch(register(name, email, password, city, state, avatar));
+    dispatch(register(name, email, password, avatar));
+  };
+
+  const handleAvatarImageChange = e => {
+    setAvatar(e.target.files[0]);
   };
 
   return (
-    <Container className="formContainer mt-40">
-      <FormContainer>
-        <h1>Register</h1>
+    <>
+      <ChakraProvider theme={theme}>
         {message && <Message variant="danger">{message}</Message>}
         {error && <Message variant="danger">{error}</Message>}
         {loading && <Loader />}
-        <Form onSubmit={submitHandler}>
-          <Form.Group controlId="name" className="mt-5">
-            <Form.Label>Name</Form.Label>
-            <Form.Control
-              required
-              type="name"
-              placeholder="Enter name"
-              value={name}
-              onChange={e => setName(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
+        <Stack minH={'100vh'} direction={{ base: 'column', md: 'row' }}>
+          <Flex
+            p={8}
+            flex={1}
+            align={'center'}
+            justify={'center'}
+            direction={'column'}
+          >
+            <Stack spacing={4} w={'full'} maxW={'md'}>
+              <Heading fontSize={'2xl'}>Register</Heading>
 
-          <Form.Group controlId="email" className="mt-3">
-            <Form.Label>Email Address</Form.Label>
-            <Form.Control
-              required
-              type="email"
-              placeholder="Enter Email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
-
-          <Form.Group controlId="password" className="mt-3">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              required
-              type="password"
-              placeholder="Enter Password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
-
-          <Form.Group controlId="passwordConfirm" className="mt-3">
-            <Form.Label>Confirm Password</Form.Label>
-            <Form.Control
-              required
-              type="password"
-              placeholder="Confirm Password"
-              value={confirmPassword}
-              onChange={e => setConfirmPassword(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
-
-          <Button type="submit" variant="primary" className="mt-5" id="btn">
-            Register
-          </Button>
-        </Form>
-
-        <Row className="py-3">
-          <Col>
-            Have an Account?{' '}
-            <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>
-              Sign In
-            </Link>
-          </Col>
-        </Row>
-      </FormContainer>
-    </Container>
+              <form onSubmit={handleSubmit}>
+                <FormControl variant="floating" mb={10} id="name" isRequired>
+                  <Input
+                    type="name"
+                    value={name}
+                    onChange={e => setName(e.target.value)}
+                    placeholder=""
+                  />
+                  <FormLabel>Enter your Name</FormLabel>
+                </FormControl>
+                <FormControl variant="floating" mb={10} id="email" isRequired>
+                  <Input
+                    type="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    placeholder=""
+                  />
+                  <FormLabel>Enter your Email</FormLabel>
+                </FormControl>
+                <FormControl
+                  variant="floating"
+                  mb={10}
+                  id="password"
+                  isRequired
+                >
+                  <Input
+                    type="password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    placeholder=""
+                  />
+                  <FormLabel>Enter your Password</FormLabel>
+                </FormControl>
+                <FormControl
+                  variant="floating"
+                  mb={10}
+                  id="passwordConfirm"
+                  isRequired
+                >
+                  <Input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={e => setConfirmPassword(e.target.value)}
+                    placeholder=""
+                  />
+                  <FormLabel>Confirm Password</FormLabel>
+                </FormControl>
+                <FormControl variant="floating" mb={10} id="city" isRequired>
+                  <Input
+                    type="text"
+                    value={city}
+                    onChange={e => setCity(e.target.value)}
+                    placeholder=""
+                  />
+                  <FormLabel>Enter your City</FormLabel>
+                </FormControl>
+                <FormControl variant="floating" mb={10} id="state" isRequired>
+                  <Input
+                    type="text"
+                    value={state}
+                    onChange={e => setState(e.target.value)}
+                    placeholder=""
+                  />
+                  <FormLabel>Enter your State</FormLabel>
+                </FormControl>
+                <FormControl mb={10} id="profileImage">
+                  <FormLabel>Upload Profile Image</FormLabel>
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleAvatarImageChange}
+                  />
+                  <FormHelperText>
+                    Optional: Upload your profile image.
+                  </FormHelperText>
+                </FormControl>
+                <Stack spacing={6}>
+                  <Stack
+                    direction={{ base: 'column', sm: 'row' }}
+                    align={'start'}
+                    justify={'space-between'}
+                  ></Stack>
+                  <Button
+                    colorScheme="green"
+                    size="lg"
+                    type="submit"
+                    width="full"
+                    mt={4}
+                  >
+                    Register
+                  </Button>
+                  <BackButton nav={navigate} />
+                </Stack>
+              </form>
+              <Text textAlign="center" mt={4} color="gray.500">
+                Have an Account?{' '}
+                <Button variant="link" colorScheme="green">
+                  <Link
+                    to={redirect ? `/login?redirect=${redirect}` : '/login'}
+                  >
+                    Sign In
+                  </Link>
+                </Button>
+              </Text>
+            </Stack>
+          </Flex>
+          <Flex flex={1} display={{ base: 'none', lg: 'block' }}>
+            <Image
+              boxSize="100vh"
+              objectFit="cover"
+              alt={'Login Image'}
+              src={ResgisterPageImage}
+            />
+          </Flex>
+        </Stack>
+      </ChakraProvider>
+    </>
   );
 }
-
 export default RegisterPage;

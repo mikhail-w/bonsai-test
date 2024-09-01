@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import {
   Button,
   Row,
@@ -14,7 +14,7 @@ import Message from '../components/Message';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { createOrder } from '../actions/orderActions';
 import { ORDER_CREATE_RESET } from '../constants/orderConstants';
-import '../assets/styles/PlaceOrder.css';
+// import '../assets/styles/PlaceOrder.css';
 
 function PlaceOrderPage() {
   const orderCreate = useSelector(state => state.orderCreate);

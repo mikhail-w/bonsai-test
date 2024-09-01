@@ -1,40 +1,60 @@
-import React, { useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { useState } from 'react';
+import {
+  Input,
+  InputGroup,
+  InputRightElement,
+  IconButton,
+  Box,
+} from '@chakra-ui/react';
+import { SearchIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
-import '../assets/styles/Searchbar.css';
 
 function SearchBar() {
   const [keyword, setKeyword] = useState('');
   const navigate = useNavigate();
 
   const submitHandler = e => {
+    console.log('SEARCH:', e);
     e.preventDefault();
-    if (keyword) {
-      navigate(`/products/?keyword=${keyword}&page=1`);
-      setTimeout(() => e.target.reset(), 0);
+    if (keyword.trim()) {
+      navigate(`/products/?keyword=${keyword.trim()}&page=1`);
       setKeyword('');
     } else {
-      // navigate(location.pathname);
-      navigate(`/products/?keyword=${keyword}&page=1`);
-      setTimeout(() => e.target.reset(), 0);
-      setKeyword('');
+      navigate(`/products`);
     }
   };
 
   return (
-    <Form onSubmit={submitHandler} id="searchbar">
-      <Form.Control
-        type="text"
-        name="q"
-        placeholder="Search plants"
-        onChange={e => setKeyword(e.target.value)}
-        className="me-2"
-        autoComplete="off"
-      ></Form.Control>
-      <Button type="submit" id="search">
-        Search
-      </Button>
-    </Form>
+    <Box maxW={'150px'}>
+      <form onSubmit={submitHandler}>
+        <InputGroup size="sm">
+          <Input
+            type="text"
+            placeholder="Search plants"
+            value={keyword}
+            onChange={e => setKeyword(e.target.value)}
+            variant="filled"
+            focusBorderColor="teal.400"
+            _placeholder={{ color: 'gray.500' }}
+            borderRadius="md"
+            py={1} // Thinner padding (top and bottom)
+            px={3} // Thinner padding (left and right)
+            height="32px" // Smaller height
+          />
+          <InputRightElement height="32px">
+            <IconButton
+              type="submit"
+              aria-label="Search"
+              icon={<SearchIcon />}
+              colorScheme="teal"
+              variant="ghost"
+              size="sm"
+              onClick={submitHandler}
+            />
+          </InputRightElement>
+        </InputGroup>
+      </form>
+    </Box>
   );
 }
 

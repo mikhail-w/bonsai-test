@@ -1,14 +1,68 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
-import { Form, Button, Row, Col, Container } from 'react-bootstrap';
+import {
+  ChakraProvider,
+  Button,
+  Flex,
+  Text,
+  FormControl,
+  FormLabel,
+  Heading,
+  Input,
+  Stack,
+  Image,
+  useToast,
+  FormErrorMessage,
+  FormHelperText,
+  extendTheme,
+  Box,
+} from '@chakra-ui/react';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
-import FormContainer from '../components/FormContainer';
 import { login } from '../actions/userActions';
-import '../assets/styles/LogPages.css';
+import LoginImage from '../assets/images/b6.jpg';
+
+const activeLabelStyles = {
+  transform: 'scale(0.85) translateY(-24px)',
+};
+
+export const theme = extendTheme({
+  components: {
+    Form: {
+      variants: {
+        floating: {
+          container: {
+            _focusWithin: {
+              label: {
+                ...activeLabelStyles,
+              },
+            },
+            'input:not(:placeholder-shown) + label, .chakra-select__wrapper + label, textarea:not(:placeholder-shown) ~ label':
+              {
+                ...activeLabelStyles,
+              },
+            label: {
+              top: 0,
+              left: 0,
+              zIndex: 2,
+              position: 'absolute',
+              backgroundColor: 'white',
+              pointerEvents: 'none',
+              mx: 3,
+              px: 1,
+              my: 2,
+              transformOrigin: 'left top',
+            },
+          },
+        },
+      },
+    },
+  },
+});
 
 function LoginPage() {
+  const toast = useToast();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -24,53 +78,104 @@ function LoginPage() {
     if (userInfo) {
       navigate(redirect);
     }
-  }, [history, userInfo, redirect]);
+  }, [userInfo, redirect]);
 
-  const submitHandler = e => {
-    console.log('Submitted');
+  const handleSubmit = e => {
     e.preventDefault();
+    if (!email || !password) {
+      toast({
+        title: 'Error',
+        description: 'Please enter both email and password.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
     dispatch(login(email, password));
   };
 
+  function handleReturn() {
+    navigate('/');
+  }
+
   return (
-    <Container className="formContainer ">
-      <FormContainer>
-        <h1>Log In </h1>
+    <>
+      <ChakraProvider theme={theme}>
         {error && <Message variant="danger">{error}</Message>}
         {loading && <Loader />}
-        <Form onSubmit={submitHandler}>
-          <Form.Group controlId="email" id="p" className="mt-5">
-            <Form.Label>Email Address</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="Enter Email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
+        <Stack minH={'100vh'} direction={{ base: 'column', md: 'row' }}>
+          <Flex
+            p={8}
+            flex={1}
+            align={'center'}
+            justify={'center'}
+            direction={'column'}
+          >
+            <Stack spacing={4} w={'full'} maxW={'md'}>
+              <Heading fontSize={'2xl'}>Sign in to your account</Heading>
+              <form onSubmit={handleSubmit}>
+                <FormControl variant="floating" mb={10} id="email" isRequired>
+                  <Input
+                    type="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    placeholder=" "
+                  />
+                  <FormLabel>Email address</FormLabel>
+                  <FormHelperText>We'll never share your email.</FormHelperText>
+                  <FormErrorMessage>Email is required.</FormErrorMessage>
+                </FormControl>
 
-          <Form.Group controlId="password" className="mt-5">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Enter Password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
+                <FormControl variant="floating" id="password" isRequired>
+                  <Input
+                    type="password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    placeholder=" "
+                  />
+                  <FormLabel>Password</FormLabel>
+                  <FormHelperText>Keep your password secure.</FormHelperText>
+                  <FormErrorMessage>Password is required.</FormErrorMessage>
+                </FormControl>
 
-          <Button type="submit" variant="primary" className="mt-5 " id="btn">
-            Sign In
-          </Button>
-        </Form>
-
-        <Row className="py-3">
-          <Col>
-            New Customer? <Link to={'/register/'}>Register</Link>
-          </Col>
-        </Row>
-      </FormContainer>
-    </Container>
+                <Stack spacing={6}>
+                  <Stack
+                    direction={{ base: 'column', sm: 'row' }}
+                    align={'start'}
+                    justify={'space-between'}
+                  ></Stack>
+                  <Button
+                    colorScheme="green"
+                    size="lg"
+                    type="submit"
+                    width="full"
+                    mt={4}
+                  >
+                    Sign In
+                  </Button>
+                  <Button onClick={handleReturn}>Return</Button>
+                </Stack>
+              </form>
+              <Text textAlign="center" mt={4} color="gray.500">
+                New Customer?{' '}
+                <Button variant="link" colorScheme="green">
+                  <Link to={'/register/'}>Register</Link>
+                </Button>
+              </Text>
+            </Stack>
+          </Flex>
+          <Flex flex={1} display={{ base: 'none', lg: 'block' }}>
+            <Image
+              boxSize="100vh"
+              objectFit="cover"
+              alt={'Login Image'}
+              src={LoginImage}
+            />
+          </Flex>
+        </Stack>
+      </ChakraProvider>
+    </>
   );
 }
 

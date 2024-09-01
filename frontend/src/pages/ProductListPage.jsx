@@ -1,12 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { LinkContainer } from 'react-router-bootstrap';
-import { Link, useParams, useNavigate } from 'react-router-dom';
-import { Table, Button, Row, Col, Container } from 'react-bootstrap';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import {
+  Box,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  TableContainer,
+  Button,
+  Heading,
+  HStack,
+  VStack,
+  IconButton,
+  useColorModeValue,
+  Container,
+} from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
+import { FaEdit, FaPlus, FaTrash } from 'react-icons/fa';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Paginate from '../components/Paginate';
-import '../assets/styles/ProductsPage.css';
 import {
   listProducts,
   deleteProduct,
@@ -74,74 +89,88 @@ function ProductListPage() {
   };
 
   return (
-    <Container className="productContainer">
-      <Row className="align-items-center">
-        <Col>
-          <h1>Products</h1>
-        </Col>
-
-        <Col className="text-right">
-          <Button className="my-3" onClick={createProductHandler}>
-            <i className="fas fa-plus"></i> Create Product
+    <Container maxW="container.lg" mt={5} minH={'100vh'}>
+      <VStack align="stretch" spacing={5} p={5}>
+        <HStack justify="space-between" align="center">
+          <Heading as="h1" size="lg">
+            Products
+          </Heading>
+          <Button
+            leftIcon={<FaPlus />}
+            colorScheme="teal"
+            onClick={createProductHandler}
+          >
+            Create Product
           </Button>
-        </Col>
-      </Row>
+        </HStack>
 
-      {loadingDelete && <Loader />}
-      {errorDelete && <Message variant="danger">{errorDelete}</Message>}
+        {loadingDelete && <Loader />}
+        {errorDelete && <Message variant="danger">{errorDelete}</Message>}
 
-      {loadingCreate && <Loader />}
-      {errorCreate && <Message variant="danger">{errorCreate}</Message>}
+        {loadingCreate && <Loader />}
+        {errorCreate && <Message variant="danger">{errorCreate}</Message>}
 
-      {loading ? (
-        <Loader />
-      ) : error ? (
-        <Message variant="danger">{error}</Message>
-      ) : (
-        <div>
-          <Table striped bordered hover responsive className="table-sm">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>NAME</th>
-                <th>PRICE</th>
-                <th>CATEGORY</th>
-                {/* <th>TYPE</th> */}
-                <th></th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {products.map(product => (
-                <tr key={product._id}>
-                  <td>{product._id}</td>
-                  <td>{product.name}</td>
-                  <td>${product.price}</td>
-                  <td>{product.category}</td>
-                  {/* <td>{product.type}</td> */}
-
-                  <td>
-                    <LinkContainer to={`/admin/product/${product._id}/edit`}>
-                      <Button variant="light" className="btn-sm">
-                        <i className="fas fa-edit"></i>
-                      </Button>
-                    </LinkContainer>
-
-                    <Button
-                      variant="danger"
-                      className="btn-sm"
-                      onClick={() => deleteHandler(product._id)}
-                    >
-                      <i className="fas fa-trash"></i>
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-          <Paginate pages={pages} page={page} isAdmin={true} />
-        </div>
-      )}
+        {loading ? (
+          <Loader />
+        ) : error ? (
+          <Message variant="danger">{error}</Message>
+        ) : (
+          <Box
+            maxH="500px"
+            overflowY="auto"
+            overflowX="auto"
+            border="1px"
+            borderColor={useColorModeValue('gray.200', 'gray.700')}
+            rounded="md"
+          >
+            <TableContainer>
+              <Table variant="striped" colorScheme="teal">
+                <Thead>
+                  <Tr>
+                    <Th>ID</Th>
+                    <Th>NAME</Th>
+                    <Th>PRICE</Th>
+                    <Th>CATEGORY</Th>
+                    <Th></Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {products.map(product => (
+                    <Tr key={product._id}>
+                      <Td>{product._id}</Td>
+                      <Td>{product.name}</Td>
+                      <Td>${product.price}</Td>
+                      <Td>{product.category}</Td>
+                      <Td>
+                        <HStack spacing={3}>
+                          <IconButton
+                            as={RouterLink}
+                            to={`/admin/product/${product._id}/edit`}
+                            icon={<FaEdit />}
+                            colorScheme="blue"
+                            variant="outline"
+                            size="sm"
+                            aria-label="Edit"
+                          />
+                          <IconButton
+                            icon={<FaTrash />}
+                            colorScheme="red"
+                            variant="outline"
+                            size="sm"
+                            aria-label="Delete"
+                            onClick={() => deleteHandler(product._id)}
+                          />
+                        </HStack>
+                      </Td>
+                    </Tr>
+                  ))}
+                </Tbody>
+              </Table>
+            </TableContainer>
+          </Box>
+        )}
+        <Paginate pages={pages} page={page} isAdmin={true} />
+      </VStack>
     </Container>
   );
 }

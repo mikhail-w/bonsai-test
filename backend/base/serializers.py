@@ -1,19 +1,27 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from .models import UserProfile
 
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Product, Order, OrderItem, ShippingAddress, Review
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = ["avatar"]
 
 
 class UserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
     _id = serializers.SerializerMethodField(read_only=True)
     isAdmin = serializers.SerializerMethodField(read_only=True)
+    avatar = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = User
         # fields = ["id", "username", "email"]
-        fields = ["id", "_id", "username", "email", "name", "isAdmin"]
+        fields = ["id", "_id", "username", "email", "name", "isAdmin", "avatar"]
 
     def get__id(self, obj):
         return obj.id
@@ -25,8 +33,13 @@ class UserSerializer(serializers.ModelSerializer):
         name = obj.first_name
         if name == "":
             name = obj.email
-
         return name
+
+    def get_avatar(self, obj):
+        try:
+            return obj.userprofile.avatar.url
+        except UserProfile.DoesNotExist:
+            return None
 
 
 class UserSerializerWithToken(UserSerializer):
@@ -34,7 +47,16 @@ class UserSerializerWithToken(UserSerializer):
 
     class Meta:
         model = User
-        fields = ["id", "_id", "username", "email", "name", "isAdmin", "token"]
+        fields = [
+            "id",
+            "_id",
+            "username",
+            "email",
+            "name",
+            "isAdmin",
+            "avatar",
+            "token",
+        ]
 
     def get_token(self, obj):
         token = RefreshToken.for_user(obj)

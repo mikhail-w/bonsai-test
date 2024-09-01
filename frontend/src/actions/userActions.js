@@ -41,7 +41,7 @@ export const login = (email, password) => async dispatch => {
     };
 
     const { data } = await axios.post(
-      'http://127.0.0.1:8000/api/users/login/',
+      '/api/users/login/',
       { username: email, password: password },
       config
     );
@@ -65,7 +65,7 @@ export const login = (email, password) => async dispatch => {
 
 export const logout = () => dispatch => {
   localStorage.removeItem('userInfo');
-  localStorage.removeItem('cartItems');
+  // localStorage.removeItem('cartItems');
   localStorage.removeItem('shippingAddress');
   dispatch({ type: USER_LOGOUT });
   dispatch({ type: USER_DETAILS_RESET });
@@ -73,22 +73,40 @@ export const logout = () => dispatch => {
   dispatch({ type: USER_LIST_RESET });
 };
 
-export const register = (name, email, password) => async dispatch => {
+export const register = (name, email, password, avatar) => async dispatch => {
   try {
     dispatch({
       type: USER_REGISTER_REQUEST,
     });
 
+    // const config = {
+    //   headers: {
+    //     'Content-type': 'application/json',
+    //   },
+    // };
+    // const { data } = await axios.post(
+    //   '/api/users/register/',
+    //   { name: name, email: email, password: password, avatar: avatar },
+    //   config
+    // );
+
+    // Create FormData object to handle file upload
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('email', email);
+    formData.append('password', password);
+    if (avatar) {
+      formData.append('avatar', avatar);
+    }
+
     const config = {
       headers: {
-        'Content-type': 'application/json',
+        'Content-Type': 'multipart/form-data',
       },
     };
-    const { data } = await axios.post(
-      'http://127.0.0.1:8000/api/users/register/',
-      { name: name, email: email, password: password },
-      config
-    );
+
+    const { data } = await axios.post('/api/users/register/', formData, config);
+
     dispatch({
       type: USER_REGISTER_SUCCESS,
       payload: data,
@@ -127,10 +145,7 @@ export const getUserDetails = id => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(
-      `http://127.0.0.1:8000/api/users/${id}/`,
-      config
-    );
+    const { data } = await axios.get(`/api/users/${id}/`, config);
 
     dispatch({
       type: USER_DETAILS_SUCCESS,
@@ -165,7 +180,7 @@ export const updateUserProfile = user => async (dispatch, getState) => {
     };
 
     const { data } = await axios.put(
-      `http://127.0.0.1:8000/api/users/profile/update/`,
+      `/api/users/profile/update/`,
       user,
       config
     );
@@ -209,10 +224,7 @@ export const listUsers = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(
-      `http://127.0.0.1:8000/api/users/`,
-      config
-    );
+    const { data } = await axios.get(`/api/users/`, config);
 
     dispatch({
       type: USER_LIST_SUCCESS,
@@ -246,10 +258,7 @@ export const deleteUser = id => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.delete(
-      `http://127.0.0.1:8000/api/users/delete/${id}/`,
-      config
-    );
+    const { data } = await axios.delete(`/api/users/delete/${id}/`, config);
 
     dispatch({
       type: USER_DELETE_SUCCESS,
@@ -284,7 +293,7 @@ export const updateUser = user => async (dispatch, getState) => {
     };
 
     const { data } = await axios.put(
-      `http://127.0.0.1:8000/api/users/update/${user._id}/`,
+      `/api/users/update/${user._id}/`,
       user,
       config
     );

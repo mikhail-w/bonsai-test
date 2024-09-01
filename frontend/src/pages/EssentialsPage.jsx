@@ -1,12 +1,11 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Row, Col, Container } from 'react-bootstrap';
+import { SimpleGrid, Container, Heading, Box, Center } from '@chakra-ui/react';
 import Product from '../components/Product';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Paginate from '../components/Paginate';
 import { listEssentialProducts } from '../actions/productActions';
-import '../index.css';
 
 function EssentialsPage() {
   const dispatch = useDispatch();
@@ -18,30 +17,35 @@ function EssentialsPage() {
   useEffect(() => {
     dispatch(listEssentialProducts());
   }, [dispatch]);
-  return (
-    <>
-      {loading ? (
-        // <h2>Loading...</h2>
-        <Loader />
-      ) : error ? (
-        <Message variant={'danger'}>{error}</Message>
-      ) : (
-        <>
-          <Container className="listContainer">
-            <h1 className="title">Essentials</h1>
 
-            <Row>
-              {products.map(product => (
-                <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-                  <Product product={product} />
-                </Col>
-              ))}
-            </Row>
-          </Container>
-        </>
-      )}
-      <Paginate page={page} pages={pages} keyword={keyword} />
-    </>
+  return (
+    <Container maxW="container.xlg" mt="100px" minH="100vh">
+      <Center
+        flexDirection={'column'}
+        marginTop={50}
+        marginBottom={100}
+        justifyContent={'space-between'}
+      >
+        <h1 className="title">Essentials</h1>
+        <SimpleGrid
+          minChildWidth={300}
+          spacing="10px"
+          width="100%"
+          px={5} // Padding to add spacing on small screens
+        >
+          {loading ? (
+            <Loader />
+          ) : error ? (
+            <Message variant="danger">{error}</Message>
+          ) : (
+            products.map(product => (
+              <Product key={product._id} product={product} />
+            ))
+          )}
+        </SimpleGrid>
+        <Paginate page={page} pages={pages} keyword={keyword} />
+      </Center>
+    </Container>
   );
 }
 

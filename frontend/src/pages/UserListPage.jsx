@@ -1,8 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LinkContainer } from 'react-router-bootstrap';
-import { Table, Button, Container } from 'react-bootstrap';
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  TableContainer,
+  Container,
+  Heading,
+  Button,
+  IconButton,
+  useToast,
+  VStack,
+  Box,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
+import { CheckIcon, CloseIcon, EditIcon, DeleteIcon } from '@chakra-ui/icons';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { listUsers, deleteUser } from '../actions/userActions';
@@ -10,6 +26,7 @@ import { listUsers, deleteUser } from '../actions/userActions';
 function UserListPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const toast = useToast();
 
   const userList = useSelector(state => state.userList);
   const { loading, error, users } = userList;
@@ -31,68 +48,88 @@ function UserListPage() {
   const deleteHandler = id => {
     if (window.confirm('Are you sure you want to delete this user?')) {
       dispatch(deleteUser(id));
+      toast({
+        title: 'User deleted',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 
   return (
-    <div>
-      {loading ? (
-        <Loader />
-      ) : error ? (
-        <Message variant="danger">{error}</Message>
-      ) : (
-        <Container className="listContainer">
-          <h1>Users</h1>
-          <Table striped bordered hover responsive className="table-sm">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>NAME</th>
-                <th>EMAIL</th>
-                <th>ADMIN</th>
-                <th></th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {users.map(user => (
-                <tr key={user._id}>
-                  <td>{user._id}</td>
-                  <td>{user.name}</td>
-                  <td>{user.email}</td>
-                  <td>
-                    {user.isAdmin ? (
-                      <i
-                        className="fas fa-check"
-                        style={{ color: 'green' }}
-                      ></i>
-                    ) : (
-                      <i className="fas fa-check" style={{ color: 'red' }}></i>
-                    )}
-                  </td>
-
-                  <td>
-                    <LinkContainer to={`/admin/user/${user._id}/edit`}>
-                      <Button variant="light" className="btn-sm">
-                        <i className="fas fa-edit"></i>
-                      </Button>
-                    </LinkContainer>
-
-                    <Button
-                      variant="danger"
-                      className="btn-sm"
-                      onClick={() => deleteHandler(user._id)}
-                    >
-                      <i className="fas fa-trash"></i>
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </Container>
-      )}
-    </div>
+    <Container maxW="container.lg" mt={5} minH={'100vh'}>
+      <VStack align="stretch" spacing={5} p={5}>
+        <Heading as="h1" size="lg" mb={5}>
+          Users
+        </Heading>
+        {loading ? (
+          <Loader />
+        ) : error ? (
+          <Message variant="danger">{error}</Message>
+        ) : (
+          <>
+            <Box
+              maxH="500px"
+              overflowY="auto"
+              overflowX="auto"
+              border="1px"
+              borderColor={useColorModeValue('gray.200', 'gray.700')}
+              rounded="md"
+            >
+              <TableContainer>
+                <Table variant="striped" colorScheme="teal">
+                  <Thead>
+                    <Tr>
+                      <Th>ID</Th>
+                      <Th>NAME</Th>
+                      <Th>EMAIL</Th>
+                      <Th>ADMIN</Th>
+                      <Th>ACTIONS</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {users.map(user => (
+                      <Tr key={user._id}>
+                        <Td>{user._id}</Td>
+                        <Td>{user.name}</Td>
+                        <Td>{user.email}</Td>
+                        <Td>
+                          {user.isAdmin ? (
+                            <CheckIcon color="green.500" />
+                          ) : (
+                            <CloseIcon color="red.500" />
+                          )}
+                        </Td>
+                        <Td>
+                          <IconButton
+                            as="a"
+                            href={`/admin/user/${user._id}/edit`}
+                            icon={<EditIcon />}
+                            size="sm"
+                            variant="outline"
+                            aria-label="Edit User"
+                            mr={2}
+                          />
+                          <IconButton
+                            icon={<DeleteIcon />}
+                            size="sm"
+                            colorScheme="red"
+                            variant="outline"
+                            aria-label="Delete User"
+                            onClick={() => deleteHandler(user._id)}
+                          />
+                        </Td>
+                      </Tr>
+                    ))}
+                  </Tbody>
+                </Table>
+              </TableContainer>
+            </Box>
+          </>
+        )}
+      </VStack>
+    </Container>
   );
 }
 

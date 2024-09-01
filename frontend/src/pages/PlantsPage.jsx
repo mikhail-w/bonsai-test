@@ -1,12 +1,11 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Row, Col, Container } from 'react-bootstrap';
 import Product from '../components/Product';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Paginate from '../components/Paginate';
 import { listPlantProducts } from '../actions/productActions';
-import '../index.css';
+import { SimpleGrid, Center, Container, Text, Heading } from '@chakra-ui/react';
 
 function PlantsPage() {
   const dispatch = useDispatch();
@@ -16,31 +15,39 @@ function PlantsPage() {
   let keyword = location.search;
 
   useEffect(() => {
-    dispatch(listPlantProducts());
+    dispatch(listPlantProducts(keyword));
   }, [dispatch, keyword]);
+
   return (
     <>
-      {loading ? (
-        // <h2>Loading...</h2>
-        <Loader />
-      ) : error ? (
-        <Message variant={'danger'}>{error}</Message>
-      ) : (
-        <>
-          <Container fluid="sm" className=" listContainer">
-            <h1 className="title">Latest Plants</h1>
-
-            <Row>
-              {products.map(product => (
-                <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-                  <Product product={product} />
-                </Col>
-              ))}
-            </Row>
-          </Container>
-        </>
-      )}
-      <Paginate page={page} pages={pages} keyword={keyword} />
+      <Container maxW="container.xlg" mt={'100px'} minH={'100vh'}>
+        <Center
+          flexDirection={'column'}
+          marginTop={50}
+          marginBottom={100}
+          minH={'100vh'}
+          justifyContent={'space-between'}
+        >
+          <Heading fontFamily="rale">Latest Plants</Heading>
+          <SimpleGrid
+            minChildWidth={300}
+            spacing="10px"
+            width="100%"
+            px={5} // Padding to add spacing on small screens
+          >
+            {loading ? (
+              <Loader />
+            ) : error ? (
+              <Message variant={'danger'}>{error}</Message>
+            ) : (
+              products.map(product => (
+                <Product key={product._id} product={product} />
+              ))
+            )}
+          </SimpleGrid>
+          <Paginate page={page} pages={pages} keyword={keyword} />
+        </Center>
+      </Container>
     </>
   );
 }

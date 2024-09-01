@@ -7,7 +7,7 @@ import Message from '../components/Message';
 import FormContainer from '../components/FormContainer';
 import { getUserDetails, updateUser } from '../actions/userActions';
 import { USER_UPDATE_RESET } from '../constants/userConstants';
-import '../assets/styles/EditUser.css';
+// import '../assets/styles/EditUser.css';
 
 function UserEditPage() {
   const { id } = useParams();

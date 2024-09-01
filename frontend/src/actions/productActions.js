@@ -37,9 +37,7 @@ export const listProducts =
   async dispatch => {
     try {
       dispatch({ type: PRODUCT_LIST_REQUEST });
-      const { data } = await axios.get(
-        `http://127.0.0.1:8000/api/products${keyword}`
-      );
+      const { data } = await axios.get(`/api/products${keyword}`);
 
       dispatch({
         type: PRODUCT_LIST_SUCCESS,
@@ -60,7 +58,7 @@ export const listTopProducts = () => async dispatch => {
   try {
     dispatch({ type: PRODUCT_TOP_REQUEST });
 
-    const { data } = await axios.get(`http://127.0.0.1:8000/api/products/top/`);
+    const { data } = await axios.get(`/api/products/top/`);
 
     dispatch({
       type: PRODUCT_TOP_SUCCESS,
@@ -81,9 +79,7 @@ export const listPlanterProducts = () => async dispatch => {
   try {
     dispatch({ type: PRODUCT_PLANTER_REQUEST });
 
-    const { data } = await axios.get(
-      `http://127.0.0.1:8000/api/products/planter/`
-    );
+    const { data } = await axios.get(`/api/products/planter/`);
 
     dispatch({
       type: PRODUCT_PLANTER_SUCCESS,
@@ -104,9 +100,7 @@ export const listPlantProducts = () => async dispatch => {
   try {
     dispatch({ type: PRODUCT_PLANT_REQUEST });
 
-    const { data } = await axios.get(
-      `http://127.0.0.1:8000/api/products/plants/`
-    );
+    const { data } = await axios.get(`/api/products/plants/`);
 
     dispatch({
       type: PRODUCT_PLANT_SUCCESS,
@@ -127,9 +121,7 @@ export const listEssentialProducts = () => async dispatch => {
   try {
     dispatch({ type: PRODUCT_ESSENTIALS_REQUEST });
 
-    const { data } = await axios.get(
-      `http://127.0.0.1:8000/api/products/essentials/`
-    );
+    const { data } = await axios.get(`/api/products/essentials/`);
 
     dispatch({
       type: PRODUCT_ESSENTIALS_SUCCESS,
@@ -150,9 +142,7 @@ export const listProductDetails = id => async dispatch => {
   try {
     dispatch({ type: PRODUCT_DETAILS_REQUEST });
 
-    const { data } = await axios.get(
-      `http://127.0.0.1:8000/api/products/${id}`
-    );
+    const { data } = await axios.get(`/api/products/${id}`);
 
     dispatch({
       type: PRODUCT_DETAILS_SUCCESS,
@@ -186,10 +176,7 @@ export const deleteProduct = id => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.delete(
-      `http://127.0.0.1:8000/api/products/delete/${id}/`,
-      config
-    );
+    const { data } = await axios.delete(`/api/products/delete/${id}/`, config);
 
     dispatch({
       type: PRODUCT_DELETE_SUCCESS,
@@ -222,11 +209,7 @@ export const createProduct = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.post(
-      `http://127.0.0.1:8000/api/products/create/`,
-      {},
-      config
-    );
+    const { data } = await axios.post(`/api/products/create/`, {}, config);
     dispatch({
       type: PRODUCT_CREATE_SUCCESS,
       payload: data,
@@ -260,7 +243,7 @@ export const updateProduct = product => async (dispatch, getState) => {
     };
 
     const { data } = await axios.put(
-      `http://127.0.0.1:8000/api/products/update/${product._id}/`,
+      `/api/products/update/${product._id}/`,
       product,
       config
     );
@@ -303,7 +286,7 @@ export const createProductReview =
       };
 
       const { data } = await axios.post(
-        `http://127.0.0.1:8000/api/products/${productId}/reviews/`,
+        `/api/products/${productId}/reviews/`,
         review,
         config
       );

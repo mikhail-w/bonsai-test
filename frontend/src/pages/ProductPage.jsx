@@ -1,17 +1,22 @@
 import { useState, useEffect } from 'react';
 import {
+  Box,
   Image,
-  Col,
-  Row,
-  ListGroup,
-  Card,
+  Flex,
+  VStack,
+  HStack,
+  Heading,
+  Text,
+  Stack,
   Button,
-  Form,
+  Select,
+  Textarea,
   Container,
-} from 'react-bootstrap';
+  Badge,
+  SimpleGrid,
+} from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams, useNavigate } from 'react-router-dom';
-import '../assets/styles/ProductPage.css';
+import { Link as RouterLink, useParams, useNavigate } from 'react-router-dom';
 import {
   listProductDetails,
   createProductReview,
@@ -67,123 +72,123 @@ function ProductPage() {
   };
 
   return (
-    <div>
-      {loading ? (
-        <Loader />
-      ) : error ? (
-        <Message variant={'danger'}>{error}</Message>
-      ) : (
-        <Container fluid="sm" className="pt-3 productContainer">
-          <BackButton />
-          <Row className="mainRow mb-5">
-            <Col className="imageContainer m-3">
-              <Image
-                src={`http://127.0.0.1:8000${product.image}`}
-                alt={product.name}
-                fluid
-              />
-            </Col>
-            <Col md={5} className="discriptionContainer m-3">
-              <ListGroup variant="flush">
-                <ListGroup.Item id="content">
-                  <h3>{product.name}</h3>
-                </ListGroup.Item>
+    <Container maxW="container.xlg" mt={'100px'} minH={'100vh'}>
+      <Box>
+        {loading ? (
+          <Loader />
+        ) : error ? (
+          <Message variant={'danger'}>{error}</Message>
+        ) : (
+          <Container maxW="container.lg" py={6}>
+            <BackButton />
+            <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10} mb={10}>
+              <VStack spacing={6}>
+                <Image
+                  src={`http://127.0.0.1:8000${product.image}`}
+                  alt={product.name}
+                  boxSize="100%"
+                  objectFit="contain"
+                />
+              </VStack>
 
-                <ListGroup.Item id="content2">
+              <VStack spacing={4} align="start">
+                <Heading as="h3" size="lg">
+                  {product.name}
+                </Heading>
+                <Box>
                   <Rating
                     value={product.rating}
                     text={`${product.numReviews} ${
-                      product.reviews.length == 1 ? 'review' : 'reviews'
+                      product.reviews.length === 1 ? 'review' : 'reviews'
                     }`}
-                    color={'#f8e825'}
+                    color={'#008b4a'}
                   />
-                </ListGroup.Item>
-
-                <ListGroup.Item id="content3">
+                </Box>
+                <Text fontSize="2xl" fontWeight="bold">
                   Price: ${product.price}
-                </ListGroup.Item>
+                </Text>
+                <Text>{product.description}</Text>
+              </VStack>
 
-                <ListGroup.Item id="content4">
-                  {product.description}
-                </ListGroup.Item>
-              </ListGroup>
-            </Col>
-            <Col md={3} className="priceContainer m-3">
-              <Card>
-                <ListGroup variant="flush">
-                  <ListGroup.Item id="content5">
-                    <Row>
-                      <Col>Price:</Col>
-                      <Col>
-                        <strong>${product.price}</strong>
-                      </Col>
-                    </Row>
-                  </ListGroup.Item>
+              <VStack spacing={4} align="stretch">
+                <Box p={5} shadow="md" borderWidth="1px" borderRadius="md">
+                  <VStack spacing={4} align="stretch">
+                    <Flex justify="space-between">
+                      <Text>Price:</Text>
+                      <Text fontWeight="bold">${product.price}</Text>
+                    </Flex>
 
-                  <ListGroup.Item id="content6">
-                    <Row>
-                      <Col>Status:</Col>
-                      <Col>
-                        {product.countInStock > 0 ? 'In Stock' : 'Out of Stock'}
-                      </Col>
-                    </Row>
-                  </ListGroup.Item>
+                    <Flex justify="space-between">
+                      <Text>Status:</Text>
+                      <Text>
+                        {product.countInStock > 0 ? (
+                          <Badge colorScheme="green">In Stock</Badge>
+                        ) : (
+                          <Badge colorScheme="red">Out of Stock</Badge>
+                        )}
+                      </Text>
+                    </Flex>
 
-                  {product.countInStock > 0 && (
-                    <ListGroup.Item id="content7">
-                      <Row>
-                        <Col>Qty</Col>
-                        <Col xs="auto" className="my-1">
-                          <Form.Control
-                            as="select"
-                            value={qty}
-                            onChange={e => setQty(e.target.value)}
-                          >
-                            {[...Array(product.countInStock).keys()].map(x => (
-                              <option key={x + 1} value={x + 1}>
-                                {x + 1}
-                              </option>
-                            ))}
-                          </Form.Control>
-                        </Col>
-                      </Row>
-                    </ListGroup.Item>
-                  )}
+                    {product.countInStock > 0 && (
+                      <HStack spacing={4}>
+                        <Text>Qty</Text>
+                        <Select
+                          value={qty}
+                          onChange={e => setQty(e.target.value)}
+                        >
+                          {[...Array(product.countInStock).keys()].map(x => (
+                            <option key={x + 1} value={x + 1}>
+                              {x + 1}
+                            </option>
+                          ))}
+                        </Select>
+                      </HStack>
+                    )}
 
-                  <ListGroup.Item className="text-center" id="content8">
                     <Button
+                      colorScheme="teal"
                       onClick={addToCartHandler}
-                      className="btn-block"
-                      disabled={product.countInStock == 0}
-                      type="button"
+                      isDisabled={product.countInStock === 0}
                     >
                       Add to Cart
                     </Button>
-                  </ListGroup.Item>
-                </ListGroup>
-              </Card>
-            </Col>
-          </Row>
-          <Row>
-            <Col md={6}>
-              <h4>Reviews</h4>
+                  </VStack>
+                </Box>
+              </VStack>
+            </SimpleGrid>
+
+            <Box>
+              <Heading as="h4" size="md" mb={4}>
+                Reviews
+              </Heading>
               {product.reviews.length === 0 && (
                 <Message variant="info">No Reviews</Message>
               )}
-
-              <ListGroup variant="flush">
+              <VStack spacing={4} align="stretch">
                 {product.reviews.map(review => (
-                  <ListGroup.Item key={review._id}>
-                    <strong>{review.name}</strong>
-                    <Rating value={review.rating} color="#f8e825" />
-                    <p>{review.createdAt.substring(0, 10)}</p>
-                    <p>{review.comment}</p>
-                  </ListGroup.Item>
+                  <Box
+                    key={review._id}
+                    p={5}
+                    shadow="md"
+                    borderWidth="1px"
+                    borderRadius="md"
+                  >
+                    <VStack align="start">
+                      <Text fontWeight="bold">
+                        {review.name}
+                        {`   `}
+                        <Rating value={review.rating} color="#008b4a" />
+                      </Text>
+                      <Text>{review.createdAt.substring(0, 10)}</Text>
+                      <Text>{review.comment}</Text>
+                    </VStack>
+                  </Box>
                 ))}
 
-                <ListGroup.Item>
-                  <h4>Write a review</h4>
-
+                <Box>
+                  <Heading as="h4" size="md" mb={4}>
+                    Write a review
+                  </Heading>
                   {loadingProductReview && <Loader />}
                   {successProductReview && (
                     <Message variant="success">Review Submitted</Message>
@@ -191,56 +196,49 @@ function ProductPage() {
                   {errorProductReview && (
                     <Message variant="danger">{errorProductReview}</Message>
                   )}
-
                   {userInfo ? (
-                    <Form onSubmit={submitHandler}>
-                      <Form.Group controlId="rating">
-                        <Form.Label>Rating</Form.Label>
-                        <Form.Control
-                          as="select"
+                    <Box as="form" onSubmit={submitHandler}>
+                      <VStack spacing={4} align="stretch">
+                        <Select
+                          placeholder="Select rating"
                           value={rating}
                           onChange={e => setRating(e.target.value)}
                         >
-                          <option value="">Select...</option>
                           <option value="1">1 - Poor</option>
                           <option value="2">2 - Fair</option>
                           <option value="3">3 - Good</option>
                           <option value="4">4 - Very Good</option>
                           <option value="5">5 - Excellent</option>
-                        </Form.Control>
-                      </Form.Group>
+                        </Select>
 
-                      <Form.Group controlId="comment">
-                        <Form.Label>Review</Form.Label>
-                        <Form.Control
-                          as="textarea"
-                          row="5"
+                        <Textarea
+                          placeholder="Enter your review"
                           value={comment}
                           onChange={e => setComment(e.target.value)}
-                        ></Form.Control>
-                      </Form.Group>
+                        />
 
-                      <Button
-                        className="mt-3"
-                        disabled={loadingProductReview}
-                        type="submit"
-                        variant="primary"
-                      >
-                        Submit
-                      </Button>
-                    </Form>
+                        <Button
+                          type="submit"
+                          colorScheme="teal"
+                          isLoading={loadingProductReview}
+                        >
+                          Submit
+                        </Button>
+                      </VStack>
+                    </Box>
                   ) : (
                     <Message variant="info">
-                      Please <Link to="/login">login</Link> to write a review
+                      Please <RouterLink to="/login">login</RouterLink> to write
+                      a review
                     </Message>
                   )}
-                </ListGroup.Item>
-              </ListGroup>
-            </Col>
-          </Row>
-        </Container>
-      )}
-    </div>
+                </Box>
+              </VStack>
+            </Box>
+          </Container>
+        )}
+      </Box>
+    </Container>
   );
 }
 

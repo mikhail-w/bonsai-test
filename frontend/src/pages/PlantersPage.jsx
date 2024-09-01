@@ -1,12 +1,11 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Row, Col, Container } from 'react-bootstrap';
 import Product from '../components/Product';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Paginate from '../components/Paginate';
 import { listPlanterProducts } from '../actions/productActions';
-import '../index.css';
+import { SimpleGrid, Center, Box, Container, Heading } from '@chakra-ui/react';
 
 function PlantersPage() {
   const dispatch = useDispatch();
@@ -18,31 +17,35 @@ function PlantersPage() {
   useEffect(() => {
     dispatch(listPlanterProducts());
   }, [dispatch]);
-  return (
-    <>
-      {loading ? (
-        // <h2>Loading...</h2>
-        <Loader />
-      ) : error ? (
-        <Message variant={'danger'}>{error}</Message>
-      ) : (
-        <>
-          <Container className="listContainer">
-            <h1 className="title">Planters</h1>
 
-            <Row id="out">
+  return (
+    <Container maxW="container.xl" mt="100px" minH="100vh">
+      <Center
+        flexDirection="column"
+        mt={12}
+        mb={12}
+        minH="80vh"
+        justifyContent="space-between"
+      >
+        <h1 className="title">Planters</h1>
+        <SimpleGrid minChildWidth="300px" spacing="10px" width="90%" px={5}>
+          {loading ? (
+            <Loader />
+          ) : error ? (
+            <Message variant="danger">{error}</Message>
+          ) : (
+            <>
               {products.map(product => (
-                // <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-                <Col key={product._id}>
+                <Box key={product._id}>
                   <Product product={product} />
-                </Col>
+                </Box>
               ))}
-            </Row>
-          </Container>
-        </>
-      )}
-      <Paginate page={page} pages={pages} keyword={keyword} />
-    </>
+            </>
+          )}
+        </SimpleGrid>
+        <Paginate page={page} pages={pages} keyword={keyword} />
+      </Center>
+    </Container>
   );
 }
 

@@ -1,5 +1,4 @@
 // src/components/Features.js
-import React from 'react';
 import styled from 'styled-components';
 import { FaLeaf, FaSeedling, FaTree } from 'react-icons/fa';
 
