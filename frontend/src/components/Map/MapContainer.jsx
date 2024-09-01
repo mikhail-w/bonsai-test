@@ -32,7 +32,7 @@ const MapContainer = ({
 
   useEffect(() => {
     // Define the panTo function and expose it via setPanTo
-    setPanTo((latLng, zoom = 14) => {
+    setPanTo((latLng, zoom = 17) => {
       if (mapRef.current) {
         mapRef.current.panTo(latLng);
         mapRef.current.setZoom(zoom);
@@ -86,6 +86,12 @@ const MapContainer = ({
               type: place.types || [],
               address: place.vicinity,
               photo: place.photos ? place.photos[0].getUrl() : DefaultImg,
+              rating: place.rating || 0,
+              reviewCount: place.user_ratings_total || 0,
+              isOpen: place.opening_hours?.isOpen() || false,
+              closingTime: place.opening_hours?.periods
+                ? place.opening_hours.periods[0]?.close?.time || 'N/A'
+                : 'N/A', // Default to 'N/A' if periods or close time isn't available
             }))
           );
           // Only set this once on initial load or search, prevent unnecessary updates
@@ -106,7 +112,6 @@ const MapContainer = ({
     setLocationList,
     DefaultImg,
   ]);
-  // }, [isLoaded, center.lat, center.lng, searchTerm]);
 
   return (
     <Box
@@ -133,9 +138,9 @@ const MapContainer = ({
                     : CustomMarker, // Change icon based on selection
                 scaledSize: new window.google.maps.Size(38, 95),
               }}
+              zIndex={selectedMarker?.id === marker.id ? 999 : 1} // Set zIndex based on selection
               onMouseOver={() => handleMarkerMouseOver(marker)}
               onMouseOut={handleMarkerMouseOut}
-              // onClick={() => setSelectedMarker(marker)}
             />
           ))}
           {selectedMarker && infoWindowVisible && (

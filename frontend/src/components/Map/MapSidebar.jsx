@@ -100,7 +100,19 @@ const MapSidebar = ({
                 }
                 setSelectedMarker({
                   id: location.place_id,
+                  name: location.name,
                   position: location.geometry.location,
+                  type: location.types || [],
+                  address: location.vicinity,
+                  photo: location.photos
+                    ? location.photos[0].getUrl()
+                    : DefaultImg,
+                  rating: location.rating || 0,
+                  reviewCount: location.user_ratings_total || 0,
+                  isOpen: location.opening_hours?.isOpen() || false,
+                  closingTime: location.opening_hours?.periods
+                    ? location.opening_hours.periods[0]?.close?.time || 'N/A'
+                    : 'N/A', // Safely access the closing time or default to 'N/A'
                 });
               }}
             >
