@@ -20,6 +20,8 @@ const MapSidebar = ({
   locationList,
   setCenter,
   handleIconClick,
+  setSelectedMarker,
+  handleSelectLocation,
 }) => {
   return (
     <Box
@@ -79,12 +81,16 @@ const MapSidebar = ({
                 boxShadow: 'xl',
                 cursor: 'pointer',
               }}
-              onClick={() =>
+              onClick={() => {
                 setCenter({
                   lat: location.geometry.location.lat(),
                   lng: location.geometry.location.lng(),
-                })
-              }
+                });
+                setSelectedMarker({
+                  id: location.place_id,
+                  position: location.geometry.location,
+                });
+              }}
             >
               <HStack align="center" width="100%" spacing={0} px={4} py={2}>
                 <Box

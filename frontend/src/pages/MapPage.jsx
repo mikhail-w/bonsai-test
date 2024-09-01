@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Text, useDisclosure, Spinner } from '@chakra-ui/react';
+import { useLoadScript } from '@react-google-maps/api';
 import MapContainer from '../components/Map/MapContainer';
 import MapSidebar from '../components/Map/MapSidebar';
 import MapDetailsPanel from '../components/Map/MapDetailsPanel';
@@ -18,8 +19,20 @@ function MapPage() {
   const [isPanelOpen, setPanelOpen] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  // Load the Google Maps API script
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+    libraries: ['places'],
+  });
+
   const handleMarkerMouseOver = marker => {
     setSelectedMarker(marker);
+    setInfoWindowVisible(true);
+  };
+
+  const handleSelectLocation = location => {
+    console.log('Location:', location);
+    // setSelectedMarker(marker);
     setInfoWindowVisible(true);
   };
 
@@ -43,6 +56,9 @@ function MapPage() {
     setPanelOpen(false);
   };
 
+  if (loadError) return <Text color="red.500">Error loading maps</Text>;
+  if (!isLoaded) return <Spinner size="xl" />;
+
   return (
     <Box
       display={{ md: 'flex' }}
@@ -56,12 +72,19 @@ function MapPage() {
         handleSearch={handleSearch}
         locationList={locationList}
         setCenter={setCenter}
+        setSelectedMarker={setSelectedMarker}
         handleIconClick={handleIconClick}
+        handleSelectLocation={handleSelectLocation}
       />
 
       <MapContainer
+        setCenter={setCenter}
+        searchTerm={searchTerm}
         center={center}
         markers={markers}
+        setMarkers={setMarkers} // Pass setMarkers here
+        locationList={locationList}
+        setLocationList={setLocationList} // Pass setLocationList here
         handleMarkerMouseOver={handleMarkerMouseOver}
         handleMarkerMouseOut={handleMarkerMouseOut}
         selectedMarker={selectedMarker}
@@ -71,6 +94,7 @@ function MapPage() {
       <MapDetailsPanel
         selectedLocation={selectedLocation}
         closePanel={closePanel}
+        isPanelOpen={isPanelOpen}
       />
 
       <MapDrawer
