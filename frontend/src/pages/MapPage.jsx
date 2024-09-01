@@ -49,7 +49,10 @@ function MapPage() {
   };
 
   const handleIconClick = location => {
-    setSelectedLocation(location);
+    setSelectedLocation({
+      ...location,
+      photo: location.photos ? location.photos[0].getUrl() : null, // Ensure the photo is included
+    });
     setPanelOpen(true);
   };
 

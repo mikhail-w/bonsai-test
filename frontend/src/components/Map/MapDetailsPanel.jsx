@@ -53,7 +53,7 @@ const MapDetailsPanel = ({ selectedLocation, closePanel, isPanelOpen }) => {
             </Text>
             <Text fontFamily="rale" fontSize="md">
               Currently:{' '}
-              {selectedLocation.opening_hours.isOpen() ? 'Open Now' : 'Closed'}
+              {selectedLocation.opening_hours?.isOpen() ? 'Open Now' : 'Closed'}
             </Text>
             <Text fontFamily="rale" fontSize="md">
               Status: {selectedLocation.business_status}
