@@ -21,7 +21,7 @@ import ProductEditPage from './pages/ProductEditPage.jsx';
 import ProductsPage from './pages/ProductsPage.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import Trending from './pages/Trending.jsx';
-import Explore from './pages/Explore.jsx';
+import MapPage from './pages/MapPage.jsx';
 import Favorites from './pages/Favorites.jsx';
 import Settings from './pages/Settings.jsx';
 import YourInfo from './pages/MyInfo.jsx';
@@ -49,7 +49,7 @@ const router = createBrowserRouter([
         children: [
           { path: 'info', element: <YourInfo /> },
           { path: 'trending', element: <Trending /> },
-          { path: 'explore', element: <Explore /> },
+          { path: 'explore', element: <MapPage /> },
           { path: 'favorites', element: <Favorites /> },
           { path: 'settings', element: <Settings /> },
         ],

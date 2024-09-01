@@ -29,7 +29,6 @@ import {
 } from '@chakra-ui/react';
 import {
   FiMenu,
-  FiBell,
   FiChevronDown,
   FiHome,
   FiTrendingUp,
