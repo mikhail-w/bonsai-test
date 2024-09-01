@@ -6,19 +6,28 @@ import {
   VStack,
   Text,
   Image,
+  Button,
   useColorModeValue,
 } from '@chakra-ui/react';
 
-const MapMarkerInfoWindow = ({ selectedMarker, onClose }) => {
+const MapMarkerInfoWindow = ({
+  selectedMarker,
+  onMouseEnter,
+  onMouseLeave,
+  onCloseClick,
+}) => {
+  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+    selectedMarker.address
+  )}`;
+
   return (
     <InfoWindow
       position={selectedMarker.position}
       options={{
         disableAutoPan: true,
         pixelOffset: new window.google.maps.Size(0, -90),
-        closeBoxURL: '', // Remove the default close button
       }}
-      onCloseClick={onClose} // Call onClose when the InfoWindow is closed
+      onCloseClick={onCloseClick}
     >
       <Box
         p={2}
@@ -27,9 +36,10 @@ const MapMarkerInfoWindow = ({ selectedMarker, onClose }) => {
         bg={useColorModeValue('white', 'gray.700')}
         minWidth="300px"
         maxWidth="400px"
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
       >
         <VStack align="start" spacing={2}>
-          {/* Image and Title */}
           <Image
             src={selectedMarker.photo}
             alt={`${selectedMarker.name} thumbnail`}
@@ -38,32 +48,19 @@ const MapMarkerInfoWindow = ({ selectedMarker, onClose }) => {
             height="150px"
             objectFit="cover"
           />
-          <Text
-            fontFamily="rale"
-            fontWeight="bold"
-            fontSize="lg"
-            noOfLines={1}
-            isTruncated
-          >
+          <Text fontWeight="bold" fontSize="lg" noOfLines={1} isTruncated>
             {selectedMarker.name}
           </Text>
-
-          {/* Rating and Review Count */}
           <HStack spacing={1}>
-            <Text fontFamily="rale" fontSize="sm" color="yellow.500">
+            <Text fontSize="sm" color="yellow.500">
               ★
             </Text>
-            <Text fontFamily="rale" fontSize="sm">
-              {selectedMarker.rating}
-            </Text>
-            <Text fontFamily="rale" fontSize="sm" color="gray.500">
+            <Text fontSize="sm">{selectedMarker.rating}</Text>
+            <Text fontSize="sm" color="gray.500">
               ({selectedMarker.reviewCount})
             </Text>
           </HStack>
-
-          {/* Type of Place */}
           <Text
-            fontFamily="rale"
             fontSize="sm"
             color={useColorModeValue('gray.600', 'gray.300')}
             noOfLines={1}
@@ -71,10 +68,7 @@ const MapMarkerInfoWindow = ({ selectedMarker, onClose }) => {
           >
             {selectedMarker.type.join(', ')}
           </Text>
-
-          {/* Open/Closed Status */}
           <Text
-            fontFamily="rale"
             fontSize="sm"
             color={selectedMarker.isOpen ? 'green.500' : 'red.500'}
             noOfLines={1}
@@ -83,10 +77,7 @@ const MapMarkerInfoWindow = ({ selectedMarker, onClose }) => {
             {selectedMarker.isOpen ? 'Open' : 'Closed'} - Closes at{' '}
             {selectedMarker.closingTime}
           </Text>
-
-          {/* Address */}
           <Text
-            fontFamily="rale"
             fontSize="sm"
             color={useColorModeValue('gray.600', 'gray.300')}
             mt={1}
@@ -95,6 +86,18 @@ const MapMarkerInfoWindow = ({ selectedMarker, onClose }) => {
           >
             {selectedMarker.address}
           </Text>
+          <Button
+            as="a"
+            href={directionsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            colorScheme="green"
+            size="sm"
+            width="full"
+            mt={2}
+          >
+            Get Directions
+          </Button>
         </VStack>
       </Box>
     </InfoWindow>

@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
-import { Box, Spinner, useColorModeValue } from '@chakra-ui/react';
+import { GoogleMap, Marker } from '@react-google-maps/api';
+import { Box, Spinner } from '@chakra-ui/react';
 import CustomMarker from '../../assets/images/leaf-green.png';
 import ActiveMarker from '../../assets/images/leaf-red.png';
 import useMapLogic from '../../hooks/useMapLogic';
@@ -16,13 +16,16 @@ const MapContainer = ({
   center,
   setCenter,
   markers,
-  setMarkers, // Receive setMarkers here
+  setMarkers,
   locationList,
-  setLocationList, // Receive setLocationList here
-  handleMarkerMouseOver,
-  handleMarkerMouseOut,
+  setLocationList,
+  handleMouseOver,
+  handleMouseOut,
+  handleInfoWindowCloseClick,
   selectedMarker,
   infoWindowVisible,
+  onInfoWindowMouseOver,
+  onInfoWindowMouseOut,
   searchTerm,
   setPanTo,
 }) => {
@@ -94,7 +97,6 @@ const MapContainer = ({
                 : 'N/A', // Default to 'N/A' if periods or close time isn't available
             }))
           );
-          // Only set this once on initial load or search, prevent unnecessary updates
           if (!locationList.length) {
             setLocationList(results);
           }
@@ -139,12 +141,17 @@ const MapContainer = ({
                 scaledSize: new window.google.maps.Size(38, 95),
               }}
               zIndex={selectedMarker?.id === marker.id ? 999 : 1} // Set zIndex based on selection
-              onMouseOver={() => handleMarkerMouseOver(marker)}
-              onMouseOut={handleMarkerMouseOut}
+              onMouseOver={() => handleMouseOver(marker)}
+              onMouseOut={handleMouseOut}
             />
           ))}
           {selectedMarker && infoWindowVisible && (
-            <MapMarkerInfoWindow selectedMarker={selectedMarker} />
+            <MapMarkerInfoWindow
+              selectedMarker={selectedMarker}
+              onMouseEnter={onInfoWindowMouseOver}
+              onMouseLeave={onInfoWindowMouseOut}
+              onCloseClick={handleInfoWindowCloseClick} // Handle close button click
+            />
           )}
         </GoogleMap>
       )}
