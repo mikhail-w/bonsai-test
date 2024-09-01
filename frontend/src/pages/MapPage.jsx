@@ -18,6 +18,7 @@ function MapPage() {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [isPanelOpen, setPanelOpen] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [panTo, setPanTo] = useState(null);
 
   // Load the Google Maps API script
   const { isLoaded, loadError } = useLoadScript({
@@ -72,6 +73,7 @@ function MapPage() {
         handleSearch={handleSearch}
         locationList={locationList}
         setCenter={setCenter}
+        panTo={panTo} // Pass the panTo method
         setSelectedMarker={setSelectedMarker}
         handleIconClick={handleIconClick}
         handleSelectLocation={handleSelectLocation}
@@ -89,6 +91,7 @@ function MapPage() {
         handleMarkerMouseOut={handleMarkerMouseOut}
         selectedMarker={selectedMarker}
         infoWindowVisible={infoWindowVisible}
+        setPanTo={setPanTo} // Pass setPanTo to MapContainer
       />
 
       <MapDetailsPanel

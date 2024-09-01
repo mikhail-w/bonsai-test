@@ -24,11 +24,21 @@ const MapContainer = ({
   selectedMarker,
   infoWindowVisible,
   searchTerm,
-  // setSelectedMarker,
+  setPanTo,
 }) => {
   const mapRef = useRef(null);
   const { isLoaded, loadError } = useMapLogic();
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    // Define the panTo function and expose it via setPanTo
+    setPanTo((latLng, zoom = 14) => {
+      if (mapRef.current) {
+        mapRef.current.panTo(latLng);
+        mapRef.current.setZoom(zoom);
+      }
+    });
+  }, [setPanTo]);
 
   // Handle errors in loading Google Maps
   useEffect(() => {

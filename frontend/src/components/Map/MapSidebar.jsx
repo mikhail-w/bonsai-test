@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   HStack,
@@ -19,10 +19,13 @@ const MapSidebar = ({
   handleSearch,
   locationList,
   setCenter,
+  panTo,
   handleIconClick,
   setSelectedMarker,
   handleSelectLocation,
 }) => {
+  const [selectedLocationId, setSelectedLocationId] = useState(null);
+
   return (
     <Box
       width={{ base: '100%', md: '30%' }}
@@ -71,21 +74,30 @@ const MapSidebar = ({
               mt={5}
               borderRadius="lg"
               width="100%"
-              // bg={useColorModeValue('white', 'gray.700')}
-              bg="white"
+              bg={
+                selectedLocationId === location.place_id ? 'green.100' : 'white'
+              }
               transition="all 0.3s"
               _hover={{
-                // bg: useColorModeValue('green.50', 'gray.600'),
-                bg: 'green.50',
+                bg:
+                  selectedLocationId === location.place_id
+                    ? 'green.100'
+                    : 'green.100',
                 transform: 'scale(1.02)',
                 boxShadow: 'xl',
                 cursor: 'pointer',
               }}
               onClick={() => {
-                setCenter({
+                setSelectedLocationId(location.place_id); // Update the selected location
+                const latLng = {
                   lat: location.geometry.location.lat(),
                   lng: location.geometry.location.lng(),
-                });
+                };
+                if (panTo) {
+                  panTo(latLng);
+                } else {
+                  setCenter(latLng);
+                }
                 setSelectedMarker({
                   id: location.place_id,
                   position: location.geometry.location,
@@ -117,7 +129,6 @@ const MapSidebar = ({
                   <Text
                     fontFamily="rale"
                     fontSize={{ base: 'sm', md: 'md' }}
-                    // color={useColorModeValue('gray.600', 'gray.300')}
                     color="gray.600"
                   >
                     {location.vicinity}
