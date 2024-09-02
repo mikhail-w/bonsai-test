@@ -19,22 +19,17 @@ const MapContainer = ({
   setMarkers,
   locationList,
   setLocationList,
-  handleMouseOver,
-  handleMouseOut,
-  handleInfoWindowCloseClick,
-  selectedMarker,
-  infoWindowVisible,
-  onInfoWindowMouseOver,
-  onInfoWindowMouseOut,
   searchTerm,
   setPanTo,
 }) => {
   const mapRef = useRef(null);
   const { isLoaded, loadError } = useMapLogic();
   const [error, setError] = useState('');
+  const [selectedMarker, setSelectedMarker] = useState(null);
+  const [infoWindowVisible, setInfoWindowVisible] = useState(false);
+  const hoverTimeoutRef = useRef(null);
 
   useEffect(() => {
-    // Define the panTo function and expose it via setPanTo
     setPanTo((latLng, zoom = 17) => {
       if (mapRef.current) {
         mapRef.current.panTo(latLng);
@@ -43,7 +38,6 @@ const MapContainer = ({
     });
   }, [setPanTo]);
 
-  // Handle errors in loading Google Maps
   useEffect(() => {
     if (loadError) {
       console.error('Error loading Google Maps:', loadError);
@@ -115,6 +109,31 @@ const MapContainer = ({
     DefaultImg,
   ]);
 
+  const handleMouseOver = marker => {
+    clearTimeout(hoverTimeoutRef.current); // Clear any existing timeout
+    setSelectedMarker(marker);
+    setInfoWindowVisible(true);
+  };
+
+  const handleMouseOut = () => {
+    hoverTimeoutRef.current = setTimeout(() => {
+      setInfoWindowVisible(false);
+      setSelectedMarker(null);
+    }, 200); // Adjust the delay as needed
+  };
+
+  const handleInfoWindowMouseOver = () => {
+    clearTimeout(hoverTimeoutRef.current); // Clear the timeout to prevent the info window from disappearing
+    setInfoWindowVisible(true);
+  };
+
+  const handleInfoWindowMouseOut = () => {
+    hoverTimeoutRef.current = setTimeout(() => {
+      setInfoWindowVisible(false);
+      setSelectedMarker(null);
+    }, 200); // Adjust the delay as needed
+  };
+
   return (
     <Box
       flex="1"
@@ -122,7 +141,7 @@ const MapContainer = ({
       height={{ base: 'calc(100vh - 56px)', md: '100vh' }}
       overflow="hidden"
     >
-      {isLoaded && (
+      {isLoaded ? (
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
           zoom={11}
@@ -148,12 +167,13 @@ const MapContainer = ({
           {selectedMarker && infoWindowVisible && (
             <MapMarkerInfoWindow
               selectedMarker={selectedMarker}
-              onMouseEnter={onInfoWindowMouseOver}
-              onMouseLeave={onInfoWindowMouseOut}
-              onCloseClick={handleInfoWindowCloseClick} // Handle close button click
+              onMouseEnter={handleInfoWindowMouseOver}
+              onMouseLeave={handleInfoWindowMouseOut}
             />
           )}
         </GoogleMap>
+      ) : (
+        <Spinner size="xl" />
       )}
     </Box>
   );

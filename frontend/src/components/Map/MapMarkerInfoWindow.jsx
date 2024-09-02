@@ -1,16 +1,14 @@
-import React from 'react';
 import { InfoWindow } from '@react-google-maps/api';
 import {
-  Box,
   HStack,
   VStack,
   Text,
   Image,
   IconButton,
-  Icon,
   useColorModeValue,
+  Icon,
 } from '@chakra-ui/react';
-import { FaStar, FaDirections, FaRegBookmark } from 'react-icons/fa';
+import { FaStar, FaDirections } from 'react-icons/fa';
 
 const MapMarkerInfoWindow = ({
   selectedMarker,
@@ -24,6 +22,10 @@ const MapMarkerInfoWindow = ({
     }
     return stars;
   };
+
+  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+    selectedMarker.address
+  )}`;
 
   return (
     <InfoWindow
@@ -47,59 +49,53 @@ const MapMarkerInfoWindow = ({
         <Image
           src={selectedMarker.photo}
           alt={`${selectedMarker.name} thumbnail`}
-          width="300px"
+          width="100%" // Make the image fill the full width of the container
           height="100px"
           objectFit="cover"
-          borderTopRadius="md"
+          borderTopRadius="0" // Remove border-radius to make the image touch the top border
+          marginTop="0" // Ensure no margin at the top
         />
 
-        {/* Title and Icon Buttons */}
-        <HStack justifyContent="space-between" width="100%" p={2} pt={1}>
-          <Text fontWeight="bold" fontSize="md" noOfLines={1} isTruncated>
+        {/* Title and Directions Button */}
+        <HStack justifyContent="space-between" width="100%" p={0} pt={1}>
+          <Text
+            fontWeight="bold"
+            fontSize="md"
+            noOfLines={1}
+            fontFamily="rale"
+            isTruncated
+            maxWidth="70%" // Limit the text width to 70% of the container
+            display="inline-block" // Ensures the text block respects its width
+            whiteSpace="nowrap" // Prevents text from wrapping to the next line
+            overflow="hidden" // Ensures overflow text is hidden
+            textOverflow="ellipsis" // Adds ellipsis (...) at the end of the truncated text
+          >
             {selectedMarker.name}
           </Text>
-          <HStack spacing={2}>
-            <IconButton
-              icon={<FaDirections />}
-              size="sm"
-              variant="ghost"
-              aria-label="Get Directions"
-            />
-            <IconButton
-              icon={<FaRegBookmark />}
-              size="sm"
-              variant="ghost"
-              aria-label="Save Location"
-            />
-          </HStack>
+          <IconButton
+            icon={<FaDirections />}
+            size="lg"
+            variant="ghost"
+            colorScheme="green"
+            aria-label="Get Directions"
+            as="a"
+            href={directionsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            position="absolute"
+            right={4}
+            transition="transform 0.2s" // Smooth transition effect
+            _hover={{
+              transform: 'scale(1.5)', // Increase the size to 150% on hover
+            }}
+          />
         </HStack>
 
         {/* Rating Section */}
-        <HStack spacing={1} px={2}>
-          {renderStars(selectedMarker.rating)}
-          <Text fontSize="xs" color="gray.500">
-            ({selectedMarker.reviewCount})
-          </Text>
-        </HStack>
-
-        {/* Status and Type */}
-        <VStack align="start" spacing={0} px={2}>
-          <Text
-            fontSize="xs"
-            color={useColorModeValue('gray.600', 'gray.300')}
-            noOfLines={1}
-          >
-            {selectedMarker.type.join(', ')}
-          </Text>
-          <Text
-            fontSize="xs"
-            color={selectedMarker.isOpen ? 'green.500' : 'red.500'}
-            noOfLines={1}
-          >
-            {selectedMarker.isOpen ? 'Open' : 'Closed'} - Opens{' '}
-            {selectedMarker.closingTime}
-          </Text>
-        </VStack>
+        <HStack spacing={0.5}>{renderStars(selectedMarker.rating)}</HStack>
+        <Text fontSize="xs" color="gray.500">
+          ({selectedMarker.reviewCount}) reviews
+        </Text>
       </VStack>
     </InfoWindow>
   );
