@@ -5,6 +5,7 @@ import { logout } from '../actions/userActions';
 import { clearCart } from '../actions/cartActions';
 import { Link as RouterLink } from 'react-router-dom';
 import { ShoppingCart } from 'lucide-react';
+import BlogIcon from '../assets/icons/blogger-alt.svg';
 import {
   IconButton,
   Avatar,
@@ -26,6 +27,7 @@ import {
   MenuList,
   Badge,
   Button,
+  Image,
 } from '@chakra-ui/react';
 import {
   FiMenu,
@@ -43,6 +45,7 @@ const LinkItems = [
   { name: 'My Info', icon: FiUser, path: '/profile/info' },
   { name: 'Trending', icon: FiTrendingUp, path: '/profile/trending' },
   { name: 'Explore', icon: FiCompass, path: '/profile/explore' },
+  { name: 'Blog', icon: BlogIcon, path: '/profile/blog' }, // This will now use the SVG
   { name: 'Favorites', icon: FiStar, path: '/profile/favorites' },
   { name: 'Settings', icon: FiSettings, path: '/profile/settings' },
 ];
@@ -92,14 +95,20 @@ const NavItem = ({ icon, children, path, ...rest }) => {
         {...rest}
       >
         {icon && (
-          <Icon
+          <Box
+            as={typeof icon === 'string' ? 'div' : 'div'} // Use 'div' as a wrapper for both cases
             mr="4"
             fontSize="16"
             _groupHover={{
               color: 'white',
             }}
-            as={icon}
-          />
+          >
+            {typeof icon === 'string' ? (
+              <Image src={icon} alt={children} boxSize="16px" /> // Use Chakra's Image component
+            ) : (
+              <Icon as={icon} />
+            )}
+          </Box>
         )}
         {children}
       </Flex>

@@ -25,6 +25,7 @@ import MapPage from './pages/MapPage.jsx';
 import Favorites from './pages/Favorites.jsx';
 import Settings from './pages/Settings.jsx';
 import YourInfo from './pages/MyInfo.jsx';
+import BlogPage from './pages/BlogPage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,7 @@ const router = createBrowserRouter([
           { path: 'info', element: <YourInfo /> },
           { path: 'trending', element: <Trending /> },
           { path: 'explore', element: <MapPage /> },
+          { path: 'blog', element: <BlogPage /> },
           { path: 'favorites', element: <Favorites /> },
           { path: 'settings', element: <Settings /> },
         ],
