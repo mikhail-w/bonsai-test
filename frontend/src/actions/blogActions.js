@@ -71,42 +71,37 @@ export const getBlogPostDetails = id => async dispatch => {
 };
 
 // Create a new blog post
-export const createBlogPost =
-  (content, image) => async (dispatch, getState) => {
-    try {
-      dispatch({ type: BLOG_POST_CREATE_REQUEST });
+export const createBlogPost = formData => async (dispatch, getState) => {
+  try {
+    dispatch({ type: BLOG_POST_CREATE_REQUEST });
 
-      const {
-        userLogin: { userInfo },
-      } = getState();
+    const {
+      userLogin: { userInfo },
+    } = getState();
 
-      const config = {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      };
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
 
-      const formData = new FormData();
-      formData.append('content', content);
-      if (image) formData.append('image', image);
+    const { data } = await axios.post(`/api/blog/create/`, formData, config);
 
-      const { data } = await axios.post(`/api/blog/create/`, formData, config);
-
-      dispatch({
-        type: BLOG_POST_CREATE_SUCCESS,
-        payload: data,
-      });
-    } catch (error) {
-      dispatch({
-        type: BLOG_POST_CREATE_FAIL,
-        payload:
-          error.response && error.response.data.detail
-            ? error.response.data.detail
-            : error.message,
-      });
-    }
-  };
+    dispatch({
+      type: BLOG_POST_CREATE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: BLOG_POST_CREATE_FAIL,
+      payload:
+        error.response && error.response.data.detail
+          ? error.response.data.detail
+          : error.message,
+    });
+  }
+};
 
 // Delete a blog post
 export const deleteBlogPost = id => async (dispatch, getState) => {

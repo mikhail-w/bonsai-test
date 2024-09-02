@@ -79,17 +79,6 @@ export const register = (name, email, password, avatar) => async dispatch => {
       type: USER_REGISTER_REQUEST,
     });
 
-    // const config = {
-    //   headers: {
-    //     'Content-type': 'application/json',
-    //   },
-    // };
-    // const { data } = await axios.post(
-    //   '/api/users/register/',
-    //   { name: name, email: email, password: password, avatar: avatar },
-    //   config
-    // );
-
     // Create FormData object to handle file upload
     const formData = new FormData();
     formData.append('name', name);
