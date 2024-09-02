@@ -74,7 +74,7 @@ const MapContainer = ({
 
       const request = {
         location: new google.maps.LatLng(center.lat, center.lng),
-        radius: '20000', // 20km radius
+        radius: '40000', // 20km radius
         type: ['store', 'plant_nursery', 'florist', 'park'], // Add more relevant types
         keyword: refinedSearchTerm,
       };
@@ -96,6 +96,12 @@ const MapContainer = ({
                 type: place.types || [],
                 address: place.vicinity,
                 photo: place.photos ? place.photos[0].getUrl() : DefaultImg,
+                rating: place.rating || 0,
+                reviewCount: place.user_ratings_total || 0,
+                isOpen: place.opening_hours?.isOpen() || false,
+                closingTime: place.opening_hours?.periods
+                  ? place.opening_hours.periods[0]?.close?.time || 'N/A'
+                  : 'N/A', // Default to 'N/A' if periods or close time isn't available
               }))
             );
 

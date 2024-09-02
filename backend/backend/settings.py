@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     "base",
+    "blog",
 ]
 
 REST_FRAMEWORK = {
