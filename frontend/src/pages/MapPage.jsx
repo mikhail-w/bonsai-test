@@ -129,6 +129,7 @@ function MapPage() {
         handleMouseOut={handleMouseOut} // Unified mouse out event for marker and InfoWindow
         handleInfoWindowCloseClick={handleInfoWindowCloseClick} // Handle close click event for InfoWindow
         selectedMarker={selectedMarker}
+        setSelectedMarker={setSelectedMarker}
         infoWindowVisible={infoWindowVisible}
         onInfoWindowMouseOver={handleInfoWindowMouseOver} // Handle mouse over for InfoWindow
         onInfoWindowMouseOut={handleInfoWindowMouseOut} // Handle mouse out for InfoWindow

@@ -21,11 +21,12 @@ const MapContainer = ({
   setLocationList,
   searchTerm,
   setPanTo,
+  selectedMarker, // Receiving selectedMarker
+  setSelectedMarker, // Receiving setSelectedMarker
 }) => {
   const mapRef = useRef(null);
   const { isLoaded, loadError } = useMapLogic();
   const [error, setError] = useState('');
-  const [selectedMarker, setSelectedMarker] = useState(null);
   const [infoWindowVisible, setInfoWindowVisible] = useState(false);
   const hoverTimeoutRef = useRef(null);
 
@@ -111,7 +112,7 @@ const MapContainer = ({
 
   const handleMouseOver = marker => {
     clearTimeout(hoverTimeoutRef.current); // Clear any existing timeout
-    setSelectedMarker(marker);
+    setSelectedMarker(marker); // Correctly use the setSelectedMarker function
     setInfoWindowVisible(true);
   };
 
@@ -164,7 +165,7 @@ const MapContainer = ({
               onMouseOut={handleMouseOut}
             />
           ))}
-          {selectedMarker && infoWindowVisible && (
+          {selectedMarker && infoWindowVisible && selectedMarker.position && (
             <MapMarkerInfoWindow
               selectedMarker={selectedMarker}
               onMouseEnter={handleInfoWindowMouseOver}

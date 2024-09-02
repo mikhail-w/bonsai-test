@@ -22,7 +22,6 @@ const MapSidebar = ({
   panTo,
   handleIconClick,
   setSelectedMarker,
-  handleSelectLocation,
 }) => {
   const [selectedLocationId, setSelectedLocationId] = useState(null);
 
@@ -69,7 +68,7 @@ const MapSidebar = ({
         <List spacing={0} pl={0}>
           {locationList.map(location => (
             <ListItem
-              key={location.place_id}
+              key={location.id || location.place_id} // Ensure a unique key
               p={0}
               mt={5}
               borderRadius="lg"
@@ -89,31 +88,23 @@ const MapSidebar = ({
               }}
               onClick={() => {
                 setSelectedLocationId(location.place_id); // Update the selected location
-                const latLng = {
-                  lat: location.geometry.location.lat(),
-                  lng: location.geometry.location.lng(),
-                };
-                if (panTo) {
-                  panTo(latLng);
+                if (location.geometry && location.geometry.location) {
+                  const latLng = {
+                    lat: location.geometry.location.lat(),
+                    lng: location.geometry.location.lng(),
+                  };
+                  if (panTo) {
+                    panTo(latLng);
+                  } else {
+                    setCenter(latLng);
+                  }
+                  setSelectedMarker(location); // Set the selected marker
                 } else {
-                  setCenter(latLng);
+                  console.error(
+                    'Location geometry or location is undefined:',
+                    location
+                  );
                 }
-                setSelectedMarker({
-                  id: location.place_id,
-                  name: location.name,
-                  position: location.geometry.location,
-                  type: location.types || [],
-                  address: location.vicinity,
-                  photo: location.photos
-                    ? location.photos[0].getUrl()
-                    : DefaultImg,
-                  rating: location.rating || 0,
-                  reviewCount: location.user_ratings_total || 0,
-                  isOpen: location.opening_hours?.isOpen() || false,
-                  closingTime: location.opening_hours?.periods
-                    ? location.opening_hours.periods[0]?.close?.time || 'N/A'
-                    : 'N/A', // Safely access the closing time or default to 'N/A'
-                });
               }}
             >
               <HStack align="center" width="100%" spacing={0} px={4} py={2}>
