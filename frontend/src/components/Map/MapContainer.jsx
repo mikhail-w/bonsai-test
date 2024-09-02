@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { debounce } from 'lodash';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import { Box, Spinner } from '@chakra-ui/react';
 import CustomMarker from '../../assets/images/leaf-green.png';
@@ -67,47 +68,65 @@ const MapContainer = ({
       const map = mapRef.current;
       const service = new google.maps.places.PlacesService(map);
 
+      const refinedSearchTerm =
+        searchTerm ||
+        'bonsai OR bonsai trees OR bonsai nursery OR garden OR bonsai club OR bonsai potter OR plant nursery';
+
       const request = {
         location: new google.maps.LatLng(center.lat, center.lng),
-        radius: '20000',
-        type: ['store'],
-        keyword: searchTerm || 'bonsai OR garden OR club OR potter',
+        radius: '20000', // 20km radius
+        type: ['store', 'plant_nursery', 'florist', 'park'], // Add more relevant types
+        keyword: refinedSearchTerm,
       };
 
-      service.nearbySearch(request, (results, status) => {
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-          setMarkers(
-            results.map(place => ({
-              id: place.place_id,
-              name: place.name,
-              position: place.geometry.location,
-              type: place.types || [],
-              address: place.vicinity,
-              photo: place.photos ? place.photos[0].getUrl() : DefaultImg,
-              rating: place.rating || 0,
-              reviewCount: place.user_ratings_total || 0,
-              isOpen: place.opening_hours?.isOpen() || false,
-              closingTime: place.opening_hours?.periods
-                ? place.opening_hours.periods[0]?.close?.time || 'N/A'
-                : 'N/A', // Default to 'N/A' if periods or close time isn't available
-            }))
-          );
-          if (!locationList.length) {
-            setLocationList(results);
+      const handleSearch = debounce(() => {
+        service.nearbySearch(request, (results, status) => {
+          if (status === google.maps.places.PlacesServiceStatus.OK) {
+            const filteredResults = results.filter(
+              place =>
+                place.name.toLowerCase().includes('bonsai') ||
+                place.types.includes('store')
+            );
+
+            setMarkers(
+              filteredResults.map(place => ({
+                id: place.place_id,
+                name: place.name,
+                position: place.geometry.location,
+                type: place.types || [],
+                address: place.vicinity,
+                photo: place.photos ? place.photos[0].getUrl() : DefaultImg,
+              }))
+            );
+
+            // Set the location list only on the initial load or search
+            if (!locationList.length) {
+              setLocationList(filteredResults);
+            }
+          } else if (
+            status === google.maps.places.PlacesServiceStatus.ZERO_RESULTS
+          ) {
+            setError('No Bonsai-related locations found nearby.');
+          } else {
+            setError(`Error fetching places: ${status}`);
           }
-        } else {
-          setError(`Error fetching places: ${status}`);
-        }
-      });
+        });
+      }, 500); // Debounce to avoid excessive API calls
+
+      handleSearch();
+
+      // Cleanup debounce on component unmount
+      return () => {
+        handleSearch.cancel();
+      };
     }
   }, [
     isLoaded,
     center.lat,
     center.lng,
     searchTerm,
-    setMarkers,
-    setLocationList,
     DefaultImg,
+    setLocationList,
   ]);
 
   const handleMouseOver = marker => {
