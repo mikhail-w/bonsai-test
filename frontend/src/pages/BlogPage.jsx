@@ -70,6 +70,7 @@ function BlogPage() {
 
   const likeUnlikeHandler = postId => {
     dispatch(likeUnlikeBlogPost(postId));
+    console.log('Post ID:', postId);
   };
 
   return (
@@ -159,7 +160,7 @@ function BlogPage() {
                       <Heart
                         width={24}
                         height={24}
-                        active={active} // Access is_liked directly from post
+                        active={active}
                         onClick={() => {
                           likeUnlikeHandler(post.id);
                           setActive(!active);
