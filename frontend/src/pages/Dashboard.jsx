@@ -6,6 +6,7 @@ import { clearCart } from '../actions/cartActions';
 import { Link as RouterLink } from 'react-router-dom';
 import { ShoppingCart } from 'lucide-react';
 import BlogIcon from '../assets/icons/blogger-alt.svg';
+import { TbAugmentedReality } from 'react-icons/tb';
 import {
   IconButton,
   Avatar,
@@ -45,7 +46,8 @@ const LinkItems = [
   { name: 'My Info', icon: FiUser, path: '/profile/info' },
   { name: 'Trending', icon: FiTrendingUp, path: '/profile/trending' },
   { name: 'Explore', icon: FiCompass, path: '/profile/explore' },
-  { name: 'Blog', icon: BlogIcon, path: '/profile/blog' }, // This will now use the SVG
+  { name: 'Blog', icon: BlogIcon, path: '/profile/blog' },
+  { name: 'AR', icon: TbAugmentedReality, path: '/profile/ar' },
   { name: 'Favorites', icon: FiStar, path: '/profile/favorites' },
   { name: 'Settings', icon: FiSettings, path: '/profile/settings' },
 ];

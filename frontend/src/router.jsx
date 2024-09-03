@@ -26,6 +26,7 @@ import Favorites from './pages/Favorites.jsx';
 import Settings from './pages/Settings.jsx';
 import YourInfo from './pages/MyInfo.jsx';
 import BlogPage from './pages/BlogPage.jsx';
+import AugmentedReality from './pages/AugmentedReality.jsx';
 
 const router = createBrowserRouter([
   {
@@ -52,6 +53,7 @@ const router = createBrowserRouter([
           { path: 'trending', element: <Trending /> },
           { path: 'explore', element: <MapPage /> },
           { path: 'blog', element: <BlogPage /> },
+          { path: 'ar', element: <AugmentedReality /> },
           { path: 'favorites', element: <Favorites /> },
           { path: 'settings', element: <Settings /> },
         ],
