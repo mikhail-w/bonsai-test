@@ -7,17 +7,19 @@ from rest_framework.pagination import PageNumberPagination
 import bleach
 from rest_framework.exceptions import PermissionDenied
 
+
 class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 10  
-    page_size_query_param = 'page_size'
+    page_size = 10
+    page_size_query_param = "page_size"
     max_page_size = 100
 
 
 class BlogPostListView(generics.ListAPIView):
-    queryset = Post.objects.all().order_by('-created_at')
+    queryset = Post.objects.all().order_by("-created_at")
     serializer_class = PostSerializer
     pagination_class = StandardResultsSetPagination
     permission_classes = [IsAuthenticatedOrReadOnly]
+
 
 class CreatePostView(generics.CreateAPIView):
     queryset = Post.objects.all()
@@ -25,19 +27,21 @@ class CreatePostView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        content = serializer.validated_data.get('content', '')
-        allowed_tags = ['b', 'i', 'u', 'a', 'p', 'strong', 'em', 'ul', 'li', 'ol', 'br']
+        content = serializer.validated_data.get("content", "")
+        allowed_tags = ["b", "i", "u", "a", "p", "strong", "em", "ul", "li", "ol", "br"]
         allowed_attrs = {
-            'a': ['href', 'title'],
+            "a": ["href", "title"],
         }
         sanitized_content = bleach.clean(
-            content,
-            tags=allowed_tags,
-            attributes=allowed_attrs
+            content, tags=allowed_tags, attributes=allowed_attrs
         )
         serializer.save(
-            user=self.request.user if not serializer.validated_data.get('anonymous', False) else None,
-            content=sanitized_content
+            user=(
+                self.request.user
+                if not serializer.validated_data.get("anonymous", False)
+                else None
+            ),
+            content=sanitized_content,
         )
 
 
@@ -47,11 +51,10 @@ class PostDetailView(generics.RetrieveAPIView):
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        instance.views += 1  
+        instance.views += 1
         instance.save()
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
-    
 
 
 class PostLikeUnlikeView(generics.GenericAPIView):
@@ -65,15 +68,15 @@ class PostLikeUnlikeView(generics.GenericAPIView):
 
         if user in post.likes.all():
             post.likes.remove(user)
-            message = 'Post unliked'
+            message = "Post unliked"
         else:
             post.likes.add(user)
-            message = 'Post liked'
+            message = "Post liked"
         post.save()
-        serializer = self.get_serializer(post)
-        return Response({'message': message, 'post': serializer.data}, status=status.HTTP_200_OK)
-    
-
+        serializer = self.get_serializer(post, context={"request": request})
+        return Response(
+            {"message": message, "post": serializer.data}, status=status.HTTP_200_OK
+        )
 
 
 class CommentCreateView(generics.CreateAPIView):
@@ -82,10 +85,9 @@ class CommentCreateView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        post_id = self.kwargs.get('post_id')
+        post_id = self.kwargs.get("post_id")
         post = Post.objects.get(id=post_id)
         serializer.save(user=self.request.user, post=post)
-
 
 
 class PostCommentsListView(generics.ListAPIView):
@@ -94,10 +96,8 @@ class PostCommentsListView(generics.ListAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
-        post_id = self.kwargs.get('post_id')
-        return Comment.objects.filter(post_id=post_id).order_by('created_at')
-
-
+        post_id = self.kwargs.get("post_id")
+        return Comment.objects.filter(post_id=post_id).order_by("created_at")
 
 
 class PostDeleteView(generics.DestroyAPIView):

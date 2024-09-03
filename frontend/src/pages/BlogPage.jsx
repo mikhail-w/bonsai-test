@@ -10,10 +10,10 @@ import {
   Input,
   Image,
   Textarea,
-  IconButton,
   Spinner,
 } from '@chakra-ui/react';
-import { FaHeart, FaRegHeart, FaPlusCircle } from 'react-icons/fa';
+import { FaPlusCircle } from 'react-icons/fa';
+import Heart from '@react-sandbox/heart';
 import {
   listBlogPosts,
   createBlogPost,
@@ -26,11 +26,13 @@ function BlogPage() {
   const [content, setContent] = useState('');
   const [image, setImage] = useState(null);
   const [creatingPost, setCreatingPost] = useState(false);
+  const [active, setActive] = useState(false);
 
   const blogList = useSelector(state => state.blogList);
   const { loading, error, posts } = blogList;
 
   const blogPostCreate = useSelector(state => state.blogPostCreate);
+  const blogLikeUnlike = useSelector(state => state.blogPostLikeUnlike);
   const {
     success: successCreate,
     loading: loadingCreate,
@@ -47,6 +49,15 @@ function BlogPage() {
     dispatch(listBlogPosts());
   }, [dispatch, successCreate]);
 
+  // This useEffect will trigger when posts are successfully loaded
+  useEffect(() => {
+    if (posts && posts.length > 0) {
+      posts.forEach(post => {
+        dispatch(likeUnlikeBlogPost(post.id));
+      });
+    }
+  }, [dispatch, posts]);
+
   const submitHandler = () => {
     const formData = new FormData();
     formData.append('content', content); // Append content as a string
@@ -61,9 +72,9 @@ function BlogPage() {
   };
 
   return (
-    <Box maxW="1200px" mx="auto" py={6} px={4}>
-      <Flex justify="space-between" align="center" mb={6}>
-        <Text fontSize="3xl" fontWeight="bold" fontFamily="heading">
+    <Box maxW="500px" mx="auto" py={6} px={4}>
+      <Flex fontFamily={'rale'} justify="space-between" align="center" mb={6}>
+        <Text fontSize="3xl" fontWeight="bold">
           Bonsai Blog
         </Text>
         <Button
@@ -106,7 +117,7 @@ function BlogPage() {
         <Text color="red.500">{error}</Text>
       ) : (
         <VStack spacing={6}>
-          {posts?.results?.map(post => (
+          {posts?.map(post => (
             <Box
               key={post.id}
               w="full"
@@ -122,13 +133,20 @@ function BlogPage() {
                   <Text fontWeight="bold" fontSize="lg" isTruncated>
                     {post.user}
                   </Text>
-                  <IconButton
-                    icon={
-                      post.isLiked ? <FaHeart color="red" /> : <FaRegHeart />
-                    }
-                    variant="ghost"
-                    onClick={() => likeUnlikeHandler(post.id)}
-                  />
+                  <Box
+                    transition="transform 0.2s"
+                    _hover={{ transform: 'scale(1.5)' }}
+                  >
+                    <Heart
+                      width={24}
+                      height={24}
+                      active={active} // Access is_liked directly from post
+                      onClick={() => {
+                        likeUnlikeHandler(post.id);
+                        setActive(!active);
+                      }}
+                    />
+                  </Box>
                 </HStack>
                 <Text>{post.content}</Text>
                 {post.image && (

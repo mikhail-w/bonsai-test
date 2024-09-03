@@ -1,538 +1,336 @@
-import React, { useState, useEffect, useRef } from 'react';
-import {
-  GoogleMap,
-  useLoadScript,
-  Marker,
-  InfoWindow,
-} from '@react-google-maps/api';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Box,
+  Flex,
   Text,
+  Button,
   VStack,
   HStack,
-  List,
-  ListItem,
-  Spinner,
-  Heading,
-  IconButton,
   Input,
   Image,
-  Drawer,
-  DrawerBody,
-  DrawerHeader,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-  Button,
-  useDisclosure,
-  useColorModeValue,
-  Slide,
-  CloseButton,
-  Flex,
+  Textarea,
+  IconButton,
+  Spinner,
 } from '@chakra-ui/react';
-import { FaSearch, FaBars, FaChevronRight } from 'react-icons/fa';
-import CustomMarker from '../assets/images/leaf-green.png';
-import DefaultImg from '../assets/images/bonsai-tree-logo.png';
+import { FaHeart, FaRegHeart, FaPlusCircle } from 'react-icons/fa';
+import Heart from '@react-sandbox/heart';
+import {
+  listBlogPosts,
+  createBlogPost,
+  likeUnlikeBlogPost,
+} from '../actions/blogActions';
+import { BLOG_POST_CREATE_RESET } from '../constants/blogConstants';
 
-const libraries = ['places'];
-const mapContainerStyle = {
-  height: '80vh',
-  width: '100%',
-};
+function BlogPage() {
+  const dispatch = useDispatch();
+  const [content, setContent] = useState('');
+  const [image, setImage] = useState(null);
+  const [creatingPost, setCreatingPost] = useState(false);
+  const [active, setActive] = useState(false);
 
-const Map = () => {
-  const mapRef = useRef(null);
-  const [markers, setMarkers] = useState([]);
-  const [locationList, setLocationList] = useState([]);
-  const [center, setCenter] = useState({ lat: 0, lng: 0 });
-  const [error, setError] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedMarker, setSelectedMarker] = useState(null);
-  const [infoWindowVisible, setInfoWindowVisible] = useState(false);
-  const [sideImg, setSideImg] = useState(null);
-  const [selectedLocation, setSelectedLocation] = useState(null);
-  const [isPanelOpen, setPanelOpen] = useState(false);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const blogList = useSelector(state => state.blogList);
+  const { loading, error, posts } = blogList;
 
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
-    libraries,
-  });
-
-  // Handle errors in loading Google Maps
-  useEffect(() => {
-    if (loadError) {
-      console.error('Error loading Google Maps:', loadError);
-      setError('Error loading Google Maps');
-    }
-  }, [loadError]);
+  const blogPostCreate = useSelector(state => state.blogPostCreate);
+  const {
+    success: successCreate,
+    loading: loadingCreate,
+    error: errorCreate,
+  } = blogPostCreate;
 
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        position => {
-          const { latitude, longitude } = position.coords;
-          setCenter({ lat: latitude, lng: longitude });
-        },
-        error => {
-          setError('Geolocation not enabled or denied.');
-        }
-      );
-    } else {
-      setError('Geolocation is not supported by this browser.');
+    if (successCreate) {
+      setContent('');
+      setImage(null);
+      setCreatingPost(false);
+      dispatch({ type: BLOG_POST_CREATE_RESET });
     }
-  }, []);
+    dispatch(listBlogPosts());
+  }, [dispatch, successCreate]);
 
-  useEffect(() => {
-    if (isLoaded && center.lat && center.lng) {
-      const map = mapRef.current;
-      const service = new google.maps.places.PlacesService(map);
-
-      const request = {
-        location: new google.maps.LatLng(center.lat, center.lng),
-        radius: '20000',
-        type: ['store'],
-        keyword: searchTerm || 'bonsai OR garden OR club OR potter',
-      };
-
-      service.nearbySearch(request, (results, status) => {
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-          setMarkers(
-            results.map(place => ({
-              id: place.place_id,
-              name: place.name,
-              position: place.geometry.location,
-              type: place.types || [],
-              address: place.vicinity,
-              photo: place.photos ? place.photos[0].getUrl() : DefaultImg,
-            }))
-          );
-          // Only set this once on initial load or search, prevent unnecessary updates
-          if (!locationList.length) {
-            setLocationList(results);
-          }
-        } else {
-          setError(`Error fetching places: ${status}`);
-        }
-      });
+  const submitHandler = () => {
+    const formData = new FormData();
+    formData.append('content', content); // Append content as a string
+    if (image) {
+      formData.append('image', image); // Append image if it exists
     }
-  }, [isLoaded, center.lat, center.lng, searchTerm]);
-
-  const handleSearch = () => {
-    if (searchTerm.trim()) {
-      setMarkers([]); // Clear markers to repopulate
-      setLocationList([]); // Clear list to repopulate
-    }
+    dispatch(createBlogPost(formData)); // Dispatch FormData
   };
 
-  const handleMarkerMouseOver = marker => {
-    setSelectedMarker(marker);
-    setInfoWindowVisible(true);
+  const likeUnlikeHandler = postId => {
+    dispatch(likeUnlikeBlogPost(postId));
   };
-
-  const handleMarkerMouseOut = () => {
-    setInfoWindowVisible(false);
-  };
-
-  const handleIconClick = location => {
-    setSelectedLocation(location);
-    setPanelOpen(true); // Open the panel
-  };
-
-  const closePanel = () => {
-    setPanelOpen(false);
-  };
-
-  if (error) return <Text color="red.500">{error}</Text>;
-  if (!isLoaded) return <Spinner size="xl" />;
 
   return (
-    <Box
-      display={{ md: 'flex' }}
-      height="90vh"
-      position="relative"
-      overflow="hidden"
-    >
-      {/* Sidebar for desktop view */}
-      <Box
-        width={{ base: '100%', md: '30%' }}
-        minW={{ md: '450px' }}
-        display={{ base: 'none', md: 'block' }}
-        maxH="90vh"
-        bg={useColorModeValue('gray.50', 'gray.800')}
-        p={4}
-        boxShadow="lg"
-        overflowY="auto"
-      >
-        {/* Sticky container for the search bar and heading */}
-        <Box
-          position="sticky"
-          top="-5"
-          bg={useColorModeValue('gray.50', 'gray.800')}
-          zIndex="1"
-          p={4}
+    <Box maxW="1200px" mx="auto" py={6} px={4}>
+      <Flex justify="space-between" align="center" mb={6}>
+        <Text fontSize="3xl" fontWeight="bold" fontFamily="heading">
+          Bonsai Blog
+        </Text>
+        <Button
+          leftIcon={<FaPlusCircle />}
+          colorScheme="green"
+          onClick={() => setCreatingPost(prev => !prev)}
         >
-          <HStack>
-            <Input
-              placeholder="Search bonsai locations..."
-              value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
-              bg={useColorModeValue('white', 'gray.700')}
-              borderRadius="lg"
-              boxShadow="sm"
-              _focus={{ borderColor: 'green.400' }}
-            />
-            <IconButton
-              icon={<FaSearch />}
-              onClick={handleSearch}
-              colorScheme="green"
-              aria-label="Search"
-            />
-          </HStack>
-          <Text size="md" mt={4} fontFamily="rale">
-            Nearby Bonsai Locations:
-          </Text>
-        </Box>
+          {creatingPost ? 'Cancel' : 'Create Post'}
+        </Button>
+      </Flex>
 
-        <Box mt={4}>
-          <List spacing={0} pl={0}>
-            {locationList.map(location => (
-              <ListItem
-                key={location.place_id}
-                p={0}
-                mt={5}
-                borderRadius="lg"
-                width="100%"
-                bg={useColorModeValue('white', 'gray.700')}
-                transition="all 0.3s"
-                _hover={{
-                  bg: useColorModeValue('green.50', 'gray.600'),
-                  transform: 'scale(1.02)',
-                  boxShadow: 'xl',
-                  cursor: 'pointer',
-                }}
-                onClick={() => {
-                  setCenter({
-                    lat: location.geometry.location.lat(),
-                    lng: location.geometry.location.lng(),
-                  });
-                }}
-              >
-                <HStack align="center" width="100%" spacing={0} px={4} py={2}>
+      {creatingPost && (
+        <Box bg="gray.50" p={4} mb={6} borderRadius="md" shadow="md">
+          <VStack spacing={4}>
+            <Textarea
+              placeholder="What's on your mind?"
+              value={content}
+              onChange={e => setContent(e.target.value)}
+            />
+            <Input
+              type="file"
+              onChange={e => setImage(e.target.files[0])}
+              accept="image/*"
+            />
+            <Button
+              colorScheme="green"
+              onClick={submitHandler}
+              isLoading={loadingCreate}
+            >
+              Post
+            </Button>
+            {errorCreate && <Text color="red.500">{errorCreate}</Text>}
+          </VStack>
+        </Box>
+      )}
+
+      {loading ? (
+        <Spinner />
+      ) : error ? (
+        <Text color="red.500">{error}</Text>
+      ) : (
+        <VStack spacing={6}>
+          {posts?.results?.map(post => (
+            <Box
+              key={post.id}
+              w="full"
+              bg="white"
+              p={4}
+              borderRadius="md"
+              shadow="md"
+              transition="transform 0.2s"
+              _hover={{ transform: 'scale(1.02)' }}
+            >
+              <VStack align="start" spacing={4}>
+                <HStack justify="space-between" w="full">
+                  <Text fontWeight="bold" fontSize="lg" isTruncated>
+                    {post.user}
+                  </Text>
                   <Box
-                    boxSize={'100px'}
-                    borderRadius="lg"
-                    overflow="hidden"
-                    bg="gray.200"
+                    transition="transform 0.2s"
+                    _hover={{ transform: 'scale(1.5)' }}
                   >
-                    <Image
-                      boxSize="100%"
-                      objectFit="cover"
-                      // src={location.photo}
-                      src={
-                        location.photos
-                          ? location.photos[0].getUrl()
-                          : selectedMarker.photo
-                      }
-                      alt={`${location.name} thumbnail`}
+                    <Heart
+                      width={24}
+                      height={24}
+                      active={active}
+                      onClick={() => setActive(!active)}
                     />
                   </Box>
-                  <VStack align="start" spacing={1} flex="1" ml={4}>
-                    <Text
-                      fontFamily="rale"
-                      fontWeight="bold"
-                      fontSize={{ base: 'md', md: 'lg' }}
-                    >
-                      {location.name}
-                    </Text>
-                    <Text
-                      fontFamily="rale"
-                      fontSize={{ base: 'sm', md: 'md' }}
-                      color={useColorModeValue('gray.600', 'gray.300')}
-                    >
-                      {location.vicinity}
-                    </Text>
-                  </VStack>
-                  <IconButton
-                    icon={<FaChevronRight />}
-                    aria-label="More details"
-                    colorScheme="green"
-                    variant="ghost"
-                    size="sm"
-                    display={{ base: 'none', md: 'inline-flex' }}
-                    _hover={{
-                      transform: 'scale(1.2)', // Increase size by 20% on hover
-                    }}
-                    transition="transform 0.2s" // Smooth transition
-                    onClick={() => {
-                      setSideImg(location.photos[0].getUrl());
-                      handleIconClick(location);
-                    }}
-                  />
                 </HStack>
-              </ListItem>
-            ))}
-          </List>
-        </Box>
-      </Box>
-
-      <Box
-        flex="1"
-        mb={{ base: 0, md: 0 }}
-        height={{ base: 'calc(100vh - 56px)', md: '100vh' }}
-        overflow="hidden"
-      >
-        {isLoaded && (
-          <GoogleMap
-            mapContainerStyle={{ height: '100%', width: '100%' }}
-            zoom={11}
-            center={center}
-            onLoad={map => (mapRef.current = map)}
-          >
-            {markers.map(marker => (
-              <Marker
-                key={marker.id}
-                position={marker.position}
-                icon={{
-                  url: CustomMarker,
-                  scaledSize: new window.google.maps.Size(38, 95),
-                }}
-                onMouseOver={() => handleMarkerMouseOver(marker)}
-                onMouseOut={handleMarkerMouseOut}
-              />
-            ))}
-            {selectedMarker && infoWindowVisible && (
-              <InfoWindow
-                position={selectedMarker.position}
-                options={{
-                  disableAutoPan: true,
-                  pixelOffset: new window.google.maps.Size(0, -90),
-                  closeBoxURL: '', // Hide the close button
-                }}
-                onCloseClick={() => setInfoWindowVisible(false)}
-              >
-                <Box
-                  p={2}
-                  borderRadius="md"
-                  boxShadow="lg"
-                  bg={useColorModeValue('white', 'gray.700')}
-                  minWidth="350px" // Set a maximum width for the InfoWindow
-                >
-                  <HStack spacing={2} align="start">
-                    <Box flexShrink={0} borderRadius="md" overflow="hidden">
-                      <Image
-                        src={selectedMarker.photo}
-                        alt={`${selectedMarker.name} thumbnail`}
-                        boxSize="100px"
-                        objectFit="cover"
-                      />
-                    </Box>
-                    <VStack align="start" spacing={1} flex="1">
-                      <Text
-                        fontFamily="rale"
-                        fontWeight="bold"
-                        fontSize="md"
-                        noOfLines={1}
-                        isTruncated
-                      >
-                        {selectedMarker.name}
-                      </Text>
-                      <HStack spacing={1}>
-                        <Text
-                          fontFamily="rale"
-                          fontSize="sm"
-                          color="yellow.500"
-                        >
-                          ★
-                        </Text>
-                        <Text fontFamily="rale" fontSize="sm">
-                          4.7
-                        </Text>
-                        <Text fontFamily="rale" fontSize="sm" color="gray.500">
-                          (72)
-                        </Text>
-                      </HStack>
-                      <Text
-                        fontFamily="rale"
-                        fontSize="sm"
-                        color={useColorModeValue('gray.600', 'gray.300')}
-                        noOfLines={1}
-                        isTruncated
-                      >
-                        Florist
-                      </Text>
-                      <HStack spacing={2} mt={1}>
-                        <Text
-                          fontFamily="rale"
-                          fontSize="xs"
-                          color={useColorModeValue('green.500', 'green.300')}
-                        >
-                          Open
-                        </Text>
-                        <Text fontFamily="rale" fontSize="xs" color="gray.500">
-                          · Closes 6 PM
-                        </Text>
-                      </HStack>
-                      <Text
-                        fontFamily="rale"
-                        fontSize="sm"
-                        color={useColorModeValue('gray.600', 'gray.300')}
-                        mt={1}
-                        noOfLines={1}
-                        isTruncated
-                      >
-                        {selectedMarker.address}
-                      </Text>
-                    </VStack>
-                  </HStack>
-                </Box>
-              </InfoWindow>
-            )}
-          </GoogleMap>
-        )}
-      </Box>
-
-      {/* Slide panel for more information */}
-      <Slide direction="right" in={isPanelOpen} style={{ zIndex: 10 }}>
-        <Box
-          p={4}
-          bg={useColorModeValue('white', 'gray.800')}
-          boxShadow="xl"
-          height="100%"
-          width={{ base: '100%', md: '400px' }}
-          position="fixed"
-          top={20}
-          right={0}
-        >
-          <CloseButton
-            onClick={closePanel}
-            position={'absolute'}
-            right={5}
-            color={'white'}
-            filter="brightness(3.2) contrast(1.1)"
-            bg="rgba(0, 0, 0, 0.7)"
-            _hover={{
-              transform: 'scale(1.2)',
-            }}
-          />
-          {selectedLocation && (
-            <VStack align="start" spacing={4}>
-              <Box width={'100%'}>
-                <Image
-                  src={sideImg}
-                  alt={`${selectedLocation.name} thumbnail`}
-                  borderRadius="md"
-                  width="100%" // Ensures the image takes up the full width of the Box
-                  height="auto" // Maintains the aspect ratio
-                  objectFit="cover"
-                />
-              </Box>
-              <Text fontFamily="rale" fontWeight="bold" fontSize="lg">
-                {selectedLocation.name}
-              </Text>
-              <Text fontFamily="rale" fontSize="md">
-                Address: {selectedLocation.vicinity}
-              </Text>
-              <Text fontFamily="rale" fontSize="md">
-                Currently:{' '}
-                {selectedLocation.opening_hours.isOpen()
-                  ? 'Open Now'
-                  : 'Closed'}
-              </Text>
-              <Text fontFamily="rale" fontSize="md">
-                Status: {selectedLocation.business_status}
-              </Text>
-              <Button
-                as="a"
-                href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-                  selectedLocation.vicinity
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                leftIcon={<FaChevronRight />}
-                colorScheme="green"
-                width="full"
-              >
-                Get Directions
-              </Button>
-            </VStack>
-          )}
-        </Box>
-      </Slide>
-
-      {/* Mobile view button to toggle location list */}
-      <Box
-        display={{ base: 'block', md: 'none' }}
-        width="100%"
-        position="absolute"
-        bottom="0"
-      >
-        <Button
-          onClick={onOpen}
-          colorScheme="green"
-          size="lg"
-          width="100%"
-          leftIcon={<FaBars />}
-        >
-          Nearby Bonsai Locations
-        </Button>
-      </Box>
-
-      {/* Mobile view drawer for the location list */}
-      <Drawer placement="bottom" onClose={onClose} isOpen={isOpen}>
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader>Nearby Bonsai Locations</DrawerHeader>
-          <DrawerBody>
-            <List spacing={4} pl={0}>
-              {locationList.map(location => (
-                <ListItem
-                  key={location.place_id}
-                  p={3}
-                  borderRadius="md"
-                  boxShadow="sm"
-                  bg={useColorModeValue('white', 'gray.700')}
-                  _hover={{
-                    bg: useColorModeValue('gray.100', 'gray.600'),
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => {
-                    setCenter({
-                      lat: location.geometry.location.lat(),
-                      lng: location.geometry.location.lng(),
-                    });
-                    onClose(); // Close the drawer after selecting a location
-                  }}
-                >
-                  <HStack>
-                    <Image
-                      boxSize="50px"
-                      borderRadius="md"
-                      src={
-                        location.photos
-                          ? location.photos[0].getUrl()
-                          : selectedMarker.photo
-                      }
-                      alt={`${location.name} thumbnail`}
-                    />
-                    <VStack align="start" spacing={1}>
-                      <Text fontFamily="rale" fontWeight="bold">
-                        {location.name}
-                      </Text>
-                      <Text fontFamily="rale" fontSize="sm">
-                        {location.vicinity}
-                      </Text>
-                    </VStack>
-                  </HStack>
-                </ListItem>
-              ))}
-            </List>
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
+                <Text>{post.content}</Text>
+                {post.image && (
+                  <Image
+                    src={post.image}
+                    alt="post"
+                    borderRadius="md"
+                    maxH="400px"
+                    objectFit="cover"
+                  />
+                )}
+                <HStack justify="space-between" w="full">
+                  <Text color="gray.500">{post.likes_count} Likes</Text>
+                  <Text color="gray.500">{post.views} Views</Text>
+                </HStack>
+              </VStack>
+            </Box>
+          ))}
+        </VStack>
+      )}
     </Box>
   );
-};
+}
 
-export default Map;
+export default BlogPage;
+******************************************************
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  Box,
+  Flex,
+  Text,
+  Button,
+  VStack,
+  HStack,
+  Input,
+  Image,
+  Textarea,
+  Spinner,
+} from '@chakra-ui/react';
+import { FaPlusCircle } from 'react-icons/fa';
+import Heart from '@react-sandbox/heart';
+import {
+  listBlogPosts,
+  createBlogPost,
+  likeUnlikeBlogPost,
+} from '../actions/blogActions';
+import { BLOG_POST_CREATE_RESET } from '../constants/blogConstants';
+
+function BlogPage() {
+  const dispatch = useDispatch();
+  const [content, setContent] = useState('');
+  const [image, setImage] = useState(null);
+  const [creatingPost, setCreatingPost] = useState(false);
+
+  const blogList = useSelector(state => state.blogList);
+  const { loading, error, posts } = blogList;
+
+  const blogPostCreate = useSelector(state => state.blogPostCreate);
+  const {blogLike} = useSelector(state => state.blogPostLikeUnlike);
+
+  const {
+    success: successCreate,
+    loading: loadingCreate,
+    error: errorCreate,
+  } = blogPostCreate;
+
+  useEffect(() => {
+    if (successCreate) {
+      setContent('');
+      setImage(null);
+      setCreatingPost(false);
+      dispatch({ type: BLOG_POST_CREATE_RESET });
+    }
+    dispatch(listBlogPosts());
+  }, [dispatch, successCreate]);
+
+  const submitHandler = () => {
+    const formData = new FormData();
+    formData.append('content', content); // Append content as a string
+    if (image) {
+      formData.append('image', image); // Append image if it exists
+    }
+    dispatch(createBlogPost(formData)); // Dispatch FormData
+  };
+
+  const likeUnlikeHandler = (postId, isCurrentlyLiked, setLiked) => {
+    dispatch(likeUnlikeBlogPost(postId)).then(() => {
+      // Toggle the local liked state
+      setLiked(!isCurrentlyLiked);
+      // Optionally, you can re-fetch posts to get the updated data from the server
+      // dispatch(listBlogPosts());
+    });
+  };
+
+  return (
+    <Box maxW="1200px" mx="auto" py={6} px={4}>
+      <Flex justify="space-between" align="center" mb={6}>
+        <Text fontSize="3xl" fontWeight="bold" fontFamily="heading">
+          Bonsai Blog
+        </Text>
+        <Button
+          leftIcon={<FaPlusCircle />}
+          colorScheme="green"
+          onClick={() => setCreatingPost(prev => !prev)}
+        >
+          {creatingPost ? 'Cancel' : 'Create Post'}
+        </Button>
+      </Flex>
+
+      {creatingPost && (
+        <Box bg="gray.50" p={4} mb={6} borderRadius="md" shadow="md">
+          <VStack spacing={4}>
+            <Textarea
+              placeholder="What's on your mind?"
+              value={content}
+              onChange={e => setContent(e.target.value)}
+            />
+            <Input
+              type="file"
+              onChange={e => setImage(e.target.files[0])}
+              accept="image/*"
+            />
+            <Button
+              colorScheme="green"
+              onClick={submitHandler}
+              isLoading={loadingCreate}
+            >
+              Post
+            </Button>
+            {errorCreate && <Text color="red.500">{errorCreate}</Text>}
+          </VStack>
+        </Box>
+      )}
+
+      {loading ? (
+        <Spinner />
+      ) : error ? (
+        <Text color="red.500">{error}</Text>
+      ) : (
+        <VStack spacing={6}>
+          {posts?.results?.map(post => {
+            const [liked, setLiked] = useState(post.is_liked);
+
+            return (
+              <Box
+                key={post.id}
+                w="full"
+                bg="white"
+                p={4}
+                borderRadius="md"
+                shadow="md"
+                transition="transform 0.2s"
+                _hover={{ transform: 'scale(1.02)' }}
+              >
+                <VStack align="start" spacing={4}>
+                  <HStack justify="space-between" w="full">
+                    <Text fontWeight="bold" fontSize="lg" isTruncated>
+                      {post.user}
+                    </Text>
+                    <Box
+                      transition="transform 0.2s"
+                      _hover={{ transform: 'scale(1.5)' }}
+                    >
+                      <Heart
+                        width={24}
+                        height={24}
+                        active={liked}
+                        onClick={() => {
+                          likeUnlikeHandler(post.id, liked, setLiked);
+                        }}
+                      />
+                    </Box>
+                  </HStack>
+                  <Text>{post.content}</Text>
+                  {post.image && (
+                    <Image
+                      src={post.image}
+                      alt="post"
+                      borderRadius="md"
+                      maxH="400px"
+                      objectFit="cover"
+                    />
+                  )}
+                  <HStack justify="space-between" w="full">
+                    <Text color="gray.500">{post.likes_count + (liked ? 1 : 0)} Likes</Text>
+                    <Text color="gray.500">{post.views} Views</Text>
+                  </HStack>
+                </VStack>
+              </Box>
+            );
+          })}
+        </VStack>
+      )}
+    </Box>
+  );
+}
+
+export default BlogPage;

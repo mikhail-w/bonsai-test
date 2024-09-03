@@ -69,7 +69,7 @@ export const blogPostLikeUnlikeReducer = (state = {}, action) => {
     case BLOG_POST_LIKE_UNLIKE_REQUEST:
       return { loading: true };
     case BLOG_POST_LIKE_UNLIKE_SUCCESS:
-      return { loading: false, success: true, post: action.payload };
+      return { loading: false, success: true, post: action.payload.post };
     case BLOG_POST_LIKE_UNLIKE_FAIL:
       return { loading: false, error: action.payload };
     default:
@@ -108,7 +108,7 @@ export const blogListMyReducer = (state = { posts: [] }, action) => {
     case BLOG_LIST_MY_REQUEST:
       return { loading: true };
     case BLOG_LIST_MY_SUCCESS:
-      return { loading: false, posts: action.payload };
+      return { loading: false, posts: action.payload.results };
     case BLOG_LIST_MY_FAIL:
       return { loading: false, error: action.payload };
     default:
@@ -121,7 +121,7 @@ export const blogListReducer = (state = { posts: [] }, action) => {
     case BLOG_LIST_REQUEST:
       return { loading: true, posts: [] };
     case BLOG_LIST_SUCCESS:
-      return { loading: false, posts: action.payload };
+      return { loading: false, posts: action.payload.results };
     case BLOG_LIST_FAIL:
       return { loading: false, error: action.payload };
     default:
