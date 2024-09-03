@@ -74,7 +74,7 @@ function BlogPage() {
   return (
     <Box maxW="500px" mx="auto" py={6} px={4}>
       <Flex fontFamily={'rale'} justify="space-between" align="center" mb={6}>
-        <Text fontSize="3xl" fontWeight="bold">
+        <Text fontFamily={'rale'} fontSize="3xl" fontWeight="bold">
           Bonsai Blog
         </Text>
         <Button
@@ -130,7 +130,13 @@ function BlogPage() {
             >
               <VStack align="start" spacing={4}>
                 <HStack justify="space-between" w="full">
-                  <Text fontWeight="bold" fontSize="lg" isTruncated>
+                  fontFamily={'rale'}
+                  <Text
+                    fontFamily={'rale'}
+                    fontWeight="bold"
+                    fontSize="lg"
+                    isTruncated
+                  >
                     {post.user}
                   </Text>
                   <Box
@@ -148,7 +154,8 @@ function BlogPage() {
                     />
                   </Box>
                 </HStack>
-                <Text>{post.content}</Text>
+
+                <Text fontFamily={'rale'}>{post.content}</Text>
                 {post.image && (
                   <Image
                     src={post.image}
@@ -159,8 +166,12 @@ function BlogPage() {
                   />
                 )}
                 <HStack justify="space-between" w="full">
-                  <Text color="gray.500">{post.likes_count} Likes</Text>
-                  <Text color="gray.500">{post.views} Views</Text>
+                  <Text fontFamily={'rale'} color="gray.500">
+                    {post.likes_count} Likes
+                  </Text>
+                  <Text fontFamily={'rale'} color="gray.500">
+                    {post.views} Views
+                  </Text>
                 </HStack>
               </VStack>
             </Box>
