@@ -42,7 +42,12 @@ function EssentialsPage() {
         >
           Essentials
         </Heading>
-        <Text fontFamily={'lato'} fontSize="lg" color="gray.600">
+        <Text
+          textAlign={'center'}
+          fontFamily={'lato'}
+          fontSize="lg"
+          color="gray.600"
+        >
           Pick from our selection of must have plant accessories
         </Text>
         <SimpleGrid

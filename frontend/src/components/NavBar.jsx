@@ -15,11 +15,9 @@ import {
   MenuDivider,
   Button,
   Image,
-  useDisclosure,
   Stack,
   Badge,
   Avatar,
-  Collapse,
 } from '@chakra-ui/react';
 import { Link as ChakraLink } from '@chakra-ui/react';
 import { FaUser } from 'react-icons/fa6';
@@ -31,11 +29,11 @@ import { logout } from '../actions/userActions';
 import { clearCart } from '../actions/cartActions';
 import SearchBar from './SearchBar';
 import logo from '../assets/images/bonsai-logo.png';
+import { motion, AnimatePresence } from 'framer-motion';
 
 function NavBar() {
   const [scrolled, setScrolled] = useState(false);
-  const shopMenuDisclosure = useDisclosure(); // For Shop menu hover control
-  const { isOpen, onOpen, onClose } = useDisclosure(); // For mobile menu toggle
+  const [menuOpen, setMenuOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -64,6 +62,8 @@ function NavBar() {
     navigate('/');
   };
 
+  const toggleMenu = () => setMenuOpen(!menuOpen);
+
   const withoutSidebarRoutes = ['/profile', '/login', '/register'];
   if (withoutSidebarRoutes.some(item => pathname.includes(item))) return null;
 
@@ -80,7 +80,6 @@ function NavBar() {
       right={0}
       zIndex="10"
       transition="background-color 0.3s ease, box-shadow 0.3s ease"
-      className="chakra-navbar"
     >
       <Flex h={16} alignItems="center" justifyContent="space-between">
         {/* Left Section: Logo */}
@@ -107,12 +106,7 @@ function NavBar() {
         </HStack>
 
         {/* Center Section: Blog, About, Contact Us, Shop */}
-        <Flex
-          display="absolute"
-          justifyContent="center"
-          marginLeft={10}
-          flex="1"
-        >
+        <Flex justifyContent="center" marginLeft={10} flex="1">
           <HStack spacing={8} display={{ base: 'none', md: 'flex' }}>
             <ChakraLink
               as={RouterLink}
@@ -158,44 +152,6 @@ function NavBar() {
             >
               Contact Us
             </ChakraLink>
-
-            {/* Shop Menu with hover control */}
-            <Menu isOpen={shopMenuDisclosure.isOpen}>
-              <MenuButton
-                as={Button}
-                variant="link"
-                cursor="pointer"
-                color="gray.600"
-                fontFamily="lato"
-                onMouseEnter={shopMenuDisclosure.onOpen}
-                onMouseLeave={shopMenuDisclosure.onClose}
-                _hover={{
-                  color: 'green.500',
-                  textDecoration: 'underline',
-                  transition: 'all 0.3s ease',
-                }}
-              >
-                Shop
-              </MenuButton>
-              <MenuList
-                onMouseEnter={shopMenuDisclosure.onOpen}
-                onMouseLeave={shopMenuDisclosure.onClose}
-                fontFamily="lato"
-                boxShadow="lg"
-                borderRadius="md"
-                bg="white"
-              >
-                <RouterLink to="/plants">
-                  <MenuItem>Potted Plants</MenuItem>
-                </RouterLink>
-                <RouterLink to="/planters">
-                  <MenuItem>Planters</MenuItem>
-                </RouterLink>
-                <RouterLink to="/essentials">
-                  <MenuItem>Essentials</MenuItem>
-                </RouterLink>
-              </MenuList>
-            </Menu>
           </HStack>
         </Flex>
 
@@ -290,130 +246,188 @@ function NavBar() {
 
         {/* Hamburger Icon for mobile */}
         <Box display={{ base: 'block', md: 'none' }}>
-          <Hamburger toggled={isOpen} toggle={isOpen ? onClose : onOpen} />
+          <Hamburger toggled={menuOpen} toggle={toggleMenu} />
         </Box>
       </Flex>
 
-      {/* Mobile Menu */}
-      <Collapse in={isOpen} animateOpacity>
-        <Box
-          pb={4}
-          display={{ md: 'none' }}
-          bg={'white'}
-          borderBottomRadius="lg"
-          borderBottom="4px solid"
-          borderColor="green.300"
-          transition="all 0.3s ease-in-out"
-          width="100vw" // Full width
-          position="fixed" // Fix position relative to viewport
-          left={0} // Align to the left edge
-          right={0} // Align to the right edge
-          zIndex={20} // Ensure it appears above other elements
-        >
-          <Stack mt={5} as="nav" spacing={4}>
-            <Box pl={8}>
-              <SearchBar />
+      {/* Mobile Menu with Framer Motion */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            key="menu"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.5, ease: 'easeInOut' }}
+            style={{
+              overflow: 'hidden',
+              width: '100vw',
+              position: 'fixed',
+              left: 0,
+              right: 0,
+              zIndex: 20,
+              background: 'white',
+            }}
+          >
+            <Box
+              pb={4}
+              bg={'white'}
+              borderBottomRadius="lg"
+              borderBottom="4px solid"
+              borderColor="green.300"
+            >
+              <Stack mt={5} as="nav" spacing={4}>
+                <Box pl={8}>
+                  <SearchBar />
+                </Box>
+
+                <Accordion allowToggle>
+                  <AccordionItem>
+                    <AccordionButton pl={8}>
+                      <Box
+                        color={'#323232'}
+                        fontFamily={'lato'}
+                        fontWeight={600}
+                        flex="1"
+                        textAlign="left"
+                        _hover={{
+                          color: 'green.500',
+                          textDecoration: 'underline',
+                          transition: 'all 0.3s ease',
+                        }}
+                      >
+                        Shop
+                      </Box>
+                      <AccordionIcon />
+                    </AccordionButton>
+                    <AccordionPanel fontFamily={'lato'} pb={4}>
+                      <Stack pl={30} spacing={3} direction="column">
+                        <RouterLink to="/plants">
+                          <Button
+                            fontWeight={300}
+                            color={'#323232'}
+                            variant="link"
+                            _hover={{
+                              color: 'green.500',
+                              textDecoration: 'underline',
+                              transition: 'all 0.3s ease',
+                            }}
+                          >
+                            Potted Plants
+                          </Button>
+                        </RouterLink>
+                        <RouterLink to="/planters">
+                          <Button
+                            fontWeight={300}
+                            color={'#323232'}
+                            variant="link"
+                            _hover={{
+                              color: 'green.500',
+                              textDecoration: 'underline',
+                              transition: 'all 0.3s ease',
+                            }}
+                          >
+                            Planters
+                          </Button>
+                        </RouterLink>
+                        <RouterLink to="/essentials">
+                          <Button
+                            fontWeight={300}
+                            color={'#323232'}
+                            variant="link"
+                            _hover={{
+                              color: 'green.500',
+                              textDecoration: 'underline',
+                              transition: 'all 0.3s ease',
+                            }}
+                          >
+                            Essentials
+                          </Button>
+                        </RouterLink>
+                      </Stack>
+                    </AccordionPanel>
+                  </AccordionItem>
+                </Accordion>
+
+                <RouterLink to="/cart">
+                  <Button pl={8} variant="link" id="cartLogo">
+                    <ShoppingCart color={'#323232'} />
+                    <Badge
+                      colorScheme="green"
+                      borderRadius="full"
+                      position="absolute"
+                      top="-3"
+                      right="-3"
+                      fontSize="xs"
+                      px={2}
+                      py={1}
+                    >
+                      {cartItems.reduce((acc, item) => acc + item.qty, 0)}
+                    </Badge>
+                  </Button>
+                </RouterLink>
+
+                {userInfo ? (
+                  <>
+                    <RouterLink to="/profile">
+                      <Button
+                        pl={8}
+                        color={'#323232'}
+                        variant="link"
+                        _hover={{
+                          color: 'green.500',
+                          textDecoration: 'underline',
+                          transition: 'all 0.3s ease',
+                        }}
+                      >
+                        Profile
+                      </Button>
+                    </RouterLink>
+                    <Button
+                      color={'#323232'}
+                      variant="link"
+                      onClick={logoutHandler}
+                      _hover={{
+                        color: 'green.500',
+                        textDecoration: 'underline',
+                        transition: 'all 0.3s ease',
+                      }}
+                    >
+                      Logout
+                    </Button>
+                  </>
+                ) : (
+                  <RouterLink to="/login">
+                    <Button variant="link" id="login">
+                      <FaUser />
+                      Login
+                    </Button>
+                  </RouterLink>
+                )}
+                {userInfo && userInfo.isAdmin && (
+                  <>
+                    <RouterLink to="/admin/userlist">
+                      <Button color={'#323232'} variant="link">
+                        Users
+                      </Button>
+                    </RouterLink>
+                    <RouterLink to="/admin/productlist">
+                      <Button color={'#323232'} variant="link">
+                        Products
+                      </Button>
+                    </RouterLink>
+                    <RouterLink to="/admin/orderlist">
+                      <Button color={'#323232'} variant="link">
+                        Orders
+                      </Button>
+                    </RouterLink>
+                  </>
+                )}
+              </Stack>
             </Box>
-            {/* Shop Accordion for mobile */}
-            <Accordion allowToggle>
-              <AccordionItem>
-                <AccordionButton pl={8}>
-                  <Box
-                    color={'#323232'}
-                    fontFamily={'lato'}
-                    fontWeight={600}
-                    flex="1"
-                    textAlign="left"
-                  >
-                    Shop
-                  </Box>
-                  <AccordionIcon />
-                </AccordionButton>
-                <AccordionPanel fontFamily={'lato'} pb={4}>
-                  <Stack pl={30} spacing={3} direction="column">
-                    <RouterLink to="/plants">
-                      <Button fontWeight={300} color={'#323232'} variant="link">
-                        Potted Plants
-                      </Button>
-                    </RouterLink>
-                    <RouterLink to="/planters">
-                      <Button fontWeight={300} color={'#323232'} variant="link">
-                        Planters
-                      </Button>
-                    </RouterLink>
-                    <RouterLink to="/essentials">
-                      <Button fontWeight={300} color={'#323232'} variant="link">
-                        Essentials
-                      </Button>
-                    </RouterLink>
-                  </Stack>
-                </AccordionPanel>
-              </AccordionItem>
-            </Accordion>
-
-            <RouterLink to="/cart">
-              <Button pl={8} variant="link" id="cartLogo">
-                <ShoppingCart color={'#323232'} />
-                <Badge
-                  colorScheme="green"
-                  borderRadius="full"
-                  position="absolute"
-                  top="-3"
-                  right="-3"
-                  fontSize="xs"
-                  px={2}
-                  py={1}
-                >
-                  {cartItems.reduce((acc, item) => acc + item.qty, 0)}
-                </Badge>
-              </Button>
-            </RouterLink>
-
-            {userInfo ? (
-              <>
-                <RouterLink to="/profile">
-                  <Button pl={8} color={'#323232'} variant="link">
-                    Profile
-                  </Button>
-                </RouterLink>
-                <Button
-                  color={'#323232'}
-                  variant="link"
-                  onClick={logoutHandler}
-                >
-                  Logout
-                </Button>
-              </>
-            ) : (
-              <RouterLink to="/login">
-                <Button variant="link" id="login">
-                  <FaUser />
-                  Login
-                </Button>
-              </RouterLink>
-            )}
-            {userInfo && userInfo.isAdmin && (
-              <>
-                <RouterLink to="/admin/userlist">
-                  <Button color={'#323232'} variant="link">
-                    Users
-                  </Button>
-                </RouterLink>
-                <RouterLink to="/admin/productlist">
-                  <Button color={'#323232'} variant="link">
-                    Products
-                  </Button>
-                </RouterLink>
-                <RouterLink to="/admin/orderlist">
-                  <Button color={'#323232'} variant="link">
-                    Orders
-                  </Button>
-                </RouterLink>
-              </>
-            )}
-          </Stack>
-        </Box>
-      </Collapse>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Box>
   );
 }

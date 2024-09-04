@@ -20,7 +20,7 @@ function PlantsPage() {
 
   return (
     <>
-      <Container maxW="container.xlg" mt={'100px'} minH={'100vh'}>
+      <Container maxW="container.xlg" mt="100px" minH="100vh">
         <Center
           flexDirection={'column'}
           marginTop={50}
@@ -37,7 +37,12 @@ function PlantsPage() {
           >
             Latest Plants
           </Heading>
-          <Text fontFamily={'lato'} fontSize="lg" color="gray.600">
+          <Text
+            textAlign={'center'}
+            fontFamily={'lato'}
+            fontSize="lg"
+            color="gray.600"
+          >
             Discover our wide selection of expertly curated bonsai plants
           </Text>
           <SimpleGrid

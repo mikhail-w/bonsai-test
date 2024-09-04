@@ -43,10 +43,15 @@ function PlantersPage() {
         >
           Planters
         </Heading>
-        <Text fontFamily={'lato'} fontSize="lg" color="gray.600">
+        <Text
+          textAlign={'center'}
+          fontFamily={'lato'}
+          fontSize="lg"
+          color="gray.600"
+        >
           Choose from our decorative selection of planters
         </Text>
-        <SimpleGrid minChildWidth="300px" spacing="10px" width="90%" px={5}>
+        <SimpleGrid minChildWidth="300px" spacing="10px" width="100%" px={5}>
           {loading ? (
             <Loader />
           ) : error ? (
