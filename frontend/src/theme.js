@@ -5,6 +5,8 @@ const theme = extendTheme({
     body: "'Roboto', sans-serif", // Default for body text
     heading: "'Poppins', sans-serif", // Default for headings
     rale: "'Raleway', sans-serif",
+    roza: "'Rozha One', sans-serif",
+    lato: "'Lato', sans-serif",
   },
   colors: {
     lime: {

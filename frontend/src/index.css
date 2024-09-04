@@ -24,6 +24,18 @@
   font-style: normal;
 }
 
+.rozha-one-regular {
+  font-family: "Rozha One", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.lato-thin {
+  font-family: "Lato", sans-serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
 h1, h2, h3, span, p {
   font-family: "Quicksand", sans-serif;
   font-optical-sizing: auto;

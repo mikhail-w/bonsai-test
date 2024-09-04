@@ -85,7 +85,7 @@ function NavBar() {
                 fontSize="xl"
                 id="title-text"
                 color="black"
-                fontFamily="rale"
+                fontFamily="lato"
               >
                 BONSAI
               </Box>
@@ -109,11 +109,11 @@ function NavBar() {
                 variant="link"
                 cursor="pointer"
                 color="black"
-                fontFamily="rale"
+                fontFamily="lato"
               >
                 Shop
               </MenuButton>
-              <MenuList fontFamily="rale">
+              <MenuList fontFamily="lato">
                 <RouterLink to="/plants">
                   <MenuItem>Potted Plants</MenuItem>
                 </RouterLink>
@@ -154,16 +154,16 @@ function NavBar() {
                   variant="link"
                   cursor="pointer"
                   color="black"
-                  fontFamily="rale"
+                  fontFamily="lato"
                 >
                   {`Welcome ${userInfo.name}`}
                 </MenuButton>
-                <MenuList fontFamily="rale">
+                <MenuList fontFamily="lato">
                   <RouterLink to="/profile">
                     <MenuItem>Profile</MenuItem>
                   </RouterLink>
                   <MenuDivider />
-                  <MenuItem fontFamily="rale" onClick={logoutHandler}>
+                  <MenuItem fontFamily="lato" onClick={logoutHandler}>
                     Logout
                   </MenuItem>
                 </MenuList>
@@ -174,7 +174,7 @@ function NavBar() {
                   variant="link"
                   id="login"
                   color="black"
-                  fontFamily="rale"
+                  fontFamily="lato"
                 >
                   <FaUser />
                   Login
@@ -188,7 +188,7 @@ function NavBar() {
                   variant="link"
                   cursor="pointer"
                   color="black"
-                  fontFamily="rale"
+                  fontFamily="lato"
                 >
                   Admin
                 </MenuButton>
@@ -221,23 +221,29 @@ function NavBar() {
           <Stack as="nav" spacing={4}>
             <SearchBar />
             <RouterLink to="/plants">
-              <Button variant="link">Potted Plants</Button>
+              <Button color={'#323232'} variant="link">
+                Potted Plants
+              </Button>
             </RouterLink>
             <RouterLink to="/planters">
-              <Button variant="link">Planters</Button>
+              <Button color={'#323232'} variant="link">
+                Planters
+              </Button>
             </RouterLink>
             <RouterLink to="/essentials">
-              <Button variant="link">Essentials</Button>
+              <Button color={'#323232'} variant="link">
+                Essentials
+              </Button>
             </RouterLink>
             <RouterLink to="/cart">
               <Button variant="link" id="cartLogo">
-                <ShoppingCart />
+                <ShoppingCart color={'#323232'} />
                 <Badge
                   colorScheme="green"
                   borderRadius="full"
                   position="absolute"
-                  top="-1"
-                  right="-1"
+                  top="-3"
+                  right="-3"
                   fontSize="xs"
                   px={2}
                   py={1}

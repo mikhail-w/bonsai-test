@@ -59,6 +59,7 @@ function HeroSection() {
           transition={{ duration: 1.5 }}
         >
           <Heading
+            fontFamily={'roza'}
             fontSize={{ base: '3xl', md: '5xl', lg: '6xl' }}
             color={useColorModeValue('white', 'gray.800')}
             fontWeight="bold"
@@ -66,6 +67,7 @@ function HeroSection() {
             Discover Bonsai
           </Heading>
           <Text
+            fontFamily={'lato'}
             fontSize={{ base: 'md', lg: 'lg' }}
             color={useColorModeValue('whiteAlpha.800', 'gray.300')}
           >

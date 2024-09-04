@@ -40,7 +40,7 @@ const ProductImage = ({ image, name }) => (
 
 const ProductDetails = ({ product }) => (
   <VStack spacing={4} align="start">
-    <Heading as="h3" size="lg" fontFamily={'rale'}>
+    <Heading as="h3" size="lg" fontFamily={'lato'}>
       {product.name}
     </Heading>
     <Box>
@@ -52,10 +52,10 @@ const ProductDetails = ({ product }) => (
         color={'#008b4a'}
       />
     </Box>
-    <Text fontSize="2xl" fontWeight="bold" fontFamily="rale">
+    <Text fontSize="2xl" fontWeight="bold" fontFamily="lato">
       Price: ${product.price}
     </Text>
-    <Text fontFamily="rale">{product.description}</Text>
+    <Text fontFamily="lato">{product.description}</Text>
   </VStack>
 );
 
@@ -64,21 +64,21 @@ const ProductPurchaseOptions = ({ product, qty, setQty, addToCartHandler }) => (
     <Box p={5} shadow="md" borderWidth="1px" borderRadius="md">
       <VStack spacing={4} align="stretch">
         <Flex justify="space-between">
-          <Text fontFamily="rale">Price:</Text>
-          <Text fontFamily="rale" fontWeight="bold">
+          <Text fontFamily="lato">Price:</Text>
+          <Text fontFamily="lato" fontWeight="bold">
             ${product.price}
           </Text>
         </Flex>
 
         <Flex justify="space-between">
-          <Text fontFamily="rale">Status:</Text>
+          <Text fontFamily="lato">Status:</Text>
           <Text>
             {product.countInStock > 0 ? (
-              <Badge fontFamily="rale" colorScheme="green">
+              <Badge fontFamily="lato" colorScheme="green">
                 In Stock
               </Badge>
             ) : (
-              <Badge fontFamily="rale" colorScheme="red">
+              <Badge fontFamily="lato" colorScheme="red">
                 Out of Stock
               </Badge>
             )}
@@ -87,7 +87,7 @@ const ProductPurchaseOptions = ({ product, qty, setQty, addToCartHandler }) => (
 
         {product.countInStock > 0 && (
           <HStack spacing={4}>
-            <Text fontFamily="rale">Qty</Text>
+            <Text fontFamily="lato">Qty</Text>
             <Select value={qty} onChange={e => setQty(e.target.value)}>
               {[...Array(product.countInStock).keys()].map(x => (
                 <option key={x + 1} value={x + 1}>
@@ -121,7 +121,7 @@ const WriteReviewForm = ({
   <Box as="form" onSubmit={submitHandler}>
     <VStack spacing={4} align="stretch">
       <Select
-        fontFamily="rale"
+        fontFamily="lato"
         placeholder="Select rating"
         value={rating}
         onChange={e => setRating(e.target.value)}
@@ -134,14 +134,14 @@ const WriteReviewForm = ({
       </Select>
 
       <Textarea
-        fontFamily="rale"
+        fontFamily="lato"
         placeholder="Enter your review"
         value={comment}
         onChange={e => setComment(e.target.value)}
       />
 
       <Button
-        fontFamily="rale"
+        fontFamily="lato"
         type="submit"
         colorScheme="green"
         isLoading={loadingProductReview}
@@ -182,20 +182,20 @@ const ProductReviews = ({
         >
           <VStack align="start">
             <Box>
-              <Text as="span" fontFamily="rale" fontWeight="bold">
+              <Text as="span" fontFamily="lato" fontWeight="bold">
                 {review.name}
               </Text>
               {`   `}
               <Rating value={review.rating} color="#008b4a" />
             </Box>
-            <Text fontFamily="rale">{review.createdAt.substring(0, 10)}</Text>
-            <Text fontFamily="rale">{review.comment}</Text>
+            <Text fontFamily="lato">{review.createdAt.substring(0, 10)}</Text>
+            <Text fontFamily="lato">{review.comment}</Text>
           </VStack>
         </Box>
       ))}
 
       <Box>
-        <Heading fontFamily="rale" as="h4" size="md" mb={4}>
+        <Heading fontFamily="lato" as="h4" size="md" mb={4}>
           Write a review
         </Heading>
         {loadingProductReview && <Loader />}

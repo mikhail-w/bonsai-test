@@ -65,7 +65,7 @@ const Product = ({ product }) => {
               lineHeight="tight"
               isTruncated
               color={useColorModeValue('gray.800', 'white')}
-              fontFamily="sans-serif"
+              fontFamily="lato"
             >
               {product.name}
             </Box>
@@ -101,18 +101,13 @@ const Product = ({ product }) => {
                 ml="2"
                 color="gray.600"
                 fontSize="sm"
-                fontFamily="sans-serif"
+                fontFamily="lato"
               >
                 {product.numReviews} review{product.numReviews !== 1 && 's'}
               </Box>
             </Box>
             <Box fontSize="lg" color={useColorModeValue('gray.800', 'white')}>
-              <Box
-                as="span"
-                color="gray.600"
-                fontSize="lg"
-                fontFamily="heading"
-              >
+              <Box as="span" color="gray.600" fontSize="lg" fontFamily="lato">
                 ${product.price}
               </Box>
             </Box>

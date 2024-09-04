@@ -28,7 +28,7 @@ function PlantsPage() {
           minH={'100vh'}
           justifyContent={'space-between'}
         >
-          <Heading fontFamily="rale">Latest Plants</Heading>
+          <Heading fontFamily="roza">Latest Plants</Heading>
           <SimpleGrid
             minChildWidth={300}
             spacing="10px"
