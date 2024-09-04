@@ -18,14 +18,14 @@ import {
 } from '@chakra-ui/react';
 import { Link as ChakraLink } from '@chakra-ui/react';
 import { FaUser } from 'react-icons/fa6';
-import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
+import Hamburger from 'hamburger-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom';
 import { ShoppingCart } from 'lucide-react';
 import { logout } from '../actions/userActions';
 import { clearCart } from '../actions/cartActions';
 import SearchBar from './SearchBar';
-import logo from '../assets/images/bonsai-tree-logo.png';
+import logo from '../assets/images/bl2.png';
 
 function NavBar() {
   const [scrolled, setScrolled] = useState(false);
@@ -284,13 +284,9 @@ function NavBar() {
         </HStack>
 
         {/* Hamburger Icon for mobile */}
-        <IconButton
-          size="md"
-          icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-          aria-label="Open Menu"
-          display={{ md: 'none' }}
-          onClick={isOpen ? onClose : onOpen}
-        />
+        <Box display={{ base: 'block', md: 'none' }}>
+          <Hamburger toggled={isOpen} toggle={isOpen ? onClose : onOpen} />
+        </Box>
       </Flex>
 
       {isOpen ? (
@@ -332,7 +328,9 @@ function NavBar() {
             {userInfo ? (
               <>
                 <RouterLink to="/profile">
-                  <Button variant="link">Profile</Button>
+                  <Button color={'#323232'} variant="link">
+                    Profile
+                  </Button>
                 </RouterLink>
                 <Button variant="link" onClick={logoutHandler}>
                   Logout
@@ -349,13 +347,19 @@ function NavBar() {
             {userInfo && userInfo.isAdmin && (
               <>
                 <RouterLink to="/admin/userlist">
-                  <Button variant="link">Users</Button>
+                  <Button color={'#323232'} variant="link">
+                    Users
+                  </Button>
                 </RouterLink>
                 <RouterLink to="/admin/productlist">
-                  <Button variant="link">Products</Button>
+                  <Button color={'#323232'} variant="link">
+                    Products
+                  </Button>
                 </RouterLink>
                 <RouterLink to="/admin/orderlist">
-                  <Button variant="link">Orders</Button>
+                  <Button color={'#323232'} variant="link">
+                    Orders
+                  </Button>
                 </RouterLink>
               </>
             )}

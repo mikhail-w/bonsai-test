@@ -28,7 +28,7 @@ function BlogPage() {
   const [content, setContent] = useState('');
   const [image, setImage] = useState(null);
   const [creatingPost, setCreatingPost] = useState(false);
-  const [active, setActive] = useState(false);
+  const [activeHearts, setActiveHearts] = useState({});
 
   const blogList = useSelector(state => state.blogList);
   const { loading, error, posts } = blogList;
@@ -50,27 +50,21 @@ function BlogPage() {
     dispatch(listBlogPosts());
   }, [dispatch, successCreate]);
 
-  // This useEffect will trigger when posts are successfully loaded
-  useEffect(() => {
-    if (posts && posts.length > 0) {
-      posts.forEach(post => {
-        dispatch(likeUnlikeBlogPost(post.id));
-      });
-    }
-  }, [dispatch, posts]);
-
   const submitHandler = () => {
     const formData = new FormData();
-    formData.append('content', content); // Append content as a string
+    formData.append('content', content);
     if (image) {
-      formData.append('image', image); // Append image if it exists
+      formData.append('image', image);
     }
-    dispatch(createBlogPost(formData)); // Dispatch FormData
+    dispatch(createBlogPost(formData));
   };
 
   const likeUnlikeHandler = postId => {
     dispatch(likeUnlikeBlogPost(postId));
-    console.log('Post ID:', postId);
+    setActiveHearts(prevState => ({
+      ...prevState,
+      [postId]: !prevState[postId],
+    }));
   };
 
   return (
@@ -160,11 +154,8 @@ function BlogPage() {
                       <Heart
                         width={24}
                         height={24}
-                        active={active}
-                        onClick={() => {
-                          likeUnlikeHandler(post.id);
-                          setActive(!active);
-                        }}
+                        active={activeHearts[post.id] || false}
+                        onClick={() => likeUnlikeHandler(post.id)}
                       />
                     </Box>
                   </HStack>

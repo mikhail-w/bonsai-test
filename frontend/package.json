@@ -28,6 +28,7 @@
     "express": "^4.19.2",
     "framer-motion": "^11.3.31",
     "google-maps-react-markers": "^2.0.11",
+    "hamburger-react": "^2.5.1",
     "ldrs": "^1.0.2",
     "lodash": "^4.17.21",
     "lucide": "^0.427.0",
