@@ -18,6 +18,7 @@ import {
   Stack,
   Badge,
   Avatar,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { Link as ChakraLink } from '@chakra-ui/react';
 import { FaUser } from 'react-icons/fa6';
@@ -33,6 +34,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 function NavBar() {
   const [scrolled, setScrolled] = useState(false);
+  const shopMenuDisclosure = useDisclosure(); // For Shop menu hover control
   const [menuOpen, setMenuOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -113,6 +115,7 @@ function NavBar() {
               to="/blog"
               fontWeight="bold"
               fontFamily="lato"
+              fontSize="md"
               color="gray.600"
               _hover={{
                 color: 'green.500',
@@ -128,6 +131,7 @@ function NavBar() {
               to="/about"
               fontWeight="bold"
               fontFamily="lato"
+              fontSize="md"
               color="gray.600"
               _hover={{
                 color: 'green.500',
@@ -143,6 +147,7 @@ function NavBar() {
               to="/contact"
               fontWeight="bold"
               fontFamily="lato"
+              fontSize="md"
               color="gray.600"
               _hover={{
                 color: 'green.500',
@@ -152,6 +157,45 @@ function NavBar() {
             >
               Contact Us
             </ChakraLink>
+            {/* Shop Menu with hover control */}
+            <Menu isOpen={shopMenuDisclosure.isOpen}>
+              <MenuButton
+                as={Button}
+                fontWeight="bold"
+                fontFamily="lato"
+                fontSize="lg"
+                variant="link"
+                cursor="pointer"
+                color="gray.600"
+                onMouseEnter={shopMenuDisclosure.onOpen}
+                onMouseLeave={shopMenuDisclosure.onClose}
+                _hover={{
+                  color: 'green.500',
+                  textDecoration: 'underline',
+                  transition: 'all 0.3s ease',
+                }}
+              >
+                Shop
+              </MenuButton>
+              <MenuList
+                onMouseEnter={shopMenuDisclosure.onOpen}
+                onMouseLeave={shopMenuDisclosure.onClose}
+                fontFamily="lato"
+                boxShadow="lg"
+                borderRadius="md"
+                bg="white"
+              >
+                <RouterLink to="/plants">
+                  <MenuItem>Potted Plants</MenuItem>
+                </RouterLink>
+                <RouterLink to="/planters">
+                  <MenuItem>Planters</MenuItem>
+                </RouterLink>
+                <RouterLink to="/essentials">
+                  <MenuItem>Essentials</MenuItem>
+                </RouterLink>
+              </MenuList>
+            </Menu>
           </HStack>
         </Flex>
 
@@ -246,7 +290,7 @@ function NavBar() {
 
         {/* Hamburger Icon for mobile */}
         <Box display={{ base: 'block', md: 'none' }}>
-          <Hamburger toggled={menuOpen} toggle={toggleMenu} />
+          <Hamburger color="#48bb78" toggled={menuOpen} toggle={toggleMenu} />
         </Box>
       </Flex>
 
@@ -267,6 +311,7 @@ function NavBar() {
               right: 0,
               zIndex: 20,
               background: 'white',
+              borderRadius: '0 0 16px 16px',
             }}
           >
             <Box
@@ -280,7 +325,39 @@ function NavBar() {
                 <Box pl={8}>
                   <SearchBar />
                 </Box>
+                <ChakraLink
+                  pl={8}
+                  as={RouterLink}
+                  to="/blog"
+                  fontWeight="bold"
+                  fontFamily="lato"
+                  fontSize="md"
+                  color="gray.600"
+                  _hover={{
+                    color: 'green.500',
+                    textDecoration: 'underline',
+                    transition: 'all 0.3s ease',
+                  }}
+                >
+                  Blog
+                </ChakraLink>
 
+                <ChakraLink
+                  pl={8}
+                  as={RouterLink}
+                  to="/about"
+                  fontWeight="bold"
+                  fontFamily="lato"
+                  fontSize="md"
+                  color="gray.600"
+                  _hover={{
+                    color: 'green.500',
+                    textDecoration: 'underline',
+                    transition: 'all 0.3s ease',
+                  }}
+                >
+                  About
+                </ChakraLink>
                 <Accordion allowToggle>
                   <AccordionItem>
                     <AccordionButton pl={8}>
@@ -398,8 +475,8 @@ function NavBar() {
                   </>
                 ) : (
                   <RouterLink to="/login">
-                    <Button variant="link" id="login">
-                      <FaUser />
+                    <Button pl={8} color={'#323232'} variant="link" id="login">
+                      <FaUser color={'#323232'} />
                       Login
                     </Button>
                   </RouterLink>

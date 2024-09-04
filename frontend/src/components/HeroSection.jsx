@@ -37,6 +37,15 @@ function HeroSection() {
         left={0}
         zIndex={-1}
       />
+      <Box
+        w="full"
+        h="100vh"
+        bg="rgba(0, 0, 0, 0.2)" // 50% opacity black overlay
+        position="absolute"
+        top={0}
+        left={0}
+        zIndex={0}
+      />
 
       {/* Content Section */}
       <MotionBox
