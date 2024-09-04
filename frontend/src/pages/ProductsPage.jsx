@@ -52,12 +52,14 @@ function ProductsPage() {
         <>
           <SimpleGrid
             columns={{ base: 1, sm: 2, md: 3, lg: 4 }}
-            spacing={10}
-            px={4}
-            mb={8}
+            spacing={8} // Adjusted spacing for better separation between cards
+            mb={16}
+            px={{ base: 2, md: 4 }} // Responsive padding for smaller screens
           >
             {products.map(product => (
-              <Product key={product._id} product={product} />
+              <Box key={product._id} w="full">
+                <Product product={product} />
+              </Box>
             ))}
           </SimpleGrid>
           <Center>

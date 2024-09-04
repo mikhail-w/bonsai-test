@@ -74,7 +74,7 @@ function BlogPage() {
   };
 
   return (
-    <Box maxW="800px" mx="auto" py={6} px={4}>
+    <Box mt={100} maxW="800px" mx="auto" py={6} px={4}>
       <Flex justify="space-between" align="center" mb={6}>
         <Text
           fontFamily={'rale'}
