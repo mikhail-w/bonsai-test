@@ -28,19 +28,21 @@ import Message from '../components/Message';
 import BackButton from '../components/BackButton';
 
 const ProductImage = ({ image, name }) => (
-  <VStack spacing={6}>
+  <VStack spacing={4} align="center">
     <Image
       src={`http://127.0.0.1:8000${image}`}
       alt={name}
-      boxSize="100%"
-      objectFit="contain"
+      boxSize={{ base: '100%', md: '400px' }}
+      objectFit="cover"
+      borderRadius="lg"
+      shadow="md"
     />
   </VStack>
 );
 
 const ProductDetails = ({ product }) => (
-  <VStack spacing={4} align="start">
-    <Heading as="h3" size="lg" fontFamily={'lato'}>
+  <VStack spacing={6} align="start">
+    <Heading as="h3" size="xl" fontFamily="lato">
       {product.name}
     </Heading>
     <Box>
@@ -53,16 +55,18 @@ const ProductDetails = ({ product }) => (
       />
     </Box>
     <Text fontSize="2xl" fontWeight="bold" fontFamily="lato">
-      Price: ${product.price}
+      {/* ${product.price.toFixed(2)} */}${product.price}
     </Text>
-    <Text fontFamily="lato">{product.description}</Text>
+    <Text fontFamily="lato" lineHeight="tall" fontSize="lg">
+      {product.description}
+    </Text>
   </VStack>
 );
 
 const ProductPurchaseOptions = ({ product, qty, setQty, addToCartHandler }) => (
-  <VStack spacing={4} align="stretch">
-    <Box p={5} shadow="md" borderWidth="1px" borderRadius="md">
-      <VStack spacing={4} align="stretch">
+  <VStack spacing={6} align="stretch" w="full">
+    <Box p={6} shadow="lg" borderWidth="1px" borderRadius="lg" bg="white">
+      <VStack spacing={6} align="stretch">
         <Flex justify="space-between">
           <Text fontFamily="lato">Price:</Text>
           <Text fontFamily="lato" fontWeight="bold">
@@ -88,7 +92,11 @@ const ProductPurchaseOptions = ({ product, qty, setQty, addToCartHandler }) => (
         {product.countInStock > 0 && (
           <HStack spacing={4}>
             <Text fontFamily="lato">Qty</Text>
-            <Select value={qty} onChange={e => setQty(e.target.value)}>
+            <Select
+              value={qty}
+              onChange={e => setQty(e.target.value)}
+              borderColor="gray.300"
+            >
               {[...Array(product.countInStock).keys()].map(x => (
                 <option key={x + 1} value={x + 1}>
                   {x + 1}
@@ -102,6 +110,7 @@ const ProductPurchaseOptions = ({ product, qty, setQty, addToCartHandler }) => (
           colorScheme="green"
           onClick={addToCartHandler}
           isDisabled={product.countInStock === 0}
+          size="lg"
         >
           Add to Cart
         </Button>
@@ -125,6 +134,7 @@ const WriteReviewForm = ({
         placeholder="Select rating"
         value={rating}
         onChange={e => setRating(e.target.value)}
+        borderColor="gray.300"
       >
         <option value="1">1 - Poor</option>
         <option value="2">2 - Fair</option>
@@ -138,6 +148,7 @@ const WriteReviewForm = ({
         placeholder="Enter your review"
         value={comment}
         onChange={e => setComment(e.target.value)}
+        borderColor="gray.300"
       />
 
       <Button
@@ -145,6 +156,7 @@ const WriteReviewForm = ({
         type="submit"
         colorScheme="green"
         isLoading={loadingProductReview}
+        size="lg"
       >
         Submit
       </Button>
@@ -179,16 +191,18 @@ const ProductReviews = ({
           shadow="md"
           borderWidth="1px"
           borderRadius="md"
+          bg="white"
         >
-          <VStack align="start">
-            <Box>
-              <Text as="span" fontFamily="lato" fontWeight="bold">
+          <VStack align="start" spacing={2}>
+            <Flex justify="space-between" w="full">
+              <Text fontFamily="lato" fontWeight="bold">
                 {review.name}
               </Text>
-              {`   `}
               <Rating value={review.rating} color="#008b4a" />
-            </Box>
-            <Text fontFamily="lato">{review.createdAt.substring(0, 10)}</Text>
+            </Flex>
+            <Text fontFamily="lato" fontSize="sm" color="gray.500">
+              {review.createdAt.substring(0, 10)}
+            </Text>
             <Text fontFamily="lato">{review.comment}</Text>
           </VStack>
         </Box>
@@ -270,12 +284,17 @@ function ProductPage() {
   };
 
   return (
-    <Container maxW="container.xlg" mt={'100px'} minH={'100vh'}>
+    <Container
+      mt={50}
+      maxW="container.xl"
+      py={{ base: 4, md: 10 }}
+      minH="100vh"
+    >
       <Box>
         {loading ? (
           <Loader />
         ) : error ? (
-          <Message variant={'danger'}>{error}</Message>
+          <Message variant="danger">{error}</Message>
         ) : (
           <Container maxW="container.lg" py={6}>
             <BackButton />

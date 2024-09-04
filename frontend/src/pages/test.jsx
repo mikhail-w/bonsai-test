@@ -1,336 +1,312 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
 import {
   Box,
+  Container,
+  Image,
   Flex,
-  Text,
-  Button,
   VStack,
   HStack,
-  Input,
-  Image,
+  Heading,
+  Text,
+  Stack,
+  Button,
+  Select,
   Textarea,
-  IconButton,
-  Spinner,
+  Badge,
+  SimpleGrid,
 } from '@chakra-ui/react';
-import { FaHeart, FaRegHeart, FaPlusCircle } from 'react-icons/fa';
-import Heart from '@react-sandbox/heart';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link as RouterLink, useParams, useNavigate } from 'react-router-dom';
 import {
-  listBlogPosts,
-  createBlogPost,
-  likeUnlikeBlogPost,
-} from '../actions/blogActions';
-import { BLOG_POST_CREATE_RESET } from '../constants/blogConstants';
+  listProductDetails,
+  createProductReview,
+} from '../actions/productActions';
+import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants';
+import Rating from '../components/Rating';
+import Loader from '../components/Loader';
+import Message from '../components/Message';
+import BackButton from '../components/BackButton';
 
-function BlogPage() {
-  const dispatch = useDispatch();
-  const [content, setContent] = useState('');
-  const [image, setImage] = useState(null);
-  const [creatingPost, setCreatingPost] = useState(false);
-  const [active, setActive] = useState(false);
+const ProductImage = ({ image, name }) => (
+  <VStack spacing={6}>
+    <Image
+      src={`http://127.0.0.1:8000${image}`}
+      alt={name}
+      boxSize="100%"
+      objectFit="contain"
+    />
+  </VStack>
+);
 
-  const blogList = useSelector(state => state.blogList);
-  const { loading, error, posts } = blogList;
+const ProductDetails = ({ product }) => (
+  <VStack spacing={4} align="start">
+    <Heading as="h3" size="lg" fontFamily={'lato'}>
+      {product.name}
+    </Heading>
+    <Box>
+      <Rating
+        value={product.rating}
+        text={`${product.numReviews} ${
+          product.reviews.length === 1 ? 'review' : 'reviews'
+        }`}
+        color={'#008b4a'}
+      />
+    </Box>
+    <Text fontSize="2xl" fontWeight="bold" fontFamily="lato">
+      Price: ${product.price}
+    </Text>
+    <Text fontFamily="lato">{product.description}</Text>
+  </VStack>
+);
 
-  const blogPostCreate = useSelector(state => state.blogPostCreate);
-  const {
-    success: successCreate,
-    loading: loadingCreate,
-    error: errorCreate,
-  } = blogPostCreate;
+const ProductPurchaseOptions = ({ product, qty, setQty, addToCartHandler }) => (
+  <VStack spacing={4} align="stretch">
+    <Box p={5} shadow="md" borderWidth="1px" borderRadius="md">
+      <VStack spacing={4} align="stretch">
+        <Flex justify="space-between">
+          <Text fontFamily="lato">Price:</Text>
+          <Text fontFamily="lato" fontWeight="bold">
+            ${product.price}
+          </Text>
+        </Flex>
 
-  useEffect(() => {
-    if (successCreate) {
-      setContent('');
-      setImage(null);
-      setCreatingPost(false);
-      dispatch({ type: BLOG_POST_CREATE_RESET });
-    }
-    dispatch(listBlogPosts());
-  }, [dispatch, successCreate]);
+        <Flex justify="space-between">
+          <Text fontFamily="lato">Status:</Text>
+          <Text>
+            {product.countInStock > 0 ? (
+              <Badge fontFamily="lato" colorScheme="green">
+                In Stock
+              </Badge>
+            ) : (
+              <Badge fontFamily="lato" colorScheme="red">
+                Out of Stock
+              </Badge>
+            )}
+          </Text>
+        </Flex>
 
-  const submitHandler = () => {
-    const formData = new FormData();
-    formData.append('content', content); // Append content as a string
-    if (image) {
-      formData.append('image', image); // Append image if it exists
-    }
-    dispatch(createBlogPost(formData)); // Dispatch FormData
-  };
+        {product.countInStock > 0 && (
+          <HStack spacing={4}>
+            <Text fontFamily="lato">Qty</Text>
+            <Select value={qty} onChange={e => setQty(e.target.value)}>
+              {[...Array(product.countInStock).keys()].map(x => (
+                <option key={x + 1} value={x + 1}>
+                  {x + 1}
+                </option>
+              ))}
+            </Select>
+          </HStack>
+        )}
 
-  const likeUnlikeHandler = postId => {
-    dispatch(likeUnlikeBlogPost(postId));
-  };
-
-  return (
-    <Box maxW="1200px" mx="auto" py={6} px={4}>
-      <Flex justify="space-between" align="center" mb={6}>
-        <Text fontSize="3xl" fontWeight="bold" fontFamily="heading">
-          Bonsai Blog
-        </Text>
         <Button
-          leftIcon={<FaPlusCircle />}
           colorScheme="green"
-          onClick={() => setCreatingPost(prev => !prev)}
+          onClick={addToCartHandler}
+          isDisabled={product.countInStock === 0}
         >
-          {creatingPost ? 'Cancel' : 'Create Post'}
+          Add to Cart
         </Button>
-      </Flex>
+      </VStack>
+    </Box>
+  </VStack>
+);
 
-      {creatingPost && (
-        <Box bg="gray.50" p={4} mb={6} borderRadius="md" shadow="md">
-          <VStack spacing={4}>
-            <Textarea
-              placeholder="What's on your mind?"
-              value={content}
-              onChange={e => setContent(e.target.value)}
-            />
-            <Input
-              type="file"
-              onChange={e => setImage(e.target.files[0])}
-              accept="image/*"
-            />
-            <Button
-              colorScheme="green"
-              onClick={submitHandler}
-              isLoading={loadingCreate}
-            >
-              Post
-            </Button>
-            {errorCreate && <Text color="red.500">{errorCreate}</Text>}
-          </VStack>
-        </Box>
-      )}
+const WriteReviewForm = ({
+  rating,
+  setRating,
+  comment,
+  setComment,
+  submitHandler,
+  loadingProductReview,
+}) => (
+  <Box as="form" onSubmit={submitHandler}>
+    <VStack spacing={4} align="stretch">
+      <Select
+        fontFamily="lato"
+        placeholder="Select rating"
+        value={rating}
+        onChange={e => setRating(e.target.value)}
+      >
+        <option value="1">1 - Poor</option>
+        <option value="2">2 - Fair</option>
+        <option value="3">3 - Good</option>
+        <option value="4">4 - Very Good</option>
+        <option value="5">5 - Excellent</option>
+      </Select>
 
-      {loading ? (
-        <Spinner />
-      ) : error ? (
-        <Text color="red.500">{error}</Text>
-      ) : (
-        <VStack spacing={6}>
-          {posts?.results?.map(post => (
-            <Box
-              key={post.id}
-              w="full"
-              bg="white"
-              p={4}
-              borderRadius="md"
-              shadow="md"
-              transition="transform 0.2s"
-              _hover={{ transform: 'scale(1.02)' }}
-            >
-              <VStack align="start" spacing={4}>
-                <HStack justify="space-between" w="full">
-                  <Text fontWeight="bold" fontSize="lg" isTruncated>
-                    {post.user}
-                  </Text>
-                  <Box
-                    transition="transform 0.2s"
-                    _hover={{ transform: 'scale(1.5)' }}
-                  >
-                    <Heart
-                      width={24}
-                      height={24}
-                      active={active}
-                      onClick={() => setActive(!active)}
-                    />
-                  </Box>
-                </HStack>
-                <Text>{post.content}</Text>
-                {post.image && (
-                  <Image
-                    src={post.image}
-                    alt="post"
-                    borderRadius="md"
-                    maxH="400px"
-                    objectFit="cover"
-                  />
-                )}
-                <HStack justify="space-between" w="full">
-                  <Text color="gray.500">{post.likes_count} Likes</Text>
-                  <Text color="gray.500">{post.views} Views</Text>
-                </HStack>
-              </VStack>
+      <Textarea
+        fontFamily="lato"
+        placeholder="Enter your review"
+        value={comment}
+        onChange={e => setComment(e.target.value)}
+      />
+
+      <Button
+        fontFamily="lato"
+        type="submit"
+        colorScheme="green"
+        isLoading={loadingProductReview}
+      >
+        Submit
+      </Button>
+    </VStack>
+  </Box>
+);
+
+const ProductReviews = ({
+  product,
+  userInfo,
+  submitHandler,
+  rating,
+  setRating,
+  comment,
+  setComment,
+  loadingProductReview,
+  errorProductReview,
+  successProductReview,
+}) => (
+  <Box>
+    <Heading as="h4" size="md" mb={4}>
+      Reviews
+    </Heading>
+    {product.reviews.length === 0 && (
+      <Message variant="info">No Reviews</Message>
+    )}
+    <VStack spacing={4} align="stretch">
+      {product.reviews.map(review => (
+        <Box
+          key={review._id}
+          p={5}
+          shadow="md"
+          borderWidth="1px"
+          borderRadius="md"
+        >
+          <VStack align="start">
+            <Box>
+              <Text as="span" fontFamily="lato" fontWeight="bold">
+                {review.name}
+              </Text>
+              {`   `}
+              <Rating value={review.rating} color="#008b4a" />
             </Box>
-          ))}
-        </VStack>
-      )}
-    </Box>
-  );
-}
+            <Text fontFamily="lato">{review.createdAt.substring(0, 10)}</Text>
+            <Text fontFamily="lato">{review.comment}</Text>
+          </VStack>
+        </Box>
+      ))}
 
-export default BlogPage;
-******************************************************
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  Box,
-  Flex,
-  Text,
-  Button,
-  VStack,
-  HStack,
-  Input,
-  Image,
-  Textarea,
-  Spinner,
-} from '@chakra-ui/react';
-import { FaPlusCircle } from 'react-icons/fa';
-import Heart from '@react-sandbox/heart';
-import {
-  listBlogPosts,
-  createBlogPost,
-  likeUnlikeBlogPost,
-} from '../actions/blogActions';
-import { BLOG_POST_CREATE_RESET } from '../constants/blogConstants';
+      <Box>
+        <Heading fontFamily="lato" as="h4" size="md" mb={4}>
+          Write a review
+        </Heading>
+        {loadingProductReview && <Loader />}
+        {successProductReview && (
+          <Message variant="success">Review Submitted</Message>
+        )}
+        {errorProductReview && (
+          <Message variant="danger">{errorProductReview}</Message>
+        )}
+        {userInfo ? (
+          <WriteReviewForm
+            rating={rating}
+            setRating={setRating}
+            comment={comment}
+            setComment={setComment}
+            submitHandler={submitHandler}
+            loadingProductReview={loadingProductReview}
+          />
+        ) : (
+          <Message variant="info">
+            Please <RouterLink to="/login">login</RouterLink> to write a review
+          </Message>
+        )}
+      </Box>
+    </VStack>
+  </Box>
+);
 
-function BlogPage() {
+function ProductPage() {
+  const [qty, setQty] = useState(1);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState('');
+  const { id } = useParams();
   const dispatch = useDispatch();
-  const [content, setContent] = useState('');
-  const [image, setImage] = useState(null);
-  const [creatingPost, setCreatingPost] = useState(false);
+  const navigate = useNavigate();
 
-  const blogList = useSelector(state => state.blogList);
-  const { loading, error, posts } = blogList;
+  const productDetails = useSelector(state => state.productDetails);
+  const { loading, error, product } = productDetails;
 
-  const blogPostCreate = useSelector(state => state.blogPostCreate);
-  const {blogLike} = useSelector(state => state.blogPostLikeUnlike);
+  const userLogin = useSelector(state => state.userLogin);
+  const { userInfo } = userLogin;
 
+  const productReviewCreate = useSelector(state => state.productReviewCreate);
   const {
-    success: successCreate,
-    loading: loadingCreate,
-    error: errorCreate,
-  } = blogPostCreate;
+    loading: loadingProductReview,
+    error: errorProductReview,
+    success: successProductReview,
+  } = productReviewCreate;
 
   useEffect(() => {
-    if (successCreate) {
-      setContent('');
-      setImage(null);
-      setCreatingPost(false);
-      dispatch({ type: BLOG_POST_CREATE_RESET });
+    if (successProductReview) {
+      setRating(0);
+      setComment('');
+      dispatch({ type: PRODUCT_CREATE_REVIEW_RESET });
     }
-    dispatch(listBlogPosts());
-  }, [dispatch, successCreate]);
 
-  const submitHandler = () => {
-    const formData = new FormData();
-    formData.append('content', content); // Append content as a string
-    if (image) {
-      formData.append('image', image); // Append image if it exists
-    }
-    dispatch(createBlogPost(formData)); // Dispatch FormData
+    dispatch(listProductDetails(id));
+  }, [dispatch, successProductReview, id]);
+
+  const addToCartHandler = () => {
+    navigate(`/cart/${id}?qty=${qty}`);
   };
 
-  const likeUnlikeHandler = (postId, isCurrentlyLiked, setLiked) => {
-    dispatch(likeUnlikeBlogPost(postId)).then(() => {
-      // Toggle the local liked state
-      setLiked(!isCurrentlyLiked);
-      // Optionally, you can re-fetch posts to get the updated data from the server
-      // dispatch(listBlogPosts());
-    });
+  const submitHandler = e => {
+    e.preventDefault();
+    dispatch(
+      createProductReview(id, {
+        rating,
+        comment,
+      })
+    );
   };
 
   return (
-    <Box maxW="1200px" mx="auto" py={6} px={4}>
-      <Flex justify="space-between" align="center" mb={6}>
-        <Text fontSize="3xl" fontWeight="bold" fontFamily="heading">
-          Bonsai Blog
-        </Text>
-        <Button
-          leftIcon={<FaPlusCircle />}
-          colorScheme="green"
-          onClick={() => setCreatingPost(prev => !prev)}
-        >
-          {creatingPost ? 'Cancel' : 'Create Post'}
-        </Button>
-      </Flex>
+    <Container maxW="container.xlg" mt={'100px'} minH={'100vh'}>
+      <Box>
+        {loading ? (
+          <Loader />
+        ) : error ? (
+          <Message variant={'danger'}>{error}</Message>
+        ) : (
+          <Container maxW="container.lg" py={6}>
+            <BackButton />
+            <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10} mb={10}>
+              <ProductImage image={product.image} name={product.name} />
+              <ProductDetails product={product} />
+              <ProductPurchaseOptions
+                product={product}
+                qty={qty}
+                setQty={setQty}
+                addToCartHandler={addToCartHandler}
+              />
+            </SimpleGrid>
 
-      {creatingPost && (
-        <Box bg="gray.50" p={4} mb={6} borderRadius="md" shadow="md">
-          <VStack spacing={4}>
-            <Textarea
-              placeholder="What's on your mind?"
-              value={content}
-              onChange={e => setContent(e.target.value)}
+            <ProductReviews
+              product={product}
+              userInfo={userInfo}
+              submitHandler={submitHandler}
+              rating={rating}
+              setRating={setRating}
+              comment={comment}
+              setComment={setComment}
+              loadingProductReview={loadingProductReview}
+              errorProductReview={errorProductReview}
+              successProductReview={successProductReview}
             />
-            <Input
-              type="file"
-              onChange={e => setImage(e.target.files[0])}
-              accept="image/*"
-            />
-            <Button
-              colorScheme="green"
-              onClick={submitHandler}
-              isLoading={loadingCreate}
-            >
-              Post
-            </Button>
-            {errorCreate && <Text color="red.500">{errorCreate}</Text>}
-          </VStack>
-        </Box>
-      )}
-
-      {loading ? (
-        <Spinner />
-      ) : error ? (
-        <Text color="red.500">{error}</Text>
-      ) : (
-        <VStack spacing={6}>
-          {posts?.results?.map(post => {
-            const [liked, setLiked] = useState(post.is_liked);
-
-            return (
-              <Box
-                key={post.id}
-                w="full"
-                bg="white"
-                p={4}
-                borderRadius="md"
-                shadow="md"
-                transition="transform 0.2s"
-                _hover={{ transform: 'scale(1.02)' }}
-              >
-                <VStack align="start" spacing={4}>
-                  <HStack justify="space-between" w="full">
-                    <Text fontWeight="bold" fontSize="lg" isTruncated>
-                      {post.user}
-                    </Text>
-                    <Box
-                      transition="transform 0.2s"
-                      _hover={{ transform: 'scale(1.5)' }}
-                    >
-                      <Heart
-                        width={24}
-                        height={24}
-                        active={liked}
-                        onClick={() => {
-                          likeUnlikeHandler(post.id, liked, setLiked);
-                        }}
-                      />
-                    </Box>
-                  </HStack>
-                  <Text>{post.content}</Text>
-                  {post.image && (
-                    <Image
-                      src={post.image}
-                      alt="post"
-                      borderRadius="md"
-                      maxH="400px"
-                      objectFit="cover"
-                    />
-                  )}
-                  <HStack justify="space-between" w="full">
-                    <Text color="gray.500">{post.likes_count + (liked ? 1 : 0)} Likes</Text>
-                    <Text color="gray.500">{post.views} Views</Text>
-                  </HStack>
-                </VStack>
-              </Box>
-            );
-          })}
-        </VStack>
-      )}
-    </Box>
+          </Container>
+        )}
+      </Box>
+    </Container>
   );
 }
 
-export default BlogPage;
+export default ProductPage;
