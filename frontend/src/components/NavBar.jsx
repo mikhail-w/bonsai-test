@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 import {
   Box,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
   Flex,
   HStack,
   IconButton,
@@ -25,7 +30,8 @@ import { ShoppingCart } from 'lucide-react';
 import { logout } from '../actions/userActions';
 import { clearCart } from '../actions/cartActions';
 import SearchBar from './SearchBar';
-import logo from '../assets/images/bl2.png';
+// import logo from '../assets/images/bl2.png';
+import logo from '../assets/images/bonsai-logo.png';
 
 function NavBar() {
   const [scrolled, setScrolled] = useState(false);
