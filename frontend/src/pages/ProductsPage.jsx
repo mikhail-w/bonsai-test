@@ -6,8 +6,14 @@ import Message from '../components/Message';
 import Paginate from '../components/Paginate';
 import { useNavigate } from 'react-router-dom';
 import { listProducts } from '../actions/productActions';
-// import '../assets/styles/ProductsPage.css';
-import { SimpleGrid, Center, Box, Container } from '@chakra-ui/react';
+import {
+  SimpleGrid,
+  Center,
+  Box,
+  Container,
+  Heading,
+  Text,
+} from '@chakra-ui/react';
 
 function ProductsPage() {
   const dispatch = useDispatch();
@@ -22,36 +28,44 @@ function ProductsPage() {
   }, [dispatch, keyword]);
 
   return (
-    <>
-      <Container maxW="container.xlg" mt={'100px'} minH={'100vh'}>
-        <Center
-          flexDirection={'column'}
-          // marginTop={50}
-          marginBottom={50}
-          minH={'80vh'}
-          justifyContent={'space-between'}
+    <Container maxW="container.xl" mt={100} minH="100vh">
+      <Center flexDirection="column" mb={12} textAlign="center">
+        <Heading
+          textTransform={'uppercase'}
+          as="h1"
+          size="2xl"
+          mb={6}
+          fontFamily="roza"
         >
-          <h1 className="title">All Products</h1>
+          All Products
+        </Heading>
+        <Text fontFamily={'lato'} fontSize="lg" color="gray.600">
+          Discover our wide selection of bonsai plants and accessories
+        </Text>
+      </Center>
+
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <Message variant="danger">{error}</Message>
+      ) : (
+        <>
           <SimpleGrid
-            minChildWidth={300}
-            spacing="10px"
-            width="90%"
-            px={5} // Padding to add spacing on small screens
+            columns={{ base: 1, sm: 2, md: 3, lg: 4 }}
+            spacing={10}
+            px={4}
+            mb={8}
           >
-            {loading ? (
-              <Loader />
-            ) : error ? (
-              <Message variant={'danger'}>{error}</Message>
-            ) : (
-              products.map(product => (
-                <Product key={product._id} product={product} />
-              ))
-            )}
+            {products.map(product => (
+              <Product key={product._id} product={product} />
+            ))}
           </SimpleGrid>
-          <Paginate page={page} pages={pages} keyword={keyword} />
-        </Center>
-      </Container>
-    </>
+          <Center>
+            <Paginate page={page} pages={pages} keyword={keyword} />
+          </Center>
+        </>
+      )}
+    </Container>
   );
 }
 

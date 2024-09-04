@@ -1,6 +1,13 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { SimpleGrid, Container, Heading, Box, Center } from '@chakra-ui/react';
+import {
+  SimpleGrid,
+  Container,
+  Heading,
+  Box,
+  Center,
+  Text,
+} from '@chakra-ui/react';
 import Product from '../components/Product';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
@@ -26,7 +33,18 @@ function EssentialsPage() {
         marginBottom={100}
         justifyContent={'space-between'}
       >
-        <h1 className="title">Essentials</h1>
+        <Heading
+          textTransform={'uppercase'}
+          as="h1"
+          size="2xl"
+          mb={6}
+          fontFamily="roza"
+        >
+          Essentials
+        </Heading>
+        <Text fontFamily={'lato'} fontSize="lg" color="gray.600">
+          Pick from our selection of must have plant accessories
+        </Text>
         <SimpleGrid
           minChildWidth={300}
           spacing="10px"

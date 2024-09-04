@@ -5,7 +5,14 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Paginate from '../components/Paginate';
 import { listPlanterProducts } from '../actions/productActions';
-import { SimpleGrid, Center, Box, Container, Heading } from '@chakra-ui/react';
+import {
+  SimpleGrid,
+  Center,
+  Box,
+  Container,
+  Heading,
+  Text,
+} from '@chakra-ui/react';
 
 function PlantersPage() {
   const dispatch = useDispatch();
@@ -27,7 +34,18 @@ function PlantersPage() {
         minH="80vh"
         justifyContent="space-between"
       >
-        <h1 className="title">Planters</h1>
+        <Heading
+          textTransform={'uppercase'}
+          as="h1"
+          size="2xl"
+          mb={6}
+          fontFamily="roza"
+        >
+          Planters
+        </Heading>
+        <Text fontFamily={'lato'} fontSize="lg" color="gray.600">
+          Choose from our decorative selection of planters
+        </Text>
         <SimpleGrid minChildWidth="300px" spacing="10px" width="90%" px={5}>
           {loading ? (
             <Loader />

@@ -297,7 +297,9 @@ function ProductPage() {
           <Message variant="danger">{error}</Message>
         ) : (
           <Container maxW="container.lg" py={6}>
-            <BackButton />
+            <Box mb={10}>
+              <BackButton />
+            </Box>
             <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10} mb={10}>
               <ProductImage image={product.image} name={product.name} />
               <ProductDetails product={product} />

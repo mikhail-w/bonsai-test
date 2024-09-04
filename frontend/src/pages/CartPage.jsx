@@ -12,9 +12,11 @@ import {
   Heading,
   SimpleGrid,
   Center,
+  VStack,
 } from '@chakra-ui/react';
 import { addToCart, removeFromCart } from '../actions/cartActions';
-import EmptyCart from '../assets/images/empty-cart.svg';
+// import EmptyCart from '../assets/images/emptycart2.png';
+import EmptyCart from '../assets/images/wp.png';
 
 function CartPage() {
   const { id } = useParams();
@@ -51,41 +53,60 @@ function CartPage() {
   };
 
   return (
-    <Container maxW="container.lg" mt={100} minH="100vh">
-      <Center
-        flexDirection="column"
-        mt={12}
-        mb={12}
-        // minH="80vh"
-        justifyContent="space-between"
-      >
-        <h1 className="title">Shopping Cart</h1>
+    <Container maxW="container.xl" mt={100} minH="100vh">
+      <Center flexDirection="column" mt={12} mb={12}>
+        <Heading as="h1" size="xl" mb={6} fontFamily="lato">
+          Shopping Cart
+        </Heading>
       </Center>
       {cartItems.length === 0 ? (
-        <>
-          <Center textAlign="center" flexDirection={'column'}>
-            <Image src={EmptyCart} alt="Empty Cart" mx="auto" mb={4} />
-            <Button
-              onClick={continueHandler}
-              colorScheme="teal"
-              leftIcon={<i className="fa fa-arrow-left"></i>}
-            >
-              Continue Shopping
-            </Button>
-          </Center>
-        </>
+        <Center textAlign="center" flexDirection="column">
+          <Image
+            src={EmptyCart}
+            alt="Empty Cart"
+            mx="auto"
+            mb={6}
+            boxSize="250px"
+          />
+          <Text fontFamily={'lato'} mb={4} fontSize="lg" color="gray.600">
+            Your cart is currently empty
+          </Text>
+          <Button
+            fontFamily="lato"
+            onClick={continueHandler}
+            colorScheme="green"
+            size="lg"
+            leftIcon={<i className="fa fa-arrow-left"></i>}
+            sx={{
+              transition: 'all 0.3s ease',
+              _hover: {
+                backgroundColor: 'green.600',
+                transform: 'scale(1.05)',
+                boxShadow: '0px 4px 15px rgba(0, 128, 0, 0.4)',
+              },
+              _active: {
+                backgroundColor: 'green.700',
+                transform: 'scale(1.02)',
+              },
+            }}
+          >
+            Continue Shopping
+          </Button>
+        </Center>
       ) : (
-        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={8}>
-          <Box>
+        <SimpleGrid columns={{ base: 1, lg: 3 }} spacing={10}>
+          <Box gridColumn="span 2">
             {cartItems.map(item => (
               <Box
                 key={item.product}
-                p={4}
+                p={6}
                 borderWidth="1px"
-                borderRadius="md"
-                mb={4}
+                borderRadius="lg"
+                mb={6}
+                shadow="md"
+                bg="white"
               >
-                <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
+                <Stack direction={{ base: 'column', md: 'row' }} spacing={6}>
                   <Image
                     src={`http://127.0.0.1:8000${item.image}`}
                     alt={item.name}
@@ -93,11 +114,15 @@ function CartPage() {
                     objectFit="cover"
                     borderRadius="md"
                   />
-                  <Stack spacing={2}>
+                  <VStack align="stretch" spacing={3}>
                     <Link to={`/product/${item.product}`}>
-                      <Text fontWeight="bold">{item.name}</Text>
+                      <Text fontSize="lg" fontWeight="bold" fontFamily="lato">
+                        {item.name}
+                      </Text>
                     </Link>
-                    <Text>${item.price}</Text>
+                    <Text fontFamily={'lato'} fontSize="lg" color="gray.500">
+                      ${item.price}
+                    </Text>
                     <Select
                       value={item.qty}
                       onChange={e =>
@@ -105,6 +130,8 @@ function CartPage() {
                           addToCart(item.product, Number(e.target.value))
                         )
                       }
+                      maxW="100px"
+                      borderColor="gray.300"
                     >
                       {[...Array(item.countInStock).keys()].map(x => (
                         <option key={x + 1} value={x + 1}>
@@ -113,32 +140,40 @@ function CartPage() {
                       ))}
                     </Select>
                     <Button
+                      fontFamily={'lato'}
                       variant="outline"
                       colorScheme="red"
                       onClick={() => removeFromCartHandler(item.product)}
                     >
                       Remove
                     </Button>
-                  </Stack>
+                  </VStack>
                 </Stack>
               </Box>
             ))}
           </Box>
 
           <Box>
-            <Box p={4} borderWidth="1px" borderRadius="md">
-              <Text fontSize="lg" mb={4}>
+            <Box
+              p={6}
+              borderWidth="1px"
+              borderRadius="lg"
+              shadow="md"
+              bg="white"
+            >
+              <Text fontFamily={'lato'} fontSize="lg" fontWeight="bold" mb={4}>
                 Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
                 items
               </Text>
-              <Text fontSize="xl" mb={6}>
+              <Text fontFamily={'lato'} fontSize="2xl" fontWeight="bold" mb={6}>
                 $
                 {cartItems
                   .reduce((acc, item) => acc + item.qty * item.price, 0)
                   .toFixed(2)}
               </Text>
               <Button
-                colorScheme="teal"
+                fontFamily={'lato'}
+                colorScheme="green"
                 size="lg"
                 width="full"
                 isDisabled={cartItems.length === 0}

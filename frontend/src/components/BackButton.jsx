@@ -1,16 +1,31 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Button, Icon } from '@chakra-ui/react';
+import { ArrowBackIcon } from '@chakra-ui/icons';
+import { useNavigate } from 'react-router-dom';
 
 function BackButton({ nav }) {
   const navigate = useNavigate();
+
   return (
-    <Link
+    <Button
       onClick={() => navigate(-1)}
-      className="btn btn-light my-3 "
-      id="backButton"
+      leftIcon={<ArrowBackIcon />}
+      colorScheme="green"
+      variant="outline"
+      size="md"
+      fontFamily="lato"
+      _hover={{
+        bg: 'green.500',
+        color: 'white',
+        transform: 'scale(1.05)',
+        boxShadow: '0px 4px 15px rgba(0, 128, 0, 0.4)',
+      }}
+      _active={{
+        bg: 'green.600',
+        transform: 'scale(1.02)',
+      }}
     >
-      <i className="fa fa-arrow-left"></i>
-      {' Go Back'}
-    </Link>
+      Go Back
+    </Button>
   );
 }
 

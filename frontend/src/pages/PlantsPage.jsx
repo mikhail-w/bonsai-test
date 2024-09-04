@@ -28,7 +28,18 @@ function PlantsPage() {
           minH={'100vh'}
           justifyContent={'space-between'}
         >
-          <Heading fontFamily="roza">Latest Plants</Heading>
+          <Heading
+            textTransform={'uppercase'}
+            as="h1"
+            size="2xl"
+            mb={6}
+            fontFamily="roza"
+          >
+            Latest Plants
+          </Heading>
+          <Text fontFamily={'lato'} fontSize="lg" color="gray.600">
+            Discover our wide selection of expertly curated bonsai plants
+          </Text>
           <SimpleGrid
             minChildWidth={300}
             spacing="10px"
