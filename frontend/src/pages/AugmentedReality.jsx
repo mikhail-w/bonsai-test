@@ -3,6 +3,7 @@ import QRCode from 'qrcode';
 import { Box, VStack, Text, Button } from '@chakra-ui/react';
 
 const AugmentedReality = () => {
+  const echoQR = '/src/assets/images/ficusbonsai_qr.png'
   const canvasRef = useRef();
   const gltfUrl = 'https://modelviewer.dev/shared-assets/models/Astronaut.glb';
   // const gltfUrl =
@@ -42,6 +43,10 @@ const AugmentedReality = () => {
         >
           Open in AR
         </Button>
+        <Box>
+          <img src={echoQR} alt="" />
+        </Box>
+        
       </VStack>
     </Box>
   );

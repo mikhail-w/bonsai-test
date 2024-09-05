@@ -26,6 +26,8 @@ import Rating from '../components/Rating';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import BackButton from '../components/BackButton';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, useGLTF } from '@react-three/drei';
 
 const ProductImage = ({ image, name }) => (
   <VStack spacing={6}>
@@ -35,9 +37,28 @@ const ProductImage = ({ image, name }) => (
       boxSize="100%"
       objectFit="contain"
     />
+
   </VStack>
 );
+function Model() {
+  const { scene } = useGLTF('public/ficus_bonsai (1).glb'); 
+  return <primitive object={scene} scale={2} />;
+};
 
+const ModalViewer  = ({ isOpen, onClose }) => (
+     <Box onClick={onClose}>
+      <Box onClick={(e) => e.stopPropagation()}>
+        <button onClick={onClose}>Close</button>
+        <Canvas>
+          <OrbitControls />
+          <ambientLight intensity={1.5} />
+          <Model />
+        </Canvas>
+      </Box>
+    </Box>
+    );               
+
+                                                                                                                                                                                                                                                                                                                    
 const ProductDetails = ({ product }) => (
   <VStack spacing={4} align="start">
     <Heading as="h3" size="lg" fontFamily={'rale'}>
