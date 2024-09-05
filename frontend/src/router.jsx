@@ -27,10 +27,13 @@ import Settings from './pages/Settings.jsx';
 import YourInfo from './pages/MyInfo.jsx';
 import BlogPage from './pages/BlogPage.jsx';
 import AugmentedReality from './pages/AugmentedReality.jsx';
+//care page
+import CarePage_Style from './pages/CarePage_Style.jsx';
+import CarePage from './pages/CarePage.jsx';
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <App />,
     children: [
       {
@@ -38,89 +41,97 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: '/login',
+        path: "/login",
         element: <LoginPage />,
       },
       {
-        path: '/register',
+        path: "/register",
         element: <RegisterPage />,
       },
       {
-        path: '/profile',
+        path: "/profile",
         element: <Dashboard />,
         children: [
-          { path: 'info', element: <YourInfo /> },
-          { path: 'trending', element: <Trending /> },
-          { path: 'explore', element: <MapPage /> },
-          { path: 'blog', element: <BlogPage /> },
-          { path: 'ar', element: <AugmentedReality /> },
-          { path: 'favorites', element: <Favorites /> },
-          { path: 'settings', element: <Settings /> },
+          { path: "info", element: <YourInfo /> },
+          { path: "trending", element: <Trending /> },
+          { path: "explore", element: <MapPage /> },
+          { path: "blog", element: <BlogPage /> },
+          { path: "ar", element: <AugmentedReality /> },
+          { path: "favorites", element: <Favorites /> },
+          { path: "settings", element: <Settings /> },
         ],
       },
       {
-        path: '/cart/:id?',
+        path: "/cart/:id?",
         element: <CartPage />,
       },
       {
-        path: '/order/:id?',
+        path: "/order/:id?",
         element: <OrderPage />,
       },
       {
-        path: '/essentials',
+        path: "/essentials",
         element: <EssentialsPage />,
       },
       {
-        path: '/planters',
+        path: "/planters",
         element: <PlantersPage />,
       },
       {
-        path: '/plants',
+        path: "/plants",
         element: <PlantsPage />,
       },
       {
-        path: '/products',
+        path: "/products",
         element: <ProductsPage />,
       },
       {
-        path: '/blog',
+        path: "/blog",
         element: <BlogPage />,
       },
       {
-        path: '/shipping/:id?',
+        path: "/shipping/:id?",
         element: <ShippingPage />,
       },
       {
-        path: '/payment',
+        path: "/payment",
         element: <PaymentPage />,
       },
       {
-        path: '/placeorder',
+        path: "/placeorder",
         element: <PlaceOrderPage />,
       },
       {
-        path: '/product/:id?',
+        path: "/product/:id?",
         element: <ProductPage />,
       },
       {
-        path: '/admin/userlist',
+        path: "/admin/userlist",
         element: <UserListPage />,
       },
       {
-        path: '/admin/productlist',
+        path: "/admin/productlist",
         element: <ProductListPage />,
       },
       {
-        path: '/admin/product/:id/edit',
+        path: "/admin/product/:id/edit",
         element: <ProductEditPage />,
       },
       {
-        path: '/admin/orderlist',
+        path: "/admin/orderlist",
         element: <OrderListPage />,
       },
       {
-        path: '/admin/user/:id/edit',
+        path: "/admin/user/:id/edit",
         element: <UserEditPage />,
+      },
+      {
+        path: "/care",
+        element: <CarePage />,
+        children: [
+          { path: "style", element: <CarePage_Style/> },
+
+        ],
       },
     ],
     errorElement: <NotFoundPage />,

@@ -71,10 +71,10 @@ function NavBar() {
   return (
     <Box
       as="nav"
-      bg={scrolled ? 'white' : 'transparent'}
+      bg={scrolled ? "white" : "transparent"}
       px={4}
       py={2}
-      boxShadow={scrolled ? 'md' : 'none'}
+      boxShadow={scrolled ? "md" : "none"}
       position="fixed"
       top={0}
       left={0}
@@ -102,19 +102,19 @@ function NavBar() {
             </HStack>
           </RouterLink>
           {/* Show SearchBar only on larger screens */}
-          <Box display={{ base: 'none', md: 'block' }}>
+          <Box display={{ base: "none", md: "block" }}>
             <SearchBar />
           </Box>
         </HStack>
 
         {/* Center Section: Blog, About, Contact Us, Shop */}
         <Flex
-          display={'absolute'}
+          display={"absolute"}
           justifyContent="center"
           marginLeft={10}
           flex="1"
         >
-          <HStack spacing={8} display={{ base: 'none', md: 'flex' }}>
+          <HStack spacing={8} display={{ base: "none", md: "flex" }}>
             <ChakraLink
               as={RouterLink}
               to="/blog"
@@ -122,12 +122,27 @@ function NavBar() {
               fontFamily="lato"
               color="gray.600"
               _hover={{
-                color: 'green.500',
-                textDecoration: 'underline',
-                transition: 'all 0.3s ease',
+                color: "green.500",
+                textDecoration: "underline",
+                transition: "all 0.3s ease",
               }}
             >
               Blog
+            </ChakraLink>
+
+            <ChakraLink
+              as={RouterLink}
+              to="/care"
+              fontWeight="bold"
+              fontFamily="lato"
+              color="gray.600"
+              _hover={{
+                color: "green.500",
+                textDecoration: "underline",
+                transition: "all 0.3s ease",
+              }}
+            >
+              Care
             </ChakraLink>
 
             <ChakraLink
@@ -137,9 +152,9 @@ function NavBar() {
               fontFamily="lato"
               color="gray.600"
               _hover={{
-                color: 'green.500',
-                textDecoration: 'underline',
-                transition: 'all 0.3s ease',
+                color: "green.500",
+                textDecoration: "underline",
+                transition: "all 0.3s ease",
               }}
             >
               About
@@ -152,9 +167,9 @@ function NavBar() {
               fontFamily="lato"
               color="gray.600"
               _hover={{
-                color: 'green.500',
-                textDecoration: 'underline',
-                transition: 'all 0.3s ease',
+                color: "green.500",
+                textDecoration: "underline",
+                transition: "all 0.3s ease",
               }}
             >
               Contact Us
@@ -171,9 +186,9 @@ function NavBar() {
                 onMouseEnter={shopMenuDisclosure.onOpen} // Open on hover
                 onMouseLeave={shopMenuDisclosure.onClose} // Close on mouse leave
                 _hover={{
-                  color: 'green.500',
-                  textDecoration: 'underline',
-                  transition: 'all 0.3s ease',
+                  color: "green.500",
+                  textDecoration: "underline",
+                  transition: "all 0.3s ease",
                 }}
               >
                 Shop
@@ -204,7 +219,7 @@ function NavBar() {
         <HStack
           as="nav"
           spacing={4}
-          display={{ base: 'none', md: 'flex' }}
+          display={{ base: "none", md: "flex" }}
           color="black"
         >
           <RouterLink to="/cart">
@@ -240,7 +255,7 @@ function NavBar() {
                 fontFamily="lato"
               >
                 <Avatar
-                  size={'md'}
+                  size={"md"}
                   src={`http://127.0.0.1:8000${userInfo.avatar}`}
                 />
               </MenuButton>
@@ -290,33 +305,33 @@ function NavBar() {
         </HStack>
 
         {/* Hamburger Icon for mobile */}
-        <Box display={{ base: 'block', md: 'none' }}>
+        <Box display={{ base: "block", md: "none" }}>
           <Hamburger toggled={isOpen} toggle={isOpen ? onClose : onOpen} />
         </Box>
       </Flex>
 
       {isOpen ? (
-        <Box pb={4} display={{ md: 'none' }} bg={'white'}>
+        <Box pb={4} display={{ md: "none" }} bg={"white"}>
           <Stack as="nav" spacing={4}>
             <SearchBar />
             <RouterLink to="/plants">
-              <Button color={'#323232'} variant="link">
+              <Button color={"#323232"} variant="link">
                 Potted Plants
               </Button>
             </RouterLink>
             <RouterLink to="/planters">
-              <Button color={'#323232'} variant="link">
+              <Button color={"#323232"} variant="link">
                 Planters
               </Button>
             </RouterLink>
             <RouterLink to="/essentials">
-              <Button color={'#323232'} variant="link">
+              <Button color={"#323232"} variant="link">
                 Essentials
               </Button>
             </RouterLink>
             <RouterLink to="/cart">
               <Button variant="link" id="cartLogo">
-                <ShoppingCart color={'#323232'} />
+                <ShoppingCart color={"#323232"} />
                 <Badge
                   colorScheme="green"
                   borderRadius="full"
@@ -334,7 +349,7 @@ function NavBar() {
             {userInfo ? (
               <>
                 <RouterLink to="/profile">
-                  <Button color={'#323232'} variant="link">
+                  <Button color={"#323232"} variant="link">
                     Profile
                   </Button>
                 </RouterLink>
@@ -353,17 +368,17 @@ function NavBar() {
             {userInfo && userInfo.isAdmin && (
               <>
                 <RouterLink to="/admin/userlist">
-                  <Button color={'#323232'} variant="link">
+                  <Button color={"#323232"} variant="link">
                     Users
                   </Button>
                 </RouterLink>
                 <RouterLink to="/admin/productlist">
-                  <Button color={'#323232'} variant="link">
+                  <Button color={"#323232"} variant="link">
                     Products
                   </Button>
                 </RouterLink>
                 <RouterLink to="/admin/orderlist">
-                  <Button color={'#323232'} variant="link">
+                  <Button color={"#323232"} variant="link">
                     Orders
                   </Button>
                 </RouterLink>
