@@ -1,0 +1,21 @@
+.interactive-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.interactive-options button {
+    padding: 10px 20px;
+    background-color: #e0e0e0;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: left;
+    font-size: 1rem;
+}
+
+.interactive-options button:hover {
+    background-color: #d0d0d0;
+}

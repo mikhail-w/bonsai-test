@@ -40,23 +40,23 @@ const ProductImage = ({ image, name }) => (
 
   </VStack>
 );
-function Model() {
-  const { scene } = useGLTF('public/ficus_bonsai (1).glb'); 
-  return <primitive object={scene} scale={2} />;
-};
+// function Model() {
+//   const { scene } = useGLTF('/assets/images/ficus_bonsai (1).glb'); 
+//   return <primitive object={scene} scale={2} />;
+// };
 
-const ModalViewer  = ({ isOpen, onClose }) => (
-     <Box onClick={onClose}>
-      <Box onClick={(e) => e.stopPropagation()}>
-        <button onClick={onClose}>Close</button>
-        <Canvas>
-          <OrbitControls />
-          <ambientLight intensity={1.5} />
-          <Model />
-        </Canvas>
-      </Box>
-    </Box>
-    );               
+// function ModalViewer() {({ isOpen, onClose }) {
+//      <Box onClick={onClose}>
+//       <Box onClick={(e) => e.stopPropagation()}>
+//         <button onClick={onClose}>Close</button>
+//         <Canvas>
+//           <OrbitControls />
+//           <ambientLight intensity={1.5} />
+//           <Model />
+//         </Canvas>
+//       </Box>
+//     </Box>
+// };               
 
                                                                                                                                                                                                                                                                                                                     
 const ProductDetails = ({ product }) => (
