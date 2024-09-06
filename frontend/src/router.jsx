@@ -30,6 +30,8 @@ import AugmentedReality from './pages/AugmentedReality.jsx';
 //care page
 import CarePage_Style from './pages/CarePage_Style.jsx';
 import CarePage from './pages/CarePage.jsx';
+import CarePage_Prepare from './pages/CarePage_Prepare.jsx';
+import CarePage_Care from './pages/CarePage_Care.jsx';
 
 const router = createBrowserRouter([
   {
@@ -128,10 +130,18 @@ const router = createBrowserRouter([
       {
         path: "/care",
         element: <CarePage />,
-        children: [
-          { path: "style", element: <CarePage_Style/> },
-
-        ],
+      },
+      {
+        path: "/care/style",
+        element: <CarePage_Style />,
+      },
+      {
+        path: "/care/prepare",
+        element: <CarePage_Prepare />,
+      },
+      {
+        path: "/care/care",
+        element: <CarePage_Care />,
       },
     ],
     errorElement: <NotFoundPage />,

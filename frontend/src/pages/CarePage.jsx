@@ -1,6 +1,7 @@
 import { Card, CardHeader, CardBody, CardFooter, Button } from "@chakra-ui/react";
 import { SimpleGrid, Center, Container, Text, Heading } from "@chakra-ui/react";
 import { Link as RouterLink, useNavigate, useLocation } from "react-router-dom";
+
 const CarePage = () => {
   return (
     <>
@@ -24,11 +25,13 @@ const CarePage = () => {
               <CardBody>
                 <Text>
                   Before styling your bonsai, there are important preparations
-                  to make. 
+                  to make.
                 </Text>
               </CardBody>
               <CardFooter>
-                <Button>View here</Button>
+                <RouterLink to="/care/prepare">
+                  <Button>View here</Button>
+                </RouterLink>
               </CardFooter>
             </Card>
             <Card>
@@ -38,11 +41,13 @@ const CarePage = () => {
               <CardBody>
                 <Text>
                   Learn the essential tips and tricks for keeping your bonsai
-                  tree healthy and thriving. 
+                  tree healthy and thriving.
                 </Text>
               </CardBody>
               <CardFooter>
-                <Button>View here</Button>
+                <RouterLink to="/care/care">
+                  <Button>View here</Button>
+                </RouterLink>
               </CardFooter>
             </Card>
             <Card>
@@ -52,11 +57,11 @@ const CarePage = () => {
               <CardBody>
                 <Text>
                   Unleash your creativity by learning how to style and shape
-                  your bonsai tree. 
+                  your bonsai tree.
                 </Text>
               </CardBody>
               <CardFooter>
-                 <RouterLink to="/">
+                <RouterLink to="/care/style">
                   <Button>View here</Button>
                 </RouterLink>
               </CardFooter>

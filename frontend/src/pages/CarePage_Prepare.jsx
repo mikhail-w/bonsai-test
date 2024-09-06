@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardHeader, CardBody, CardFooter, Button } from "@chakra-ui/react";
 import { Box, Divider, SimpleGrid, ListItem, UnorderedList, Center, Container, Text, Heading } from "@chakra-ui/react";
 
-function CarePage_Style () {
+function CarePage_Prepare () {
    return (
      <>
        <Container maxW="container.xlg" mt={"100px"} minH={"100vh"}>
@@ -12,7 +12,7 @@ function CarePage_Style () {
            marginBottom={100}
            justifyContent={"space-between"}
          ></Center>
-         <Heading marginBottom={100}>Styling Your Bonsai Tree</Heading>
+         <Heading marginBottom={100}>Prepare Your Bonsai Tree</Heading>
 
          <Text mb="4">
            Bonsai tree styling is the art of shaping a tree to reflect nature’s
@@ -155,4 +155,4 @@ function CarePage_Style () {
    );
 };
 
-export default CarePage_Style
+export default CarePage_Prepare
