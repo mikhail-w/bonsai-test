@@ -7,6 +7,11 @@ import Features from '../components/Features';
 import ScrollToTop from '../components/ScrollToTop';
 import HeroSection from '../components/HeroSection';
 import Planet from './Explore';
+import LandingPage from './LandingPage';
+import CurvedBackground from '../components/CurvedBackground';
+import WavyBackground from '../components/WavyBackground';
+import Navigation from '../components/Navigation';
+import HeroSection2 from '../components/HeroSection2';
 
 function HomePage() {
   const dispatch = useDispatch();
@@ -19,9 +24,13 @@ function HomePage() {
 
   return (
     <>
-      <HeroSection />
+      <Navigation />
+      {/* <WavyBackground /> */}
+      {/* <CurvedBackground /> */}
+      {/* <LandingPage /> */}
+      {/* <HeroSection />
       <Features />
-      <ScrollToTop />
+      <ScrollToTop /> */}
     </>
   );
 }

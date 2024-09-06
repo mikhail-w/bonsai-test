@@ -69,7 +69,7 @@ export const blogPostLikeUnlikeReducer = (state = {}, action) => {
     case BLOG_POST_LIKE_UNLIKE_REQUEST:
       return { loading: true };
     case BLOG_POST_LIKE_UNLIKE_SUCCESS:
-      return { loading: false, success: true, post: action.payload.post };
+      return { loading: false, success: true, post: action.payload };
     case BLOG_POST_LIKE_UNLIKE_FAIL:
       return { loading: false, error: action.payload };
     default:

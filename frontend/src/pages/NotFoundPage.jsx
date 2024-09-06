@@ -1,4 +1,4 @@
-import notFound from '../assets/images/404.svg';
+import notFound from '../assets/images/svgs/404.svg';
 import BackButton from '../components/BackButton';
 
 function NotFoundPage() {

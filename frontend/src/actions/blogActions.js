@@ -150,10 +150,10 @@ export const likeUnlikeBlogPost = id => async (dispatch, getState) => {
     };
 
     const { data } = await axios.post(`/api/blog/${id}/like/`, {}, config);
-
+    console.log('REDUX:', data.post);
     dispatch({
       type: BLOG_POST_LIKE_UNLIKE_SUCCESS,
-      payload: data,
+      payload: data.post,
     });
   } catch (error) {
     dispatch({

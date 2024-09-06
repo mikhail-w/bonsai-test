@@ -33,6 +33,13 @@ function BlogPage() {
   const blogList = useSelector(state => state.blogList);
   const { loading, error, posts } = blogList;
 
+  const postLikeUnlike = useSelector(state => state.blogPostLikeUnlike);
+  const { post: updatedPost } = postLikeUnlike;
+
+  // Check if the user is authenticated from the Redux state
+  const userLogin = useSelector(state => state.userLogin);
+  const { userInfo } = userLogin;
+
   const blogPostCreate = useSelector(state => state.blogPostCreate);
   const {
     success: successCreate,
@@ -59,12 +66,18 @@ function BlogPage() {
     dispatch(createBlogPost(formData));
   };
 
+  // Update the activeHearts when the like/unlike is updated
+  useEffect(() => {
+    if (updatedPost) {
+      setActiveHearts(prevState => ({
+        ...prevState,
+        [updatedPost.id]: updatedPost.is_liked,
+      }));
+    }
+  }, [updatedPost]);
+
   const likeUnlikeHandler = postId => {
     dispatch(likeUnlikeBlogPost(postId));
-    setActiveHearts(prevState => ({
-      ...prevState,
-      [postId]: !prevState[postId],
-    }));
   };
 
   return (
@@ -78,18 +91,22 @@ function BlogPage() {
         >
           Bonsai Blog
         </Text>
-        <Button
-          fontFamily={'rale'}
-          leftIcon={<FaPlusCircle />}
-          colorScheme="green"
-          variant="solid"
-          onClick={() => setCreatingPost(prev => !prev)}
-        >
-          {creatingPost ? 'Cancel' : 'Create Post'}
-        </Button>
+
+        {/* Render the "Create Post" button only if the user is logged in */}
+        {userInfo && (
+          <Button
+            fontFamily={'rale'}
+            leftIcon={<FaPlusCircle />}
+            colorScheme="green"
+            variant="solid"
+            onClick={() => setCreatingPost(prev => !prev)}
+          >
+            {creatingPost ? 'Cancel' : 'Create Post'}
+          </Button>
+        )}
       </Flex>
 
-      {creatingPost && (
+      {creatingPost && userInfo && (
         <Box bg="gray.50" p={6} mb={8} borderRadius="lg" shadow="lg">
           <VStack spacing={4}>
             <Textarea
@@ -98,7 +115,7 @@ function BlogPage() {
               value={content}
               onChange={e => setContent(e.target.value)}
               size="lg"
-              focusBorderColor="teal.400"
+              focusBorderColor="green.400"
             />
             <Input
               type="file"
@@ -108,7 +125,7 @@ function BlogPage() {
             />
             <Button
               fontFamily={'rale'}
-              colorScheme="teal"
+              colorScheme="green"
               onClick={submitHandler}
               isLoading={loadingCreate}
               w="full"
@@ -147,17 +164,21 @@ function BlogPage() {
                     >
                       {post.user}
                     </Text>
-                    <Box
-                      transition="transform 0.2s"
-                      _hover={{ transform: 'scale(1.5)' }}
-                    >
-                      <Heart
-                        width={24}
-                        height={24}
-                        active={activeHearts[post.id] || false}
-                        onClick={() => likeUnlikeHandler(post.id)}
-                      />
-                    </Box>
+
+                    {/* Render the like button only if the user is logged in */}
+                    {userInfo && (
+                      <Box
+                        transition="transform 0.2s"
+                        _hover={{ transform: 'scale(1.5)' }}
+                      >
+                        <Heart
+                          width={24}
+                          height={24}
+                          active={post.is_liked}
+                          onClick={() => likeUnlikeHandler(post.id)}
+                        />
+                      </Box>
+                    )}
                   </HStack>
                   <Text fontFamily={'rale'} fontSize="md" color="gray.700">
                     {post.content}
