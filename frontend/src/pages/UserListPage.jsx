@@ -104,7 +104,7 @@ function UserListPage() {
                         <Td>
                           <IconButton
                             as="a"
-                            href={`/admin/user/${user._id}/edit`}
+                            href={`/profile/admin/user/${user._id}/edit`}
                             icon={<EditIcon />}
                             size="sm"
                             variant="outline"

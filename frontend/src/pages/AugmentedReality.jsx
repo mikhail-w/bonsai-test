@@ -1,10 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import QRCode from 'qrcode';
 import { Box, VStack, Text, Button } from '@chakra-ui/react';
+// import Bonsai from '../assets/images/ficus_bonsai.glb';
 
 const AugmentedReality = () => {
   const canvasRef = useRef();
   const gltfUrl = 'https://modelviewer.dev/shared-assets/models/Astronaut.glb';
+  // const gltfUrl = Bonsai;
+  // const gltfUrl = '../assets/images/ficus_bonsai.glb';
   // const gltfUrl =
   //   'https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models/2.0/BoomBox/glTF-Binary/BoomBox.glb';
   const usdzUrl =

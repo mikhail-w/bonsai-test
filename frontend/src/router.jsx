@@ -24,7 +24,7 @@ import Trending from './pages/Trending.jsx';
 import MapPage from './pages/MapPage.jsx';
 import Favorites from './pages/Favorites.jsx';
 import Settings from './pages/Settings.jsx';
-import YourInfo from './pages/MyInfo.jsx';
+import MyInfo from './pages/MyInfo.jsx';
 import BlogPage from './pages/BlogPage.jsx';
 import AugmentedReality from './pages/AugmentedReality.jsx';
 
@@ -49,13 +49,18 @@ const router = createBrowserRouter([
         path: '/profile',
         element: <Dashboard />,
         children: [
-          { path: 'info', element: <YourInfo /> },
+          { path: 'info', element: <MyInfo /> },
           { path: 'trending', element: <Trending /> },
           { path: 'explore', element: <MapPage /> },
           { path: 'blog', element: <BlogPage /> },
           { path: 'ar', element: <AugmentedReality /> },
           { path: 'favorites', element: <Favorites /> },
           { path: 'settings', element: <Settings /> },
+          { path: 'admin/userlist', element: <UserListPage /> },
+          { path: 'admin/user/:id/edit', element: <UserEditPage /> },
+          { path: 'admin/productlist', element: <ProductListPage /> },
+          { path: 'admin/product/:id/edit', element: <ProductEditPage /> },
+          { path: 'admin/orderlist', element: <OrderListPage /> },
         ],
       },
       {
@@ -102,26 +107,26 @@ const router = createBrowserRouter([
         path: '/product/:id?',
         element: <ProductPage />,
       },
-      {
-        path: '/admin/userlist',
-        element: <UserListPage />,
-      },
-      {
-        path: '/admin/productlist',
-        element: <ProductListPage />,
-      },
-      {
-        path: '/admin/product/:id/edit',
-        element: <ProductEditPage />,
-      },
-      {
-        path: '/admin/orderlist',
-        element: <OrderListPage />,
-      },
-      {
-        path: '/admin/user/:id/edit',
-        element: <UserEditPage />,
-      },
+      // {
+      //   path: '/admin/userlist',
+      //   element: <UserListPage />,
+      // },
+      // {
+      //   path: '/admin/productlist',
+      //   element: <ProductListPage />,
+      // },
+      // {
+      //   path: '/admin/product/:id/edit',
+      //   element: <ProductEditPage />,
+      // },
+      // {
+      //   path: '/admin/orderlist',
+      //   element: <OrderListPage />,
+      // },
+      // {
+      //   path: '/admin/user/:id/edit',
+      //   element: <UserEditPage />,
+      // },
     ],
     errorElement: <NotFoundPage />,
   },

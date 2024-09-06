@@ -29,7 +29,8 @@ import { ShoppingCart } from 'lucide-react';
 import { logout } from '../actions/userActions';
 import { clearCart } from '../actions/cartActions';
 import SearchBar from './SearchBar';
-import logo from '../assets/images/bonsai-logo.png';
+// import logo from '../assets/images/bonsai-logo.png';
+import logo from '../assets/images/logo.png';
 import { motion, AnimatePresence } from 'framer-motion';
 
 function NavBar() {
@@ -72,7 +73,7 @@ function NavBar() {
   return (
     <Box
       as="nav"
-      bg={scrolled ? 'white' : 'transparent'}
+      bg={scrolled ? 'white' : menuOpen ? 'white' : 'transparent'}
       px={4}
       py={2}
       boxShadow={scrolled ? 'md' : 'none'}
@@ -169,6 +170,7 @@ function NavBar() {
                 color="gray.600"
                 onMouseEnter={shopMenuDisclosure.onOpen}
                 onMouseLeave={shopMenuDisclosure.onClose}
+                _focusVisible={{ boxShadow: 'none' }}
                 _hover={{
                   color: 'green.500',
                   textDecoration: 'underline',
@@ -181,7 +183,7 @@ function NavBar() {
                 onMouseEnter={shopMenuDisclosure.onOpen}
                 onMouseLeave={shopMenuDisclosure.onClose}
                 fontFamily="lato"
-                boxShadow="lg"
+                // boxShadow="lg"
                 borderRadius="md"
                 bg="white"
               >
@@ -200,42 +202,37 @@ function NavBar() {
         </Flex>
 
         {/* Right Section: Cart, Login, Profile */}
-        <HStack
-          as="nav"
-          spacing={4}
-          display={{ base: 'none', md: 'flex' }}
-          color="black"
-        >
-          <RouterLink to="/cart">
-            <Button
-              variant="link"
-              id="cartLogo"
-              color="black"
-              position="relative"
-            >
-              <ShoppingCart />
-              <Badge
-                colorScheme="green"
-                borderRadius="full"
-                position="absolute"
-                top="-3"
-                right="-2"
-                fontSize="xs"
-                px={2}
-                py={1}
+        <HStack as="nav" spacing={4} display={{ base: 'none', md: 'flex' }}>
+          {userInfo == null || !userInfo.isAdmin ? (
+            <RouterLink to="/cart">
+              <Button
+                variant="link"
+                id="cartLogo"
+                color="gray.600"
+                position="relative"
               >
-                {cartItems.reduce((acc, item) => acc + item.qty, 0)}
-              </Badge>
-            </Button>
-          </RouterLink>
-
+                <ShoppingCart />
+                <Badge
+                  colorScheme="green"
+                  borderRadius="full"
+                  position="absolute"
+                  top="-3"
+                  right="-2"
+                  fontSize="xs"
+                  px={2}
+                  py={1}
+                >
+                  {cartItems.reduce((acc, item) => acc + item.qty, 0)}
+                </Badge>
+              </Button>
+            </RouterLink>
+          ) : null}
           {userInfo ? (
             <Menu>
               <MenuButton
                 as={Button}
                 variant="link"
                 cursor="pointer"
-                color="black"
                 fontFamily="lato"
               >
                 <Avatar
@@ -248,21 +245,30 @@ function NavBar() {
                   <MenuItem>Profile</MenuItem>
                 </RouterLink>
                 <MenuDivider />
-                <MenuItem fontFamily="lato" onClick={logoutHandler}>
+                <MenuItem
+                  color="gray.600"
+                  fontFamily="lato"
+                  onClick={logoutHandler}
+                >
                   Logout
                 </MenuItem>
               </MenuList>
             </Menu>
           ) : (
             <RouterLink to="/login">
-              <Button variant="link" id="login" color="black" fontFamily="lato">
+              <Button
+                variant="link"
+                id="login"
+                color="gray.600"
+                fontFamily="lato"
+              >
                 <FaUser />
                 Login
               </Button>
             </RouterLink>
           )}
 
-          {userInfo && userInfo.isAdmin && (
+          {/* {userInfo && userInfo.isAdmin && (
             <Menu>
               <MenuButton
                 as={Button}
@@ -285,12 +291,19 @@ function NavBar() {
                 </RouterLink>
               </MenuList>
             </Menu>
-          )}
+          )} */}
         </HStack>
 
         {/* Hamburger Icon for mobile */}
         <Box display={{ base: 'block', md: 'none' }}>
-          <Hamburger color="#48bb78" toggled={menuOpen} toggle={toggleMenu} />
+          <Hamburger
+            label="Show menu"
+            rounded
+            easing="ease-in"
+            color="#48bb78"
+            toggled={menuOpen}
+            toggle={toggleMenu}
+          />
         </Box>
       </Flex>
 
@@ -426,24 +439,25 @@ function NavBar() {
                   </AccordionItem>
                 </Accordion>
 
-                <RouterLink to="/cart">
-                  <Button pl={8} variant="link" id="cartLogo">
-                    <ShoppingCart color={'#323232'} />
-                    <Badge
-                      colorScheme="green"
-                      borderRadius="full"
-                      position="absolute"
-                      top="-3"
-                      right="-3"
-                      fontSize="xs"
-                      px={2}
-                      py={1}
-                    >
-                      {cartItems.reduce((acc, item) => acc + item.qty, 0)}
-                    </Badge>
-                  </Button>
-                </RouterLink>
-
+                {userInfo && !userInfo.isAdmin && (
+                  <RouterLink to="/cart">
+                    <Button pl={8} variant="link" id="cartLogo">
+                      <ShoppingCart color={'#323232'} />
+                      <Badge
+                        colorScheme="green"
+                        borderRadius="full"
+                        position="absolute"
+                        top="-3"
+                        right="-3"
+                        fontSize="xs"
+                        px={2}
+                        py={1}
+                      >
+                        {cartItems.reduce((acc, item) => acc + item.qty, 0)}
+                      </Badge>
+                    </Button>
+                  </RouterLink>
+                )}
                 {userInfo ? (
                   <>
                     <RouterLink to="/profile">
@@ -481,25 +495,25 @@ function NavBar() {
                     </Button>
                   </RouterLink>
                 )}
-                {userInfo && userInfo.isAdmin && (
+                {/* {userInfo && userInfo.isAdmin && (
                   <>
                     <RouterLink to="/admin/userlist">
-                      <Button color={'#323232'} variant="link">
+                      <Button pl={8} color={'#323232'} variant="link">
                         Users
                       </Button>
                     </RouterLink>
                     <RouterLink to="/admin/productlist">
-                      <Button color={'#323232'} variant="link">
+                      <Button pl={8} color={'#323232'} variant="link">
                         Products
                       </Button>
                     </RouterLink>
                     <RouterLink to="/admin/orderlist">
-                      <Button color={'#323232'} variant="link">
+                      <Button pl={8} color={'#323232'} variant="link">
                         Orders
                       </Button>
                     </RouterLink>
                   </>
-                )}
+                )} */}
               </Stack>
             </Box>
           </motion.div>

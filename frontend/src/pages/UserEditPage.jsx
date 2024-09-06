@@ -33,7 +33,7 @@ function UserEditPage() {
   useEffect(() => {
     if (successUpdate) {
       dispatch({ type: USER_UPDATE_RESET });
-      navigate('/admin/userlist');
+      navigate('/profile/admin/userlist');
     } else {
       if (!user.name || user._id !== Number(userId)) {
         dispatch(getUserDetails(userId));
@@ -52,7 +52,7 @@ function UserEditPage() {
 
   return (
     <div>
-      <Link to="/admin/userlist">Go Back</Link>
+      <Link to="/profile/admin/userlist">Go Back</Link>
 
       <FormContainer>
         <h1>Edit User</h1>

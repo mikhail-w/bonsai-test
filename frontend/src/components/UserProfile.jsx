@@ -21,7 +21,7 @@ const UserProfile = () => {
         gap={8}
         fontFamily="rale"
       >
-        <Text fontFamily="rale" fontWeight="300">
+        <Text ml={10} fontFamily="rale" fontWeight="300">
           Welcome Back{' '}
           <Text as="span" fontSize="xl" fontWeight="bold">
             {userInfo.name}
@@ -38,13 +38,16 @@ const UserProfile = () => {
           gap={8}
         >
           <ProfilePictureSection />
-          <AccountDetailsSection />
+          {!userInfo.isAdmin ? <AccountDetailsSection /> : null}
         </Flex>
         <Weather />
-        <Heading fontFamily="rale">My Orders</Heading>
-        <Flex mb={20}>
-          <MyOrders />
-        </Flex>
+        {!userInfo.isAdmin ? (
+          <>
+            <Heading fontFamily="rale">My Orders</Heading>
+            <MyOrders />
+          </>
+        ) : null}
+        <Flex mb={20}></Flex>
       </Flex>
     </>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../actions/userActions';
@@ -7,6 +7,10 @@ import { Link as RouterLink } from 'react-router-dom';
 import { ShoppingCart } from 'lucide-react';
 import BlogIcon from '../assets/icons/blogger-alt.svg';
 import { TbAugmentedReality } from 'react-icons/tb';
+import { GrUserAdmin } from 'react-icons/gr';
+import { MdProductionQuantityLimits } from 'react-icons/md';
+import { BsCashCoin } from 'react-icons/bs';
+import Logo from '../assets/images/logo.png';
 import {
   IconButton,
   Avatar,
@@ -36,23 +40,31 @@ import {
   FiHome,
   FiTrendingUp,
   FiCompass,
-  FiStar,
-  FiSettings,
   FiUser,
 } from 'react-icons/fi';
 
-const LinkItems = [
+// Default public links
+const defaultLinks = [
   { name: 'Home', icon: FiHome, path: '/' },
   { name: 'My Info', icon: FiUser, path: '/profile/info' },
   { name: 'Trending', icon: FiTrendingUp, path: '/profile/trending' },
   { name: 'Explore', icon: FiCompass, path: '/profile/explore' },
   { name: 'Blog', icon: BlogIcon, path: '/profile/blog' },
   { name: 'AR', icon: TbAugmentedReality, path: '/profile/ar' },
-  { name: 'Favorites', icon: FiStar, path: '/profile/favorites' },
-  { name: 'Settings', icon: FiSettings, path: '/profile/settings' },
 ];
 
-const SidebarContent = ({ onClose, ...rest }) => {
+// Admin links
+const adminLinks = [
+  { name: 'Users', icon: GrUserAdmin, path: 'admin/userlist' },
+  {
+    name: 'Products',
+    icon: MdProductionQuantityLimits,
+    path: 'admin/productlist',
+  },
+  { name: 'Orders', icon: BsCashCoin, path: 'admin/orderlist' },
+];
+
+const SidebarContent = ({ onClose, links, ...rest }) => {
   return (
     <Box
       transition="3s ease"
@@ -63,23 +75,28 @@ const SidebarContent = ({ onClose, ...rest }) => {
       pos="fixed"
       h="full"
       fontFamily="rale"
-      // boxShadow="outline"
       {...rest}
     >
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Text fontSize="2xl" fontFamily="rale" fontWeight="bold">
+        <Image src={Logo} boxSize="50px" />
+        <Text pt={6} fontSize="2xl" fontFamily="rale" fontWeight="300">
           BONSAI
         </Text>
-        <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
+        <CloseButton
+          pt={3}
+          display={{ base: 'flex', md: 'none' }}
+          onClick={onClose}
+        />
       </Flex>
-      {LinkItems.map(link => (
-        <NavItem key={link.name} icon={link.icon} path={link.path}>
+      {links.map(link => (
+        <NavItem key={link.path} icon={link.icon} path={link.path}>
           {link.name}
         </NavItem>
       ))}
     </Box>
   );
 };
+
 const NavItem = ({ icon, children, path, ...rest }) => {
   return (
     <RouterLink to={path} style={{ textDecoration: 'none' }}>
@@ -98,7 +115,7 @@ const NavItem = ({ icon, children, path, ...rest }) => {
       >
         {icon && (
           <Box
-            as={typeof icon === 'string' ? 'div' : 'div'} // Use 'div' as a wrapper for both cases
+            as={typeof icon === 'string' ? 'div' : 'div'}
             mr="4"
             fontSize="16"
             _groupHover={{
@@ -106,7 +123,7 @@ const NavItem = ({ icon, children, path, ...rest }) => {
             }}
           >
             {typeof icon === 'string' ? (
-              <Image src={icon} alt={children} boxSize="16px" /> // Use Chakra's Image component
+              <Image src={icon} alt={children} boxSize="16px" />
             ) : (
               <Icon as={icon} />
             )}
@@ -117,6 +134,7 @@ const NavItem = ({ icon, children, path, ...rest }) => {
     </RouterLink>
   );
 };
+
 const MobileNav = ({ onOpen, ...rest }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -154,33 +172,39 @@ const MobileNav = ({ onOpen, ...rest }) => {
         display={{ base: 'flex', md: 'none' }}
         fontSize="2xl"
         fontFamily="rale"
-        fontWeight="bold"
+        fontWeight="300"
+        pt={5}
+        pl={4}
       >
         BONSAI
       </Text>
+
       <HStack spacing={{ base: '3', md: '6' }}>
-        <RouterLink to="/cart">
-          <Button
-            variant="link"
-            id="cartLogo"
-            color="black"
-            position="relative"
-          >
-            <ShoppingCart />
-            <Badge
-              colorScheme="green"
-              borderRadius="full"
-              position="absolute"
-              top="-3"
-              right="-2"
-              fontSize="xs"
-              px={2}
-              py={1}
+        {userInfo == null || !userInfo.isAdmin ? (
+          <RouterLink to="/cart">
+            <Button
+              variant="link"
+              id="cartLogo"
+              color="black"
+              pt={3}
+              position="relative"
             >
-              {cartItems.reduce((acc, item) => acc + item.qty, 0)}
-            </Badge>
-          </Button>
-        </RouterLink>
+              <ShoppingCart />
+              <Badge
+                colorScheme="green"
+                borderRadius="full"
+                position="absolute"
+                top="0"
+                right="-2"
+                fontSize="xs"
+                px={2}
+                py={1}
+              >
+                {cartItems.reduce((acc, item) => acc + item.qty, 0)}
+              </Badge>
+            </Button>
+          </RouterLink>
+        ) : null}
         <Flex alignItems={'center'}>
           <Menu>
             <MenuButton
@@ -199,9 +223,12 @@ const MobileNav = ({ onOpen, ...rest }) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm" fontFamily="rale">
-                    {userInfo ? userInfo.name : 'Guest'}
-                  </Text>
+                  {!userInfo.isAdmin ? (
+                    <Text fontSize="sm" fontFamily="rale">
+                      {userInfo ? userInfo.name : 'Guest'}
+                    </Text>
+                  ) : null}
+
                   {userInfo.isAdmin && (
                     <Text fontSize="xs" color="gray.600">
                       Admin
@@ -234,10 +261,24 @@ const MobileNav = ({ onOpen, ...rest }) => {
     </Flex>
   );
 };
+
 const Dashboard = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   const location = useLocation();
+  const userLogin = useSelector(state => state.userLogin);
+  const { userInfo } = userLogin;
+
+  const [links, setLinks] = useState(defaultLinks); // Store public + admin links
+
+  useEffect(() => {
+    // Check if the user is an admin and update the links accordingly
+    if (userInfo && userInfo.isAdmin) {
+      setLinks([...defaultLinks, ...adminLinks]);
+    } else {
+      setLinks(defaultLinks); // Reset to default if not an admin
+    }
+  }, [userInfo]);
 
   // Automatically navigate to /profile/info if the path is /profile
   useEffect(() => {
@@ -250,6 +291,7 @@ const Dashboard = () => {
     <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
       <SidebarContent
         onClose={onClose}
+        links={links} // Pass the links dynamically
         display={{ base: 'none', md: 'block' }}
       />
       <Drawer
@@ -261,11 +303,10 @@ const Dashboard = () => {
         size="full"
       >
         <DrawerContent>
-          <SidebarContent onClose={onClose} />
+          <SidebarContent onClose={onClose} links={links} />
         </DrawerContent>
       </Drawer>
       <MobileNav onOpen={onOpen} />
-      {/* Your dashboard content goes here */}
       <Box ml={{ base: 0, md: 60 }}>
         <Outlet />
       </Box>

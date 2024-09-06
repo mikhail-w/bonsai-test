@@ -30,12 +30,12 @@ const AccountDetailsSection = () => {
         </FormControl>
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4} w="full">
           <FormControl id="company">
-            <FormLabel>Company</FormLabel>
-            <Input type="text" placeholder="Materially Inc." />
+            <FormLabel>Password</FormLabel>
+            <Input type="text" placeholder="Password" />
           </FormControl>
           <FormControl id="country">
-            <FormLabel>Country</FormLabel>
-            <Input type="text" placeholder="USA" />
+            <FormLabel>Confirm Password</FormLabel>
+            <Input type="text" placeholder="Confirm Password" />
           </FormControl>
         </SimpleGrid>
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4} w="full">
@@ -48,7 +48,7 @@ const AccountDetailsSection = () => {
             <Input type="date" />
           </FormControl>
         </SimpleGrid>
-        <Button colorScheme="blue" variant="solid">
+        <Button colorScheme="green" variant="solid">
           Change Details
         </Button>
       </VStack>
