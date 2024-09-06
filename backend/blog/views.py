@@ -20,6 +20,12 @@ class BlogPostListView(generics.ListAPIView):
     pagination_class = StandardResultsSetPagination
     permission_classes = [IsAuthenticatedOrReadOnly]
 
+    def get_serializer_context(self):
+        # This ensures that the request object is passed to the serializer
+        context = super().get_serializer_context()
+        context.update({"request": self.request})
+        return context
+
 
 class CreatePostView(generics.CreateAPIView):
     queryset = Post.objects.all()
