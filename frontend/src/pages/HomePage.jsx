@@ -25,9 +25,9 @@ function HomePage() {
   return (
     <>
       <Navigation />
-      {/* <WavyBackground /> */}
-      {/* <CurvedBackground /> */}
-      {/* <LandingPage /> */}
+      <WavyBackground />
+      <CurvedBackground />
+      <LandingPage />
       {/* <HeroSection />
       <Features />
       <ScrollToTop /> */}
