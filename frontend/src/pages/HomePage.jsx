@@ -24,7 +24,7 @@ function HomePage() {
 
   return (
     <>
-      <Navigation />
+      {/* <Navigation /> */}
       <WavyBackground />
       <CurvedBackground />
       <LandingPage />

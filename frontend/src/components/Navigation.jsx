@@ -40,6 +40,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isShopHovered, setIsShopHovered] = useState(false);
   const shopMenuDisclosure = useDisclosure(); // For Shop menu hover control
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -56,7 +57,7 @@ const Navigation = () => {
 
   // Function to calculate positions with a 90-degree counterclockwise rotation and add margin
   const getLinkPosition = (index, total, radius) => {
-    const angleOffset = Math.PI * 0.5; // 90-degree counterclockwise rotation
+    const angleOffset = Math.PI * 0.6; // 90-degree counterclockwise rotation
     const angle = angleOffset + (index / total) * (Math.PI * 0.5); // Spread links in a 90-degree arc
     const x = radius * Math.cos(angle); // X coordinate
     const y = radius * Math.sin(angle); // Y coordinate
@@ -65,10 +66,16 @@ const Navigation = () => {
 
   // Array with both labels and their corresponding URLs
   const navLinks = [
-    { label: 'About', url: '/about' },
+    { label: 'Login', url: '/login' },
     { label: 'Blog', url: '/blog' },
-    { label: 'Contact', url: '/contact' },
+    { label: 'Cart', url: '/cart' },
     { label: 'Shop', url: '/shop' },
+  ];
+
+  const submenuLinks = [
+    { label: 'Plants', url: '/plants' },
+    { label: 'Planters', url: '/planters' },
+    { label: 'Essentials', url: '/essentials' },
   ];
 
   useEffect(() => {
@@ -111,7 +118,7 @@ const Navigation = () => {
         {/* Logo */}
         <RouterLink to="/">
           <Box>
-            <Image src={logo} alt="Logo" boxSize="50px" />
+            <Image src={logo_white} alt="Logo" boxSize="50px" />
           </Box>
         </RouterLink>
         {/* Hamburger Button with Circle Animation */}
@@ -161,17 +168,17 @@ const Navigation = () => {
 
           {/* Navigation Links Positioned with 90-degree Counterclockwise Rotation */}
           {navLinks.map((link, index) => {
-            const { x, y } = getLinkPosition(index, navLinks.length, 260); // Increased radius for more spacing
+            const { x, y } = getLinkPosition(index, navLinks.length, 260);
             return (
               <motion.div
-                key={Link.label}
-                initial={{ opacity: 0, scale: 0 }} // Start hidden
+                key={link.label}
+                initial={{ opacity: 0, scale: 0 }}
                 animate={{
                   opacity: isOpen ? 1 : 0,
                   scale: isOpen ? 1 : 0,
                   x: isOpen ? `${x}px` : '0px',
                   y: isOpen ? `${y}px` : '0px',
-                }} // Position links in a compact arc with 90-degree rotation
+                }}
                 transition={{ duration: 0.5, ease: 'easeInOut' }}
                 style={{
                   position: 'absolute',
@@ -179,22 +186,74 @@ const Navigation = () => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  margin: '8px', // Add margin to give space between links
+                  margin: '8px',
                 }}
+                onMouseEnter={
+                  link.label === 'Shop' ? () => setIsShopHovered(true) : null
+                }
+                onMouseLeave={
+                  link.label === 'Shop' ? () => setIsShopHovered(false) : null
+                }
               >
-                <RouterLink to={link.url}>
-                  <Link
-                    fontSize="xl"
-                    color="black"
-                    _hover={{ color: 'gray.800', bg: 'yellow' }}
-                    bg="white"
-                    padding="0.5rem 1rem"
-                    borderRadius="full"
-                    boxShadow="md"
-                  >
-                    {link.label}
-                  </Link>
-                </RouterLink>
+                <Link
+                  as={RouterLink} // Use RouterLink as the component
+                  to={link.url} // Pass the link URL
+                  fontSize="xl"
+                  color="black"
+                  _hover={{ color: 'gray.800', bg: 'yellow' }}
+                  bg="white"
+                  padding="0.5rem 1rem"
+                  borderRadius="full"
+                  boxShadow="md"
+                >
+                  {link.label}
+                </Link>
+
+                {/* Submenu for Shop */}
+                {isShopHovered &&
+                  link.label === 'Shop' &&
+                  submenuLinks.map((submenuLink, subIndex) => {
+                    const submenuPosition = getLinkPosition(
+                      subIndex,
+                      submenuLinks.length,
+                      100
+                    );
+                    return (
+                      <motion.div
+                        key={submenuLink.label}
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={{
+                          opacity: isShopHovered ? 1 : 0,
+                          scale: isShopHovered ? 1 : 0,
+                          x: isShopHovered ? `${submenuPosition.x}px` : '0px',
+                          y: isShopHovered ? `${submenuPosition.y}px` : '0px',
+                        }}
+                        transition={{ duration: 0.5, ease: 'easeInOut' }}
+                        style={{
+                          position: 'absolute',
+                          zIndex: 5,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          margin: '8px',
+                        }}
+                      >
+                        <Link
+                          as={RouterLink}
+                          to={submenuLink.url}
+                          fontSize="xl"
+                          color="black"
+                          _hover={{ color: 'gray.800', bg: 'yellow' }}
+                          bg="white"
+                          padding="0.5rem 1rem"
+                          borderRadius="full"
+                          boxShadow="md"
+                        >
+                          {submenuLink.label}
+                        </Link>
+                      </motion.div>
+                    );
+                  })}
               </motion.div>
             );
           })}
