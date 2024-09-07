@@ -39,6 +39,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isCircleAnimationDone, setIsCircleAnimationDone] = useState(false); // State for controlling the delay
   const [scrolled, setScrolled] = useState(false);
   const [isShopHovered, setIsShopHovered] = useState(false);
   const shopMenuDisclosure = useDisclosure(); // For Shop menu hover control
@@ -53,7 +54,17 @@ const Navigation = () => {
   const { cartItems } = cart;
 
   // Toggle menu function
-  const toggleMenu = () => setIsOpen(!isOpen);
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+    if (!isOpen) {
+      setIsCircleAnimationDone(false); // Reset animation status
+      setTimeout(() => {
+        setIsCircleAnimationDone(true); // Set to true after the animation duration
+      }, 800); // Same duration as the circle animation (0.8s)
+    }
+  };
+
+  // Toggle menu function
 
   // Function to calculate positions with a 90-degree counterclockwise rotation and add margin
   const getLinkPosition = (index, total, radius) => {
@@ -121,6 +132,7 @@ const Navigation = () => {
             <Image src={logo_white} alt="Logo" boxSize="50px" />
           </Box>
         </RouterLink>
+
         {/* Hamburger Button with Circle Animation */}
         <Box
           position="relative"
@@ -165,109 +177,125 @@ const Navigation = () => {
               zIndex="2000"
             />
           </Box>
+          {isOpen && isCircleAnimationDone && (
+            <Box>
+              {/* Navigation Links Positioned with 90-degree Counterclockwise Rotation */}
+              {navLinks.map((link, index) => {
+                const { x, y } = getLinkPosition(index, navLinks.length, 280);
 
-          {/* Navigation Links Positioned with 90-degree Counterclockwise Rotation */}
-          {navLinks.map((link, index) => {
-            const { x, y } = getLinkPosition(index, navLinks.length, 260);
-
-            return (
-              <motion.div
-                key={link.label}
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{
-                  opacity: isOpen ? 1 : 0,
-                  scale: isOpen ? 1 : 0,
-                  x: isOpen ? `${x}px` : '0px',
-                  y: isOpen ? `${y}px` : '0px',
-                }}
-                transition={{ duration: 0.5, ease: 'easeInOut' }}
-                style={{
-                  position: 'absolute',
-                  zIndex: 5,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: '8px',
-                }}
-              >
-                {/* For Shop link and its submenu */}
-                {link.label === 'Shop' ? (
-                  <Box
-                    onMouseEnter={() => setIsShopHovered(true)} // Show submenu when hovering over Shop link
-                    onMouseLeave={() => setIsShopHovered(false)} // Hide submenu when leaving the Shop link or submenu
-                    position="relative"
+                return (
+                  <motion.div
+                    key={link.label}
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{
+                      opacity: isOpen ? 1 : 0,
+                      scale: isOpen ? 1 : 0,
+                      x: isOpen ? `${x}px` : '0px',
+                      y: isOpen ? `${y}px` : '0px',
+                    }}
+                    transition={{ duration: 0.5, ease: 'easeInOut' }}
+                    style={{
+                      position: 'absolute',
+                      zIndex: 5,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      margin: '8px',
+                    }}
                   >
-                    {/* Shop Link */}
-                    <Link
-                      as={RouterLink}
-                      to={link.url}
-                      fontSize="xl"
-                      color="black"
-                      _hover={{ color: 'gray.800', bg: 'yellow' }}
-                      bg="white"
-                      padding="0.5rem 1rem"
-                      borderRadius="full"
-                      boxShadow="md"
-                    >
-                      Shop
-                    </Link>
-
-                    {/* Submenu Links */}
-                    {isShopHovered && (
+                    {/* For Shop link and its submenu */}
+                    {link.label === 'Shop' ? (
                       <Box
-                        position="absolute"
-                        top="100%" // Position below the Shop link
-                        left="0"
-                        display="flex" // Horizontally aligned
-                        gap="10px" // Space between submenu items
-                        bg="transparent" // Transparent background
-                        padding="1rem"
-                        // boxShadow="lg"
-                        zIndex="1000"
-                        onMouseEnter={() => setIsShopHovered(true)} // Keep submenu visible when hovering over it
-                        onMouseLeave={() => setIsShopHovered(false)} // Hide submenu when leaving
+                        onMouseEnter={() => setIsShopHovered(true)} // Show submenu when hovering over Shop link
+                        onMouseLeave={() => setIsShopHovered(false)} // Hide submenu when leaving the Shop link or submenu
+                        position="relative"
                       >
-                        {submenuLinks.map(submenuLink => (
-                          <Link
-                            key={submenuLink.label}
-                            as={RouterLink}
-                            to={submenuLink.url}
-                            fontSize="sm"
-                            bg={'white'}
-                            borderRadius="full"
-                            color="black"
-                            display="flex"
-                            flexDirection={'row'}
-                            padding="0.5rem 1rem"
-                            _hover={{ color: 'gray.800', bg: 'yellow' }}
-                            // borderRadius="md"
-                            // boxShadow="md"
+                        {/* Shop Link */}
+                        <Link
+                          as={RouterLink}
+                          to={link.url}
+                          fontSize="xl"
+                          color="black"
+                          _hover={{ color: 'gray.800', bg: 'yellow' }}
+                          bg="white"
+                          padding="0.5rem 1rem"
+                          borderRadius="full"
+                          boxShadow="md"
+                        >
+                          Shop
+                        </Link>
+
+                        {/* Submenu Links */}
+                        {isShopHovered && (
+                          <Box
+                            position="absolute"
+                            top="100%" // Position below the Shop link
+                            left="0"
+                            display="flex" // Horizontally aligned
+                            gap="10px" // Space between submenu items
+                            bg="transparent" // Transparent background
+                            padding="1rem"
+                            // boxShadow="lg"
+                            zIndex="1000"
+                            onMouseEnter={() => setIsShopHovered(true)} // Keep submenu visible when hovering over it
+                            onMouseLeave={() => setIsShopHovered(false)} // Hide submenu when leaving
                           >
-                            {submenuLink.label}
-                          </Link>
-                        ))}
+                            {submenuLinks.map(submenuLink => (
+                              <Link
+                                key={submenuLink.label}
+                                as={RouterLink}
+                                to={submenuLink.url}
+                                fontSize="sm"
+                                bg={'white'}
+                                borderRadius="full"
+                                color="black"
+                                display="flex"
+                                flexDirection={'row'}
+                                padding="0.5rem 1rem"
+                                _hover={{ color: 'gray.800', bg: 'yellow' }}
+                                // borderRadius="md"
+                                // boxShadow="md"
+                              >
+                                {submenuLink.label}
+                              </Link>
+                            ))}
+                          </Box>
+                        )}
                       </Box>
+                    ) : (
+                      // Non-Shop links
+                      <Link
+                        as={RouterLink}
+                        to={link.url}
+                        fontSize="xl"
+                        color="black"
+                        _hover={{ color: 'gray.800', bg: 'yellow' }}
+                        bg="white"
+                        padding="0.5rem 1rem"
+                        borderRadius="full"
+                        boxShadow="md"
+                      >
+                        {link.label}
+                      </Link>
                     )}
-                  </Box>
-                ) : (
-                  // Non-Shop links
-                  <Link
-                    as={RouterLink}
-                    to={link.url}
-                    fontSize="xl"
-                    color="black"
-                    _hover={{ color: 'gray.800', bg: 'yellow' }}
-                    bg="white"
-                    padding="0.5rem 1rem"
-                    borderRadius="full"
-                    boxShadow="md"
-                  >
-                    {link.label}
-                  </Link>
-                )}
-              </motion.div>
-            );
-          })}
+                  </motion.div>
+                );
+              })}
+              {/* Search Bar added inside menu */}
+              <Box
+                position="absolute"
+                width={200}
+                top={-10}
+                right={100}
+                display="flex"
+                alignItems="center"
+                mt="2rem"
+                zIndex={3000}
+              >
+                <SearchBar />
+              </Box>
+            </Box>
+          )}
         </Box>
       </Flex>
 
