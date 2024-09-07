@@ -5,15 +5,15 @@ import {
   Link,
   VStack,
   Collapse,
-  Heading,
   Button,
   Image,
   Text,
 } from '@chakra-ui/react';
 import Hamburger from 'hamburger-react';
 import logo from '../assets/images/logo_white.png';
-import heroSmall from '../assets/images/bghero3.png';
-import heroLarge from '../assets/images/bghero3.png';
+import heroSmall from '../assets/images/h2.png';
+import heroLarge from '../assets/images/h2.png';
+
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -32,7 +32,7 @@ const Navigation = () => {
         top="0"
         left="0"
         right="0"
-        zIndex="2000"
+        zIndex="2000" // Adjusted to ensure visibility
         width="100%"
         bg="transparent"
       >
@@ -48,7 +48,7 @@ const Navigation = () => {
           rounded
           easing="ease-in"
           color="#ffffff"
-          zIndex="2000"
+          zIndex="2000" // Adjusted to ensure it's above content
         />
       </Flex>
 
@@ -61,65 +61,101 @@ const Navigation = () => {
           md: `linear-gradient(to right bottom, rgba(126, 213, 111, 0.8), rgba(40, 180, 133, 0.8)), url(${heroLarge})`,
         }}
         bgSize="cover"
-        bgPosition="top"
-        clipPath={{
-          base: 'polygon(0 0, 100% 0, 100% 75vh, 0 100%)',
-          md: 'polygon(0 0, 100% 0, 100% 75vh, 0 100%)',
-        }}
+        bgPosition="center"
+        clipPath="polygon(0 0, 100% 0, 100% 85%, 0 100%)" // Simpler curved clip path
         display="flex"
         justifyContent="center"
         alignItems="center"
         textAlign="center"
+        zIndex="1"
+        flexDirection="column" // To stack the content vertically
       >
         {/* Hero Overlay */}
         <Box
+          position="absolute"
+          top="0"
+          left="0"
+          right="0"
+          bottom="0"
+          bg="rgba(0, 0, 0, 0.4)" // Optional dark overlay for text contrast
+          zIndex="2"
+        />
+
+        {/* Hero Content */}
+        <Flex
+          flexDirection={'column'}
+          alignItems={'center'}
+          alignContent={'center'}
+          // textAlign="center"
           position="relative"
-          zIndex="10"
-          // boxShadow={'outline'}
-          maxW="90vw" // Add this line to control the width
-          mx="auto" // Centers the content horizontally
-          px="4" // Add some horizontal padding for smaller screens
+          zIndex="3" // Ensure content is above the overlay
+          // maxW="90vw"
+          // mx="auto"
+          // px="4"
         >
           <Text
             color="white"
             fontWeight={300}
-            fontFamily={'lato'}
-            fontSize={{ base: '10vw', md: '10vw', lg: '8vw' }}
-            letterSpacing=".5em"
+            fontFamily="lato"
+            fontSize={{ base: '10vw', md: '6vw', lg: '7vw' }}
+            // letterSpacing="1.5rem"
             mb={4}
           >
-            BONSAI
+            <span style={{ letterSpacing: '1.5rem' }}>B</span>
+            <span style={{ letterSpacing: '1.5rem' }}>O</span>
+            <span style={{ letterSpacing: '1.5rem' }}>N</span>
+            <span style={{ letterSpacing: '1.5rem' }}>S</span>
+            <span style={{ letterSpacing: '1.5rem' }}>A</span>
+            <span style={{ letterSpacing: '1.5rem' }}>I</span>
           </Text>
           <Text
             fontWeight={300}
-            fontFamily={'lato'}
-            fontSize="xl"
+            fontFamily="lato"
+            fontSize="md"
             color="white"
             mb={8}
           >
             BE ONE WITH NATURE
           </Text>
           <Button
+            display={'inline-block'}
+            flexBasis={'auto'}
             width="auto"
             size="lg"
             bg="white"
-            color="black"
+            color="teal.700" // Calm teal color for text
             fontWeight={300}
             borderRadius="full"
             paddingX="1.5rem"
             paddingY="1rem"
-            boxShadow="md" // Initial shadow
-            transition="transform 0.3s ease, box-shadow 0.3s ease" // Smooth transition
+            boxShadow="md"
+            alignSelf="center"
+            transition="all 0.3s ease" // Smooth transition for all effects
             _hover={{
-              backgroundColor: 'green.100',
-              transform: 'scale(1.05)',
-              boxShadow: '0px 4px 15px rgba(0, 128, 0, 0.4)',
+              backgroundColor: 'teal.50', // Soft light teal background on hover
+              transform: 'scale(1.05)', // Slight scale-up for emphasis
+              boxShadow: '0px 10px 20px rgba(0, 128, 128, 0.2)', // Soft teal shadow
+              _after: {
+                content: `''`,
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                borderRadius: 'full',
+                background:
+                  'linear-gradient(135deg, rgba(224, 242, 241, 0.5), rgba(173, 232, 223, 0.5))', // Calm gradient glow
+                zIndex: '-1',
+                opacity: 1,
+                transition: 'opacity 0.5s ease',
+              },
             }}
-            position="relative" // Required for the pseudo-element to work
+            _focus={{ boxShadow: 'outline', outline: 'none' }} // Remove outline focus border
+            position="relative" // Required for the pseudo-element
           >
             EXPLORE NATURE
           </Button>
-        </Box>
+        </Flex>
       </Box>
 
       {/* Radial Background Animation */}
