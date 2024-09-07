@@ -27,14 +27,25 @@ function ProductsPage() {
     dispatch(listProducts(keyword));
   }, [dispatch, keyword]);
 
-  // Scroll to top whenever the keyword (pagination) changes
+  // Scroll to top after the keyword or page changes
   useEffect(() => {
-    console.log('scroll to top');
-    window.scrollTo(0, 0); // Scroll to top
-  }, [keyword, page]); // Trigger this effect on keyword or page change
+    if (!loading) {
+      setTimeout(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        });
+      }, 100); // Small delay to ensure products are rendered before scrolling
+    }
+  }, [keyword, page, loading]); // Trigger on page, keyword, or loading state change
 
   return (
-    <Container maxW="container.xl" mt={100} minH="100vh">
+    <Container
+      maxW="container.xl"
+      mt={100}
+      minH="100vh"
+      pt={{ base: 10, md: 0 }} // Padding at the top for mobile view
+    >
       <Center flexDirection="column" mb={12} textAlign="center">
         <Heading
           textTransform={'uppercase'}
