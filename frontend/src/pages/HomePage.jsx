@@ -25,10 +25,11 @@ function HomePage() {
   return (
     <>
       {/* <Navigation /> */}
+      <HeroSection2 />
       <WavyBackground />
       <CurvedBackground />
       <LandingPage />
-      {/* <HeroSection />
+      {/* 
       <Features />
       <ScrollToTop /> */}
     </>
