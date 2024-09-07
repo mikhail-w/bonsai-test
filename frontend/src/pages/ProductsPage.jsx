@@ -27,6 +27,12 @@ function ProductsPage() {
     dispatch(listProducts(keyword));
   }, [dispatch, keyword]);
 
+  // Scroll to top whenever the keyword (pagination) changes
+  useEffect(() => {
+    console.log('scroll to top');
+    window.scrollTo(0, 0); // Scroll to top
+  }, [keyword, page]); // Trigger this effect on keyword or page change
+
   return (
     <Container maxW="container.xl" mt={100} minH="100vh">
       <Center flexDirection="column" mb={12} textAlign="center">

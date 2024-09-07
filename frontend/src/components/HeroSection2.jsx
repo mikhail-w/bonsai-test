@@ -16,13 +16,13 @@ function HeroSection2() {
         }}
         bgSize="cover"
         bgPosition="center"
-        clipPath="polygon(0 0, 100% 0, 100% 85%, 0 100%)" // Simpler curved clip path
+        clipPath="polygon(0 0, 100% 0, 100% 85%, 0 100%)"
         display="flex"
         justifyContent="center"
         alignItems="center"
         textAlign="center"
         zIndex="1"
-        flexDirection="column" // To stack the content vertically
+        flexDirection="column"
       >
         {/* Hero Overlay */}
         <Box
@@ -31,15 +31,14 @@ function HeroSection2() {
           left="0"
           right="0"
           bottom="0"
-          bg="rgba(0, 0, 0, 0.4)" // Optional dark overlay for text contrast
+          bg="rgba(0, 0, 0, 0.4)"
           zIndex="2"
         />
 
         {/* Hero Content */}
         <Flex
-          flexDirection={'column'}
-          alignItems={'center'}
-          alignContent={'center'}
+          flexDirection="column"
+          alignItems="center"
           position="relative"
           zIndex="3"
         >
@@ -47,20 +46,16 @@ function HeroSection2() {
             color="white"
             fontWeight={300}
             fontFamily="lato"
-            fontSize={{ base: '10vw', md: '6vw', lg: '7vw' }}
+            fontSize={{ base: '12vw', md: '6vw', lg: '7vw' }}
+            letterSpacing="0.5rem"
             mb={4}
           >
-            <span style={{ letterSpacing: '1.5rem' }}>B</span>
-            <span style={{ letterSpacing: '1.5rem' }}>O</span>
-            <span style={{ letterSpacing: '1.5rem' }}>N</span>
-            <span style={{ letterSpacing: '1.5rem' }}>S</span>
-            <span style={{ letterSpacing: '1.5rem' }}>A</span>
-            <span style={{ letterSpacing: '1.5rem' }}>I</span>
+            BONSAI
           </Text>
           <Text
             fontWeight={300}
             fontFamily="lato"
-            fontSize="md"
+            fontSize="sm"
             color="white"
             mb={8}
           >
@@ -68,10 +63,12 @@ function HeroSection2() {
           </Text>
           <Button
             as="button"
-            display="inline-block"
-            flexBasis={'auto'}
+            display="flex" // Ensures flexbox behavior
+            flexBasis="auto"
+            justifyContent="center" // Horizontally centers the text
+            alignItems="center" // Vertically centers the text
             width="auto"
-            size="lg"
+            size="sm"
             bg="white"
             paddingX="1.5rem"
             paddingY="1rem"
@@ -83,8 +80,6 @@ function HeroSection2() {
             borderRadius="full"
             outline="1px solid rgba(255, 255, 255, 0.5)"
             outlineOffset="0px"
-            // boxShadow="inset 0 0 20px rgba(255, 255, 255, 0)"
-            textShadow="none"
             transition="all 1.25s cubic-bezier(0.19, 1, 0.22, 1)"
             _hover={{
               border: '1px solid',

@@ -7,11 +7,12 @@ import Features from '../components/Features';
 import ScrollToTop from '../components/ScrollToTop';
 import HeroSection from '../components/HeroSection';
 import Planet from './Explore';
-import LandingPage from './LandingPage';
-import CurvedBackground from '../components/CurvedBackground';
-import WavyBackground from '../components/WavyBackground';
+import BenifitsSection from '../components/BenifitsSection';
 import Navigation from '../components/Navigation';
 import HeroSection2 from '../components/HeroSection2';
+import ProductsSection from '../components/ProductsSection';
+import ReviewsSection from './ReviewsSection';
+import Footer from '../components/Footer';
 
 function HomePage() {
   const dispatch = useDispatch();
@@ -26,12 +27,10 @@ function HomePage() {
     <>
       {/* <Navigation /> */}
       <HeroSection2 />
-      <WavyBackground />
-      <CurvedBackground />
-      <LandingPage />
-      {/* 
-      <Features />
-      <ScrollToTop /> */}
+      <ProductsSection />
+      <BenifitsSection />
+      <ReviewsSection />
+      <ScrollToTop />
     </>
   );
 }

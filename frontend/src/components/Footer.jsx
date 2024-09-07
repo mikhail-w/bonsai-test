@@ -15,7 +15,7 @@ import {
 import { useLocation } from 'react-router-dom';
 
 import { FaFacebook, FaInstagram, FaTwitter } from 'react-icons/fa';
-import bonsaiLogo from '../assets/images/bonsai-tree-logo.png'; // replace with your logo path
+import bonsaiLogo from '../assets/images/logo.png'; // replace with your logo path
 const withoutSidebarRoutes = ['/login', '/register', '/profile'];
 
 const SocialButton = ({ label, href, icon }) => {
@@ -48,11 +48,16 @@ function Footer() {
       bg={useColorModeValue('gray.50', 'gray.900')}
       color={useColorModeValue('gray.700', 'gray.200')}
     >
-      {/* <Container as={Stack} maxW="6xl" py={10} spacing={8}>
+      <Container as={Stack} maxW="6xl" py={10} spacing={8}>
         <Stack direction="row" align="center" justify="space-between">
-          <HStack spacing={4} align="center">
+          <HStack spacing={4} align="end">
             <Image src={bonsaiLogo} alt="Bonsai Logo" boxSize="50px" />
-            <Text fontWeight="bold" fontSize="xl" color="green.700">
+            <Text
+              fontFamily={'lato'}
+              fontWeight="bold"
+              fontSize="xl"
+              color="green.700"
+            >
               BONSAI
             </Text>
           </HStack>
@@ -110,7 +115,7 @@ function Footer() {
         <Text textAlign="center" fontSize="sm" color="gray.500">
           © {new Date().getFullYear()} Bonsai. All rights reserved.
         </Text>
-      </Container> */}
+      </Container>
     </Box>
   );
 }
