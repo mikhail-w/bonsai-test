@@ -1,7 +1,19 @@
 import React, { useState } from 'react';
-import { Box, Flex, Link, VStack, Collapse } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Link,
+  VStack,
+  Collapse,
+  Heading,
+  Button,
+  Image,
+  Text,
+} from '@chakra-ui/react';
 import Hamburger from 'hamburger-react';
-
+import logo from '../assets/images/logo_white.png';
+import heroSmall from '../assets/images/bghero3.png';
+import heroLarge from '../assets/images/bghero3.png';
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -10,7 +22,7 @@ const Navigation = () => {
 
   return (
     <Box>
-      {/* Navigation Button (Hamburger/Close) */}
+      {/* Logo and Navigation Button (Hamburger/Close) */}
       <Flex
         as="nav"
         align="center"
@@ -18,19 +30,97 @@ const Navigation = () => {
         padding="1.5rem"
         position="fixed"
         top="0"
+        left="0"
         right="0"
         zIndex="2000"
+        width="100%"
+        bg="transparent"
       >
+        {/* Logo */}
+        <Box>
+          <Image src={logo} alt="Logo" boxSize="50px" />
+        </Box>
+
         {/* Hamburger Button */}
         <Hamburger
           toggled={isOpen} // Bind the open state to the Hamburger component
           toggle={toggleMenu} // Toggle function to switch between open and close
           rounded
           easing="ease-in"
-          color="#48bb78"
+          color="#ffffff"
           zIndex="2000"
         />
       </Flex>
+
+      {/* Hero Section with Gradient Background */}
+      <Box
+        position="relative"
+        height="85vh"
+        bgImage={{
+          base: `linear-gradient(to right bottom, rgba(126, 213, 111, 0.8), rgba(40, 180, 133, 0.8)), url(${heroSmall})`,
+          md: `linear-gradient(to right bottom, rgba(126, 213, 111, 0.8), rgba(40, 180, 133, 0.8)), url(${heroLarge})`,
+        }}
+        bgSize="cover"
+        bgPosition="top"
+        clipPath={{
+          base: 'polygon(0 0, 100% 0, 100% 75vh, 0 100%)',
+          md: 'polygon(0 0, 100% 0, 100% 75vh, 0 100%)',
+        }}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        textAlign="center"
+      >
+        {/* Hero Overlay */}
+        <Box
+          position="relative"
+          zIndex="10"
+          // boxShadow={'outline'}
+          maxW="90vw" // Add this line to control the width
+          mx="auto" // Centers the content horizontally
+          px="4" // Add some horizontal padding for smaller screens
+        >
+          <Text
+            color="white"
+            fontWeight={300}
+            fontFamily={'lato'}
+            fontSize={{ base: '10vw', md: '10vw', lg: '8vw' }}
+            letterSpacing=".5em"
+            mb={4}
+          >
+            BONSAI
+          </Text>
+          <Text
+            fontWeight={300}
+            fontFamily={'lato'}
+            fontSize="xl"
+            color="white"
+            mb={8}
+          >
+            BE ONE WITH NATURE
+          </Text>
+          <Button
+            width="auto"
+            size="lg"
+            bg="white"
+            color="black"
+            fontWeight={300}
+            borderRadius="full"
+            paddingX="1.5rem"
+            paddingY="1rem"
+            boxShadow="md" // Initial shadow
+            transition="transform 0.3s ease, box-shadow 0.3s ease" // Smooth transition
+            _hover={{
+              backgroundColor: 'green.100',
+              transform: 'scale(1.05)',
+              boxShadow: '0px 4px 15px rgba(0, 128, 0, 0.4)',
+            }}
+            position="relative" // Required for the pseudo-element to work
+          >
+            EXPLORE NATURE
+          </Button>
+        </Box>
+      </Box>
 
       {/* Radial Background Animation */}
       <Box
