@@ -1,13 +1,55 @@
-import React, { useState } from 'react';
-import { Box, Flex, Link, Button, Image, Text } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 import Hamburger from 'hamburger-react';
-import { motion } from 'framer-motion'; // Import framer-motion
-import logo from '../assets/images/logo_white.png';
+import logo from '../assets/images/logo.png';
+import logo_white from '../assets/images/logo_white.png';
 import heroSmall from '../assets/images/h3.png';
 import heroLarge from '../assets/images/h3.png';
+import {
+  Box,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+  Flex,
+  HStack,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Link,
+  MenuDivider,
+  Button,
+  Image,
+  Text,
+  Stack,
+  Badge,
+  Avatar,
+  useDisclosure,
+} from '@chakra-ui/react';
+import { Link as ChakraLink } from '@chakra-ui/react';
+import { FaUser } from 'react-icons/fa6';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom';
+import { ShoppingCart } from 'lucide-react';
+import { logout } from '../actions/userActions';
+import { clearCart } from '../actions/cartActions';
+import SearchBar from './SearchBar';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const shopMenuDisclosure = useDisclosure(); // For Shop menu hover control
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  const userLogin = useSelector(state => state.userLogin);
+  const { userInfo } = userLogin;
+
+  const cart = useSelector(state => state.cart);
+  const { cartItems } = cart;
 
   // Toggle menu function
   const toggleMenu = () => setIsOpen(!isOpen);
@@ -21,7 +63,34 @@ const Navigation = () => {
     return { x, y };
   };
 
-  const navLinks = ['About', 'Blog', 'Contact', 'Shop'];
+  // Array with both labels and their corresponding URLs
+  const navLinks = [
+    { label: 'About', url: '/about' },
+    { label: 'Blog', url: '/blog' },
+    { label: 'Contact', url: '/contact' },
+    { label: 'Shop', url: '/shop' },
+  ];
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const logoutHandler = () => {
+    dispatch(logout());
+    dispatch(clearCart());
+    navigate('/');
+  };
+
+  const withoutSidebarRoutes = ['/profile', '/login', '/register'];
+  if (withoutSidebarRoutes.some(item => pathname.includes(item))) return null;
 
   return (
     <Box>
@@ -40,10 +109,11 @@ const Navigation = () => {
         bg="transparent"
       >
         {/* Logo */}
-        <Box>
-          <Image src={logo} alt="Logo" boxSize="50px" />
-        </Box>
-
+        <RouterLink to="/">
+          <Box>
+            <Image src={logo} alt="Logo" boxSize="50px" />
+          </Box>
+        </RouterLink>
         {/* Hamburger Button with Circle Animation */}
         <Box
           position="relative"
@@ -90,11 +160,11 @@ const Navigation = () => {
           </Box>
 
           {/* Navigation Links Positioned with 90-degree Counterclockwise Rotation */}
-          {navLinks.map((label, index) => {
+          {navLinks.map((link, index) => {
             const { x, y } = getLinkPosition(index, navLinks.length, 260); // Increased radius for more spacing
             return (
               <motion.div
-                key={label}
+                key={Link.label}
                 initial={{ opacity: 0, scale: 0 }} // Start hidden
                 animate={{
                   opacity: isOpen ? 1 : 0,
@@ -112,18 +182,19 @@ const Navigation = () => {
                   margin: '8px', // Add margin to give space between links
                 }}
               >
-                <Link
-                  href="#"
-                  fontSize="xl"
-                  color="black"
-                  _hover={{ color: 'gray.800', bg: 'yellow' }}
-                  bg="white"
-                  padding="0.5rem 1rem"
-                  borderRadius="full"
-                  boxShadow="md"
-                >
-                  {label}
-                </Link>
+                <RouterLink to={link.url}>
+                  <Link
+                    fontSize="xl"
+                    color="black"
+                    _hover={{ color: 'gray.800', bg: 'yellow' }}
+                    bg="white"
+                    padding="0.5rem 1rem"
+                    borderRadius="full"
+                    boxShadow="md"
+                  >
+                    {link.label}
+                  </Link>
+                </RouterLink>
               </motion.div>
             );
           })}
