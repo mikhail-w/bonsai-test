@@ -53,7 +53,12 @@ function CartPage() {
   };
 
   return (
-    <Container maxW="container.xl" mt={100} minH="100vh">
+    <Container
+      maxW="container.xl"
+      mt={100}
+      minH="100vh"
+      pt={{ base: 10, md: 10 }}
+    >
       <Center flexDirection="column" mt={12} mb={12}>
         <Heading as="h1" size="xl" mb={6} fontFamily="lato">
           Shopping Cart

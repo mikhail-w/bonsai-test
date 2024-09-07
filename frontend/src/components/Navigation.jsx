@@ -3,38 +3,13 @@ import Hamburger from 'hamburger-react';
 import logo from '../assets/images/logo.png';
 import logo_white from '../assets/images/logo_white.png';
 
-import {
-  Box,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-  Flex,
-  HStack,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  Link,
-  MenuDivider,
-  Button,
-  Image,
-  Text,
-  Stack,
-  Badge,
-  Avatar,
-  useDisclosure,
-} from '@chakra-ui/react';
-import { Link as ChakraLink } from '@chakra-ui/react';
-import { FaUser } from 'react-icons/fa6';
-import { useDispatch, useSelector } from 'react-redux';
+import { Box, Link, Flex, Image, useDisclosure } from '@chakra-ui/react';
 import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom';
-import { ShoppingCart } from 'lucide-react';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../actions/userActions';
 import { clearCart } from '../actions/cartActions';
 import SearchBar from './SearchBar';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -66,8 +41,6 @@ const Navigation = () => {
     }
   };
 
-  // Toggle menu function
-
   // Function to calculate positions with a 90-degree counterclockwise rotation and add margin
   const getLinkPosition = (index, total, radius) => {
     const angleOffset = Math.PI * 0.6; // 90-degree counterclockwise rotation
@@ -77,9 +50,18 @@ const Navigation = () => {
     return { x, y };
   };
 
-  // Array with both labels and their corresponding URLs
+  // Handler for logout action
+  const logoutHandler = () => {
+    dispatch(logout());
+    dispatch(clearCart());
+    navigate('/');
+  };
+
+  // Array with both labels and their corresponding URLs, including logout option if logged in
   const navLinks = [
-    { label: 'Login', url: '/login' },
+    userInfo
+      ? { label: 'Logout', action: logoutHandler }
+      : { label: 'Login', url: '/login' },
     { label: 'Blog', url: '/blog' },
     { label: 'Cart', url: '/cart' },
     { label: 'Shop', url: '/shop' },
@@ -102,12 +84,6 @@ const Navigation = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-
-  const logoutHandler = () => {
-    dispatch(logout());
-    dispatch(clearCart());
-    navigate('/');
-  };
 
   const withoutSidebarRoutes = ['/profile', '/login', '/register'];
   if (withoutSidebarRoutes.some(item => pathname.includes(item))) return null;
@@ -185,7 +161,7 @@ const Navigation = () => {
             <Box>
               {/* Navigation Links Positioned with 90-degree Counterclockwise Rotation */}
               {navLinks.map((link, index) => {
-                const { x, y } = getLinkPosition(index, navLinks.length, 280);
+                const { x, y } = getLinkPosition(index, navLinks.length, 300);
 
                 return (
                   <motion.div
@@ -207,67 +183,23 @@ const Navigation = () => {
                       margin: '8px',
                     }}
                   >
-                    {/* For Shop link and its submenu */}
-                    {link.label === 'Shop' ? (
-                      <Box
-                        onMouseEnter={() => setIsShopHovered(true)} // Show submenu when hovering over Shop link
-                        onMouseLeave={() => setIsShopHovered(false)} // Hide submenu when leaving the Shop link or submenu
-                        position="relative"
+                    {/* If the link is a logout action, trigger the logoutHandler */}
+                    {link.action ? (
+                      <Link
+                        as="button"
+                        onClick={link.action}
+                        fontSize="xl"
+                        color="black"
+                        _hover={{ color: 'gray.800', bg: 'yellow' }}
+                        bg="white"
+                        padding="0.5rem 1rem"
+                        borderRadius="full"
+                        boxShadow="md"
                       >
-                        {/* Shop Link */}
-                        <Link
-                          as={RouterLink}
-                          to={link.url}
-                          fontSize="xl"
-                          color="black"
-                          _hover={{ color: 'gray.800', bg: 'yellow' }}
-                          bg="white"
-                          padding="0.5rem 1rem"
-                          borderRadius="full"
-                          boxShadow="md"
-                        >
-                          Shop
-                        </Link>
-
-                        {/* Submenu Links */}
-                        {isShopHovered && (
-                          <Box
-                            position="absolute"
-                            top="100%" // Position below the Shop link
-                            left="0"
-                            display="flex" // Horizontally aligned
-                            gap="10px" // Space between submenu items
-                            bg="transparent" // Transparent background
-                            padding="1rem"
-                            // boxShadow="lg"
-                            zIndex="1000"
-                            onMouseEnter={() => setIsShopHovered(true)} // Keep submenu visible when hovering over it
-                            onMouseLeave={() => setIsShopHovered(false)} // Hide submenu when leaving
-                          >
-                            {submenuLinks.map(submenuLink => (
-                              <Link
-                                key={submenuLink.label}
-                                as={RouterLink}
-                                to={submenuLink.url}
-                                fontSize="sm"
-                                bg={'white'}
-                                borderRadius="full"
-                                color="black"
-                                display="flex"
-                                flexDirection={'row'}
-                                padding="0.5rem 1rem"
-                                _hover={{ color: 'gray.800', bg: 'yellow' }}
-                                // borderRadius="md"
-                                // boxShadow="md"
-                              >
-                                {submenuLink.label}
-                              </Link>
-                            ))}
-                          </Box>
-                        )}
-                      </Box>
+                        {link.label}
+                      </Link>
                     ) : (
-                      // Non-Shop links
+                      // Non-action links (e.g., Login)
                       <Link
                         as={RouterLink}
                         to={link.url}
