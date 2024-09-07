@@ -5,38 +5,24 @@ import Water_Bonsai from "../assets/images/watering_bonsai.jpg"
 function CarePage_Care () {
    return (
      <>
-       <Box marginTop={50} marginBottom={100} mt={"100px"} pl={"100px"}>
-         <Heading>Caring Your Bonsai Tree</Heading>
-       </Box>
-       
        <Box pos="relative" w="100%" h="500px" overflow="hidden">
-         <Image
-           src={Water_Bonsai}
-           w="100%"
-           h="auto"
-         />
+         <Image src={Water_Bonsai} w="100%" h="auto" />
          <Heading
            pos="absolute"
-           top="50%"
-           left="50%"
+           top={{ md: "50%", base: "30%" }}
+           left={{ md: "10%", base: "10%" }}
            color="black"
+           sx={{
+             WebkitTextStroke: { base: "1px white", md: "none" }, // Text stroke for base, none for md
+           }}
          >
-           This text is centered on the image
+          Caring Your Bonsai Tree
          </Heading>
        </Box>
 
        <Center>
-         <Container w={["400px"]} minH={"100vh"}>
-           <Text mb="4">
-             Bonsai tree styling is the art of shaping a tree to reflect
-             nature’s beauty in miniature form. While growing a bonsai requires
-             patience, skill, and attention, styling allows you to express your
-             creativity while guiding the tree's development. Whether you're an
-             absolute beginner or looking to refine your skills, this guide will
-             walk you through the essential techniques and principles behind
-             bonsai styling.
-           </Text>
-
+         <Container w={{md:"2000px", sm:"400px"}} minH={"100vh"} marginTop={"100px"}>
+          
            <Heading as="h2" size="lg" mb="4">
              Understanding Bonsai Styles
            </Heading>
