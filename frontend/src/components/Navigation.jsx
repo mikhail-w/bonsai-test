@@ -212,7 +212,7 @@ const Navigation = () => {
                 borderRadius: '50%',
                 background: isOpen
                   ? linkColors[hoveredLink]
-                  : 'rgba(116, 214, 128, 0.8)',
+                  : 'rgba(116, 214, 128, 1)',
                 backdropFilter: 'blur(5px)',
                 zIndex: 1, // Below the hamburger button
               }}
@@ -229,6 +229,11 @@ const Navigation = () => {
               justifyContent="center"
               boxShadow="md"
               zIndex="2" // Ensures hamburger is above the circle
+              transition="all 0.3s ease-in-out" // Add transition to default state
+              _hover={{
+                transform: 'scale(1.09)',
+                boxShadow: '0 0 15px 5px rgba(255, 255, 255, 0.2)',
+              }}
             >
               <Hamburger
                 toggled={isOpen} // Bind the open state to the Hamburger component
