@@ -14,6 +14,7 @@ import {
   FormHelperText,
   extendTheme,
   Box,
+  Center,
 } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -22,6 +23,7 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { login } from '../actions/userActions';
 import LoginImage from '../assets/images/b6.jpg';
+import logo from '../assets/images/logo.png';
 
 const activeLabelStyles = {
   transform: 'scale(0.85) translateY(-24px)',
@@ -75,10 +77,13 @@ function LoginPage() {
   const { error, loading, userInfo } = userLogin;
 
   useEffect(() => {
+    // Check when userInfo changes
+    // console.log('userInfo:', userInfo);
+
     if (userInfo) {
-      navigate(redirect);
+      navigate(redirect); // Navigate after toast is shown
     }
-  }, [userInfo, redirect]);
+  }, [userInfo, redirect, navigate, toast]);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -113,9 +118,23 @@ function LoginPage() {
             direction={'column'}
           >
             <Stack spacing={4} w={'full'} maxW={'md'}>
-              <Heading fontSize={'2xl'}>Sign in to your account</Heading>
+              <Center flexDirection={'column'}>
+                <Image src={logo} width={50} />
+                <Text fontFamily={'lato'} fontWeight={300}>
+                  BONSAI
+                </Text>
+              </Center>
+              <Heading fontFamily={'lato'} fontSize={'2xl'}>
+                Sign in to your account
+              </Heading>
               <form onSubmit={handleSubmit}>
-                <FormControl variant="floating" mb={10} id="email" isRequired>
+                <FormControl
+                  fontFamily={'lato'}
+                  variant="floating"
+                  mb={10}
+                  id="email"
+                  isRequired
+                >
                   <Input
                     type="email"
                     value={email}
@@ -145,6 +164,7 @@ function LoginPage() {
                     align={'start'}
                     justify={'space-between'}
                   ></Stack>
+                  ;
                   <Button
                     colorScheme="green"
                     size="lg"
@@ -157,10 +177,17 @@ function LoginPage() {
                   <Button onClick={handleReturn}>Return</Button>
                 </Stack>
               </form>
-              <Text textAlign="center" mt={4} color="gray.500">
+              <Text
+                fontFamily={'lato'}
+                textAlign="center"
+                mt={4}
+                color="gray.500"
+              >
                 New Customer?{' '}
                 <Button variant="link" colorScheme="green">
-                  <Link to={'/register/'}>Register</Link>
+                  <Link fontFamily={'lato'} to={'/register/'}>
+                    Register
+                  </Link>
                 </Button>
               </Text>
             </Stack>

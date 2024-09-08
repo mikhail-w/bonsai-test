@@ -104,6 +104,13 @@ function RegisterPage() {
     }
     // dispatch(register(name, email, password, city, state, avatar));
     dispatch(register(name, email, password, avatar));
+    toast({
+      title: 'Account created.',
+      description: "We've created your account for you.",
+      status: 'success',
+      duration: 9000,
+      isClosable: true,
+    });
   };
 
   const handleAvatarImageChange = e => {
