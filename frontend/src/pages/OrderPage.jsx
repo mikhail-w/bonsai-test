@@ -190,7 +190,7 @@ function OrderPage() {
         <Card>
           <ListGroup variant="flush">
             <ListGroup.Item>
-              <h2>Order Summary</h2>
+              <Heading>Order Summary</Heading>
             </ListGroup.Item>
 
             <ListGroup.Item>

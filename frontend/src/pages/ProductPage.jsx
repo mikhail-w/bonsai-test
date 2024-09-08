@@ -32,7 +32,7 @@ const ProductImage = ({ image, name }) => (
     <Image
       src={`http://127.0.0.1:8000${image}`}
       alt={name}
-      boxSize={{ base: '100%', md: '400px' }}
+      boxSize={{ base: '100%', md: '400px', lg: '500px' }} // Adjusting image size for responsiveness
       objectFit="cover"
       borderRadius="lg"
       shadow="md"
@@ -41,8 +41,16 @@ const ProductImage = ({ image, name }) => (
 );
 
 const ProductDetails = ({ product }) => (
-  <VStack spacing={6} align="start">
-    <Heading as="h3" size="xl" fontFamily="lato">
+  <VStack
+    spacing={6}
+    align="start"
+    boxShadow="outline"
+    w={{ base: '100%', md: '100%' }} // Responsive width
+    maxW="container.sm"
+  >
+    <Heading as="h3" size={{ base: 'lg', md: 'xl' }} fontFamily="lato">
+      {' '}
+      {/* Adjusting font size */}
       {product.name}
     </Heading>
     <Box>
@@ -54,68 +62,84 @@ const ProductDetails = ({ product }) => (
         color={'#008b4a'}
       />
     </Box>
-    <Text fontSize="2xl" fontWeight="bold" fontFamily="lato">
-      {/* ${product.price.toFixed(2)} */}${product.price}
+    <Text
+      fontSize={{ base: 'xl', md: '2xl' }}
+      fontWeight="bold"
+      fontFamily="lato"
+    >
+      {' '}
+      {/* Responsive font size */}${product.price}
     </Text>
-    <Text fontFamily="lato" lineHeight="tall" fontSize="lg">
+    <Text
+      fontFamily="lato"
+      lineHeight="tall"
+      fontSize={{ base: 'md', md: 'lg' }}
+    >
       {product.description}
     </Text>
   </VStack>
 );
 
 const ProductPurchaseOptions = ({ product, qty, setQty, addToCartHandler }) => (
-  <VStack spacing={6} align="stretch" w="full">
-    <Box p={6} shadow="lg" borderWidth="1px" borderRadius="lg" bg="white">
-      <VStack spacing={6} align="stretch">
-        <Flex justify="space-between">
-          <Text fontFamily="lato">Price:</Text>
-          <Text fontFamily="lato" fontWeight="bold">
-            ${product.price}
-          </Text>
-        </Flex>
+  <VStack
+    spacing={6}
+    align="stretch"
+    w="full"
+    p={{ base: 4, md: 6 }} // Adjust padding for responsiveness
+    shadow="lg"
+    borderWidth="1px"
+    borderRadius="lg"
+    bg="white"
+  >
+    <VStack spacing={6} align="stretch">
+      <Flex justify="space-between">
+        <Text fontFamily="lato">Price:</Text>
+        <Text fontFamily="lato" fontWeight="bold">
+          ${product.price}
+        </Text>
+      </Flex>
 
-        <Flex justify="space-between">
-          <Text fontFamily="lato">Status:</Text>
-          <Text>
-            {product.countInStock > 0 ? (
-              <Badge fontFamily="lato" colorScheme="green">
-                In Stock
-              </Badge>
-            ) : (
-              <Badge fontFamily="lato" colorScheme="red">
-                Out of Stock
-              </Badge>
-            )}
-          </Text>
-        </Flex>
+      <Flex justify="space-between">
+        <Text fontFamily="lato">Status:</Text>
+        <Text>
+          {product.countInStock > 0 ? (
+            <Badge fontFamily="lato" colorScheme="green">
+              In Stock
+            </Badge>
+          ) : (
+            <Badge fontFamily="lato" colorScheme="red">
+              Out of Stock
+            </Badge>
+          )}
+        </Text>
+      </Flex>
 
-        {product.countInStock > 0 && (
-          <HStack spacing={4}>
-            <Text fontFamily="lato">Qty</Text>
-            <Select
-              value={qty}
-              onChange={e => setQty(e.target.value)}
-              borderColor="gray.300"
-            >
-              {[...Array(product.countInStock).keys()].map(x => (
-                <option key={x + 1} value={x + 1}>
-                  {x + 1}
-                </option>
-              ))}
-            </Select>
-          </HStack>
-        )}
+      {product.countInStock > 0 && (
+        <HStack spacing={4}>
+          <Text fontFamily="lato">Qty</Text>
+          <Select
+            value={qty}
+            onChange={e => setQty(e.target.value)}
+            borderColor="gray.300"
+          >
+            {[...Array(product.countInStock).keys()].map(x => (
+              <option key={x + 1} value={x + 1}>
+                {x + 1}
+              </option>
+            ))}
+          </Select>
+        </HStack>
+      )}
 
-        <Button
-          colorScheme="green"
-          onClick={addToCartHandler}
-          isDisabled={product.countInStock === 0}
-          size="lg"
-        >
-          Add to Cart
-        </Button>
-      </VStack>
-    </Box>
+      <Button
+        colorScheme="green"
+        onClick={addToCartHandler}
+        isDisabled={product.countInStock === 0}
+        size="lg"
+      >
+        Add to Cart
+      </Button>
+    </VStack>
   </VStack>
 );
 
@@ -296,7 +320,7 @@ function ProductPage() {
         ) : error ? (
           <Message variant="danger">{error}</Message>
         ) : (
-          <Container maxW="container.lg" py={6}>
+          <Container maxW="container.lg" py={6} boxShadow="outline">
             <Box mb={10}>
               <BackButton />
             </Box>

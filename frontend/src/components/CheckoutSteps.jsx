@@ -1,49 +1,57 @@
-import { Nav } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
+import { HStack, Button } from '@chakra-ui/react';
+import { Link as RouterLink } from 'react-router-dom';
 
 function CheckoutSteps({ step1, step2, step3, step4 }) {
   return (
-    <Nav className="justify-content-center mb-4">
-      <Nav.Item>
-        {step1 ? (
-          <LinkContainer to="/login">
-            <Nav.Link>Login</Nav.Link>
-          </LinkContainer>
-        ) : (
-          <Nav.Link disabled>Login</Nav.Link>
-        )}
-      </Nav.Item>
+    <HStack justify="center" mb={4} spacing={4}>
+      <Button
+        fontFamily={'lato'}
+        fontSize={'.7rem'}
+        as={RouterLink}
+        to="/login"
+        colorScheme="green"
+        variant={step1 ? 'solid' : 'outline'}
+        isDisabled={!step1}
+      >
+        Login
+      </Button>
 
-      <Nav.Item>
-        {step2 ? (
-          <LinkContainer to="/shipping">
-            <Nav.Link>Shipping</Nav.Link>
-          </LinkContainer>
-        ) : (
-          <Nav.Link disabled>Shipping</Nav.Link>
-        )}
-      </Nav.Item>
+      <Button
+        fontFamily={'lato'}
+        fontSize={'.7rem'}
+        as={RouterLink}
+        to="/shipping"
+        colorScheme="green"
+        variant={step2 ? 'solid' : 'outline'}
+        isDisabled={!step2}
+      >
+        Shipping
+      </Button>
 
-      <Nav.Item>
-        {step3 ? (
-          <LinkContainer to="/payment">
-            <Nav.Link>Payment</Nav.Link>
-          </LinkContainer>
-        ) : (
-          <Nav.Link disabled>Payment</Nav.Link>
-        )}
-      </Nav.Item>
+      <Button
+        fontFamily={'lato'}
+        fontSize={'.7rem'}
+        as={RouterLink}
+        to="/payment"
+        colorScheme="green"
+        variant={step3 ? 'solid' : 'outline'}
+        isDisabled={!step3}
+      >
+        Payment
+      </Button>
 
-      <Nav.Item>
-        {step4 ? (
-          <LinkContainer to="/placeorder">
-            <Nav.Link>Place Order</Nav.Link>
-          </LinkContainer>
-        ) : (
-          <Nav.Link disabled>Place Order</Nav.Link>
-        )}
-      </Nav.Item>
-    </Nav>
+      <Button
+        fontFamily={'lato'}
+        fontSize={'.7rem'}
+        as={RouterLink}
+        to="/placeorder"
+        colorScheme="green"
+        variant={step4 ? 'solid' : 'outline'}
+        isDisabled={!step4}
+      >
+        Place Order
+      </Button>
+    </HStack>
   );
 }
 
