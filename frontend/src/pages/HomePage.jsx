@@ -1,22 +1,18 @@
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { listProducts } from '../actions/productActions';
 import '../index.css';
-import ScrollToTop from '../components/ScrollToTop';
+import ScrollToTopButton from '../components/ScrollToTopButton';
 import BenifitsSection from '../components/BenifitsSection';
 import HeroSection from '../components/HeroSection';
 import ProductsSection from '../components/ProductsSection';
 import ReviewsSection from './ReviewsSection';
-import Globe from '../components/Globe';
 
 function HomePage() {
-  const dispatch = useDispatch();
-
-  let keyword = location.search;
-
   useEffect(() => {
-    dispatch(listProducts(keyword));
-  }, [dispatch, keyword]);
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }, []);
 
   return (
     <>
@@ -24,8 +20,7 @@ function HomePage() {
       <ProductsSection />
       <BenifitsSection />
       <ReviewsSection />
-      {/* <Globe /> */}
-      <ScrollToTop />
+      <ScrollToTopButton />
     </>
   );
 }

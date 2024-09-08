@@ -20,7 +20,7 @@ function HeroSection() {
     animate: {
       opacity: 1,
       scale: 1,
-      transition: { duration: 1, delay: 0.5, ease: 'easeInOut' },
+      transition: { duration: 0.6, delay: 0.2, ease: 'easeInOut' },
     },
   };
   return (
@@ -88,40 +88,44 @@ function HeroSection() {
             BE ONE WITH NATURE
           </Text>
           <RouterLink to="/products">
-            <Button
-              as={motion.button}
-              display="flex"
-              flexBasis="auto"
-              justifyContent="center"
-              alignItems="center"
-              width="auto"
-              size="sm"
-              bg="white"
-              paddingX="1.5rem"
-              paddingY="1rem"
-              boxShadow="md"
-              alignSelf="center"
-              fontSize="lg"
-              fontWeight="thin"
-              border="0px solid"
-              borderRadius="full"
-              outline="1px solid rgba(255, 255, 255, 0.5)"
-              outlineOffset="0px"
-              transition="all 1.25s cubic-bezier(0.19, 1, 0.22, 1)"
-              _hover={{
-                border: '1px solid',
-                boxShadow:
-                  'inset 0 0 20px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.2)',
-                outlineColor: 'rgba(255, 255, 255, 0)',
-                outlineOffset: '15px',
-                textShadow: '1px 1px 2px #427388',
-              }}
-              _focus={{ boxShadow: 'outline', outline: 'none' }}
-              position="relative"
+            <motion.div
+              initial="initial"
+              animate="animate"
               variants={fadeInButton}
             >
-              EXPLORE NATURE
-            </Button>
+              <Button
+                display="flex"
+                flexBasis="auto"
+                justifyContent="center"
+                alignItems="center"
+                width="auto"
+                size="sm"
+                bg="white"
+                paddingX="1.5rem"
+                paddingY="1rem"
+                boxShadow="md"
+                alignSelf="center"
+                fontSize="lg"
+                fontWeight="thin"
+                border="0px solid"
+                borderRadius="full"
+                outline="1px solid rgba(255, 255, 255, 0.5)"
+                outlineOffset="0px"
+                transition="all 0.75s cubic-bezier(0.19, 1, 0.22, 1)"
+                _hover={{
+                  border: '1px solid',
+                  boxShadow:
+                    'inset 0 0 20px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.2)',
+                  outlineColor: 'rgba(255, 255, 255, 0)',
+                  outlineOffset: '15px',
+                  textShadow: '1px 1px 2px #427388',
+                }}
+                _focus={{ boxShadow: 'outline', outline: 'none' }}
+                position="relative"
+              >
+                EXPLORE NATURE
+              </Button>
+            </motion.div>
           </RouterLink>
         </Flex>
       </Box>

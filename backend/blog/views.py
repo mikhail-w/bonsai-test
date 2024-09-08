@@ -71,15 +71,25 @@ class PostLikeUnlikeView(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         post = self.get_object()
         user = request.user
+        user_has_liked = post.likes.filter(
+            id=user.id
+        ).exists()  # Check if user has liked
 
-        if user in post.likes.all():
+        if user_has_liked:
             post.likes.remove(user)
             message = "Post unliked"
         else:
             post.likes.add(user)
             message = "Post liked"
+
+        # Save changes and refresh the post instance
         post.save()
+        post.refresh_from_db()
+
+        # Serialize the updated post object
         serializer = self.get_serializer(post, context={"request": request})
+
+        # Return a response with the updated data
         return Response(
             {"message": message, "post": serializer.data}, status=status.HTTP_200_OK
         )

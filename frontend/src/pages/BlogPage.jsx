@@ -28,7 +28,7 @@ function BlogPage() {
   const [content, setContent] = useState('');
   const [image, setImage] = useState(null);
   const [creatingPost, setCreatingPost] = useState(false);
-  const [activeHearts, setActiveHearts] = useState({});
+  const [activeHearts, setActiveHearts] = useState({}); // Store heart state locally
 
   const blogList = useSelector(state => state.blogList);
   const { loading, error, posts } = blogList;
@@ -47,6 +47,7 @@ function BlogPage() {
     error: errorCreate,
   } = blogPostCreate;
 
+  // Scroll to the top on mount
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -54,6 +55,7 @@ function BlogPage() {
     });
   }, []);
 
+  // Fetch blog posts and reset the form after post creation
   useEffect(() => {
     if (successCreate) {
       setContent('');
@@ -64,6 +66,7 @@ function BlogPage() {
     dispatch(listBlogPosts());
   }, [dispatch, successCreate]);
 
+  // Submit new post
   const submitHandler = () => {
     const formData = new FormData();
     formData.append('content', content);
@@ -73,7 +76,7 @@ function BlogPage() {
     dispatch(createBlogPost(formData));
   };
 
-  // Update the activeHearts when the like/unlike is updated
+  // Update heart states after liking/unliking a post
   useEffect(() => {
     if (updatedPost) {
       setActiveHearts(prevState => ({
@@ -83,6 +86,18 @@ function BlogPage() {
     }
   }, [updatedPost]);
 
+  // Initialize heart states when posts are loaded
+  useEffect(() => {
+    if (posts) {
+      const initialHearts = {};
+      posts.forEach(post => {
+        initialHearts[post.id] = post.is_liked;
+      });
+      setActiveHearts(initialHearts);
+    }
+  }, [posts]);
+
+  // Like/unlike handler
   const likeUnlikeHandler = postId => {
     dispatch(likeUnlikeBlogPost(postId));
   };
@@ -189,7 +204,7 @@ function BlogPage() {
                         <Heart
                           width={24}
                           height={24}
-                          active={post.is_liked}
+                          active={activeHearts[post.id]} // Use activeHearts state
                           onClick={() => likeUnlikeHandler(post.id)}
                         />
                       </Box>

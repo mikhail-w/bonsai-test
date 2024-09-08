@@ -1,269 +1,229 @@
-import { useState, useEffect } from 'react';
-import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap';
-import { Flex, Box, Heading, Text } from '@chakra-ui/react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Message from '../components/Message';
 import {
-  getOrderDetails,
-  payOrder,
-  deliverOrder,
-} from '../actions/orderActions';
+  Box,
+  Flex,
+  Text,
+  Button,
+  VStack,
+  HStack,
+  Input,
+  Image,
+  Textarea,
+  Spinner,
+  Grid,
+  GridItem,
+} from '@chakra-ui/react';
+import { FaPlusCircle } from 'react-icons/fa';
+import Heart from '@react-sandbox/heart';
 import {
-  ORDER_PAY_RESET,
-  ORDER_DELIVER_RESET,
-} from '../constants/orderConstants';
-import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
-import Loader from '../components/Loader';
-import '../assets/styles/OrderPage.css';
-import '../components/BackButton';
+  listBlogPosts,
+  createBlogPost,
+  likeUnlikeBlogPost,
+} from '../actions/blogActions';
+import { BLOG_POST_CREATE_RESET } from '../constants/blogConstants';
 
-function OrderPage() {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const orderId = id;
-  const PAYPAL_CLIENT_ID = import.meta.env.VITE_PAYPAL_CLIENT_ID_2;
+function BlogPage() {
   const dispatch = useDispatch();
+  const [content, setContent] = useState('');
+  const [image, setImage] = useState(null);
+  const [creatingPost, setCreatingPost] = useState(false);
+  const [activeHearts, setActiveHearts] = useState({});
 
-  const [sdkReady, setSdkReady] = useState(false);
+  const blogList = useSelector(state => state.blogList);
+  const { loading, error, posts } = blogList;
 
-  const orderDetails = useSelector(state => state.orderDetails);
-  const { order, error, loading } = orderDetails;
+  const postLikeUnlike = useSelector(state => state.blogPostLikeUnlike);
+  const { post: updatedPost } = postLikeUnlike;
 
-  const orderPay = useSelector(state => state.orderPay);
-  const { loading: loadingPay, success: successPay } = orderPay;
-
-  const orderDeliver = useSelector(state => state.orderDeliver);
-  const { loading: loadingDeliver, success: successDeliver } = orderDeliver;
-
+  // Check if the user is authenticated from the Redux state
   const userLogin = useSelector(state => state.userLogin);
   const { userInfo } = userLogin;
 
-  if (!loading && !error) {
-    order.itemsPrice = order.orderItems
-      .reduce((acc, item) => acc + item.price * item.qty, 0)
-      .toFixed(2);
-  }
-
-  const addPayPalScript = () => {
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src =
-      'https://www.paypal.com/sdk/js?client-id=AY90O6g8EZzF8MHT4eYt6_wk5VHSWDCkjrSesaGcLckTqBUq60_ZkDi26_C7mAwmiP8VqdMNktA1cTLR';
-    script.async = true;
-    script.onload = () => {
-      setSdkReady(true);
-    };
-    document.body.appendChild(script);
-  };
+  const blogPostCreate = useSelector(state => state.blogPostCreate);
+  const {
+    success: successCreate,
+    loading: loadingCreate,
+    error: errorCreate,
+  } = blogPostCreate;
 
   useEffect(() => {
-    if (!userInfo) {
-      navigate('/login');
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }, []);
+
+  useEffect(() => {
+    if (successCreate) {
+      setContent('');
+      setImage(null);
+      setCreatingPost(false);
+      dispatch({ type: BLOG_POST_CREATE_RESET });
     }
-    if (
-      !order ||
-      successPay ||
-      order._id !== Number(orderId) ||
-      successDeliver
-    ) {
-      dispatch({ type: ORDER_PAY_RESET });
-      dispatch({ type: ORDER_DELIVER_RESET });
-      dispatch(getOrderDetails(orderId));
-    } else if (!order.isPaid) {
-      if (!window.paypal) {
-        addPayPalScript();
-      } else {
-        setSdkReady(true);
-      }
+    dispatch(listBlogPosts());
+  }, [dispatch, successCreate]);
+
+  const submitHandler = () => {
+    const formData = new FormData();
+    formData.append('content', content);
+    if (image) {
+      formData.append('image', image);
     }
-  }, [dispatch, order, orderId, successPay, successDeliver]);
-
-  const successPaymentHandler = paymentResult => {
-    dispatch(payOrder(orderId, paymentResult));
+    dispatch(createBlogPost(formData));
   };
 
-  const deliverHandler = () => {
-    dispatch(deliverOrder(order));
+  // Update the activeHearts when the like/unlike is updated
+  useEffect(() => {
+    if (updatedPost) {
+      setActiveHearts(prevState => ({
+        ...prevState,
+        [updatedPost.id]: updatedPost.is_liked,
+      }));
+    }
+  }, [updatedPost]);
+
+  const likeUnlikeHandler = postId => {
+    dispatch(likeUnlikeBlogPost(postId));
   };
 
-  const createOrder = amount => {
-    return (data, actions) => {
-      return actions.order.create({
-        purchase_units: [
-          {
-            amount: {
-              value: amount, // Dynamically pass the amount
-            },
-          },
-        ],
-      });
-    };
-  };
+  return (
+    <Box
+      mt={130}
+      maxW="800px"
+      mx="auto"
+      py={6}
+      px={4}
+      minHeight={'100vh'}
+      mb={100}
+    >
+      <Flex justify="space-between" align="center" mb={6}>
+        <Text
+          fontFamily={'rale'}
+          fontSize="3xl"
+          fontWeight="bold"
+          color="green.600"
+        >
+          Bonsai Blog
+        </Text>
 
-  return loading ? (
-    <Loader />
-  ) : error ? (
-    <Message variant={'danger'}>{error}</Message>
-  ) : (
-    <Flex mt={130} mb={100} px={20} minHeight={'100vh'}>
-      <Box mx={10}>
-        <ListGroup variant="flush">
-          <ListGroup.Item id="item">
-            <Heading>Shipping</Heading>
-            <Text fontFamily={'lato'} fontWeight={300}>
-              <strong>Name: </strong> <span>{order.user.name}</span>
-            </Text>
-            <Text fontFamily={'lato'} fontWeight={300}>
-              <strong>Email: </strong>
-              <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
-            </Text>
-            <Text fontFamily={'lato'} fontWeight={300}>
-              <strong>Shipping: </strong>
-              <span>{order.shippingAddress.address}</span>,{' '}
-              <span>{order.shippingAddress.city}</span>
-              {'  '}
-              <span>{order.shippingAddress.postalCode}</span>,{'  '}
-              <span>{order.shippingAddress.country}</span>
-            </Text>
-            {order.isDelivered ? (
-              <div className="delivered">Delivered on {order.deliveredAt}</div>
-            ) : (
-              <div className="not-delivered">Not Delivered</div>
-            )}
-          </ListGroup.Item>
-          <ListGroup.Item id="item">
-            <Heading>Payment Method</Heading>
-            <Text fontFamily={'lato'} fontWeight={300}>
-              <strong>Method: </strong>
-              {order.paymentMethod}
-            </Text>
-            {order.isPaid ? (
-              <div className="paid">Paid on {order.paidAt}</div>
-            ) : (
-              <div className="not-paid">Not Paid</div>
-            )}
-          </ListGroup.Item>
+        {/* Render the "Create Post" button only if the user is logged in */}
+        {userInfo && (
+          <Button
+            fontFamily={'rale'}
+            leftIcon={<FaPlusCircle />}
+            colorScheme="green"
+            variant="solid"
+            onClick={() => setCreatingPost(prev => !prev)}
+          >
+            {creatingPost ? 'Cancel' : 'Create Post'}
+          </Button>
+        )}
+      </Flex>
 
-          <ListGroup.Item id="item">
-            <Heading>Ordered Items</Heading>
-            {order.orderItems.length === 0 ? (
-              <Message variant="info">Your order is empty</Message>
-            ) : (
-              <ListGroup variant="flush">
-                {order.orderItems.map((item, index) => (
-                  <ListGroup.Item key={index} id="item">
-                    <Row>
-                      <Col md={1}>
-                        <Image
-                          src={`http://127.0.0.1:8000${item.image}`}
-                          alt={item.name}
-                          fluid
-                          rounded
+      {creatingPost && userInfo && (
+        <Box bg="gray.50" p={6} mb={8} borderRadius="lg" shadow="lg">
+          <VStack spacing={4}>
+            <Textarea
+              fontFamily={'rale'}
+              placeholder="What's on your mind?"
+              value={content}
+              onChange={e => setContent(e.target.value)}
+              size="lg"
+              focusBorderColor="green.400"
+            />
+            <Input
+              type="file"
+              onChange={e => setImage(e.target.files[0])}
+              accept="image/*"
+              size="lg"
+            />
+            <Button
+              fontFamily={'rale'}
+              colorScheme="green"
+              onClick={submitHandler}
+              isLoading={loadingCreate}
+              w="full"
+            >
+              Post
+            </Button>
+            {errorCreate && <Text color="red.500">{errorCreate}</Text>}
+          </VStack>
+        </Box>
+      )}
+
+      {loading ? (
+        <Spinner size="xl" />
+      ) : error ? (
+        <Text color="red.500">{error}</Text>
+      ) : (
+        <Grid templateColumns={{ base: '1fr', md: '1fr 1fr' }} gap={6}>
+          {posts?.map(post => (
+            <GridItem key={post.id} w="full">
+              <Box
+                bg="white"
+                p={6}
+                borderRadius="lg"
+                shadow="lg"
+                transition="transform 0.2s"
+                _hover={{ transform: 'scale(1.03)' }}
+              >
+                <VStack align="start" spacing={4}>
+                  <HStack justify="space-between" w="full">
+                    <Text
+                      fontFamily={'rale'}
+                      fontWeight="bold"
+                      fontSize="lg"
+                      color="teal.600"
+                      isTruncated
+                    >
+                      {post.user}
+                    </Text>
+
+                    {/* Render the like button only if the user is logged in */}
+                    {userInfo && (
+                      <Box
+                        transition="transform 0.2s"
+                        _hover={{ transform: 'scale(1.5)' }}
+                      >
+                        <Heart
+                          width={24}
+                          height={24}
+                          active={post.is_liked}
+                          onClick={() => likeUnlikeHandler(post.id)}
                         />
-                      </Col>
-
-                      <Col>
-                        <Link
-                          to={`/product/${item.product}`}
-                          fontFamily={'lato'}
-                        >
-                          {item.name}
-                        </Link>
-                      </Col>
-
-                      <Col md={4}>
-                        {item.qty} X ${item.price} = $
-                        {(item.qty * item.price).toFixed(2)}
-                      </Col>
-                    </Row>
-                  </ListGroup.Item>
-                ))}
-              </ListGroup>
-            )}
-          </ListGroup.Item>
-        </ListGroup>
-      </Box>
-
-      <Col md={4}>
-        <Card>
-          <ListGroup variant="flush">
-            <ListGroup.Item>
-              <Heading>Order Summary</Heading>
-            </ListGroup.Item>
-
-            <ListGroup.Item>
-              <Row>
-                <Col>Items:</Col>
-                <Col>${order.itemsPrice}</Col>
-              </Row>
-            </ListGroup.Item>
-
-            <ListGroup.Item>
-              <Row>
-                <Col>Shipping:</Col>
-                <Col>${order.shippingPrice}</Col>
-              </Row>
-            </ListGroup.Item>
-
-            <ListGroup.Item>
-              <Row>
-                <Col>Tax:</Col>
-                <Col>${order.taxPrice}</Col>
-              </Row>
-            </ListGroup.Item>
-
-            <ListGroup.Item>
-              <Row>
-                <Col>Total:</Col>
-                <Col>${order.totalPrice}</Col>
-              </Row>
-            </ListGroup.Item>
-
-            {!order.isPaid && (
-              <ListGroup.Item>
-                {loadingPay && <Loader />}
-
-                {!sdkReady ? (
-                  <Loader />
-                ) : (
-                  <PayPalScriptProvider
-                    options={{
-                      clientId: PAYPAL_CLIENT_ID,
-                    }}
-                  >
-                    <PayPalButtons
-                      createOrder={createOrder(order.totalPrice)}
-                      onApprove={(data, actions) => {
-                        return actions.order.capture().then(details => {
-                          successPaymentHandler(details);
-                        });
-                      }}
+                      </Box>
+                    )}
+                  </HStack>
+                  <Text fontFamily={'rale'} fontSize="md" color="gray.700">
+                    {post.content}
+                  </Text>
+                  {post.image && (
+                    <Image
+                      src={post.image}
+                      alt="post"
+                      borderRadius="md"
+                      maxH="250px"
+                      objectFit="cover"
+                      w="full"
                     />
-                  </PayPalScriptProvider>
-                )}
-              </ListGroup.Item>
-            )}
-          </ListGroup>
-          {loadingDeliver && <Loader />}
-          {userInfo &&
-            userInfo.isAdmin &&
-            order.isPaid &&
-            !order.isDelivered && (
-              <ListGroup.Item className="d-flex justify-content-center m-4 text-center">
-                <Button
-                  type="button"
-                  className="btn btn-block"
-                  onClick={deliverHandler}
-                >
-                  Mark As Delivered
-                </Button>
-              </ListGroup.Item>
-            )}
-        </Card>
-      </Col>
-    </Flex>
+                  )}
+                  <HStack justify="space-between" w="full">
+                    <Text fontFamily={'rale'} color="gray.500" fontSize="sm">
+                      {post.likes_count} Likes
+                    </Text>
+                    <Text fontFamily={'rale'} color="gray.500" fontSize="sm">
+                      {post.views} Views
+                    </Text>
+                  </HStack>
+                </VStack>
+              </Box>
+            </GridItem>
+          ))}
+        </Grid>
+      )}
+    </Box>
   );
 }
 
-export default OrderPage;
+export default BlogPage;

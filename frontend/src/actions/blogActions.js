@@ -12,6 +12,7 @@ import {
   BLOG_POST_LIKE_UNLIKE_REQUEST,
   BLOG_POST_LIKE_UNLIKE_SUCCESS,
   BLOG_POST_LIKE_UNLIKE_FAIL,
+  BLOG_POST_UPDATE_IN_LIST,
   BLOG_CREATE_COMMENT_REQUEST,
   BLOG_CREATE_COMMENT_SUCCESS,
   BLOG_CREATE_COMMENT_FAIL,
@@ -137,6 +138,7 @@ export const deleteBlogPost = id => async (dispatch, getState) => {
 // Like or Unlike a blog post
 export const likeUnlikeBlogPost = id => async (dispatch, getState) => {
   try {
+    console.log('likeUnlikeBlogPost REQUEST');
     dispatch({ type: BLOG_POST_LIKE_UNLIKE_REQUEST });
 
     const {
@@ -154,6 +156,11 @@ export const likeUnlikeBlogPost = id => async (dispatch, getState) => {
     dispatch({
       type: BLOG_POST_LIKE_UNLIKE_SUCCESS,
       payload: data.post,
+    });
+    // Dispatch an action to update the blog list with the updated post
+    dispatch({
+      type: BLOG_POST_UPDATE_IN_LIST,
+      payload: data.post, // Updated post
     });
   } catch (error) {
     dispatch({

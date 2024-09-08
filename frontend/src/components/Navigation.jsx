@@ -299,8 +299,8 @@ const Navigation = () => {
                         >
                           <RouterLink to={link.url} onClick={handleLinkClick}>
                             {/* Shop Link */}
-                            <Link
-                              as={RouterLink}
+                            <Flex
+                              // as={RouterLink}
                               to={link.url}
                               fontFamily={'lato'}
                               color="#333333"
@@ -316,7 +316,7 @@ const Navigation = () => {
                             >
                               <link.icon />
                               Shop
-                            </Link>
+                            </Flex>
                           </RouterLink>
                           {/* Submenu Links */}
                           {isShopHovered && (
@@ -359,7 +359,7 @@ const Navigation = () => {
                       ) : link.action ? (
                         // If the link is a logout action, trigger the
                         <RouterLink to={link.url} onClick={handleLinkClick}>
-                          <Link
+                          <Flex
                             as="button"
                             onClick={link.action}
                             fontSize="xl"
@@ -375,13 +375,13 @@ const Navigation = () => {
                             gap="0.5rem" // Add some space between the icon and the text
                           >
                             {link.label}
-                          </Link>
+                          </Flex>
                         </RouterLink>
                       ) : (
                         // Non-Shop links (e.g., Login, Blog, Cart)
                         <RouterLink to={link.url} onClick={handleLinkClick}>
-                          <Link
-                            as={RouterLink}
+                          <Flex
+                            // as={RouterLink}
                             to={link.url}
                             fontSize="xl"
                             fontFamily={'lato'}
@@ -410,7 +410,7 @@ const Navigation = () => {
                                 )}
                               </Badge>
                             )}
-                          </Link>
+                          </Flex>
                         </RouterLink>
                       )}
                     </motion.div>

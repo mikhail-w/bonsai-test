@@ -11,6 +11,7 @@ import {
   BLOG_POST_LIKE_UNLIKE_REQUEST,
   BLOG_POST_LIKE_UNLIKE_SUCCESS,
   BLOG_POST_LIKE_UNLIKE_FAIL,
+  BLOG_POST_UPDATE_IN_LIST,
   BLOG_CREATE_COMMENT_REQUEST,
   BLOG_CREATE_COMMENT_SUCCESS,
   BLOG_CREATE_COMMENT_FAIL,
@@ -51,7 +52,7 @@ export const blogPostDeleteReducer = (state = {}, action) => {
   }
 };
 
-export const blogPostDetailsReducer = (state = { post: {} }, action) => {
+export const blogPostDetailsReducer = (state = { post: [] }, action) => {
   switch (action.type) {
     case BLOG_POST_DETAILS_REQUEST:
       return { ...state, loading: true };
@@ -69,6 +70,7 @@ export const blogPostLikeUnlikeReducer = (state = {}, action) => {
     case BLOG_POST_LIKE_UNLIKE_REQUEST:
       return { loading: true };
     case BLOG_POST_LIKE_UNLIKE_SUCCESS:
+      console.log('likeUnlikeBlogPost BLOG_POST_LIKE_UNLIKE_SUCCESS');
       return { loading: false, success: true, post: action.payload };
     case BLOG_POST_LIKE_UNLIKE_FAIL:
       return { loading: false, error: action.payload };
@@ -124,6 +126,13 @@ export const blogListReducer = (state = { posts: [] }, action) => {
       return { loading: false, posts: action.payload.results };
     case BLOG_LIST_FAIL:
       return { loading: false, error: action.payload };
+    case BLOG_POST_UPDATE_IN_LIST: // Handle the post update
+      return {
+        ...state,
+        posts: state.posts.map(post =>
+          post.id === action.payload.id ? action.payload : post
+        ),
+      };
     default:
       return state;
   }

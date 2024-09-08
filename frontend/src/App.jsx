@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-// import NavBar from './components/NavBar';
+import ScrollToTop from './components/ScrollToTop';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 
@@ -8,7 +8,7 @@ import './index.css';
 function App() {
   return (
     <>
-      {/* <NavBar /> */}
+      <ScrollToTop />
       <Navigation />
       <Outlet />
       <Footer />
