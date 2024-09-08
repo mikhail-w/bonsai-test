@@ -1,6 +1,16 @@
 import { useState, useEffect } from 'react';
-import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap';
-import { Flex, Box, Heading, Text } from '@chakra-ui/react';
+import {
+  Flex,
+  Box,
+  Heading,
+  Text,
+  VStack,
+  HStack,
+  Image,
+  Button,
+  Divider,
+  Badge,
+} from '@chakra-ui/react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
@@ -15,8 +25,6 @@ import {
 } from '../constants/orderConstants';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import Loader from '../components/Loader';
-import '../assets/styles/OrderPage.css';
-import '../components/BackButton';
 
 function OrderPage() {
   const { id } = useParams();
@@ -106,162 +114,204 @@ function OrderPage() {
   ) : error ? (
     <Message variant={'danger'}>{error}</Message>
   ) : (
-    <Flex mt={130} mb={100} px={20} minHeight={'100vh'}>
-      <Box mx={10}>
-        <ListGroup variant="flush">
-          <ListGroup.Item id="item">
-            <Heading>Shipping</Heading>
-            <Text fontFamily={'lato'} fontWeight={300}>
-              <strong>Name: </strong> <span>{order.user.name}</span>
+    <Flex
+      direction={{ base: 'column', lg: 'row' }}
+      justify="space-evenly"
+      align="start"
+      minHeight={'100vh'}
+      mt={130}
+      mb={100}
+      mx={5}
+
+      // px={10}
+      // boxShadow={'outline'}
+    >
+      {/* Shipping, Payment Method, Ordered Items */}
+      <VStack
+        align="start"
+        spacing={6}
+        w="full"
+        maxW="2xl"
+        mr={{ base: 0, md: 10 }}
+        mb={10}
+      >
+        {/* Shipping Section */}
+        <Box bg="white" p={1} w="full" mb={-5}>
+          <Heading mb={4}>Shipping</Heading>
+          <Text fontFamily={'lato'} fontWeight={300}>
+            <strong>Name: </strong> {order.user.name}
+          </Text>
+          <Text fontFamily={'lato'} fontWeight={300}>
+            <strong>Email: </strong>
+            <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
+          </Text>
+          <Text fontFamily={'lato'} fontWeight={300}>
+            <strong>Shipping: </strong>
+            {order.shippingAddress.address}, {order.shippingAddress.city},{' '}
+            {order.shippingAddress.postalCode}, {order.shippingAddress.country}
+          </Text>
+          {order.isDelivered ? (
+            <Badge colorScheme="green" px={2}>
+              Delivered on {order.deliveredAt}
+            </Badge>
+          ) : (
+            <Badge colorScheme="red" px={2}>
+              Not Delivered
+            </Badge>
+          )}
+          <Divider orientation="horizontal" color={'black'} />
+        </Box>
+
+        {/* Payment Method */}
+        <Box bg="white" p={1} w="full" mb={-5}>
+          <Heading as="h3" size="lg" mb={4}>
+            Payment Method
+          </Heading>
+          <Text fontFamily={'lato'} fontWeight={300}>
+            <strong>Method: </strong> {order.paymentMethod}
+          </Text>
+          {order.isPaid ? (
+            <Badge colorScheme="green" px={2}>
+              Paid on {order.paidAt}
+            </Badge>
+          ) : (
+            <Badge colorScheme="red" px={2}>
+              Not Paid
+            </Badge>
+          )}
+          <Divider orientation="horizontal" color={'black'} />
+        </Box>
+
+        {/* Ordered Items */}
+        <Box bg="white" p={1} w="full">
+          <Heading as="h3" size="lg" mb={4}>
+            Ordered Items
+          </Heading>
+          {order.orderItems.length === 0 ? (
+            <Message variant="info">Your order is empty</Message>
+          ) : (
+            <VStack spacing={4} align="start">
+              {order.orderItems.map((item, index) => (
+                <Flex key={index} align="center" w="full">
+                  <Image
+                    src={`http://127.0.0.1:8000${item.image}`}
+                    alt={item.name}
+                    boxSize="50px"
+                    objectFit="cover"
+                    mr={4}
+                    rounded="md"
+                  />
+                  <Link to={`/product/${item.product}`}>
+                    <Text fontWeight={300} fontFamily={'lato'}>
+                      {item.name}
+                    </Text>
+                  </Link>
+                  <Text fontWeight={300} fontFamily={'lato'} ml="auto">
+                    {item.qty} X ${item.price} = $
+                    {(item.qty * item.price).toFixed(2)}
+                  </Text>
+                </Flex>
+              ))}
+            </VStack>
+          )}
+        </Box>
+      </VStack>
+
+      {/* Order Summary */}
+      <Box w="full" maxW="sm" bg="white" p={6} shadow="md" rounded="md">
+        <Heading as="h3" size="lg" mb={4}>
+          Order Summary
+        </Heading>
+        <Divider mb={4} />
+        <VStack spacing={4} align="stretch">
+          <Flex
+            justify="space-between"
+            borderBottom="1px solid"
+            borderColor="gray.200"
+          >
+            <Text fontWeight={300} fontFamily={'lato'}>
+              Items:
             </Text>
-            <Text fontFamily={'lato'} fontWeight={300}>
-              <strong>Email: </strong>
-              <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
+            <Text fontWeight={300} fontFamily={'lato'}>
+              ${order.itemsPrice}
             </Text>
-            <Text fontFamily={'lato'} fontWeight={300}>
-              <strong>Shipping: </strong>
-              <span>{order.shippingAddress.address}</span>,{' '}
-              <span>{order.shippingAddress.city}</span>
-              {'  '}
-              <span>{order.shippingAddress.postalCode}</span>,{'  '}
-              <span>{order.shippingAddress.country}</span>
+          </Flex>
+          <Flex
+            justify="space-between"
+            borderBottom="1px solid"
+            borderColor="gray.200"
+          >
+            <Text fontWeight={300} fontFamily={'lato'}>
+              Shipping:
             </Text>
-            {order.isDelivered ? (
-              <div className="delivered">Delivered on {order.deliveredAt}</div>
-            ) : (
-              <div className="not-delivered">Not Delivered</div>
-            )}
-          </ListGroup.Item>
-          <ListGroup.Item id="item">
-            <Heading>Payment Method</Heading>
-            <Text fontFamily={'lato'} fontWeight={300}>
-              <strong>Method: </strong>
-              {order.paymentMethod}
+            <Text fontWeight={300} fontFamily={'lato'}>
+              ${order.shippingPrice}
             </Text>
-            {order.isPaid ? (
-              <div className="paid">Paid on {order.paidAt}</div>
-            ) : (
-              <div className="not-paid">Not Paid</div>
-            )}
-          </ListGroup.Item>
-
-          <ListGroup.Item id="item">
-            <Heading>Ordered Items</Heading>
-            {order.orderItems.length === 0 ? (
-              <Message variant="info">Your order is empty</Message>
-            ) : (
-              <ListGroup variant="flush">
-                {order.orderItems.map((item, index) => (
-                  <ListGroup.Item key={index} id="item">
-                    <Row>
-                      <Col md={1}>
-                        <Image
-                          src={`http://127.0.0.1:8000${item.image}`}
-                          alt={item.name}
-                          fluid
-                          rounded
-                        />
-                      </Col>
-
-                      <Col>
-                        <Link
-                          to={`/product/${item.product}`}
-                          fontFamily={'lato'}
-                        >
-                          {item.name}
-                        </Link>
-                      </Col>
-
-                      <Col md={4}>
-                        {item.qty} X ${item.price} = $
-                        {(item.qty * item.price).toFixed(2)}
-                      </Col>
-                    </Row>
-                  </ListGroup.Item>
-                ))}
-              </ListGroup>
-            )}
-          </ListGroup.Item>
-        </ListGroup>
-      </Box>
-
-      <Col md={4}>
-        <Card>
-          <ListGroup variant="flush">
-            <ListGroup.Item>
-              <Heading>Order Summary</Heading>
-            </ListGroup.Item>
-
-            <ListGroup.Item>
-              <Row>
-                <Col>Items:</Col>
-                <Col>${order.itemsPrice}</Col>
-              </Row>
-            </ListGroup.Item>
-
-            <ListGroup.Item>
-              <Row>
-                <Col>Shipping:</Col>
-                <Col>${order.shippingPrice}</Col>
-              </Row>
-            </ListGroup.Item>
-
-            <ListGroup.Item>
-              <Row>
-                <Col>Tax:</Col>
-                <Col>${order.taxPrice}</Col>
-              </Row>
-            </ListGroup.Item>
-
-            <ListGroup.Item>
-              <Row>
-                <Col>Total:</Col>
-                <Col>${order.totalPrice}</Col>
-              </Row>
-            </ListGroup.Item>
-
-            {!order.isPaid && (
-              <ListGroup.Item>
-                {loadingPay && <Loader />}
-
-                {!sdkReady ? (
-                  <Loader />
-                ) : (
-                  <PayPalScriptProvider
-                    options={{
-                      clientId: PAYPAL_CLIENT_ID,
+          </Flex>
+          <Flex
+            justify="space-between"
+            borderBottom="1px solid"
+            borderColor="gray.200"
+          >
+            <Text fontWeight={300} fontFamily={'lato'}>
+              Tax:
+            </Text>
+            <Text fontWeight={300} fontFamily={'lato'}>
+              ${order.taxPrice}
+            </Text>
+          </Flex>
+          <Flex
+            justify="space-between"
+            fontWeight="bold"
+            borderBottom="1px solid"
+            borderColor="gray.200"
+          >
+            <Text fontWeight={300} fontFamily={'lato'}>
+              Total:
+            </Text>
+            <Text fontWeight={300} fontFamily={'lato'}>
+              ${order.totalPrice}
+            </Text>
+          </Flex>
+          {!order.isPaid && (
+            <>
+              {loadingPay && <Loader />}
+              {!sdkReady ? (
+                <Loader />
+              ) : (
+                <PayPalScriptProvider
+                  options={{
+                    clientId: PAYPAL_CLIENT_ID,
+                  }}
+                >
+                  <PayPalButtons
+                    createOrder={createOrder(order.totalPrice)}
+                    onApprove={(data, actions) => {
+                      return actions.order.capture().then(details => {
+                        successPaymentHandler(details);
+                      });
                     }}
-                  >
-                    <PayPalButtons
-                      createOrder={createOrder(order.totalPrice)}
-                      onApprove={(data, actions) => {
-                        return actions.order.capture().then(details => {
-                          successPaymentHandler(details);
-                        });
-                      }}
-                    />
-                  </PayPalScriptProvider>
-                )}
-              </ListGroup.Item>
-            )}
-          </ListGroup>
+                  />
+                </PayPalScriptProvider>
+              )}
+            </>
+          )}
           {loadingDeliver && <Loader />}
           {userInfo &&
             userInfo.isAdmin &&
             order.isPaid &&
             !order.isDelivered && (
-              <ListGroup.Item className="d-flex justify-content-center m-4 text-center">
-                <Button
-                  type="button"
-                  className="btn btn-block"
-                  onClick={deliverHandler}
-                >
-                  Mark As Delivered
-                </Button>
-              </ListGroup.Item>
+              <Button
+                onClick={deliverHandler}
+                colorScheme="green"
+                mt={4}
+                w="full"
+              >
+                Mark as Delivered
+              </Button>
             )}
-        </Card>
-      </Col>
+        </VStack>
+      </Box>
     </Flex>
   );
 }

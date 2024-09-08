@@ -11,11 +11,12 @@ import {
   useColorModeValue,
   Image,
   HStack,
+  Flex,
 } from '@chakra-ui/react';
-import { useLocation } from 'react-router-dom';
-
+import { useLocation, useNavigate } from 'react-router-dom';
 import { FaFacebook, FaInstagram, FaTwitter } from 'react-icons/fa';
 import bonsaiLogo from '../assets/images/logo.png'; // replace with your logo path
+
 const withoutSidebarRoutes = ['/login', '/register', '/profile'];
 
 const SocialButton = ({ label, href, icon }) => {
@@ -33,6 +34,8 @@ const SocialButton = ({ label, href, icon }) => {
       transition="background 0.3s ease"
       _hover={{ bg: useColorModeValue('green.100', 'gray.600') }}
       aria-label={label}
+      target="_blank" // This opens the link in a new tab
+      rel="noopener noreferrer"
     >
       <VisuallyHidden>{label}</VisuallyHidden>
       {icon}
@@ -41,26 +44,40 @@ const SocialButton = ({ label, href, icon }) => {
 };
 
 function Footer() {
+  const navigate = useNavigate();
   const { pathname } = useLocation();
   if (withoutSidebarRoutes.some(item => pathname.includes(item))) return null;
+
+  const handleNavigation = path => {
+    navigate(path);
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    }, 100); // A slight delay to ensure the page navigates before scrolling
+  };
+
   return (
     <Box
-      bg={useColorModeValue('gray.50', 'gray.900')}
+      bg={useColorModeValue('#353238', '#2D3748')}
       color={useColorModeValue('gray.700', 'gray.200')}
     >
       <Container as={Stack} maxW="6xl" py={10} spacing={8}>
         <Stack direction="row" align="center" justify="space-between">
-          <HStack spacing={4} align="end">
+          <Flex alignItems="end">
             <Image src={bonsaiLogo} alt="Bonsai Logo" boxSize="50px" />
             <Text
               fontFamily={'lato'}
               fontWeight="bold"
               fontSize="xl"
               color="green.700"
+              ml={4}
+              transform="translateY(5.5px)"
             >
               BONSAI
             </Text>
-          </HStack>
+          </Flex>
 
           <Stack direction="row" spacing={6}>
             <SocialButton
@@ -83,36 +100,45 @@ function Footer() {
 
         <Stack direction="row" justify="center" spacing={4}>
           <Link
-            href="/about"
+            fontFamily={'lato'}
             color="green.700"
-            _hover={{ textDecoration: 'underline' }}
+            _hover={{ textDecoration: 'underline', color: 'white' }}
+            onClick={() => handleNavigation('/about')}
           >
             About Us
           </Link>
           <Link
-            href="/shop"
+            fontFamily={'lato'}
             color="green.700"
-            _hover={{ textDecoration: 'underline' }}
+            _hover={{ textDecoration: 'underline', color: 'white' }}
+            onClick={() => handleNavigation('/products')}
           >
             Shop
           </Link>
           <Link
-            href="/contact"
+            fontFamily={'lato'}
             color="green.700"
-            _hover={{ textDecoration: 'underline' }}
+            _hover={{ textDecoration: 'underline', color: 'white' }}
+            onClick={() => handleNavigation('/contact')}
           >
             Contact
           </Link>
           <Link
-            href="/blog"
+            fontFamily={'lato'}
             color="green.700"
-            _hover={{ textDecoration: 'underline' }}
+            _hover={{ textDecoration: 'underline', color: 'white' }}
+            onClick={() => handleNavigation('/blog')}
           >
             Blog
           </Link>
         </Stack>
 
-        <Text textAlign="center" fontSize="sm" color="gray.500">
+        <Text
+          fontFamily={'lato'}
+          textAlign="center"
+          fontSize="sm"
+          color="white"
+        >
           © {new Date().getFullYear()} Bonsai. All rights reserved.
         </Text>
       </Container>

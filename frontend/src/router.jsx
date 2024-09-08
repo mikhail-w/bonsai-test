@@ -27,6 +27,8 @@ import Settings from './pages/Settings.jsx';
 import MyInfo from './pages/MyInfo.jsx';
 import BlogPage from './pages/BlogPage.jsx';
 import AugmentedReality from './pages/AugmentedReality.jsx';
+import ContactPage from './pages/ContactPage.jsx';
+import AboutPage from './pages/AboutPage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -88,8 +90,16 @@ const router = createBrowserRouter([
         element: <ProductsPage />,
       },
       {
+        path: '/about',
+        element: <AboutPage />,
+      },
+      {
         path: '/blog',
         element: <BlogPage />,
+      },
+      {
+        path: '/contact',
+        element: <ContactPage />,
       },
       {
         path: '/shipping/:id?',

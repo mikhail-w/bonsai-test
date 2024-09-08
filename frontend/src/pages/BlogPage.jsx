@@ -48,6 +48,13 @@ function BlogPage() {
   } = blogPostCreate;
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }, []);
+
+  useEffect(() => {
     if (successCreate) {
       setContent('');
       setImage(null);
@@ -81,7 +88,15 @@ function BlogPage() {
   };
 
   return (
-    <Box mt={100} maxW="800px" mx="auto" py={6} px={4}>
+    <Box
+      mt={130}
+      maxW="800px"
+      mx="auto"
+      py={6}
+      px={4}
+      minHeight={'100vh'}
+      mb={100}
+    >
       <Flex justify="space-between" align="center" mb={6}>
         <Text
           fontFamily={'rale'}
