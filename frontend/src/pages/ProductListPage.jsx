@@ -92,13 +92,14 @@ function ProductListPage() {
     <Container maxW="container.lg" mt={5} minH={'100vh'}>
       <VStack align="stretch" spacing={5} p={5}>
         <HStack justify="space-between" align="center">
-          <Heading as="h1" size="lg">
+          <Heading fontFamily={'lato'} as="h1" size="lg">
             Products
           </Heading>
           <Button
             leftIcon={<FaPlus />}
             colorScheme="teal"
             onClick={createProductHandler}
+            fontFamily={'lato'}
           >
             Create Product
           </Button>
@@ -124,7 +125,7 @@ function ProductListPage() {
             rounded="md"
           >
             <TableContainer>
-              <Table variant="striped" colorScheme="teal">
+              <Table variant="striped" colorScheme="green">
                 <Thead>
                   <Tr>
                     <Th>ID</Th>
@@ -136,7 +137,7 @@ function ProductListPage() {
                 </Thead>
                 <Tbody>
                   {products.map(product => (
-                    <Tr key={product._id}>
+                    <Tr fontFamily={'lato'} key={product._id}>
                       <Td>{product._id}</Td>
                       <Td>{product.name}</Td>
                       <Td>${product.price}</Td>

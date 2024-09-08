@@ -43,7 +43,7 @@ function OrderListPage() {
   return (
     <>
       <Container maxW="container.lg" mt={5} minH={'100vh'}>
-        <Heading as="h1" size="lg" mb={5}>
+        <Heading fontFamily={'lato'} as="h1" size="lg" mb={5}>
           Orders
         </Heading>
         {loading ? (

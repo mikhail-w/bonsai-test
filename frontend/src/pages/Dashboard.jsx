@@ -64,7 +64,8 @@ const adminLinks = [
   { name: 'Orders', icon: BsCashCoin, path: 'admin/orderlist' },
 ];
 
-const SidebarContent = ({ onClose, links, ...rest }) => {
+// Sidebar content with user/admin section separation
+const SidebarContent = ({ onClose, links, userInfo, ...rest }) => {
   return (
     <Box
       transition="3s ease"
@@ -75,6 +76,7 @@ const SidebarContent = ({ onClose, links, ...rest }) => {
       pos="fixed"
       h="full"
       fontFamily="rale"
+      overflowY="auto"
       {...rest}
     >
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
@@ -88,15 +90,38 @@ const SidebarContent = ({ onClose, links, ...rest }) => {
           onClick={onClose}
         />
       </Flex>
+
       {links.map(link => (
         <NavItem key={link.path} icon={link.icon} path={link.path}>
           {link.name}
         </NavItem>
       ))}
+
+      {/* Conditionally render the Admin section */}
+      {userInfo && userInfo.isAdmin && (
+        <>
+          <Box mt={4} mx={4} borderTopWidth="1px" borderColor="gray.600" />
+          <Text
+            fontFamily={'lato'}
+            fontSize="lg"
+            fontWeight="bold"
+            mx={4}
+            mt={4}
+          >
+            Admin
+          </Text>
+          {adminLinks.map(link => (
+            <NavItem key={link.path} icon={link.icon} path={link.path}>
+              {link.name}
+            </NavItem>
+          ))}
+        </>
+      )}
     </Box>
   );
 };
 
+// Navigation item component
 const NavItem = ({ icon, children, path, ...rest }) => {
   return (
     <RouterLink to={path} style={{ textDecoration: 'none' }}>
@@ -135,6 +160,7 @@ const NavItem = ({ icon, children, path, ...rest }) => {
   );
 };
 
+// Mobile navigation component
 const MobileNav = ({ onOpen, ...rest }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -262,6 +288,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
   );
 };
 
+// Main Dashboard component
 const Dashboard = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
@@ -272,12 +299,8 @@ const Dashboard = () => {
   const [links, setLinks] = useState(defaultLinks); // Store public + admin links
 
   useEffect(() => {
-    // Check if the user is an admin and update the links accordingly
-    if (userInfo && userInfo.isAdmin) {
-      setLinks([...defaultLinks, ...adminLinks]);
-    } else {
-      setLinks(defaultLinks); // Reset to default if not an admin
-    }
+    // Reset to default links when user is not an admin
+    setLinks(defaultLinks);
   }, [userInfo]);
 
   // Automatically navigate to /profile/info if the path is /profile
@@ -292,6 +315,7 @@ const Dashboard = () => {
       <SidebarContent
         onClose={onClose}
         links={links} // Pass the links dynamically
+        userInfo={userInfo} // Pass userInfo to handle admin check
         display={{ base: 'none', md: 'block' }}
       />
       <Drawer
@@ -303,7 +327,7 @@ const Dashboard = () => {
         size="full"
       >
         <DrawerContent>
-          <SidebarContent onClose={onClose} links={links} />
+          <SidebarContent onClose={onClose} links={links} userInfo={userInfo} />
         </DrawerContent>
       </Drawer>
       <MobileNav onOpen={onOpen} />
