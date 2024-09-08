@@ -11,6 +11,7 @@ import {
   Container,
   Heading,
   SimpleGrid,
+  useToast,
   Center,
   VStack,
 } from '@chakra-ui/react';
@@ -21,6 +22,7 @@ import EmptyCart from '../assets/images/wp.png';
 function CartPage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const toast = useToast();
   const productId = id;
   const qty = location.search ? Number(location.search.split('=')[1]) : 1;
   const dispatch = useDispatch();
@@ -36,8 +38,15 @@ function CartPage() {
     }
   }, [dispatch, productId, qty]);
 
-  const removeFromCartHandler = id => {
+  const removeFromCartHandler = (id, name) => {
     dispatch(removeFromCart(id));
+    toast({
+      title: 'Removed from Cart',
+      description: `${name} removed from Cart`,
+      status: 'error',
+      duration: 3000,
+      isClosable: true,
+    });
   };
 
   const checkoutHandler = () => {
@@ -57,7 +66,7 @@ function CartPage() {
       maxW="container.xl"
       mt={100}
       minH="100vh"
-      pt={{ base: 10, md: 10 }}
+      pt={{ base: 0, md: 0 }}
     >
       <Center flexDirection="column" mt={12} mb={12}>
         <Heading as="h1" size="xl" mb={6} fontFamily="lato">
@@ -148,7 +157,9 @@ function CartPage() {
                       fontFamily={'lato'}
                       variant="outline"
                       colorScheme="red"
-                      onClick={() => removeFromCartHandler(item.product)}
+                      onClick={() =>
+                        removeFromCartHandler(item.product, item.name)
+                      }
                     >
                       Remove
                     </Button>

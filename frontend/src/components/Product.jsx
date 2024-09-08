@@ -5,6 +5,7 @@ import {
   Tooltip,
   Button,
   Icon,
+  useToast,
   useColorModeValue,
   Divider,
 } from '@chakra-ui/react';
@@ -16,11 +17,19 @@ import Rating from './Rating';
 
 const Product = ({ product }) => {
   const dispatch = useDispatch();
+  const toast = useToast();
   const roundedRating = Math.round(product.rating * 2) / 2;
 
   const addToCartHandler = () => {
-    if (product._id) {
+    if (product._id && product.countInStock > 0) {
       dispatch(addToCart(product._id, 1));
+      toast({
+        title: 'Add to Cart.',
+        description: `${product.name} added to Cart`,
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      });
     }
   };
 
@@ -70,7 +79,7 @@ const Product = ({ product }) => {
               {product.name}
             </Box>
             <Tooltip
-              label="Add to cart"
+              label={product.countInStock > 0 ? 'Add to cart' : 'Out of stock'}
               bg="white"
               placement="top"
               color="gray.800"
@@ -87,6 +96,7 @@ const Product = ({ product }) => {
                   transition: 'transform 0.2s',
                 }}
                 size="sm"
+                isDisabled={product.countInStock === 0} // Disable if out of stock
               >
                 <Icon as={FiShoppingCart} h={5} w={5} />
               </Button>

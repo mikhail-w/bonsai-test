@@ -7,6 +7,7 @@ import BenifitsSection from '../components/BenifitsSection';
 import HeroSection from '../components/HeroSection';
 import ProductsSection from '../components/ProductsSection';
 import ReviewsSection from './ReviewsSection';
+import Globe from '../components/Globe';
 
 function HomePage() {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ function HomePage() {
       <ProductsSection />
       <BenifitsSection />
       <ReviewsSection />
+      {/* <Globe /> */}
       <ScrollToTop />
     </>
   );

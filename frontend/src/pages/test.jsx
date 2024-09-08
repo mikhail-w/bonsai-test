@@ -198,3 +198,55 @@ function BlogPage() {
 }
 
 export default BlogPage;
+import Earth from '../../public/Earth';
+
+
+import React, { Suspense } from 'react';
+import { Canvas } from '@react-three/fiber';
+import { Environment, OrbitControls } from '@react-three/drei';
+import Earth from '../../public/Earth';
+import {
+  Center,
+  useBreakpointValue,
+  Spinner,
+  Flex,
+  Text,
+  Box,
+} from '@chakra-ui/react';
+
+function Globe() {
+  const containerSize = useBreakpointValue({
+    base: '300px', // Mobile devices
+    sm: '400px', // Small screens (e.g., tablets)
+    md: '600px', // Medium screens (e.g., small desktops)
+    lg: '800px', // Large screens
+  });
+
+  return (
+    <div>
+      <Center
+        // Optionally, add padding or margins
+        p={4}
+        width={containerSize}
+        height={containerSize}
+      >
+        <Flex>
+          <Canvas className="earthContainer">
+            <ambientLight intensity={0.5} />
+            <directionalLight position={[10, 10, 5]} intensity={1} />
+            <OrbitControls enableZoom={true} />
+            <Suspense fallback={<Center>Loading...</Center>}>
+              <Earth />
+            </Suspense>
+            <Environment preset="sunset" />
+          </Canvas>
+          <Box>
+            <Text>Save our Planet....Plant a Tree</Text>
+          </Box>
+        </Flex>
+      </Center>
+    </div>
+  );
+}
+
+export default Globe;
