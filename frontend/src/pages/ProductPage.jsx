@@ -26,6 +26,7 @@ import Rating from '../components/Rating';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import BackButton from '../components/BackButton';
+import ScrollToTopButton from '../components/ScrollToTopButton';
 
 const ProductImage = ({ image, name }) => (
   <VStack spacing={4} align="center">
@@ -44,7 +45,6 @@ const ProductDetails = ({ product }) => (
   <VStack
     spacing={6}
     align="start"
-    boxShadow="outline"
     w={{ base: '100%', md: '100%' }} // Responsive width
     maxW="container.sm"
   >
@@ -71,6 +71,7 @@ const ProductDetails = ({ product }) => (
       {/* Responsive font size */}${product.price}
     </Text>
     <Text
+      fontWeight={400}
       fontFamily="lato"
       lineHeight="tall"
       fontSize={{ base: 'md', md: 'lg' }}
@@ -200,14 +201,14 @@ const ProductReviews = ({
   errorProductReview,
   successProductReview,
 }) => (
-  <Box>
+  <Box mt={150}>
     <Heading as="h4" size="md" mb={4}>
       Reviews
     </Heading>
     {product.reviews.length === 0 && (
       <Message variant="info">No Reviews</Message>
     )}
-    <VStack spacing={4} align="stretch">
+    <VStack spacing={4} align="left" maxW="600px" w="100%">
       {product.reviews.map(review => (
         <Box
           key={review._id}
@@ -308,49 +309,52 @@ function ProductPage() {
   };
 
   return (
-    <Container
-      mt={50}
-      maxW="container.xl"
-      py={{ base: 4, md: 10 }}
-      minH="100vh"
-    >
-      <Box>
-        {loading ? (
-          <Loader />
-        ) : error ? (
-          <Message variant="danger">{error}</Message>
-        ) : (
-          <Container maxW="container.lg" py={6} boxShadow="outline">
-            <Box mb={10}>
-              <BackButton />
-            </Box>
-            <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10} mb={10}>
-              <ProductImage image={product.image} name={product.name} />
-              <ProductDetails product={product} />
-              <ProductPurchaseOptions
-                product={product}
-                qty={qty}
-                setQty={setQty}
-                addToCartHandler={addToCartHandler}
-              />
-            </SimpleGrid>
+    <>
+      <Container
+        mt={130}
+        mb={100}
+        maxW="container.xl"
+        py={{ base: 4, md: 10 }}
+        minH="100vh"
+      >
+        <Box>
+          {loading ? (
+            <Loader />
+          ) : error ? (
+            <Message variant="danger">{error}</Message>
+          ) : (
+            <Container maxW="container.xlg" py={6}>
+              <Box mb={10}>
+                <BackButton />
+              </Box>
+              <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10} mb={10}>
+                <ProductImage image={product.image} name={product.name} />
+                <ProductDetails product={product} />
+                <ProductPurchaseOptions
+                  product={product}
+                  qty={qty}
+                  setQty={setQty}
+                  addToCartHandler={addToCartHandler}
+                />
+              </SimpleGrid>
 
-            <ProductReviews
-              product={product}
-              userInfo={userInfo}
-              submitHandler={submitHandler}
-              rating={rating}
-              setRating={setRating}
-              comment={comment}
-              setComment={setComment}
-              loadingProductReview={loadingProductReview}
-              errorProductReview={errorProductReview}
-              successProductReview={successProductReview}
-            />
-          </Container>
-        )}
-      </Box>
-    </Container>
+              <ProductReviews
+                product={product}
+                userInfo={userInfo}
+                submitHandler={submitHandler}
+                rating={rating}
+                setRating={setRating}
+                comment={comment}
+                setComment={setComment}
+                loadingProductReview={loadingProductReview}
+                errorProductReview={errorProductReview}
+                successProductReview={successProductReview}
+              />
+            </Container>
+          )}
+        </Box>
+      </Container>
+    </>
   );
 }
 

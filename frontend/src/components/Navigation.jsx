@@ -150,7 +150,7 @@ const Navigation = () => {
     Login:
       'radial-gradient(circle,  rgba(116, 214, 128, 0.8), rgba(55, 139, 41, 0.8))',
     Blog: 'radial-gradient(circle at 10% 20%, rgba(4, 159, 108, 0.8) 0%, rgba(194, 254, 113, 0.8) 90.1%)',
-    Cart: 'radial-gradient(circle,  rgba(81, 195, 123, 0.8), rgba(244, 208, 63, 0.8))',
+    Cart: 'radial-gradient(circle, rgba(11, 163, 96, 0.8), rgba(60, 186, 146, 0.8))',
     Shop: 'radial-gradient(circle,  rgba(81, 195, 123, 0.8) 2.3%, rgba(147, 249, 185, 0.9) 98.3%)',
     Logout:
       'linear-gradient(to right, rgba(255, 81, 47, 0.8), rgba(221, 36, 118, 0.9))',

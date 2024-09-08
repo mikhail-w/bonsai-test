@@ -6,6 +6,7 @@ import Message from '../components/Message';
 import Paginate from '../components/Paginate';
 import { listPlantProducts } from '../actions/productActions';
 import { SimpleGrid, Center, Container, Text, Heading } from '@chakra-ui/react';
+import ScrollToTopButton from '../components/ScrollToTopButton';
 
 function PlantsPage() {
   const dispatch = useDispatch();
@@ -64,6 +65,7 @@ function PlantsPage() {
           <Paginate page={page} pages={pages} keyword={keyword} />
         </Center>
       </Container>
+      <ScrollToTopButton />
     </>
   );
 }
