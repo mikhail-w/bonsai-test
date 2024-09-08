@@ -43,6 +43,7 @@ const Navigation = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isShopHovered, setIsShopHovered] = useState(false);
   const shopMenuDisclosure = useDisclosure(); // For Shop menu hover control
+  const [hoveredLink, setHoveredLink] = useState('default');
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -108,6 +109,17 @@ const Navigation = () => {
     { label: 'Essentials', url: '/essentials' },
   ];
 
+  const linkColors = {
+    default: 'linear-gradient(179.1deg,#1D976C 2.3%,#93F9B9 98.3%)',
+    Login:
+      'linear-gradient(to right, rgba(116, 214, 128, 0.8), rgba(55, 139, 41, 0.8))',
+    Blog: 'linear-gradient(to right, rgba(86, 204, 242, 0.8), rgba(47, 128, 237, 0.9))',
+    Cart: 'linear-gradient(to right, rgba(242, 153, 74, 0.8), rgba(242, 201, 76, 0.9))',
+    Shop: 'linear-gradient(179.1deg, rgba(29, 151, 108, 0.8) 2.3%, rgba(147, 249, 185, 0.9) 98.3%)',
+    Logout:
+      'linear-gradient(to right, rgba(255, 81, 47, 0.8), rgba(221, 36, 118, 0.9))',
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 0);
@@ -166,7 +178,8 @@ const Navigation = () => {
               width: '50px',
               height: '50px',
               borderRadius: '50%',
-              backgroundColor: '#53c47b', // Soft green radiating circle
+              background: linkColors[hoveredLink],
+              backdropFilter: 'blur(5px)',
               zIndex: 1, // Below the hamburger button
             }}
           />
@@ -195,7 +208,7 @@ const Navigation = () => {
             {userInfo && isOpen && isCircleAnimationDone && (
               <RouterLink to="/profile">
                 <Avatar
-                  src={`http://127.0.0.1:8000${userInfo.avatar}`} // Assuming `avatar` is part of `userInfo`
+                  src={`http://127.0.0.1:8000${userInfo.avatar}`}
                   size="md"
                   position="absolute"
                   top="0px"
@@ -230,6 +243,8 @@ const Navigation = () => {
                       justifyContent: 'center',
                       margin: '8px',
                     }}
+                    onMouseEnter={() => setHoveredLink(link.label)}
+                    // onMouseLeave={() => setHoveredLink('default')}
                   >
                     {/* For Shop link and its submenu */}
                     {link.label === 'Shop' ? (

@@ -20,7 +20,7 @@ function PlantsPage() {
 
   return (
     <>
-      <Container maxW="container.xlg" mt="100px" minH="100vh">
+      <Container maxW="container.lg" mt="100px" minH="100vh">
         <Center
           flexDirection={'column'}
           marginTop={50}
