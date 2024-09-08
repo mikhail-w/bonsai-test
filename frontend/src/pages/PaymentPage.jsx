@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Col, Container } from 'react-bootstrap';
+import {
+  Box,
+  Button,
+  VStack,
+  Radio,
+  RadioGroup,
+  Heading,
+  Stack,
+  useToast,
+  Container,
+} from '@chakra-ui/react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import FormContainer from '../components/FormContainer';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { savePaymentMethod } from '../actions/cartActions';
-// import '../assets/styles/PaymentPage.css';
+import FormContainer from '../components/FormContainer';
 
 function PaymentPage() {
   const cart = useSelector(state => state.cart);
@@ -13,12 +22,23 @@ function PaymentPage() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const toast = useToast();
 
   const [paymentMethod, setPaymentMethod] = useState('PayPal');
 
-  if (!shippingAddress.address) {
-    navigate('/shipping');
-  }
+  useEffect(() => {
+    if (!shippingAddress?.address) {
+      toast({
+        title: 'No Shipping Address',
+        description:
+          'Please provide a shipping address before proceeding to payment.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+      navigate('/shipping');
+    }
+  }, [shippingAddress, navigate, toast]);
 
   const submitHandler = e => {
     e.preventDefault();
@@ -27,37 +47,31 @@ function PaymentPage() {
   };
 
   return (
-    <Container className="formContainer">
-      <FormContainer className="mt-5 ">
+    <Container mt={'200'} maxW="container.sm" minHeight={'100vh'}>
+      <FormContainer>
         <CheckoutSteps step1 step2 step3 />
 
-        <Form onSubmit={submitHandler}>
-          <Form.Group>
-            <h1>Select Payment Method</h1>
-            <Col className="mt-5">
-              <Form.Check
-                type="radio"
-                label="PayPal or Credit Card"
-                id="paypal"
-                name="paymentMethod"
-                checked
-                onChange={e => setPaymentMethod(e.target.value)}
-              ></Form.Check>
-              <Form.Check
-                className="mt-5"
-                type="radio"
-                label="Stripe"
-                id="stripe"
-                name="paymentMethod"
-                onChange={e => setPaymentMethod('Stripe')}
-              ></Form.Check>
-            </Col>
-          </Form.Group>
+        <Box as="form" onSubmit={submitHandler} mt={8}>
+          <Heading as="h1" mb={5} fontSize="2xl">
+            Select Payment Method
+          </Heading>
+          <RadioGroup value={paymentMethod} onChange={setPaymentMethod}>
+            <VStack align="start" spacing={4}>
+              <Radio value="PayPal">PayPal or Credit Card</Radio>
+              <Radio value="Stripe">Stripe</Radio>
+            </VStack>
+          </RadioGroup>
 
-          <Button type="submit" variant="primary" className="mt-5">
+          <Button
+            type="submit"
+            colorScheme="green"
+            size="lg"
+            mt={150}
+            width="full"
+          >
             Continue
           </Button>
-        </Form>
+        </Box>
       </FormContainer>
     </Container>
   );

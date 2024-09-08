@@ -1,36 +1,40 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
+  Box,
   Button,
-  Row,
-  Col,
-  ListGroup,
   Image,
-  Card,
+  Flex,
+  Stack,
+  Text,
+  VStack,
+  Grid,
+  Heading,
+  Divider,
   Container,
-} from 'react-bootstrap';
+  useToast,
+} from '@chakra-ui/react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import Message from '../components/Message';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { createOrder } from '../actions/orderActions';
 import { ORDER_CREATE_RESET } from '../constants/orderConstants';
-// import '../assets/styles/PlaceOrder.css';
+import Message from '../components/Message';
 
 function PlaceOrderPage() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const toast = useToast();
+
+  const cart = useSelector(state => state.cart);
   const orderCreate = useSelector(state => state.orderCreate);
   const { order, error, success } = orderCreate;
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const cart = useSelector(state => state.cart);
-  // SHIPPING FREE IF ITEMS OVER $100
+  // Calculating prices
   cart.itemsPrice = cart.cartItems
     .reduce((acc, item) => acc + item.price * item.qty, 0)
     .toFixed(2);
   cart.shippingPrice = (cart.itemsPrice > 100 ? 0 : 10).toFixed(2);
   cart.taxPrice = Number(0.082 * cart.itemsPrice).toFixed(2);
-
   cart.totalPrice = (
     Number(cart.itemsPrice) +
     Number(cart.shippingPrice) +
@@ -42,10 +46,17 @@ function PlaceOrderPage() {
       navigate(`/order/${order._id}`);
       dispatch({ type: ORDER_CREATE_RESET });
     }
-  }, [success, navigate]);
+  }, [success, navigate, dispatch, order]);
 
   const placeOrder = () => {
     if (!cart.paymentMethod) {
+      toast({
+        title: 'Payment Method Missing',
+        description: 'Please select a payment method before placing the order.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
       navigate('/payment');
     } else {
       dispatch(
@@ -63,122 +74,109 @@ function PlaceOrderPage() {
   };
 
   return (
-    <Container fluid="sm" className="orderContainer">
+    <Container maxW="container.xl" mt={100} mb={100}>
       <CheckoutSteps step1 step2 step3 step4 />
-      <Row className="mt-5">
-        <Col md={8}>
-          <ListGroup variant="flush">
-            <ListGroup.Item id="payment">
-              <h2>Shipping</h2>
 
-              <p>
-                <strong>Shipping: </strong>
-                <span>{cart.shippingAddress.address}</span>,{' '}
-                <span>{cart.shippingAddress.city}</span>
-                {'  '}
-                <span>{cart.shippingAddress.postalCode}</span>,{'  '}
-                <span>{cart.shippingAddress.country}</span>
-              </p>
-            </ListGroup.Item>
+      <Grid templateColumns={{ base: '1fr', md: '2fr 1fr' }} gap={6} mt={8}>
+        <VStack align="stretch" spacing={5}>
+          <Box>
+            <Heading fontFamily={'heading'} as="h2" size="lg" mb={3}>
+              Shipping
+            </Heading>
+            <Text fontFamily={'lato'}>
+              <strong>Address:</strong> {cart.shippingAddress.address},{' '}
+              {cart.shippingAddress.city}, {cart.shippingAddress.postalCode},{' '}
+              {cart.shippingAddress.country}
+            </Text>
+          </Box>
 
-            <ListGroup.Item id="payment">
-              <h2>Payment Method</h2>
-              <p id={'p'}>
-                <strong>Method: </strong>
-                <span>{cart.paymentMethod}</span>
-              </p>
-            </ListGroup.Item>
+          <Box>
+            <Heading fontFamily={'heading'} as="h2" size="lg" mb={3}>
+              Payment Method
+            </Heading>
+            <Text fontFamily={'lato'}>
+              <strong>Method:</strong> {cart.paymentMethod}
+            </Text>
+          </Box>
 
-            <ListGroup.Item id="payment">
-              <h2>Order Items</h2>
-              {cart.cartItems.length === 0 ? (
-                <Message variant="info">Your cart is empty</Message>
-              ) : (
-                <ListGroup variant="flush">
-                  {cart.cartItems.map((item, index) => (
-                    <ListGroup.Item key={index} id="payment">
-                      <Row>
-                        <Col md={1}>
-                          <Image
-                            src={`http://127.0.0.1:8000${item.image}`}
-                            alt={item.name}
-                            fluid
-                            rounded
-                          />
-                        </Col>
+          <Box>
+            <Heading fontFamily={'heading'} as="h2" size="lg" mb={3}>
+              Order Items
+            </Heading>
+            {cart.cartItems.length === 0 ? (
+              <Message fontFamily={'heading'} status="info">
+                Your cart is empty
+              </Message>
+            ) : (
+              <VStack align="stretch" spacing={3}>
+                {cart.cartItems.map((item, index) => (
+                  <Flex key={index} align="center" justify="space-between">
+                    <Image
+                      src={`http://127.0.0.1:8000${item.image}`}
+                      alt={item.name}
+                      width="100px"
+                      height="100px"
+                      objectFit="contain"
+                      borderRadius="md"
+                    />
+                    <Link to={`/product/${item.product}`}>
+                      <Text pl={5} fontFamily={'lato'}>
+                        {item.name}
+                      </Text>
+                    </Link>
+                    <Text fontFamily={'lato'} fontSize="sm">
+                      {item.qty} x ${item.price} = $
+                      {(item.qty * item.price).toFixed(2)}
+                    </Text>
+                  </Flex>
+                ))}
+              </VStack>
+            )}
+          </Box>
+        </VStack>
 
-                        <Col>
-                          <Link to={`/product/${item.product}`}>
-                            <span>{item.name}</span>
-                          </Link>
-                        </Col>
+        <Box p={5} shadow="md" borderWidth="1px">
+          <Heading fontFamily={'heading'} as="h2" size="lg" mb={5}>
+            Order Summary
+          </Heading>
 
-                        <Col md={4}>
-                          {item.qty} X ${item.price} = $
-                          {(item.qty * item.price).toFixed(2)}
-                        </Col>
-                      </Row>
-                    </ListGroup.Item>
-                  ))}
-                </ListGroup>
-              )}
-            </ListGroup.Item>
-          </ListGroup>
-        </Col>
+          <VStack align="stretch" spacing={4}>
+            <Flex justify="space-between">
+              <Text fontFamily={'heading'}>Items:</Text>
+              <Text fontFamily={'lato'}>${cart.itemsPrice}</Text>
+            </Flex>
 
-        <Col md={4}>
-          <Card>
-            <ListGroup variant="flush">
-              <ListGroup.Item>
-                <h2>Order Summary</h2>
-              </ListGroup.Item>
+            <Flex justify="space-between">
+              <Text fontFamily={'heading'}>Shipping:</Text>
+              <Text fontFamily={'lato'}>${cart.shippingPrice}</Text>
+            </Flex>
 
-              <ListGroup.Item>
-                <Row>
-                  <Col>Items:</Col>
-                  <Col>${cart.itemsPrice}</Col>
-                </Row>
-              </ListGroup.Item>
+            <Flex justify="space-between">
+              <Text fontFamily={'heading'}>Tax:</Text>
+              <Text fontFamily={'lato'}>${cart.taxPrice}</Text>
+            </Flex>
 
-              <ListGroup.Item>
-                <Row>
-                  <Col>Shipping:</Col>
-                  <Col>${cart.shippingPrice}</Col>
-                </Row>
-              </ListGroup.Item>
+            <Divider />
 
-              <ListGroup.Item>
-                <Row>
-                  <Col>Tax:</Col>
-                  <Col>${cart.taxPrice}</Col>
-                </Row>
-              </ListGroup.Item>
+            <Flex justify="space-between" fontWeight="bold">
+              <Text fontFamily={'heading'}>Total:</Text>
+              <Text fontFamily={'lato'}>${cart.totalPrice}</Text>
+            </Flex>
 
-              <ListGroup.Item>
-                <Row>
-                  <Col>Total:</Col>
-                  <Col>${cart.totalPrice}</Col>
-                </Row>
-              </ListGroup.Item>
+            {error && <Message status="error">{error}</Message>}
 
-              <ListGroup.Item>
-                {error && <Message variant="danger">{error}</Message>}
-              </ListGroup.Item>
-
-              <ListGroup.Item className="text-center">
-                <Button
-                  type="button"
-                  className="btn-block"
-                  disabled={cart.cartItems === 0}
-                  onClick={placeOrder}
-                >
-                  Place Order
-                </Button>
-              </ListGroup.Item>
-            </ListGroup>
-          </Card>
-        </Col>
-      </Row>
+            <Button
+              colorScheme="green"
+              size="lg"
+              w="full"
+              disabled={cart.cartItems.length === 0}
+              onClick={placeOrder}
+            >
+              Place Order
+            </Button>
+          </VStack>
+        </Box>
+      </Grid>
     </Container>
   );
 }

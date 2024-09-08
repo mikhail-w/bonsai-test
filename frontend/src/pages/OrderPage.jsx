@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap';
-import { Flex, Box } from '@chakra-ui/react';
+import { Flex, Box, Heading } from '@chakra-ui/react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
@@ -106,20 +106,21 @@ function OrderPage() {
   ) : error ? (
     <Message variant={'danger'}>{error}</Message>
   ) : (
-    <Flex mt={100} px={20} boxShadow={'outline'}>
-      <Box boxShadow={'outline'} mx={10}>
+    <Flex mt={150} mb={100} px={20}>
+      <Box mx={10}>
         <ListGroup variant="flush">
           <ListGroup.Item id="item">
-            <h2>Shipping</h2>
+            <Heading>Shipping</Heading>
             <p>
-              <strong>Name: </strong> <span>{order.user.name}</span>
+              <strong fontFamily={'heading'}>Name: </strong>{' '}
+              <span fontFamily={'lato'}>{order.user.name}</span>
             </p>
             <p>
               <strong>Email: </strong>
               <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
             </p>
             <p>
-              <strong>Shipping: </strong>
+              <strong fontFamily={'heading'}>Shipping: </strong>
               <span>{order.shippingAddress.address}</span>,{' '}
               <span>{order.shippingAddress.city}</span>
               {'  '}
@@ -133,7 +134,7 @@ function OrderPage() {
             )}
           </ListGroup.Item>
           <ListGroup.Item id="item">
-            <h2>Payment Method</h2>
+            <Heading>Payment Method</Heading>
             <p>
               <strong>Method: </strong>
               {order.paymentMethod}
@@ -146,7 +147,7 @@ function OrderPage() {
           </ListGroup.Item>
 
           <ListGroup.Item id="item">
-            <h2>Ordered Items</h2>
+            <Heading>Ordered Items</Heading>
             {order.orderItems.length === 0 ? (
               <Message variant="info">Your order is empty</Message>
             ) : (
@@ -164,7 +165,12 @@ function OrderPage() {
                       </Col>
 
                       <Col>
-                        <Link to={`/product/${item.product}`}>{item.name}</Link>
+                        <Link
+                          to={`/product/${item.product}`}
+                          fontFamily={'lato'}
+                        >
+                          {item.name}
+                        </Link>
                       </Col>
 
                       <Col md={4}>
