@@ -28,7 +28,7 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { Link as ChakraLink } from '@chakra-ui/react';
-import { FaUser } from 'react-icons/fa6';
+import { FaUser, FaBlog, FaShoppingCart, FaStore } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom';
 import { ShoppingCart } from 'lucide-react';
@@ -94,11 +94,11 @@ const Navigation = () => {
   // Array with both labels and their corresponding URLs
   const navLinks = [
     userInfo
-      ? { label: 'Logout', action: logoutHandler }
-      : { label: 'Login', url: '/login' },
-    { label: 'Blog', url: '/blog' },
-    { label: 'Cart', url: '/cart' },
-    { label: 'Shop', url: '/products' },
+      ? { label: 'Logout', action: logoutHandler, icon: FaUser }
+      : { label: 'Login', url: '/login', icon: FaUser },
+    { label: 'Blog', url: '/blog', icon: FaBlog },
+    { label: 'Cart', url: '/cart', icon: FaShoppingCart },
+    { label: 'Shop', url: '/products', icon: FaStore },
   ];
 
   const submenuLinks = [
@@ -187,7 +187,7 @@ const Navigation = () => {
               toggle={toggleMenu} // Toggle function to switch between open and close
               rounded
               easing="ease-in"
-              color="#000000"
+              color="#333333"
               zIndex="2000"
             />
             {/* Avatar next to the close button when user is logged in */}
@@ -208,7 +208,7 @@ const Navigation = () => {
             <Box>
               {/* Navigation Links Positioned with 90-degree Counterclockwise Rotation */}
               {navLinks.map((link, index) => {
-                const { x, y } = getLinkPosition(index, navLinks.length, 300);
+                const { x, y } = getLinkPosition(index, navLinks.length, 320);
 
                 return (
                   <motion.div
@@ -241,14 +241,19 @@ const Navigation = () => {
                         <Link
                           as={RouterLink}
                           to={link.url}
+                          fontFamily={'lato'}
+                          color="#333333"
                           fontSize="xl"
-                          color="black"
                           _hover={{ color: 'gray.800', bg: 'yellow' }}
                           bg="white"
                           padding="0.5rem 1rem"
                           borderRadius="full"
                           boxShadow="md"
+                          display="flex"
+                          alignItems="center" // Align icon and text vertically
+                          gap="0.5rem" // Add some space between the icon and the text
                         >
+                          <link.icon />
                           Shop
                         </Link>
 
@@ -275,7 +280,8 @@ const Navigation = () => {
                                 fontSize="sm"
                                 bg={'white'}
                                 borderRadius="full"
-                                color="black"
+                                fontFamily={'lato'}
+                                color="#333333"
                                 display="flex"
                                 flexDirection={'row'}
                                 padding="0.5rem 1rem"
@@ -295,12 +301,16 @@ const Navigation = () => {
                         as="button"
                         onClick={link.action}
                         fontSize="xl"
-                        color="black"
+                        fontFamily={'lato'}
+                        color="#333333"
                         _hover={{ color: 'gray.800', bg: 'yellow' }}
                         bg="white"
                         padding="0.5rem 1rem"
                         borderRadius="full"
                         boxShadow="md"
+                        display="flex"
+                        alignItems="center" // Align icon and text vertically
+                        gap="0.5rem" // Add some space between the icon and the text
                       >
                         {link.label}
                       </Link>
@@ -310,13 +320,18 @@ const Navigation = () => {
                         as={RouterLink}
                         to={link.url}
                         fontSize="xl"
-                        color="black"
+                        fontFamily={'lato'}
+                        color="#333333"
                         _hover={{ color: 'gray.800', bg: 'yellow' }}
                         bg="white"
                         padding="0.5rem 1rem"
                         borderRadius="full"
                         boxShadow="md"
+                        display="flex"
+                        alignItems="center" // Align icon and text vertically
+                        gap="0.5rem" // Add some space between the icon and the text
                       >
+                        <link.icon />
                         {link.label}
                       </Link>
                     )}
