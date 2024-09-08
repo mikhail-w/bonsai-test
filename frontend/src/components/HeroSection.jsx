@@ -1,10 +1,28 @@
 import React from 'react';
 import { Box, Heading, Text, Button, Flex } from '@chakra-ui/react';
 import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import heroSmall from '../assets/images/h3.png';
 import heroLarge from '../assets/images/h3.png';
 
 function HeroSection() {
+  const fadeInUp = {
+    initial: { opacity: 0, y: 50 },
+    animate: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 1, ease: 'easeInOut' },
+    },
+  };
+
+  const fadeInButton = {
+    initial: { opacity: 0, scale: 0.8 },
+    animate: {
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 1, delay: 0.5, ease: 'easeInOut' },
+    },
+  };
   return (
     <>
       {/* Hero Section with Gradient Background */}
@@ -38,37 +56,44 @@ function HeroSection() {
 
         {/* Hero Content */}
         <Flex
+          as={motion.div}
           flexDirection="column"
           alignItems="center"
           position="relative"
           zIndex="3"
+          initial="initial"
+          animate="animate"
         >
           <Text
+            as={motion.p}
             color="white"
             fontWeight={300}
             fontFamily="lato"
             fontSize={{ base: '12vw', md: '6vw', lg: '7vw' }}
             letterSpacing="0.5rem"
             mb={4}
+            variants={fadeInUp}
           >
             BONSAI
           </Text>
           <Text
+            as={motion.p}
             fontWeight={300}
             fontFamily="lato"
             fontSize="sm"
             color="white"
             mb={8}
+            variants={fadeInUp}
           >
             BE ONE WITH NATURE
           </Text>
           <RouterLink to="/products">
             <Button
-              as="button"
-              display="flex" // Ensures flexbox behavior
+              as={motion.button}
+              display="flex"
               flexBasis="auto"
-              justifyContent="center" // Horizontally centers the text
-              alignItems="center" // Vertically centers the text
+              justifyContent="center"
+              alignItems="center"
               width="auto"
               size="sm"
               bg="white"
@@ -93,6 +118,7 @@ function HeroSection() {
               }}
               _focus={{ boxShadow: 'outline', outline: 'none' }}
               position="relative"
+              variants={fadeInButton}
             >
               EXPLORE NATURE
             </Button>

@@ -58,6 +58,11 @@ const Navigation = () => {
   const cart = useSelector(state => state.cart);
   const { cartItems } = cart;
 
+  // Close the menu when a link is clicked
+  const handleLinkClick = () => {
+    setIsOpen(false);
+  };
+
   // Toggle menu function
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -292,26 +297,27 @@ const Navigation = () => {
                           onMouseLeave={() => setIsShopHovered(false)} // Hide submenu when leaving the Shop link or submenu
                           position="relative"
                         >
-                          {/* Shop Link */}
-                          <Link
-                            as={RouterLink}
-                            to={link.url}
-                            fontFamily={'lato'}
-                            color="#333333"
-                            fontSize="xl"
-                            _hover={{ color: 'gray.800', bg: 'yellow' }}
-                            bg="white"
-                            padding="0.5rem 1rem"
-                            borderRadius="full"
-                            boxShadow="md"
-                            display="flex"
-                            alignItems="center" // Align icon and text vertically
-                            gap="0.5rem" // Add some space between the icon and the text
-                          >
-                            <link.icon />
-                            Shop
-                          </Link>
-
+                          <RouterLink to={link.url} onClick={handleLinkClick}>
+                            {/* Shop Link */}
+                            <Link
+                              as={RouterLink}
+                              to={link.url}
+                              fontFamily={'lato'}
+                              color="#333333"
+                              fontSize="xl"
+                              _hover={{ color: 'gray.800', bg: 'yellow' }}
+                              bg="white"
+                              padding="0.5rem 1rem"
+                              borderRadius="full"
+                              boxShadow="md"
+                              display="flex"
+                              alignItems="center" // Align icon and text vertically
+                              gap="0.5rem" // Add some space between the icon and the text
+                            >
+                              <link.icon />
+                              Shop
+                            </Link>
+                          </RouterLink>
                           {/* Submenu Links */}
                           {isShopHovered && (
                             <Box
@@ -351,57 +357,61 @@ const Navigation = () => {
                           )}
                         </Box>
                       ) : link.action ? (
-                        // If the link is a logout action, trigger the logoutHandler
-                        <Link
-                          as="button"
-                          onClick={link.action}
-                          fontSize="xl"
-                          fontFamily={'lato'}
-                          color="#333333"
-                          _hover={{ color: 'gray.800', bg: 'yellow' }}
-                          bg="white"
-                          padding="0.5rem 1rem"
-                          borderRadius="full"
-                          boxShadow="md"
-                          display="flex"
-                          alignItems="center" // Align icon and text vertically
-                          gap="0.5rem" // Add some space between the icon and the text
-                        >
-                          {link.label}
-                        </Link>
+                        // If the link is a logout action, trigger the
+                        <RouterLink to={link.url} onClick={handleLinkClick}>
+                          <Link
+                            as="button"
+                            onClick={link.action}
+                            fontSize="xl"
+                            fontFamily={'lato'}
+                            color="#333333"
+                            _hover={{ color: 'gray.800', bg: 'yellow' }}
+                            bg="white"
+                            padding="0.5rem 1rem"
+                            borderRadius="full"
+                            boxShadow="md"
+                            display="flex"
+                            alignItems="center" // Align icon and text vertically
+                            gap="0.5rem" // Add some space between the icon and the text
+                          >
+                            {link.label}
+                          </Link>
+                        </RouterLink>
                       ) : (
                         // Non-Shop links (e.g., Login, Blog, Cart)
-                        <Link
-                          as={RouterLink}
-                          to={link.url}
-                          fontSize="xl"
-                          fontFamily={'lato'}
-                          color="#333333"
-                          _hover={{ color: 'gray.800', bg: 'yellow' }}
-                          bg="white"
-                          padding="0.5rem 1rem"
-                          borderRadius="full"
-                          boxShadow="md"
-                          display="flex"
-                          alignItems="center" // Align icon and text vertically
-                          gap="0.5rem" // Add some space between the icon and the text
-                        >
-                          <link.icon />
-                          {link.label}
-                          {link.label === 'Cart' && cartItems.length > 0 && (
-                            <Badge
-                              colorScheme="green"
-                              borderRadius="full"
-                              px={2}
-                              ml={2}
-                            >
-                              {cartItems.reduce(
-                                (acc, item) => acc + item.qty,
-                                0
-                              )}
-                            </Badge>
-                          )}
-                        </Link>
+                        <RouterLink to={link.url} onClick={handleLinkClick}>
+                          <Link
+                            as={RouterLink}
+                            to={link.url}
+                            fontSize="xl"
+                            fontFamily={'lato'}
+                            color="#333333"
+                            _hover={{ color: 'gray.800', bg: 'yellow' }}
+                            bg="white"
+                            padding="0.5rem 1rem"
+                            borderRadius="full"
+                            boxShadow="md"
+                            display="flex"
+                            alignItems="center" // Align icon and text vertically
+                            gap="0.5rem" // Add some space between the icon and the text
+                          >
+                            <link.icon />
+                            {link.label}
+                            {link.label === 'Cart' && cartItems.length > 0 && (
+                              <Badge
+                                colorScheme="green"
+                                borderRadius="full"
+                                px={2}
+                                ml={2}
+                              >
+                                {cartItems.reduce(
+                                  (acc, item) => acc + item.qty,
+                                  0
+                                )}
+                              </Badge>
+                            )}
+                          </Link>
+                        </RouterLink>
                       )}
                     </motion.div>
                   );
