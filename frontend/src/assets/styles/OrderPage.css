@@ -35,8 +35,8 @@ strong {
   font-weight: bold;
   font-size: 1.1rem;
   padding-right: 5px;
-  color: #51c37b;
-  color: #34f57b;
+  color: rgb(81, 195, 123);
+  color: rgb(255, 255, 255);
 }
 
 /* backgroundColor: '#53c47b', */

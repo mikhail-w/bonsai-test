@@ -64,7 +64,8 @@ function CartPage() {
   return (
     <Container
       maxW="container.xl"
-      mt={100}
+      mt={130}
+      mb={100}
       minH="100vh"
       pt={{ base: 0, md: 0 }}
     >
@@ -108,8 +109,18 @@ function CartPage() {
           </Button>
         </Center>
       ) : (
-        <SimpleGrid columns={{ base: 1, lg: 3 }} spacing={10}>
-          <Box gridColumn="span 2">
+        <SimpleGrid
+          columns={{ base: 1, lg: 3 }}
+          spacing={10}
+          // boxShadow={'outline'}
+          justifyContent="center" // Align content horizontally
+          alignItems="center" // Align content vertically
+        >
+          <Box
+            gridColumn={{ base: 'span 1', lg: 'span 2' }}
+            w="100%"
+            textAlign="center"
+          >
             {cartItems.map(item => (
               <Box
                 key={item.product}
@@ -169,7 +180,7 @@ function CartPage() {
             ))}
           </Box>
 
-          <Box>
+          <Box margin={'auto'}>
             <Box
               p={6}
               borderWidth="1px"
@@ -178,8 +189,11 @@ function CartPage() {
               bg="white"
             >
               <Text fontFamily={'lato'} fontSize="lg" fontWeight="bold" mb={4}>
-                Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
-                items
+                Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)}{' '}
+                {cartItems.reduce((acc, item) => acc + item.qty, 0) === 1
+                  ? 'item'
+                  : 'items'}
+                )
               </Text>
               <Text fontFamily={'lato'} fontSize="2xl" fontWeight="bold" mb={6}>
                 $
