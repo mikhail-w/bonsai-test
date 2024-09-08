@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Heading, Text, Button, Flex } from '@chakra-ui/react';
+import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom';
 import heroSmall from '../assets/images/h3.png';
 import heroLarge from '../assets/images/h3.png';
 
@@ -61,39 +62,41 @@ function HeroSection() {
           >
             BE ONE WITH NATURE
           </Text>
-          <Button
-            as="button"
-            display="flex" // Ensures flexbox behavior
-            flexBasis="auto"
-            justifyContent="center" // Horizontally centers the text
-            alignItems="center" // Vertically centers the text
-            width="auto"
-            size="sm"
-            bg="white"
-            paddingX="1.5rem"
-            paddingY="1rem"
-            boxShadow="md"
-            alignSelf="center"
-            fontSize="lg"
-            fontWeight="thin"
-            border="0px solid"
-            borderRadius="full"
-            outline="1px solid rgba(255, 255, 255, 0.5)"
-            outlineOffset="0px"
-            transition="all 1.25s cubic-bezier(0.19, 1, 0.22, 1)"
-            _hover={{
-              border: '1px solid',
-              boxShadow:
-                'inset 0 0 20px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.2)',
-              outlineColor: 'rgba(255, 255, 255, 0)',
-              outlineOffset: '15px',
-              textShadow: '1px 1px 2px #427388',
-            }}
-            _focus={{ boxShadow: 'outline', outline: 'none' }}
-            position="relative"
-          >
-            EXPLORE NATURE
-          </Button>
+          <RouterLink to="/products">
+            <Button
+              as="button"
+              display="flex" // Ensures flexbox behavior
+              flexBasis="auto"
+              justifyContent="center" // Horizontally centers the text
+              alignItems="center" // Vertically centers the text
+              width="auto"
+              size="sm"
+              bg="white"
+              paddingX="1.5rem"
+              paddingY="1rem"
+              boxShadow="md"
+              alignSelf="center"
+              fontSize="lg"
+              fontWeight="thin"
+              border="0px solid"
+              borderRadius="full"
+              outline="1px solid rgba(255, 255, 255, 0.5)"
+              outlineOffset="0px"
+              transition="all 1.25s cubic-bezier(0.19, 1, 0.22, 1)"
+              _hover={{
+                border: '1px solid',
+                boxShadow:
+                  'inset 0 0 20px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.2)',
+                outlineColor: 'rgba(255, 255, 255, 0)',
+                outlineOffset: '15px',
+                textShadow: '1px 1px 2px #427388',
+              }}
+              _focus={{ boxShadow: 'outline', outline: 'none' }}
+              position="relative"
+            >
+              EXPLORE NATURE
+            </Button>
+          </RouterLink>
         </Flex>
       </Box>
     </>

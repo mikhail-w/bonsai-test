@@ -98,6 +98,7 @@ const Navigation = () => {
       : { label: 'Login', url: '/login', icon: FaUser },
     { label: 'Blog', url: '/blog', icon: FaBlog },
     { label: 'Cart', url: '/cart', icon: FaShoppingCart },
+
     { label: 'Shop', url: '/products', icon: FaStore },
   ];
 
@@ -333,6 +334,16 @@ const Navigation = () => {
                       >
                         <link.icon />
                         {link.label}
+                        {link.label === 'Cart' && cartItems.length > 0 && (
+                          <Badge
+                            colorScheme="green"
+                            borderRadius="full"
+                            px={2}
+                            ml={2}
+                          >
+                            {cartItems.reduce((acc, item) => acc + item.qty, 0)}
+                          </Badge>
+                        )}
                       </Link>
                     )}
                   </motion.div>
