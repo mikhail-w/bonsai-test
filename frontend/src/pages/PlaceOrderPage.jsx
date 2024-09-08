@@ -74,7 +74,7 @@ function PlaceOrderPage() {
   };
 
   return (
-    <Container maxW="container.xl" mt={100} mb={100}>
+    <Container maxW="container.xl" mt={130} mb={100} minHeight={'100vh'}>
       <CheckoutSteps step1 step2 step3 step4 />
 
       <Grid templateColumns={{ base: '1fr', md: '2fr 1fr' }} gap={6} mt={8}>
@@ -83,7 +83,7 @@ function PlaceOrderPage() {
             <Heading fontFamily={'heading'} as="h2" size="lg" mb={3}>
               Shipping
             </Heading>
-            <Text fontFamily={'lato'}>
+            <Text fontFamily={'lato'} fontWeight={300}>
               <strong>Address:</strong> {cart.shippingAddress.address},{' '}
               {cart.shippingAddress.city}, {cart.shippingAddress.postalCode},{' '}
               {cart.shippingAddress.country}
@@ -94,7 +94,7 @@ function PlaceOrderPage() {
             <Heading fontFamily={'heading'} as="h2" size="lg" mb={3}>
               Payment Method
             </Heading>
-            <Text fontFamily={'lato'}>
+            <Text fontFamily={'lato'} fontWeight={300}>
               <strong>Method:</strong> {cart.paymentMethod}
             </Text>
           </Box>
@@ -120,11 +120,11 @@ function PlaceOrderPage() {
                       borderRadius="md"
                     />
                     <Link to={`/product/${item.product}`}>
-                      <Text pl={5} fontFamily={'lato'}>
+                      <Text pl={5} fontFamily={'lato'} fontWeight={300}>
                         {item.name}
                       </Text>
                     </Link>
-                    <Text fontFamily={'lato'} fontSize="sm">
+                    <Text fontFamily={'lato'} fontSize="sm" fontWeight={300}>
                       {item.qty} x ${item.price} = $
                       {(item.qty * item.price).toFixed(2)}
                     </Text>
@@ -143,24 +143,32 @@ function PlaceOrderPage() {
           <VStack align="stretch" spacing={4}>
             <Flex justify="space-between">
               <Text fontFamily={'heading'}>Items:</Text>
-              <Text fontFamily={'lato'}>${cart.itemsPrice}</Text>
+              <Text fontFamily={'lato'} fontWeight={300}>
+                ${cart.itemsPrice}
+              </Text>
             </Flex>
 
             <Flex justify="space-between">
               <Text fontFamily={'heading'}>Shipping:</Text>
-              <Text fontFamily={'lato'}>${cart.shippingPrice}</Text>
+              <Text fontFamily={'lato'} fontWeight={300}>
+                ${cart.shippingPrice}
+              </Text>
             </Flex>
 
             <Flex justify="space-between">
               <Text fontFamily={'heading'}>Tax:</Text>
-              <Text fontFamily={'lato'}>${cart.taxPrice}</Text>
+              <Text fontFamily={'lato'} fontWeight={300}>
+                ${cart.taxPrice}
+              </Text>
             </Flex>
 
             <Divider />
 
             <Flex justify="space-between" fontWeight="bold">
               <Text fontFamily={'heading'}>Total:</Text>
-              <Text fontFamily={'lato'}>${cart.totalPrice}</Text>
+              <Text fontFamily={'lato'} fontWeight={300}>
+                ${cart.totalPrice}
+              </Text>
             </Flex>
 
             {error && <Message status="error">{error}</Message>}

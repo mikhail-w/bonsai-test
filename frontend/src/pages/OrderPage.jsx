@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap';
-import { Flex, Box, Heading } from '@chakra-ui/react';
+import { Flex, Box, Heading, Text } from '@chakra-ui/react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
@@ -106,27 +106,26 @@ function OrderPage() {
   ) : error ? (
     <Message variant={'danger'}>{error}</Message>
   ) : (
-    <Flex mt={150} mb={100} px={20}>
+    <Flex mt={130} mb={100} px={20} minHeight={'100vh'}>
       <Box mx={10}>
         <ListGroup variant="flush">
           <ListGroup.Item id="item">
             <Heading>Shipping</Heading>
-            <p>
-              <strong fontFamily={'heading'}>Name: </strong>{' '}
-              <span fontFamily={'lato'}>{order.user.name}</span>
-            </p>
-            <p>
+            <Text fontFamily={'lato'} fontWeight={300}>
+              <strong>Name: </strong> <span>{order.user.name}</span>
+            </Text>
+            <Text fontFamily={'lato'} fontWeight={300}>
               <strong>Email: </strong>
               <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
-            </p>
-            <p>
-              <strong fontFamily={'heading'}>Shipping: </strong>
+            </Text>
+            <Text fontFamily={'lato'} fontWeight={300}>
+              <strong>Shipping: </strong>
               <span>{order.shippingAddress.address}</span>,{' '}
               <span>{order.shippingAddress.city}</span>
               {'  '}
               <span>{order.shippingAddress.postalCode}</span>,{'  '}
               <span>{order.shippingAddress.country}</span>
-            </p>
+            </Text>
             {order.isDelivered ? (
               <div className="delivered">Delivered on {order.deliveredAt}</div>
             ) : (
@@ -135,10 +134,10 @@ function OrderPage() {
           </ListGroup.Item>
           <ListGroup.Item id="item">
             <Heading>Payment Method</Heading>
-            <p>
+            <Text fontFamily={'lato'} fontWeight={300}>
               <strong>Method: </strong>
               {order.paymentMethod}
-            </p>
+            </Text>
             {order.isPaid ? (
               <div className="paid">Paid on {order.paidAt}</div>
             ) : (

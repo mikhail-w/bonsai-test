@@ -47,7 +47,7 @@ function PaymentPage() {
   };
 
   return (
-    <Container mt={'200'} maxW="container.sm" minHeight={'100vh'}>
+    <Container mt={'130'} maxW="container.sm" minHeight={'100vh'}>
       <FormContainer>
         <CheckoutSteps step1 step2 step3 />
 

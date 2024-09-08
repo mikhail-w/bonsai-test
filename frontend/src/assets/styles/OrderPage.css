@@ -26,11 +26,13 @@
   /* color: #fff9f1; */
 }
 
-#set {
-  outline: 2px solid red;
-}
-
 .summaryContainer {
   margin-top: 50px;
   min-height: 90vh;
+}
+
+strong {
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding-right: 5px;
 }
