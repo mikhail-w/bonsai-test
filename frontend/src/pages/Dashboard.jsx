@@ -11,6 +11,7 @@ import { GrUserAdmin } from 'react-icons/gr';
 import { MdProductionQuantityLimits } from 'react-icons/md';
 import { BsCashCoin } from 'react-icons/bs';
 import { HiOutlineViewfinderCircle } from 'react-icons/hi2';
+import { BiLeaf } from 'react-icons/bi';
 import Logo from '../assets/images/logo.png';
 import {
   IconButton,
@@ -55,6 +56,7 @@ const defaultLinks = [
   { name: 'Blog', icon: BlogIcon, path: '/profile/blog' },
   { name: 'Plant ID', icon: HiOutlineViewfinderCircle, path: '/profile/id' },
   { name: 'AR', icon: TbAugmentedReality, path: '/profile/ar' },
+  { name: 'Zen Master', icon: BiLeaf, path: '/profile/chat' },
 ];
 
 // Admin links
