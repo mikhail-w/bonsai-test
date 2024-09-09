@@ -26,8 +26,9 @@ const Product = ({ product }) => {
       toast({
         title: 'Add to Cart.',
         description: `${product.name} added to Cart`,
+        position: 'bottom-right',
         status: 'success',
-        duration: 9000,
+        duration: 3000,
         isClosable: true,
       });
     }
