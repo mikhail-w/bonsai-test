@@ -55,7 +55,6 @@ export const getBlogPostDetails = id => async dispatch => {
     dispatch({ type: BLOG_POST_DETAILS_REQUEST });
 
     const { data } = await axios.get(`/api/blog/${id}/`);
-
     dispatch({
       type: BLOG_POST_DETAILS_SUCCESS,
       payload: data,
@@ -138,7 +137,6 @@ export const deleteBlogPost = id => async (dispatch, getState) => {
 // Like or Unlike a blog post
 export const likeUnlikeBlogPost = id => async (dispatch, getState) => {
   try {
-    console.log('likeUnlikeBlogPost REQUEST');
     dispatch({ type: BLOG_POST_LIKE_UNLIKE_REQUEST });
 
     const {
@@ -152,11 +150,12 @@ export const likeUnlikeBlogPost = id => async (dispatch, getState) => {
     };
 
     const { data } = await axios.post(`/api/blog/${id}/like/`, {}, config);
-    console.log('REDUX:', data.post);
+
     dispatch({
       type: BLOG_POST_LIKE_UNLIKE_SUCCESS,
       payload: data.post,
     });
+
     // Dispatch an action to update the blog list with the updated post
     dispatch({
       type: BLOG_POST_UPDATE_IN_LIST,
