@@ -1,160 +1,137 @@
 import React from "react";
-import { Card, CardHeader, CardBody, CardFooter, Button } from "@chakra-ui/react";
-import { Box, Divider, SimpleGrid, ListItem, UnorderedList, Center, Container, Text, Heading, Image} from "@chakra-ui/react";
-import Water_Bonsai from "../assets/images/watering_bonsai.jpg"
-function CarePage_Care () {
-   return (
-     <>
-       <Box pos="relative" w="100%" h="500px" overflow="hidden">
-         <Image src={Water_Bonsai} w="100%" h="auto" />
-         <Heading
-           pos="absolute"
-           top={{ md: "50%", base: "30%" }}
-           left={{ md: "10%", base: "10%" }}
-           color="black"
-           sx={{
-             WebkitTextStroke: { base: "1px white", md: "none" }, // Text stroke for base, none for md
-           }}
-         >
-          Caring Your Bonsai Tree
-         </Heading>
-       </Box>
+import {
+  Box,
+  Divider,
+  Center,
+  Container,
+  Text,
+  Heading,
+  Image,
+} from "@chakra-ui/react";
+import Watering from "../assets/images/watering.jpeg";
+import Sunlight from "../assets/images/sunlight.jpeg";
+import Pruning from "../assets/images/pruning.jpeg";
+import Protection from "../assets/images/protection.jpeg";
 
-       <Center>
-         <Container w={{md:"2000px", sm:"400px"}} minH={"100vh"} marginTop={"100px"}>
-          
-           <Heading as="h2" size="lg" mb="4">
-             Understanding Bonsai Styles
-           </Heading>
+function CarePage_Care() {
+  return (
+    <>
+      <Box pos="relative" w="100%" h="500px" overflow="hidden">
+        <Image src={Watering} w="100%" h="auto" />
+        <Heading
+          pos="absolute"
+          top={{ md: "50%", base: "30%" }}
+          left={{ md: "10%", base: "10%" }}
+          color="black"
+          sx={{
+            WebkitTextStroke: { base: "1px white", md: "none" },
+          }}
+        >
+          Caring for Your Bonsai Tree
+        </Heading>
+      </Box>
 
-           <Text mb="4">
-             Bonsai trees come in various styles, each representing different
-             aspects of natural tree growth. Understanding the basic styles can
-             help you decide how you want your bonsai to look. Here are a few of
-             the most popular styles:
-           </Text>
+      <Center>
+        <Container
+          w={{ md: "2000px", sm: "400px" }}
+          minH={"100vh"}
+          marginTop={"100px"}
+        >
+          <Heading as="h2" size="lg" mb="4">
+            Essential Tips for Caring for Your Bonsai Tree
+          </Heading>
 
-           <UnorderedList spacing="3" mb="6">
-             <ListItem>
-               <strong>Formal Upright (Chokkan):</strong> A perfectly straight
-               trunk with symmetrical branches, mimicking trees in the open.
-             </ListItem>
-             <ListItem>
-               <strong>Informal Upright (Moyogi):</strong> A trunk with gentle
-               curves, mimicking trees in forests or mountainous areas.
-             </ListItem>
-             <ListItem>
-               <strong>Slanting (Shakan):</strong> A trunk slanted at an angle,
-               as if affected by wind or steep slopes.
-             </ListItem>
-             <ListItem>
-               <strong>Cascade (Kengai):</strong> The trunk grows downward, as
-               though hanging over a cliff.
-             </ListItem>
-             <ListItem>
-               <strong>Semi-Cascade (Han-Kengai):</strong> A less extreme
-               version of the cascade, where the trunk grows slightly downward.
-             </ListItem>
-           </UnorderedList>
+          <Text fontFamily="Lato" mb="4">
+            Caring for a bonsai tree involves more than just watering it
+            occasionally. To maintain its health and beauty, it requires proper
+            care, attention, and patience. Below are some essential tips to
+            ensure your bonsai tree remains healthy and thrives for years to
+            come.
+          </Text>
 
-           <Divider my="6" />
+          <Divider my="6" />
 
-           <Heading as="h2" size="lg" mb="4">
-             Essential Bonsai Styling Techniques
-           </Heading>
+          <Heading as="h2" size="lg" mb="4">
+            Step 1: Watering Your Bonsai Tree
+          </Heading>
 
-           <Text mb="4">
-             Styling a bonsai is about manipulating its growth in a way that
-             mimics full-sized trees in nature. Here are the key techniques used
-             to style a bonsai tree:
-           </Text>
+          <Image src={Watering} mb="4"></Image>
 
-           <Heading as="h3" size="md" mb="2">
-             1. Pruning
-           </Heading>
-           <Text mb="4">
-             Pruning controls the overall shape and size of the tree.
-             Maintenance pruning trims new growth to maintain the tree’s compact
-             shape, while structural pruning removes larger branches to create a
-             specific form.
-           </Text>
+          <Text fontFamily="Lato" mt="4" mb="4">
+            Watering is one of the most important aspects of bonsai care. The
+            frequency of watering depends on the tree species, pot size, and
+            environmental conditions. Ensure the soil is slightly moist, not
+            soaking wet or completely dry. Water your bonsai when the topsoil
+            feels dry to the touch, ensuring that water reaches the roots
+            thoroughly.
+          </Text>
 
-           <Heading as="h3" size="md" mb="2">
-             2. Wiring
-           </Heading>
-           <Text mb="4">
-             Wiring bends branches into specific positions, creating elegant
-             curves. Be sure to remove the wire before it cuts into the bark,
-             once the branch has set in its new position.
-           </Text>
+          <Divider my="6" />
 
-           <Heading as="h3" size="md" mb="2">
-             3. Thinning
-           </Heading>
-           <Text mb="4">
-             Thinning involves removing overcrowded branches to improve balance
-             and ensure light reaches all parts of the tree.
-           </Text>
+          <Heading as="h2" size="lg" mb="4">
+            Step 2: Providing the Right Amount of Sunlight
+          </Heading>
 
-           <Heading as="h3" size="md" mb="2">
-             4. Defoliation
-           </Heading>
-           <Text mb="4">
-             Defoliation removes leaves to encourage smaller foliage and
-             redirect energy. Only use this technique on species that can handle
-             it.
-           </Text>
+          <Image src={Sunlight} mb="4"></Image>
 
-           <Divider my="6" />
+          <Text fontFamily="Lato" mt="4" mb="4">
+            Bonsai trees need sufficient sunlight to thrive. Most species prefer
+            several hours of indirect sunlight, but this depends on the tree
+            type. Place your bonsai in a well-lit area, but avoid direct
+            sunlight that could scorch the leaves. Indoor bonsai may need to be
+            rotated to receive light evenly.
+          </Text>
 
-           <Heading as="h2" size="lg" mb="4">
-             Choosing the Right Pot and Placement
-           </Heading>
-           <Text mb="4">
-             The pot’s color, size, and shape should complement the tree’s
-             design. Ensure the pot has adequate drainage and room for root
-             growth, and choose shapes that enhance the style of your bonsai.
-           </Text>
+          <Divider my="6" />
 
-           <Divider my="6" />
+          <Heading as="h2" size="lg" mb="4">
+            Step 3: Pruning and Shaping
+          </Heading>
 
-           <Heading as="h2" size="lg" mb="4">
-             Balance and Symmetry in Bonsai Design
-           </Heading>
-           <Text mb="4">
-             Bonsai styling involves balancing the overall composition,
-             including front and back views, branch placement, and visual
-             weight. Achieving this creates a harmonious look.
-           </Text>
+          <Image src={Pruning} mb="4"></Image>
 
-           <Divider my="6" />
+          <Text fontFamily="Lato" mt="4" mb="4">
+            Regular pruning helps maintain the shape of your bonsai tree. Prune
+            back new shoots that extend beyond the desired canopy size to keep
+            its compact form. Structural pruning, which involves removing larger
+            branches, should be done in early spring or late fall, while
+            maintenance pruning can be done throughout the growing season.
+          </Text>
 
-           <Heading as="h2" size="lg" mb="4">
-             Patience and Long-Term Vision
-           </Heading>
-           <Text mb="4">
-             Bonsai styling is a long-term process. Each pruning session, wiring
-             adjustment, and styling decision should be made with the tree’s
-             future shape in mind. With patience, your bonsai will grow into a
-             beautiful, artistic expression of nature.
-           </Text>
+          <Divider my="6" />
 
-           <Divider my="6" />
+          <Heading as="h2" size="lg" mb="4">
+            Step 4: Protecting Your Bonsai Tree from Pests and Diseases
+          </Heading>
 
-           <Heading as="h2" size="lg" mb="4">
-             Final Thoughts on Styling Your Bonsai
-           </Heading>
-           <Text mb="4">
-             Styling a bonsai tree is a rewarding journey combining horticulture
-             and art. By mastering techniques like pruning and wiring, and
-             keeping balance and harmony in mind, you’ll create a living
-             masterpiece. Enjoy the process, and let your creativity shine
-             through as your bonsai evolves over time.
-           </Text>
-         </Container>
-       </Center>
-     </>
-   );
-};
+          <Image src={Protection} mb="4"></Image>
 
-export default CarePage_Care
+          <Text fontFamily="Lato" mt="4" mb="4">
+            Bonsai trees, like all plants, can be susceptible to pests and
+            diseases. Regularly inspect your tree for signs of aphids, spider
+            mites, or fungal infections. Use organic pesticides or neem oil to
+            treat infestations and trim off affected leaves or branches to
+            prevent the spread of diseases.
+          </Text>
+
+          <Divider my="6" />
+
+          <Heading as="h2" size="lg" mb="4">
+            Final Thoughts on Caring for Your Bonsai Tree
+          </Heading>
+
+          <Text fontFamily="Lato" mt="4" mb="4">
+            Caring for your bonsai tree is a rewarding journey that requires
+            dedication and attention. By following these essential care
+            tips—proper watering, adequate sunlight, regular pruning, and pest
+            protection—you can keep your bonsai healthy and thriving for years
+            to come. Enjoy the process of nurturing your bonsai, and watch it
+            grow into a stunning, miniature representation of nature.
+          </Text>
+        </Container>
+      </Center>
+    </>
+  );
+}
+
+export default CarePage_Care;
