@@ -123,27 +123,6 @@ const ProductButtons = () => {
               </Flex>
             </Button>
           </Box>
-
-          {/* <Box
-            borderWidth="1px"
-            borderRadius="lg"
-            boxShadow="md"
-            p={3}
-            textAlign="center"
-            flex="1"
-            h="100px" // Adjusted height to fit the max width
-            cursor="pointer"
-            _hover={{ boxShadow: 'lg' }}
-          >
-            <Button variant="unstyled" h="100%" w="100%">
-              <Flex direction="column" align="center" justify="center" h="100%">
-                <Icon as={FaDraftingCompass} boxSize={5} mb={1} />
-                <Text fontFamily={'lato'} fontSize="sm">
-                  Plan a space with this item
-                </Text>
-              </Flex>
-            </Button>
-          </Box> */}
         </HStack>
       </Flex>
 
@@ -289,6 +268,7 @@ const ProductPurchaseOptions = ({ product, qty, setQty, addToCartHandler }) => (
     spacing={6}
     align="stretch"
     w="full"
+    maxH={300}
     p={{ base: 4, md: 6 }}
     shadow="lg"
     borderWidth="1px"
@@ -359,7 +339,7 @@ const ProductReviews = ({
   errorProductReview,
   successProductReview,
 }) => (
-  <Box mt={150}>
+  <Box mt={50}>
     <Heading as="h4" size="md" mb={4}>
       Reviews
     </Heading>
@@ -425,6 +405,24 @@ const ProductReviews = ({
   </Box>
 );
 
+const ProductImageAndButtons = ({ image, name }) => (
+  <Flex
+    direction={{ base: 'column', md: 'column' }} // Stack vertically on mobile
+    align="center"
+    justify="center"
+    maxWidth={370}
+    mb={10}
+    // boxShadow={'outline'}
+  >
+    {/* Product Image */}
+    <ProductImage image={image} name={name} />
+
+    {/* Product Buttons - Directly below the image */}
+    <ProductButtons />
+  </Flex>
+);
+
+// Now use this component inside the ProductPage component where the ProductImage and ProductButtons are used together
 function ProductPage() {
   const [qty, setQty] = useState(1);
   const [rating, setRating] = useState(0);
@@ -478,6 +476,7 @@ function ProductPage() {
         maxW="container.xl"
         py={{ base: 4, md: 10 }}
         minH="100vh"
+        // boxShadow={'outline'}
       >
         <Box>
           {loading ? (
@@ -489,9 +488,17 @@ function ProductPage() {
               <Box mb={10}>
                 <BackButton />
               </Box>
+
               <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10} mb={10}>
-                <ProductImage image={product.image} name={product.name} />
+                {/* Product Image and Buttons Container */}
+                <ProductImageAndButtons
+                  image={product.image}
+                  name={product.name}
+                />
+                {/* Product Details */}
                 <ProductDetails product={product} />
+
+                {/* Product Purchase Options */}
                 <ProductPurchaseOptions
                   product={product}
                   qty={qty}
@@ -499,9 +506,8 @@ function ProductPage() {
                   addToCartHandler={addToCartHandler}
                 />
               </SimpleGrid>
-              {/* Product Buttons (3D, AR, etc.) */}
-              <ProductButtons product={product} />
 
+              {/* Product Reviews */}
               <ProductReviews
                 product={product}
                 userInfo={userInfo}
