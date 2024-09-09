@@ -7,6 +7,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { ShoppingCart } from 'lucide-react';
 import BlogIcon from '../assets/icons/blogger-alt.svg';
 import { TbAugmentedReality } from 'react-icons/tb';
+
 import {
   IconButton,
   Avatar,
@@ -50,6 +51,8 @@ const LinkItems = [
   { name: 'AR', icon: TbAugmentedReality, path: '/profile/ar' },
   { name: 'Favorites', icon: FiStar, path: '/profile/favorites' },
   { name: 'Settings', icon: FiSettings, path: '/profile/settings' },
+  { name: 'Room View', path: '/profile/bonsairoom'},
+  
 ];
 
 const SidebarContent = ({ onClose, ...rest }) => {

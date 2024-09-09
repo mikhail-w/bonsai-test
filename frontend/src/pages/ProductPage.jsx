@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Container,
@@ -14,6 +14,14 @@ import {
   Textarea,
   Badge,
   SimpleGrid,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+  ModalFooter,
+  useDisclosure, // Chakra's hook for managing modal state
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink, useParams, useNavigate } from 'react-router-dom';
@@ -29,6 +37,9 @@ import BackButton from '../components/BackButton';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF } from '@react-three/drei';
 
+// Assuming BonsaiViewer is a 3D viewer component
+import BonsaiViewer from '/src/pages/BonsaiViewer.jsx';
+
 const ProductImage = ({ image, name }) => (
   <VStack spacing={6}>
     <Image
@@ -37,29 +48,10 @@ const ProductImage = ({ image, name }) => (
       boxSize="100%"
       objectFit="contain"
     />
-
   </VStack>
 );
-// function Model() {
-//   const { scene } = useGLTF('/assets/images/ficus_bonsai (1).glb'); 
-//   return <primitive object={scene} scale={2} />;
-// };
 
-// function ModalViewer() {({ isOpen, onClose }) {
-//      <Box onClick={onClose}>
-//       <Box onClick={(e) => e.stopPropagation()}>
-//         <button onClick={onClose}>Close</button>
-//         <Canvas>
-//           <OrbitControls />
-//           <ambientLight intensity={1.5} />
-//           <Model />
-//         </Canvas>
-//       </Box>
-//     </Box>
-// };               
-
-                                                                                                                                                                                                                                                                                                                    
-const ProductDetails = ({ product }) => (
+const ProductDetails = ({ product, onOpenModal }) => (
   <VStack spacing={4} align="start">
     <Heading as="h3" size="lg" fontFamily={'rale'}>
       {product.name}
@@ -77,6 +69,11 @@ const ProductDetails = ({ product }) => (
       Price: ${product.price}
     </Text>
     <Text fontFamily="rale">{product.description}</Text>
+
+    {/* Button to open the modal */}
+    <Button onClick={onOpenModal} colorScheme="blue" mt={4}>
+      See in 3D View
+    </Button>
   </VStack>
 );
 
@@ -131,120 +128,6 @@ const ProductPurchaseOptions = ({ product, qty, setQty, addToCartHandler }) => (
   </VStack>
 );
 
-const WriteReviewForm = ({
-  rating,
-  setRating,
-  comment,
-  setComment,
-  submitHandler,
-  loadingProductReview,
-}) => (
-  <Box as="form" onSubmit={submitHandler}>
-    <VStack spacing={4} align="stretch">
-      <Select
-        fontFamily="rale"
-        placeholder="Select rating"
-        value={rating}
-        onChange={e => setRating(e.target.value)}
-      >
-        <option value="1">1 - Poor</option>
-        <option value="2">2 - Fair</option>
-        <option value="3">3 - Good</option>
-        <option value="4">4 - Very Good</option>
-        <option value="5">5 - Excellent</option>
-      </Select>
-
-      <Textarea
-        fontFamily="rale"
-        placeholder="Enter your review"
-        value={comment}
-        onChange={e => setComment(e.target.value)}
-      />
-
-      <Button
-        fontFamily="rale"
-        type="submit"
-        colorScheme="green"
-        isLoading={loadingProductReview}
-      >
-        Submit
-      </Button>
-    </VStack>
-  </Box>
-);
-
-const ProductReviews = ({
-  product,
-  userInfo,
-  submitHandler,
-  rating,
-  setRating,
-  comment,
-  setComment,
-  loadingProductReview,
-  errorProductReview,
-  successProductReview,
-}) => (
-  <Box>
-    <Heading as="h4" size="md" mb={4}>
-      Reviews
-    </Heading>
-    {product.reviews.length === 0 && (
-      <Message variant="info">No Reviews</Message>
-    )}
-    <VStack spacing={4} align="stretch">
-      {product.reviews.map(review => (
-        <Box
-          key={review._id}
-          p={5}
-          shadow="md"
-          borderWidth="1px"
-          borderRadius="md"
-        >
-          <VStack align="start">
-            <Box>
-              <Text as="span" fontFamily="rale" fontWeight="bold">
-                {review.name}
-              </Text>
-              {`   `}
-              <Rating value={review.rating} color="#008b4a" />
-            </Box>
-            <Text fontFamily="rale">{review.createdAt.substring(0, 10)}</Text>
-            <Text fontFamily="rale">{review.comment}</Text>
-          </VStack>
-        </Box>
-      ))}
-
-      <Box>
-        <Heading fontFamily="rale" as="h4" size="md" mb={4}>
-          Write a review
-        </Heading>
-        {loadingProductReview && <Loader />}
-        {successProductReview && (
-          <Message variant="success">Review Submitted</Message>
-        )}
-        {errorProductReview && (
-          <Message variant="danger">{errorProductReview}</Message>
-        )}
-        {userInfo ? (
-          <WriteReviewForm
-            rating={rating}
-            setRating={setRating}
-            comment={comment}
-            setComment={setComment}
-            submitHandler={submitHandler}
-            loadingProductReview={loadingProductReview}
-          />
-        ) : (
-          <Message variant="info">
-            Please <RouterLink to="/login">login</RouterLink> to write a review
-          </Message>
-        )}
-      </Box>
-    </VStack>
-  </Box>
-);
-
 function ProductPage() {
   const [qty, setQty] = useState(1);
   const [rating, setRating] = useState(0);
@@ -265,6 +148,8 @@ function ProductPage() {
     error: errorProductReview,
     success: successProductReview,
   } = productReviewCreate;
+
+  const { isOpen, onOpen, onClose } = useDisclosure(); // Chakra modal hook
 
   useEffect(() => {
     if (successProductReview) {
@@ -302,7 +187,7 @@ function ProductPage() {
             <BackButton />
             <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10} mb={10}>
               <ProductImage image={product.image} name={product.name} />
-              <ProductDetails product={product} />
+              <ProductDetails product={product} onOpenModal={onOpen} />
               <ProductPurchaseOptions
                 product={product}
                 qty={qty}
@@ -311,18 +196,21 @@ function ProductPage() {
               />
             </SimpleGrid>
 
-            <ProductReviews
-              product={product}
-              userInfo={userInfo}
-              submitHandler={submitHandler}
-              rating={rating}
-              setRating={setRating}
-              comment={comment}
-              setComment={setComment}
-              loadingProductReview={loadingProductReview}
-              errorProductReview={errorProductReview}
-              successProductReview={successProductReview}
-            />
+            <Modal isOpen={isOpen} onClose={onClose} size="xl">
+              <ModalOverlay />
+              <ModalContent>
+                <ModalHeader>3D View</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                  <BonsaiViewer />
+                </ModalBody>
+                <ModalFooter>
+                  <Button colorScheme="blue" mr={3} onClick={onClose}>
+                    Close
+                  </Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
           </Container>
         )}
       </Box>

@@ -27,6 +27,7 @@ import Settings from './pages/Settings.jsx';
 import YourInfo from './pages/MyInfo.jsx';
 import BlogPage from './pages/BlogPage.jsx';
 import AugmentedReality from './pages/AugmentedReality.jsx';
+import Bonsairoom from './pages/BonsaiViewer.jsx';
 
 const router = createBrowserRouter([
   {
@@ -56,6 +57,7 @@ const router = createBrowserRouter([
           { path: 'ar', element: <AugmentedReality /> },
           { path: 'favorites', element: <Favorites /> },
           { path: 'settings', element: <Settings /> },
+          { path: 'bonsairoom', element: <Bonsairoom />},
         ],
       },
       {

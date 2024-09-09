@@ -14,6 +14,7 @@
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
+    "@google/model-viewer": "^3.5.0",
     "@paypal/react-paypal-js": "^8.5.0",
     "@react-google-maps/api": "^2.19.3",
     "@react-sandbox/heart": "^1.1.0",
