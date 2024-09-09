@@ -4,6 +4,7 @@ import { Canvas } from '@react-three/fiber';
 import { Environment, OrbitControls } from '@react-three/drei';
 import Earth from '../../public/Earth';
 import { Center, useBreakpointValue } from '@chakra-ui/react';
+import SaveTheWorldText from './SaveTheWorldText';
 
 function Globe() {
   const containerSize = useBreakpointValue({
@@ -19,16 +20,18 @@ function Globe() {
         // boxShadow={'outline'}
         width={containerSize}
         height={containerSize}
+        margin={'auto'}
       >
         <Canvas className="earthContainer">
           <ambientLight intensity={1} />
           <OrbitControls enableZoom={true} />
-          <Suspense fallback={<div>Loading...</div>}>
-            <Earth />
-          </Suspense>
+          {/* <Suspense fallback={<div>Loading...</div>}> */}
+          <Earth />
+          {/* </Suspense> */}
           <Environment preset="sunset" />
         </Canvas>
       </Center>
+      <SaveTheWorldText />
     </div>
   );
 }

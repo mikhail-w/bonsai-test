@@ -5,6 +5,7 @@ import BenifitsSection from '../components/BenifitsSection';
 import HeroSection from '../components/HeroSection';
 import ProductsSection from '../components/ProductsSection';
 import ReviewsSection from './ReviewsSection';
+import Globe from '../components/Globe';
 
 function HomePage() {
   useEffect(() => {
@@ -20,6 +21,7 @@ function HomePage() {
       <ProductsSection />
       <BenifitsSection />
       <ReviewsSection />
+      <Globe />
       <ScrollToTopButton />
     </>
   );

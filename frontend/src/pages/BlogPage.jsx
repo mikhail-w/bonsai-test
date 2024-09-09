@@ -13,13 +13,16 @@ import {
   Spinner,
   Grid,
   GridItem,
+  IconButton,
 } from '@chakra-ui/react';
 import { FaPlusCircle } from 'react-icons/fa';
-import Heart from '@react-sandbox/heart';
+import { BiLike, BiChat, BiTrash } from 'react-icons/bi';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'; // Import Heart Icons
 import {
   listBlogPosts,
   createBlogPost,
   likeUnlikeBlogPost,
+  deleteBlogPost,
 } from '../actions/blogActions';
 import { BLOG_POST_CREATE_RESET } from '../constants/blogConstants';
 
@@ -35,6 +38,9 @@ function BlogPage() {
 
   const postLikeUnlike = useSelector(state => state.blogPostLikeUnlike);
   const { post: updatedPost } = postLikeUnlike;
+
+  const postDelete = useSelector(state => state.blogPostDelete);
+  const { success: successDelete } = postDelete;
 
   // Check if the user is authenticated from the Redux state
   const userLogin = useSelector(state => state.userLogin);
@@ -57,14 +63,14 @@ function BlogPage() {
 
   // Fetch blog posts and reset the form after post creation
   useEffect(() => {
-    if (successCreate) {
+    if (successCreate || successDelete) {
       setContent('');
       setImage(null);
       setCreatingPost(false);
       dispatch({ type: BLOG_POST_CREATE_RESET });
     }
     dispatch(listBlogPosts());
-  }, [dispatch, successCreate]);
+  }, [dispatch, successCreate, successDelete]);
 
   // Submit new post
   const submitHandler = () => {
@@ -102,16 +108,13 @@ function BlogPage() {
     dispatch(likeUnlikeBlogPost(postId));
   };
 
+  // Delete post handler
+  const deletePostHandler = postId => {
+    dispatch(deleteBlogPost(postId));
+  };
+
   return (
-    <Box
-      mt={100}
-      maxW="800px"
-      mx="auto"
-      // py={6}
-      px={4}
-      minHeight={'100vh'}
-      mb={100}
-    >
+    <Box mt={100} maxW="800px" mx="auto" px={4} minHeight={'100vh'} mb={100}>
       <Flex justify="space-between" align="center" mb={6}>
         <Text
           fontFamily={'rale'}
@@ -195,19 +198,15 @@ function BlogPage() {
                       {post.user}
                     </Text>
 
-                    {/* Render the like button only if the user is logged in */}
-                    {userInfo && (
-                      <Box
-                        transition="transform 0.2s"
-                        _hover={{ transform: 'scale(1.5)' }}
-                      >
-                        <Heart
-                          width={24}
-                          height={24}
-                          active={activeHearts[post.id]} // Use activeHearts state
-                          onClick={() => likeUnlikeHandler(post.id)}
-                        />
-                      </Box>
+                    {/* Delete post option for the post creator */}
+                    {userInfo && userInfo._id === post.user_id && (
+                      <IconButton
+                        variant="ghost"
+                        colorScheme="red"
+                        aria-label="Delete post"
+                        icon={<BiTrash />}
+                        onClick={() => deletePostHandler(post.id)}
+                      />
                     )}
                   </HStack>
                   <Text fontFamily={'rale'} fontSize="md" color="gray.700">
@@ -231,6 +230,25 @@ function BlogPage() {
                       {post.views} Views
                     </Text>
                   </HStack>
+
+                  <Box>
+                    {/* Like button */}
+                    {userInfo && (
+                      <Button
+                        variant="ghost"
+                        leftIcon={
+                          activeHearts[post.id] ? (
+                            <AiFillHeart color="red" />
+                          ) : (
+                            <AiOutlineHeart />
+                          )
+                        }
+                        onClick={() => likeUnlikeHandler(post.id)}
+                      >
+                        {activeHearts[post.id] ? 'Unlike' : 'Like'}
+                      </Button>
+                    )}
+                  </Box>
                 </VStack>
               </Box>
             </GridItem>
