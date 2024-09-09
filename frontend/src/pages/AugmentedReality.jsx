@@ -5,7 +5,7 @@ import { Box, VStack, Text, Button } from '@chakra-ui/react';
 
 const AugmentedReality = () => {
   const canvasRef = useRef();
-  const gltfUrl = 'https://modelviewer.dev/shared-assets/models/Astronaut.glb';
+  const gltfUrl = 'https://go.echo3d.co/qM5A';
   // const gltfUrl = Bonsai;
   // const gltfUrl = '../assets/images/ficus_bonsai.glb';
   // const gltfUrl =
