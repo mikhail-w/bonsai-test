@@ -248,20 +248,20 @@ const Navigation = () => {
                 color="#333333"
                 zIndex="2000"
               />
-              {/* Avatar next to the close button when user is logged in */}
-              {userInfo && isOpen && isCircleAnimationDone && (
-                <RouterLink to="/profile">
-                  <Avatar
-                    src={`http://127.0.0.1:8000${userInfo.avatar}`}
-                    size="md"
-                    position="absolute"
-                    top="0px"
-                    right="70px"
-                    zIndex="5"
-                  />
-                </RouterLink>
-              )}
             </Box>
+            {/* Avatar next to the close button when user is logged in */}
+            {userInfo && isOpen && isCircleAnimationDone && (
+              <RouterLink to="/profile">
+                <Avatar
+                  src={`http://127.0.0.1:8000${userInfo.avatar}`}
+                  size="md"
+                  position="absolute"
+                  top="0px"
+                  right="70px"
+                  zIndex="5"
+                />
+              </RouterLink>
+            )}
             {isOpen && isCircleAnimationDone && (
               <Box>
                 {/* Navigation Links Positioned with 90-degree Counterclockwise Rotation */}

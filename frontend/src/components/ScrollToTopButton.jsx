@@ -19,7 +19,7 @@ const float = `
 
 const ScrollButton = styled.div`
   position: fixed;
-  bottom: 50px;
+  bottom: 20px;
   right: 20px;
   width: 50px;
   height: 100px;
