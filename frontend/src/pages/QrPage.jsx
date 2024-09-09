@@ -14,7 +14,19 @@ import {
   Textarea,
   Badge,
   SimpleGrid,
+  IconButton,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
 } from '@chakra-ui/react';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, Environment } from '@react-three/drei';
+import { AiOutlineQrcode } from 'react-icons/ai'; // Example icon for QR code
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink, useParams, useNavigate } from 'react-router-dom';
 import {
@@ -26,7 +38,90 @@ import Rating from '../components/Rating';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import BackButton from '../components/BackButton';
-import ScrollToTopButton from '../components/ScrollToTopButton';
+import ficus from '../assets/models/ficus_bonsai .glb';
+
+// Component to render the 3D Model inside a Modal
+const ThreeDModelViewer = () => (
+  <Canvas>
+    <OrbitControls />
+    <ambientLight intensity={0.5} />
+    <directionalLight position={[0, 10, 5]} />
+    {/* Replace with your GLB Model */}
+    {ficus}
+    <mesh>
+      <boxBufferGeometry args={[2, 2, 2]} />
+      <meshStandardMaterial color="orange" />
+    </mesh>
+    <Environment preset="sunset" />
+  </Canvas>
+);
+
+const ProductButtons = ({ product }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isQrOpen,
+    onOpen: onQrOpen,
+    onClose: onQrClose,
+  } = useDisclosure();
+
+  return (
+    <>
+      <Flex justifyContent="center" my={6}>
+        <HStack spacing={6}>
+          {/* Button to open 3D model modal */}
+          <Button variant="outline" onClick={onOpen}>
+            See this item in 3D
+          </Button>
+
+          {/* Button to show QR code */}
+          <Button variant="outline" onClick={onQrOpen}>
+            See it in your space
+          </Button>
+
+          {/* Button to plan space (dummy for now) */}
+          <Button variant="outline">Plan a space with this item</Button>
+        </HStack>
+      </Flex>
+
+      {/* 3D Model Modal */}
+      <Modal isOpen={isOpen} onClose={onClose} size="xl">
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>3D Model Viewer</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Box w="100%" h="400px">
+              <ThreeDModelViewer />
+            </Box>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* QR Code Modal */}
+      <Modal isOpen={isQrOpen} onClose={onQrClose} size="md">
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Scan to See in Augmented Reality</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Image src="https://www.echo3d.com/qrcode" alt="QR Code" />
+            {/* Replace the image with the actual QR code from echo3D */}
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="green" mr={3} onClick={onQrClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+};
 
 const ProductImage = ({ image, name }) => (
   <VStack spacing={4} align="center">
@@ -267,7 +362,7 @@ const ProductReviews = ({
   </Box>
 );
 
-function ProductPage() {
+function QrPage() {
   const [qty, setQty] = useState(1);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
@@ -341,6 +436,8 @@ function ProductPage() {
                   addToCartHandler={addToCartHandler}
                 />
               </SimpleGrid>
+              {/* Product Buttons (3D, AR, etc.) */}
+              <ProductButtons product={product} />
 
               <ProductReviews
                 product={product}
@@ -362,4 +459,4 @@ function ProductPage() {
   );
 }
 
-export default ProductPage;
+export default QrPage;

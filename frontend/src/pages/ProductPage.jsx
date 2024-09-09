@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, startTransition, Suspense } from 'react';
 import {
   Box,
   Container,
@@ -14,8 +14,20 @@ import {
   Textarea,
   Badge,
   SimpleGrid,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+  Icon,
 } from '@chakra-ui/react';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, Environment, useGLTF } from '@react-three/drei';
 import { useDispatch, useSelector } from 'react-redux';
+import { FaCube, FaArrowsAlt, FaDraftingCompass } from 'react-icons/fa';
 import { Link as RouterLink, useParams, useNavigate } from 'react-router-dom';
 import {
   listProductDetails,
@@ -26,14 +38,208 @@ import Rating from '../components/Rating';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import BackButton from '../components/BackButton';
-import ScrollToTopButton from '../components/ScrollToTopButton';
+
+// Component to render the 3D Model inside a Modal
+const Model = () => {
+  const { scene } = useGLTF('../../public/ficus.glb'); // Ensure this path is correct
+  return (
+    <Canvas>
+      <OrbitControls />
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[0, 10, 5]} />
+      <primitive object={scene} scale={0.5} />
+      <Environment preset="sunset" />
+    </Canvas>
+  );
+};
+
+const ThreeDModelViewer = () => (
+  <Suspense fallback={<Loader />}>
+    <Model />
+  </Suspense>
+);
+
+const ProductButtons = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isQrOpen,
+    onOpen: onQrOpen,
+    onClose: onQrClose,
+  } = useDisclosure();
+
+  const handle3DModelOpen = () => {
+    startTransition(() => {
+      onOpen();
+    });
+  };
+
+  return (
+    <>
+      <Flex justifyContent="center" my={6} maxW="370px">
+        <HStack spacing={4} w="100%">
+          <Box
+            borderWidth="1px"
+            borderRadius="lg"
+            boxShadow="md"
+            p={3}
+            textAlign="center"
+            flex="1"
+            h="100px" // Adjusted height to fit the max width
+            cursor="pointer"
+            _hover={{ boxShadow: 'lg' }}
+          >
+            <Button
+              variant="unstyled"
+              onClick={handle3DModelOpen}
+              h="100%"
+              w="100%"
+            >
+              <Flex direction="column" align="center" justify="center" h="100%">
+                <Icon as={FaCube} boxSize={5} mb={1} />
+                <Text fontFamily={'lato'} fontSize="sm">
+                  See this item in 3D
+                </Text>
+              </Flex>
+            </Button>
+          </Box>
+
+          <Box
+            borderWidth="1px"
+            borderRadius="lg"
+            boxShadow="md"
+            p={3}
+            textAlign="center"
+            flex="1"
+            h="100px" // Adjusted height to fit the max width
+            cursor="pointer"
+            _hover={{ boxShadow: 'lg' }}
+          >
+            <Button variant="unstyled" onClick={onQrOpen} h="100%" w="100%">
+              <Flex direction="column" align="center" justify="center" h="100%">
+                <Icon as={FaArrowsAlt} boxSize={5} mb={1} />
+                <Text fontFamily={'lato'} fontSize="sm">
+                  See it in your space
+                </Text>
+              </Flex>
+            </Button>
+          </Box>
+
+          {/* <Box
+            borderWidth="1px"
+            borderRadius="lg"
+            boxShadow="md"
+            p={3}
+            textAlign="center"
+            flex="1"
+            h="100px" // Adjusted height to fit the max width
+            cursor="pointer"
+            _hover={{ boxShadow: 'lg' }}
+          >
+            <Button variant="unstyled" h="100%" w="100%">
+              <Flex direction="column" align="center" justify="center" h="100%">
+                <Icon as={FaDraftingCompass} boxSize={5} mb={1} />
+                <Text fontFamily={'lato'} fontSize="sm">
+                  Plan a space with this item
+                </Text>
+              </Flex>
+            </Button>
+          </Box> */}
+        </HStack>
+      </Flex>
+
+      {/* 3D Model Modal */}
+      <Modal isOpen={isOpen} onClose={onClose} size="xl">
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>3D Model Viewer</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Box w="100%" h="400px">
+              <ThreeDModelViewer />
+            </Box>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* QR Code Modal */}
+      <Modal isOpen={isQrOpen} onClose={onQrClose} size="md">
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Scan to See in Augmented Reality</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Image src="https://www.echo3d.com/qrcode" alt="QR Code" />
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="green" mr={3} onClick={onQrClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+};
+
+// Other components (ProductImage, ProductDetails, etc.) remain unchanged
+
+// WriteReviewForm component
+const WriteReviewForm = ({
+  rating,
+  setRating,
+  comment,
+  setComment,
+  submitHandler,
+  loadingProductReview,
+}) => (
+  <Box as="form" onSubmit={submitHandler}>
+    <VStack spacing={4} align="stretch">
+      <Select
+        fontFamily="lato"
+        placeholder="Select rating"
+        value={rating}
+        onChange={e => setRating(e.target.value)}
+        borderColor="gray.300"
+      >
+        <option value="1">1 - Poor</option>
+        <option value="2">2 - Fair</option>
+        <option value="3">3 - Good</option>
+        <option value="4">4 - Very Good</option>
+        <option value="5">5 - Excellent</option>
+      </Select>
+
+      <Textarea
+        fontFamily="lato"
+        placeholder="Enter your review"
+        value={comment}
+        onChange={e => setComment(e.target.value)}
+        borderColor="gray.300"
+      />
+
+      <Button
+        fontFamily="lato"
+        type="submit"
+        colorScheme="green"
+        isLoading={loadingProductReview}
+        size="lg"
+      >
+        Submit
+      </Button>
+    </VStack>
+  </Box>
+);
 
 const ProductImage = ({ image, name }) => (
   <VStack spacing={4} align="center">
     <Image
       src={`http://127.0.0.1:8000${image}`}
       alt={name}
-      boxSize={{ base: '100%', md: '400px', lg: '500px' }} // Adjusting image size for responsiveness
+      boxSize={{ base: '100%', md: '400px', lg: '500px' }}
       objectFit="cover"
       borderRadius="lg"
       shadow="md"
@@ -45,12 +251,10 @@ const ProductDetails = ({ product }) => (
   <VStack
     spacing={6}
     align="start"
-    w={{ base: '100%', md: '100%' }} // Responsive width
+    w={{ base: '100%', md: '100%' }}
     maxW="container.sm"
   >
     <Heading as="h3" size={{ base: 'lg', md: 'xl' }} fontFamily="lato">
-      {' '}
-      {/* Adjusting font size */}
       {product.name}
     </Heading>
     <Box>
@@ -67,8 +271,7 @@ const ProductDetails = ({ product }) => (
       fontWeight="bold"
       fontFamily="lato"
     >
-      {' '}
-      {/* Responsive font size */}${product.price}
+      ${product.price}
     </Text>
     <Text
       fontWeight={400}
@@ -86,7 +289,7 @@ const ProductPurchaseOptions = ({ product, qty, setQty, addToCartHandler }) => (
     spacing={6}
     align="stretch"
     w="full"
-    p={{ base: 4, md: 6 }} // Adjust padding for responsiveness
+    p={{ base: 4, md: 6 }}
     shadow="lg"
     borderWidth="1px"
     borderRadius="lg"
@@ -144,51 +347,6 @@ const ProductPurchaseOptions = ({ product, qty, setQty, addToCartHandler }) => (
   </VStack>
 );
 
-const WriteReviewForm = ({
-  rating,
-  setRating,
-  comment,
-  setComment,
-  submitHandler,
-  loadingProductReview,
-}) => (
-  <Box as="form" onSubmit={submitHandler}>
-    <VStack spacing={4} align="stretch">
-      <Select
-        fontFamily="lato"
-        placeholder="Select rating"
-        value={rating}
-        onChange={e => setRating(e.target.value)}
-        borderColor="gray.300"
-      >
-        <option value="1">1 - Poor</option>
-        <option value="2">2 - Fair</option>
-        <option value="3">3 - Good</option>
-        <option value="4">4 - Very Good</option>
-        <option value="5">5 - Excellent</option>
-      </Select>
-
-      <Textarea
-        fontFamily="lato"
-        placeholder="Enter your review"
-        value={comment}
-        onChange={e => setComment(e.target.value)}
-        borderColor="gray.300"
-      />
-
-      <Button
-        fontFamily="lato"
-        type="submit"
-        colorScheme="green"
-        isLoading={loadingProductReview}
-        size="lg"
-      >
-        Submit
-      </Button>
-    </VStack>
-  </Box>
-);
-
 const ProductReviews = ({
   product,
   userInfo,
@@ -206,7 +364,11 @@ const ProductReviews = ({
       Reviews
     </Heading>
     {product.reviews.length === 0 && (
-      <Message variant="info">No Reviews</Message>
+      <Box w="100%" display="flex" justifyContent="center" maxW="600px">
+        <Message variant="info" w="100%" textAlign="center">
+          No Reviews
+        </Message>
+      </Box>
     )}
     <VStack spacing={4} align="left" maxW="600px" w="100%">
       {product.reviews.map(review => (
@@ -337,6 +499,8 @@ function ProductPage() {
                   addToCartHandler={addToCartHandler}
                 />
               </SimpleGrid>
+              {/* Product Buttons (3D, AR, etc.) */}
+              <ProductButtons product={product} />
 
               <ProductReviews
                 product={product}

@@ -13,4 +13,6 @@ export default defineConfig({
       },
     },
   },
+  // Add support for .glb files as assets
+  assetsInclude: ['**/*.glb'], // This ensures .glb files are included as assets
 });
