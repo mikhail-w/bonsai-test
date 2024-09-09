@@ -43,11 +43,13 @@ import BackButton from '../components/BackButton';
 const Model = () => {
   const { scene } = useGLTF('../../public/ficus.glb'); // Ensure this path is correct
   return (
-    <Canvas>
-      <OrbitControls />
+    <Canvas camera={{ position: [0, 0, 1] }}>
+      {' '}
+      {/* Adjust camera position */}
+      <OrbitControls enableZoom={true} minDistance={1} maxDistance={5} />
       <ambientLight intensity={0.5} />
-      <directionalLight position={[0, 10, 5]} />
-      <primitive object={scene} scale={0.5} />
+      <directionalLight position={[5, 5, 5]} />
+      <primitive object={scene} scale={0.8} /> {/* Adjust scale as needed */}
       <Environment preset="sunset" />
     </Canvas>
   );
@@ -84,7 +86,7 @@ const ProductButtons = () => {
             p={3}
             textAlign="center"
             flex="1"
-            h="100px" // Adjusted height to fit the max width
+            h="80px" // Adjusted height to fit the max width
             cursor="pointer"
             _hover={{ boxShadow: 'lg' }}
           >
@@ -110,7 +112,7 @@ const ProductButtons = () => {
             p={3}
             textAlign="center"
             flex="1"
-            h="100px" // Adjusted height to fit the max width
+            h="80px" // Adjusted height to fit the max width
             cursor="pointer"
             _hover={{ boxShadow: 'lg' }}
           >
@@ -129,11 +131,13 @@ const ProductButtons = () => {
       {/* 3D Model Modal */}
       <Modal isOpen={isOpen} onClose={onClose} size="xl">
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent top="15%">
           <ModalHeader>3D Model Viewer</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
-            <Box w="100%" h="400px">
+          <ModalBody h="500px" overflowY="scroll">
+            {' '}
+            {/* Set a fixed height and allow scrolling */}
+            <Box w="100%" h="500px">
               <ThreeDModelViewer />
             </Box>
           </ModalBody>
