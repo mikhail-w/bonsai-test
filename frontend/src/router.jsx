@@ -29,6 +29,8 @@ import BlogPage from './pages/BlogPage.jsx';
 import AugmentedReality from './pages/AugmentedReality.jsx';
 import ContactPage from './pages/ContactPage.jsx';
 import AboutPage from './pages/AboutPage.jsx';
+import PlantID from './pages/PlantID.jsx';
+import PlantIdentifier from './pages/PlantIdentifier.jsx';
 
 const router = createBrowserRouter([
   {
@@ -57,6 +59,8 @@ const router = createBrowserRouter([
           { path: 'blog', element: <BlogPage /> },
           { path: 'ar', element: <AugmentedReality /> },
           { path: 'favorites', element: <Favorites /> },
+          // { path: 'id', element: <PlantID /> },
+          { path: 'id', element: <PlantIdentifier /> },
           { path: 'settings', element: <Settings /> },
           { path: 'admin/userlist', element: <UserListPage /> },
           { path: 'admin/user/:id/edit', element: <UserEditPage /> },

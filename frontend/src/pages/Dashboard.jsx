@@ -10,6 +10,7 @@ import { TbAugmentedReality } from 'react-icons/tb';
 import { GrUserAdmin } from 'react-icons/gr';
 import { MdProductionQuantityLimits } from 'react-icons/md';
 import { BsCashCoin } from 'react-icons/bs';
+import { HiOutlineViewfinderCircle } from 'react-icons/hi2';
 import Logo from '../assets/images/logo.png';
 import {
   IconButton,
@@ -33,6 +34,8 @@ import {
   Badge,
   Button,
   Image,
+  Divider,
+  AbsoluteCenter,
 } from '@chakra-ui/react';
 import {
   FiMenu,
@@ -50,6 +53,7 @@ const defaultLinks = [
   { name: 'Trending', icon: FiTrendingUp, path: '/profile/trending' },
   { name: 'Explore', icon: FiCompass, path: '/profile/explore' },
   { name: 'Blog', icon: BlogIcon, path: '/profile/blog' },
+  { name: 'Plant ID', icon: HiOutlineViewfinderCircle, path: '/profile/id' },
   { name: 'AR', icon: TbAugmentedReality, path: '/profile/ar' },
 ];
 
@@ -92,7 +96,12 @@ const SidebarContent = ({ onClose, links, userInfo, ...rest }) => {
       </Flex>
 
       {links.map(link => (
-        <NavItem key={link.path} icon={link.icon} path={link.path}>
+        <NavItem
+          key={link.path}
+          icon={link.icon}
+          path={link.path}
+          onClose={onClose}
+        >
           {link.name}
         </NavItem>
       ))}
@@ -100,18 +109,20 @@ const SidebarContent = ({ onClose, links, userInfo, ...rest }) => {
       {/* Conditionally render the Admin section */}
       {userInfo && userInfo.isAdmin && (
         <>
-          <Box mt={4} mx={4} borderTopWidth="1px" borderColor="gray.600" />
-          <Text
-            fontFamily={'lato'}
-            fontSize="lg"
-            fontWeight="bold"
-            mx={4}
-            mt={4}
-          >
-            Admin
-          </Text>
+          <Box position="relative" padding="10">
+            <Divider borderWidth="2px" borderColor="green.500" />
+            <AbsoluteCenter bg="white" px="4">
+              Admin
+            </AbsoluteCenter>
+          </Box>
+
           {adminLinks.map(link => (
-            <NavItem key={link.path} icon={link.icon} path={link.path}>
+            <NavItem
+              key={link.path}
+              icon={link.icon}
+              path={link.path}
+              onClose={onClose}
+            >
               {link.name}
             </NavItem>
           ))}
@@ -122,9 +133,16 @@ const SidebarContent = ({ onClose, links, userInfo, ...rest }) => {
 };
 
 // Navigation item component
-const NavItem = ({ icon, children, path, ...rest }) => {
+const NavItem = ({ icon, children, path, onClose, ...rest }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(path); // Navigate to the path
+    onClose(); // Close the sidebar
+  };
+
   return (
-    <RouterLink to={path} style={{ textDecoration: 'none' }}>
+    <Box as="div" onClick={handleClick} style={{ textDecoration: 'none' }}>
       <Flex
         align="center"
         p="4"
@@ -156,7 +174,7 @@ const NavItem = ({ icon, children, path, ...rest }) => {
         )}
         {children}
       </Flex>
-    </RouterLink>
+    </Box>
   );
 };
 
@@ -250,13 +268,13 @@ const MobileNav = ({ onOpen, ...rest }) => {
                   ml="2"
                 >
                   {!userInfo.isAdmin ? (
-                    <Text fontSize="sm" fontFamily="rale">
+                    <Text fontSize="sm" fontFamily="lato">
                       {userInfo ? userInfo.name : 'Guest'}
                     </Text>
                   ) : null}
 
                   {userInfo.isAdmin && (
-                    <Text fontSize="xs" color="gray.600">
+                    <Text fontFamily="lato" fontSize="xs" color="gray.600">
                       Admin
                     </Text>
                   )}
@@ -306,7 +324,7 @@ const Dashboard = () => {
   // Automatically navigate to /profile/info if the path is /profile
   useEffect(() => {
     if (location.pathname === '/profile') {
-      navigate('/profile/info');
+      userInfo.isAdmin ? navigate('admin/userlist') : navigate('/profile/info');
     }
   }, [location, navigate]);
 

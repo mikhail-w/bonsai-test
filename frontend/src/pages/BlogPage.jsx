@@ -104,10 +104,10 @@ function BlogPage() {
 
   return (
     <Box
-      mt={130}
+      mt={100}
       maxW="800px"
       mx="auto"
-      py={6}
+      // py={6}
       px={4}
       minHeight={'100vh'}
       mb={100}
