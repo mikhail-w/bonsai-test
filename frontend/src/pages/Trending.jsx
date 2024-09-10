@@ -1,5 +1,6 @@
 import React from 'react';
 import ModelViewer from '../components/ModelViewer';
+import { Text } from '@chakra-ui/react';
 
 function Trending() {
   return (
@@ -7,9 +8,11 @@ function Trending() {
     //   <div>Trending</div>
     // </>
     <div>
-      <h1>3D Model Viewer</h1>
+      <Text ml={10} fontFamily={'lato'} fontSize={'3rem'} fontWeight={300}>
+        3D Model Viewer
+      </Text>
       {/* Provide the correct URL to the .glb file */}
-      <ModelViewer modelUrl="../../public/ficus.glb" />
+      <ModelViewer modelUrl="../../public/ficus_bonsai.glb" />
     </div>
   );
 }
