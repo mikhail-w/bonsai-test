@@ -57,6 +57,9 @@ function BlogPage() {
   } = blogPostCreate;
 
   useEffect(() => {
+    if (!userInfo) {
+      navigate('/login');
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 

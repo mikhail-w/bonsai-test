@@ -63,6 +63,15 @@ const Navigation = () => {
     setIsOpen(false);
   };
 
+  const handleBlogClick = () => {
+    setIsOpen(false);
+    if (!userInfo) {
+      navigate('/login'); // Redirect to login if user is not logged in
+    } else {
+      navigate('/blog'); // Otherwise, go to the blog page
+    }
+  };
+
   // Toggle menu function
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -111,9 +120,10 @@ const Navigation = () => {
     setIsOpen(false);
     navigate('/');
     toast({
-      title: `User is Logged Out`,
+      title: `User has Logged Out`,
       status: 'info', // still required for accessibility and behavior
       isClosable: true,
+      duration: 3000,
       render: () => (
         <Box
           color="white" // Text color
@@ -133,7 +143,7 @@ const Navigation = () => {
     userInfo
       ? { label: 'Logout', action: logoutHandler, icon: FaUser }
       : { label: 'Login', url: '/login', icon: FaUser },
-    { label: 'Blog', url: '/blog', icon: FaBlog },
+    { label: 'Blog', url: 'blog', icon: FaBlog },
     { label: 'Cart', url: '/cart', icon: FaShoppingCart },
 
     { label: 'Shop', url: '/products', icon: FaStore },
@@ -356,6 +366,26 @@ const Navigation = () => {
                             </Box>
                           )}
                         </Box>
+                      ) : link.label === 'Blog' ? (
+                        // Handle Blog link click directly with handleBlogClick
+                        <Flex
+                          as="button"
+                          onClick={handleBlogClick}
+                          fontSize="xl"
+                          fontFamily={'lato'}
+                          color="#333333"
+                          _hover={{ color: 'gray.800', bg: 'yellow' }}
+                          bg="white"
+                          padding="0.5rem 1rem"
+                          borderRadius="full"
+                          boxShadow="md"
+                          display="flex"
+                          alignItems="center"
+                          gap="0.5rem"
+                        >
+                          <link.icon />
+                          {link.label}
+                        </Flex>
                       ) : link.action ? (
                         // If the link is a logout action, trigger the
                         <RouterLink to={link.url} onClick={handleLinkClick}>

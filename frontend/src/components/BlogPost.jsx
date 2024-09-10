@@ -43,7 +43,20 @@ function BlogPost({ post, commentsCount }) {
           {new Date(post.created_at).toLocaleString()}
         </Text>
       </HStack>
-
+      <HStack>
+        <Text fontFamily={'lato'} fontWeight={800}>
+          Posted By:{' '}
+        </Text>
+        <Text
+          fontFamily={'rale'}
+          fontWeight="bold"
+          fontSize="lg"
+          color="teal.600"
+          isTruncated
+        >
+          {post.user}
+        </Text>
+      </HStack>
       <Text fontFamily={'lato'}>
         Likes: {post.likes_count} | Comments: {commentsCount}
       </Text>

@@ -28,11 +28,21 @@ import {
 } from '../constants/blogConstants';
 
 // Get all blog posts
-export const listBlogPosts = () => async dispatch => {
+export const listBlogPosts = () => async (dispatch, getState) => {
   try {
     dispatch({ type: BLOG_LIST_REQUEST });
 
-    const { data } = await axios.get(`/api/blog/`);
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`, // Add the token to the request
+      },
+    };
+
+    const { data } = await axios.get(`/api/blog/`, config);
 
     dispatch({
       type: BLOG_LIST_SUCCESS,

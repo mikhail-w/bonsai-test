@@ -54,22 +54,6 @@ export const blogPostDeleteReducer = (state = {}, action) => {
   }
 };
 
-// Blog Post Details Reducer
-// export const blogPostDetailsReducer = (
-//   state = { post: {}, loading: true },
-//   action
-// ) => {
-//   switch (action.type) {
-//     case BLOG_POST_DETAILS_REQUEST:
-//       return { ...state, loading: true };
-//     case BLOG_POST_DETAILS_SUCCESS:
-//       return { loading: false, post: action.payload };
-//     case BLOG_POST_DETAILS_FAIL:
-//       return { loading: false, error: action.payload };
-//     default:
-//       return state;
-//   }
-// };
 export const blogPostDetailsReducer = (state = { post: {} }, action) => {
   switch (action.type) {
     case BLOG_POST_DETAILS_REQUEST:
