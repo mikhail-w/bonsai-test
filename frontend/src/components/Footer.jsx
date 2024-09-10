@@ -62,6 +62,7 @@ function Footer() {
     <Box
       bg={useColorModeValue('#353238', '#2D3748')}
       color={useColorModeValue('gray.700', 'gray.200')}
+      mt={50}
     >
       <Container as={Stack} maxW="6xl" py={10} spacing={8}>
         <Stack direction="row" align="center" justify="space-between">
