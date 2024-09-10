@@ -38,6 +38,9 @@ const BlogPostPage = () => {
   const blogCreateComment = useSelector(state => state.blogCreateComment);
   const { success: commentSuccess } = blogCreateComment;
 
+  // State to manually update comments count
+  const [updatedCommentsCount, setUpdatedCommentsCount] = useState(0);
+
   useEffect(() => {
     dispatch(getBlogPostDetails(postId));
     dispatch(getComments(postId));
@@ -47,6 +50,8 @@ const BlogPostPage = () => {
   useEffect(() => {
     if (commentSuccess) {
       dispatch(getComments(postId)); // Refresh comments after posting
+      // Manually update the comments count in the UI
+      setUpdatedCommentsCount(prevCount => prevCount + 1);
     }
   }, [commentSuccess, dispatch, postId]);
 
@@ -68,7 +73,16 @@ const BlogPostPage = () => {
         <Text color="red.500">{error}</Text>
       ) : (
         <>
-          {post && <BlogPost post={post} />}
+          {post && (
+            <BlogPost
+              post={post}
+              commentsCount={
+                updatedCommentsCount > 0
+                  ? post.comments_count + updatedCommentsCount
+                  : post.comments_count
+              }
+            />
+          )}
 
           <Box mt={50}>
             {/* Show comments if there are any */}

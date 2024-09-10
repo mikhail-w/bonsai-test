@@ -19,6 +19,8 @@ import {
 import { FaPlusCircle } from 'react-icons/fa';
 import { BiTrash } from 'react-icons/bi';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'; // Import Heart Icons
+import { BiChat } from 'react-icons/bi';
+
 import {
   listBlogPosts,
   createBlogPost,
@@ -220,28 +222,41 @@ function BlogPage() {
                     />
                   )}
                   <HStack justify="space-between" w="full">
-                    <Text fontFamily={'rale'} color="gray.500" fontSize="sm">
+                    <Text fontFamily={'lato'} color="gray.500" fontSize="sm">
                       {post.likes_count} Likes
                     </Text>
-                    <Text fontFamily={'rale'} color="gray.500" fontSize="sm">
+                    <Text fontFamily={'lato'} color="gray.500" fontSize="sm">
+                      {post.comments_count} comments
+                    </Text>
+                    <Text fontFamily={'lato'} color="gray.500" fontSize="sm">
                       {post.views} Views
                     </Text>
                   </HStack>
 
                   {userInfo && (
-                    <Button
-                      variant="ghost"
-                      leftIcon={
-                        activeHearts[post.id] ? (
-                          <AiFillHeart color="red" />
-                        ) : (
-                          <AiOutlineHeart />
-                        )
-                      }
-                      onClick={() => likeUnlikeHandler(post.id)}
-                    >
-                      {activeHearts[post.id] ? 'Unlike' : 'Like'}
-                    </Button>
+                    <HStack>
+                      <Button
+                        variant="ghost"
+                        leftIcon={
+                          activeHearts[post.id] ? (
+                            <AiFillHeart color="red" />
+                          ) : (
+                            <AiOutlineHeart />
+                          )
+                        }
+                        onClick={() => likeUnlikeHandler(post.id)}
+                      >
+                        {activeHearts[post.id] ? 'Unlike' : 'Like'}
+                      </Button>
+                      <Button
+                        onClick={() => readHandler(post.id)}
+                        flex="1"
+                        variant="ghost"
+                        leftIcon={<BiChat />}
+                      >
+                        Comment
+                      </Button>
+                    </HStack>
                   )}
                   {/* <Link to={`/blog/${post.id}`}> */}
                   <Button

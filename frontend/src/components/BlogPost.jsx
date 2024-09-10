@@ -13,7 +13,7 @@ import {
 import { getBlogPostDetails, createComment } from '../actions/blogActions';
 import Comment from '../components/Comment'; // Comment component for displaying individual comments
 
-function BlogPost({ post }) {
+function BlogPost({ post, commentsCount }) {
   const { id } = useParams();
   const postId = id;
   const dispatch = useDispatch();
@@ -45,7 +45,7 @@ function BlogPost({ post }) {
       </HStack>
 
       <Text fontFamily={'lato'}>
-        Likes: {post.likes_count} | Comments: {post.comments_count}
+        Likes: {post.likes_count} | Comments: {commentsCount}
       </Text>
 
       {/* Display Comments */}
