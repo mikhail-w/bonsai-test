@@ -63,6 +63,15 @@ const Navigation = () => {
     setIsOpen(false);
   };
 
+  const handleBlogClick = () => {
+    setIsOpen(false);
+    if (!userInfo) {
+      navigate('/login'); // Redirect to login if user is not logged in
+    } else {
+      navigate('/blog'); // Otherwise, go to the blog page
+    }
+  };
+
   // Toggle menu function
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -111,9 +120,10 @@ const Navigation = () => {
     setIsOpen(false);
     navigate('/');
     toast({
-      title: `User is Logged Out`,
+      title: `User has Logged Out`,
       status: 'info', // still required for accessibility and behavior
       isClosable: true,
+      duration: 3000,
       render: () => (
         <Box
           color="white" // Text color
@@ -133,7 +143,7 @@ const Navigation = () => {
     userInfo
       ? { label: 'Logout', action: logoutHandler, icon: FaUser }
       : { label: 'Login', url: '/login', icon: FaUser },
-    { label: 'Blog', url: '/blog', icon: FaBlog },
+    { label: 'Blog', url: 'blog', icon: FaBlog },
     { label: 'Cart', url: '/cart', icon: FaShoppingCart },
 
     { label: 'Shop', url: '/products', icon: FaStore },
@@ -150,10 +160,10 @@ const Navigation = () => {
     Login:
       'radial-gradient(circle,  rgba(116, 214, 128, 0.8), rgba(55, 139, 41, 0.8))',
     Blog: 'radial-gradient(circle at 10% 20%, rgba(4, 159, 108, 0.8) 0%, rgba(194, 254, 113, 0.8) 90.1%)',
-    Cart: 'radial-gradient(circle, rgba(11, 163, 96, 0.8), rgba(60, 186, 146, 0.8))',
+    Cart: 'radial-gradient(circle, rgba(11, 163, 96, 0.8), rgba(50, 205, 50, 0.8))',
     Shop: 'radial-gradient(circle,  rgba(81, 195, 123, 0.8) 2.3%, rgba(147, 249, 185, 0.9) 98.3%)',
     Logout:
-      'linear-gradient(to right, rgba(255, 81, 47, 0.8), rgba(221, 36, 118, 0.9))',
+      'radial-gradient(circle, rgba(19, 78, 94, 0.8), rgba(113, 178, 128, 0.6))',
   };
 
   useEffect(() => {
@@ -248,20 +258,20 @@ const Navigation = () => {
                 color="#333333"
                 zIndex="2000"
               />
-              {/* Avatar next to the close button when user is logged in */}
-              {userInfo && isOpen && isCircleAnimationDone && (
-                <RouterLink to="/profile">
-                  <Avatar
-                    src={`http://127.0.0.1:8000${userInfo.avatar}`}
-                    size="md"
-                    position="absolute"
-                    top="0px"
-                    right="70px"
-                    zIndex="5"
-                  />
-                </RouterLink>
-              )}
             </Box>
+            {/* Avatar next to the close button when user is logged in */}
+            {userInfo && isOpen && isCircleAnimationDone && (
+              <RouterLink to="/profile">
+                <Avatar
+                  src={`http://127.0.0.1:8000${userInfo.avatar}`}
+                  size="md"
+                  position="absolute"
+                  top="0px"
+                  right="70px"
+                  zIndex="5"
+                />
+              </RouterLink>
+            )}
             {isOpen && isCircleAnimationDone && (
               <Box>
                 {/* Navigation Links Positioned with 90-degree Counterclockwise Rotation */}
@@ -356,6 +366,26 @@ const Navigation = () => {
                             </Box>
                           )}
                         </Box>
+                      ) : link.label === 'Blog' ? (
+                        // Handle Blog link click directly with handleBlogClick
+                        <Flex
+                          as="button"
+                          onClick={handleBlogClick}
+                          fontSize="xl"
+                          fontFamily={'lato'}
+                          color="#333333"
+                          _hover={{ color: 'gray.800', bg: 'yellow' }}
+                          bg="white"
+                          padding="0.5rem 1rem"
+                          borderRadius="full"
+                          boxShadow="md"
+                          display="flex"
+                          alignItems="center"
+                          gap="0.5rem"
+                        >
+                          <link.icon />
+                          {link.label}
+                        </Flex>
                       ) : link.action ? (
                         // If the link is a logout action, trigger the
                         <RouterLink to={link.url} onClick={handleLinkClick}>

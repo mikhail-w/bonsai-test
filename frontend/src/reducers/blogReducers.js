@@ -26,6 +26,7 @@ import {
   BLOG_LIST_FAIL,
 } from '../constants/blogConstants';
 
+// Blog Post Create Reducer
 export const blogPostCreateReducer = (state = {}, action) => {
   switch (action.type) {
     case BLOG_POST_CREATE_REQUEST:
@@ -39,6 +40,7 @@ export const blogPostCreateReducer = (state = {}, action) => {
   }
 };
 
+// Blog Post Delete Reducer
 export const blogPostDeleteReducer = (state = {}, action) => {
   switch (action.type) {
     case BLOG_POST_DELETE_REQUEST:
@@ -52,25 +54,25 @@ export const blogPostDeleteReducer = (state = {}, action) => {
   }
 };
 
-export const blogPostDetailsReducer = (state = { post: [] }, action) => {
+export const blogPostDetailsReducer = (state = { post: {} }, action) => {
   switch (action.type) {
     case BLOG_POST_DETAILS_REQUEST:
-      return { ...state, loading: true };
+      return { loading: true, post: {} }; // Set loading to true when fetching starts
     case BLOG_POST_DETAILS_SUCCESS:
-      return { loading: false, post: action.payload };
+      return { loading: false, post: action.payload }; // Set loading to false and update post
     case BLOG_POST_DETAILS_FAIL:
-      return { loading: false, error: action.payload };
+      return { loading: false, error: action.payload }; // Set loading to false on failure
     default:
       return state;
   }
 };
 
+// Blog Post Like/Unlike Reducer
 export const blogPostLikeUnlikeReducer = (state = {}, action) => {
   switch (action.type) {
     case BLOG_POST_LIKE_UNLIKE_REQUEST:
       return { loading: true };
     case BLOG_POST_LIKE_UNLIKE_SUCCESS:
-      console.log('likeUnlikeBlogPost BLOG_POST_LIKE_UNLIKE_SUCCESS');
       return { loading: false, success: true, post: action.payload };
     case BLOG_POST_LIKE_UNLIKE_FAIL:
       return { loading: false, error: action.payload };
@@ -79,6 +81,7 @@ export const blogPostLikeUnlikeReducer = (state = {}, action) => {
   }
 };
 
+// Blog Create Comment Reducer
 export const blogCreateCommentReducer = (state = {}, action) => {
   switch (action.type) {
     case BLOG_CREATE_COMMENT_REQUEST:
@@ -92,7 +95,11 @@ export const blogCreateCommentReducer = (state = {}, action) => {
   }
 };
 
-export const blogGetCommentsReducer = (state = { comments: [] }, action) => {
+// Blog Get Comments Reducer
+export const blogGetCommentsReducer = (
+  state = { comments: [], loading: true },
+  action
+) => {
   switch (action.type) {
     case BLOG_GET_COMMENT_REQUEST:
       return { loading: true, comments: [] };
@@ -105,7 +112,11 @@ export const blogGetCommentsReducer = (state = { comments: [] }, action) => {
   }
 };
 
-export const blogListMyReducer = (state = { posts: [] }, action) => {
+// Blog List My Reducer
+export const blogListMyReducer = (
+  state = { posts: [], loading: true },
+  action
+) => {
   switch (action.type) {
     case BLOG_LIST_MY_REQUEST:
       return { loading: true };
@@ -118,7 +129,11 @@ export const blogListMyReducer = (state = { posts: [] }, action) => {
   }
 };
 
-export const blogListReducer = (state = { posts: [] }, action) => {
+// Blog List Reducer
+export const blogListReducer = (
+  state = { posts: [], loading: true },
+  action
+) => {
   switch (action.type) {
     case BLOG_LIST_REQUEST:
       return { loading: true, posts: [] };
@@ -126,7 +141,7 @@ export const blogListReducer = (state = { posts: [] }, action) => {
       return { loading: false, posts: action.payload.results };
     case BLOG_LIST_FAIL:
       return { loading: false, error: action.payload };
-    case BLOG_POST_UPDATE_IN_LIST: // Handle the post update
+    case BLOG_POST_UPDATE_IN_LIST:
       return {
         ...state,
         posts: state.posts.map(post =>

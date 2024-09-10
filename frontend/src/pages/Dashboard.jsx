@@ -227,13 +227,21 @@ const MobileNav = ({ onOpen, ...rest }) => {
 
       <HStack spacing={{ base: '3', md: '6' }}>
         {userInfo == null || !userInfo.isAdmin ? (
-          <RouterLink to="/cart">
+          <RouterLink
+            to="/cart"
+            onClick={e => {
+              e.stopPropagation();
+            }}
+          >
             <Button
               variant="link"
               id="cartLogo"
               color="black"
               pt={3}
               position="relative"
+              onClick={e => {
+                e.stopPropagation(); // Prevent navigation state toggle
+              }}
             >
               <ShoppingCart />
               <Badge
@@ -291,9 +299,6 @@ const MobileNav = ({ onOpen, ...rest }) => {
               borderColor={useColorModeValue('gray.200', 'gray.700')}
             >
               <MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem>
-              <MenuItem onClick={() => navigate('/cart')}>
-                Cart ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
-              </MenuItem>
               <MenuDivider />
               {userInfo ? (
                 <MenuItem onClick={logoutHandler}>Logout</MenuItem>

@@ -14,6 +14,7 @@ import {
   useToast,
   Center,
   VStack,
+  HStack,
 } from '@chakra-ui/react';
 import { addToCart, removeFromCart } from '../actions/cartActions';
 // import EmptyCart from '../assets/images/emptycart2.png';
@@ -41,9 +42,10 @@ function CartPage() {
   const removeFromCartHandler = (id, name) => {
     dispatch(removeFromCart(id));
     toast({
-      title: 'Removed from Cart',
+      title: 'Removed',
       description: `${name} removed from Cart`,
       status: 'error',
+      position: 'bottom-right',
       duration: 3000,
       isClosable: true,
     });
@@ -124,63 +126,82 @@ function CartPage() {
             {cartItems.map(item => (
               <Box
                 key={item.product}
-                p={6}
-                borderWidth="1px"
-                borderRadius="lg"
-                mb={6}
-                shadow="md"
-                bg="white"
+                p={4} // Padding inside the box
+                borderWidth="1px" // 1px border
+                borderRadius="lg" // Rounded corners for the box
+                mb={6} // Margin bottom between items
+                shadow="md" // Box shadow for a slightly elevated look
+                bg="white" // White background
               >
-                <Stack direction={{ base: 'column', md: 'row' }} spacing={6}>
-                  <Image
-                    src={`http://127.0.0.1:8000${item.image}`}
-                    alt={item.name}
-                    boxSize="150px"
-                    objectFit="cover"
-                    borderRadius="md"
-                  />
-                  <VStack align="stretch" spacing={3}>
-                    <Link to={`/product/${item.product}`}>
-                      <Text fontSize="lg" fontWeight="bold" fontFamily="lato">
-                        {item.name}
+                <Stack
+                  direction={{ base: 'column', md: 'row' }} // Column for mobile, row for larger screens
+                  spacing={6} // Spacing between image, text, and button
+                  alignItems={{ base: 'flex-start', md: 'center' }} // Align items differently on mobile and desktop
+                >
+                  {/* Image and product details in a VStack */}
+                  <HStack spacing={4}>
+                    {/* Product Image */}
+                    <Image
+                      src={`http://127.0.0.1:8000${item.image}`}
+                      alt={item.name}
+                      boxSize="150px"
+                      objectFit="cover"
+                      borderRadius="md"
+                    />
+
+                    {/* Product Info (Name, Price, Quantity) */}
+                    <VStack align="start" spacing={3}>
+                      {/* Product Name */}
+                      <Link to={`/product/${item.product}`}>
+                        <Text fontSize="lg" fontWeight="bold" fontFamily="lato">
+                          {item.name}
+                        </Text>
+                      </Link>
+
+                      {/* Product Price */}
+                      <Text fontFamily={'lato'} fontSize="lg" color="gray.500">
+                        ${item.price}
                       </Text>
-                    </Link>
-                    <Text fontFamily={'lato'} fontSize="lg" color="gray.500">
-                      ${item.price}
-                    </Text>
-                    <Select
-                      value={item.qty}
-                      onChange={e =>
-                        dispatch(
-                          addToCart(item.product, Number(e.target.value))
-                        )
-                      }
-                      maxW="100px"
-                      borderColor="gray.300"
-                    >
-                      {[...Array(item.countInStock).keys()].map(x => (
-                        <option key={x + 1} value={x + 1}>
-                          {x + 1}
-                        </option>
-                      ))}
-                    </Select>
-                    <Button
-                      fontFamily={'lato'}
-                      variant="outline"
-                      colorScheme="red"
-                      onClick={() =>
-                        removeFromCartHandler(item.product, item.name)
-                      }
-                    >
-                      Remove
-                    </Button>
-                  </VStack>
+
+                      {/* Quantity Selector */}
+                      <Select
+                        value={item.qty}
+                        onChange={e =>
+                          dispatch(
+                            addToCart(item.product, Number(e.target.value))
+                          )
+                        }
+                        maxW="100px"
+                        borderColor="gray.300"
+                      >
+                        {[...Array(item.countInStock).keys()].map(x => (
+                          <option key={x + 1} value={x + 1}>
+                            {x + 1}
+                          </option>
+                        ))}
+                      </Select>
+                    </VStack>
+                  </HStack>
+
+                  {/* Remove Button */}
+                  <Button
+                    fontFamily={'lato'}
+                    variant="outline"
+                    colorScheme="red"
+                    alignSelf={{ base: 'flex-end' }} // Place at the bottom in mobile, align in center in desktop
+                    mt={{ base: 4, md: 0 }} // Add margin-top in mobile mode
+                    onClick={() =>
+                      removeFromCartHandler(item.product, item.name)
+                    }
+                  >
+                    Remove
+                  </Button>
                 </Stack>
               </Box>
             ))}
           </Box>
 
-          <Box margin={'auto'}>
+          <Box margin={{ base: 'auto', lg: 0 }} alignSelf="flex-start">
             <Box
               p={6}
               borderWidth="1px"

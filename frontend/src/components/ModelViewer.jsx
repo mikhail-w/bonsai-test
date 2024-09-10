@@ -11,7 +11,7 @@ function Model({ url }) {
 
 const ModelViewer = ({ modelUrl }) => {
   return (
-    <Box w="100%" h="500px" border="1px solid #ccc">
+    <Box w="100%" h="80vh" border="1px solid #ccc">
       <Canvas>
         {/* Add orbit controls for model interaction */}
         <OrbitControls />

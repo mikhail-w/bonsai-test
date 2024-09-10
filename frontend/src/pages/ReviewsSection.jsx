@@ -158,7 +158,7 @@ const ReviewsSection = () => {
   };
 
   return (
-    <Box mt={100} py={10} px={15} mx={2}>
+    <Box mt={100} mb={50} py={10} px={15} mx={2}>
       <Heading fontFamily={'lato'} as="h2" size="xl" textAlign="center" mb={8}>
         What Our Customers Say
       </Heading>

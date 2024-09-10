@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import {
   SimpleGrid,
   Container,
@@ -18,8 +19,14 @@ function EssentialsPage() {
   const dispatch = useDispatch();
   const productEssentials = useSelector(state => state.productEssentials);
   const { error, loading, products, page, pages } = productEssentials;
+  const location = useLocation();
 
   let keyword = location.search;
+
+  // Scroll to top on location (route) change
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [location]);
 
   useEffect(() => {
     dispatch(listEssentialProducts());

@@ -1,3 +1,4 @@
+import { Box, Image, Flex, Text } from '@chakra-ui/react';
 import notFound from '../assets/images/svgs/404.svg';
 import BackButton from '../components/BackButton';
 
@@ -5,11 +6,21 @@ function NotFoundPage() {
   return (
     <>
       <BackButton />
-      <div className="notFoundContainer">
-        <img src={notFound}></img>
-        <div className="notFoundTitle">Page not found!</div>
-      </div>
-      <div className="notFoundSub">Sorry, this page is not available...</div>
+      <Flex
+        direction="column"
+        justify="center"
+        align="center"
+        height="100vh"
+        textAlign="center"
+      >
+        <Image src={notFound} alt="404 Not Found" />
+        <Text fontSize="2xl" fontWeight="bold" mt={4}>
+          Page not found!
+        </Text>
+      </Flex>
+      <Box textAlign="center" mt={4}>
+        <Text fontSize="lg">Sorry, this page is not available...</Text>
+      </Box>
     </>
   );
 }

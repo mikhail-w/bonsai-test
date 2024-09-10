@@ -24,10 +24,11 @@ const Product = ({ product }) => {
     if (product._id && product.countInStock > 0) {
       dispatch(addToCart(product._id, 1));
       toast({
-        title: 'Add to Cart.',
+        title: 'Added.',
         description: `${product.name} added to Cart`,
+        position: 'bottom-right',
         status: 'success',
-        duration: 9000,
+        duration: 3000,
         isClosable: true,
       });
     }
