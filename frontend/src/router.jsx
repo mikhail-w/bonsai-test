@@ -34,9 +34,15 @@ import PlantID from './pages/PlantID.jsx';
 import PlantIdentifier from './pages/PlantIdentifier.jsx';
 import Chat from './pages/Chat.jsx';
 
+//Instruction page
+import CarePage_Style from './pages/CarePage_Style.jsx';
+import CarePage from './pages/CarePage.jsx';
+import CarePage_Prepare from './pages/CarePage_Prepare.jsx';
+import CarePage_Care from './pages/CarePage_Care.jsx';
+
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <App />,
     children: [
       {
@@ -44,87 +50,96 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: '/login',
+        path: "/login",
         element: <LoginPage />,
       },
       {
-        path: '/register',
+        path: "/register",
         element: <RegisterPage />,
       },
       {
-        path: '/profile',
+        path: "/profile",
         element: <Dashboard />,
         children: [
-          { path: 'info', element: <MyInfo /> },
-          { path: 'trending', element: <Trending /> },
-          { path: 'explore', element: <MapPage /> },
-          { path: 'blog', element: <BlogPage /> }, // List of all blog posts for user dashboard
-          { path: 'ar', element: <AugmentedReality /> },
-          { path: 'favorites', element: <Favorites /> },
-          { path: 'chat', element: <Chat /> },
-          { path: 'id', element: <PlantIdentifier /> },
-          { path: 'settings', element: <Settings /> },
-          { path: 'admin/userlist', element: <UserListPage /> },
-          { path: 'admin/user/:id/edit', element: <UserEditPage /> },
-          { path: 'admin/productlist', element: <ProductListPage /> },
-          { path: 'admin/product/:id/edit', element: <ProductEditPage /> },
-          { path: 'admin/orderlist', element: <OrderListPage /> },
+          { path: "info", element: <MyInfo /> },
+          { path: "trending", element: <Trending /> },
+          { path: "explore", element: <MapPage /> },
+          { path: "blog", element: <BlogPage /> }, // List of all blog posts for user dashboard
+          { path: "ar", element: <AugmentedReality /> },
+          { path: "favorites", element: <Favorites /> },
+          { path: "chat", element: <Chat /> },
+          { path: "id", element: <PlantIdentifier /> },
+          { path: "settings", element: <Settings /> },
+          { path: "admin/userlist", element: <UserListPage /> },
+          { path: "admin/user/:id/edit", element: <UserEditPage /> },
+          { path: "admin/productlist", element: <ProductListPage /> },
+          { path: "admin/product/:id/edit", element: <ProductEditPage /> },
+          { path: "admin/orderlist", element: <OrderListPage /> },
+          {
+            path: "care",
+            element: <CarePage />,
+            children: [
+              { path: "preparing", element: <CarePage_Prepare /> },
+              { path: "caring", element: <CarePage_Care /> },
+              { path: "styling", element: <CarePage_Style /> },
+            ],
+          },
         ],
       },
       {
-        path: '/cart/:id?',
+        path: "/cart/:id?",
         element: <CartPage />,
       },
       {
-        path: '/order/:id?',
+        path: "/order/:id?",
         element: <OrderPage />,
       },
       {
-        path: '/essentials',
+        path: "/essentials",
         element: <EssentialsPage />,
       },
       {
-        path: '/planters',
+        path: "/planters",
         element: <PlantersPage />,
       },
       {
-        path: '/plants',
+        path: "/plants",
         element: <PlantsPage />,
       },
       {
-        path: '/products',
+        path: "/products",
         element: <ProductsPage />,
       },
       {
-        path: '/about',
+        path: "/about",
         element: <AboutPage />,
       },
       {
-        path: '/blog', // Route for listing all blog posts
+        path: "/blog", // Route for listing all blog posts
         element: <BlogPage />,
       },
       {
-        path: '/blog/:id?', // Route for viewing a specific blog post
+        path: "/blog/:id?", // Route for viewing a specific blog post
         element: <BlogPostPage />,
       },
       {
-        path: '/contact',
+        path: "/contact",
         element: <ContactPage />,
       },
       {
-        path: '/shipping/:id?',
+        path: "/shipping/:id?",
         element: <ShippingPage />,
       },
       {
-        path: '/payment',
+        path: "/payment",
         element: <PaymentPage />,
       },
       {
-        path: '/placeorder',
+        path: "/placeorder",
         element: <PlaceOrderPage />,
       },
       {
-        path: '/product/:id?',
+        path: "/product/:id?",
         element: <ProductPage />,
       },
     ],
