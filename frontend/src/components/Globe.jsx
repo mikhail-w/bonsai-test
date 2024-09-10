@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Environment, OrbitControls } from '@react-three/drei';
-import { Center, useBreakpointValue } from '@chakra-ui/react';
+import { Center, useBreakpointValue, Box } from '@chakra-ui/react';
 import Earth from '../../public/Earth';
 import SaveTheWorldText from './SaveTheWorldText';
 
@@ -33,8 +33,9 @@ const Globe = () => {
   const maxZoom = 8; // Maximum zoom level (Zoom in limit)
 
   return (
-    <div>
+    <Box>
       <Center width={containerSize} height={containerSize} margin="auto">
+        {/* R3F Canvas needs to only contain Three.js-compatible components */}
         <Canvas className="earthContainer">
           <ambientLight intensity={1} />
           <Suspense fallback={<div>Loading Earth...</div>}>
@@ -44,8 +45,9 @@ const Globe = () => {
           <Environment preset="sunset" />
         </Canvas>
       </Center>
+      {/* HTML components should be outside of the Canvas */}
       <SaveTheWorldText />
-    </div>
+    </Box>
   );
 };
 
