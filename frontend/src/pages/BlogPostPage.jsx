@@ -14,37 +14,42 @@ import {
   getBlogPostDetails,
   createComment,
   getComments,
-} from '../actions/blogActions'; // Add getComments and createComment actions
-import BlogPost from '../components/BlogPost'; // Import the BlogPost component
-import Comment from '../components/Comment'; // Import Comment component to display individual comments
+} from '../actions/blogActions';
+import BlogPost from '../components/BlogPost';
+import Comment from '../components/Comment';
 import BackButton from '../components/BackButton';
 
 const BlogPostPage = () => {
-  const { id } = useParams(); // Get the postId from URL params
+  const { id } = useParams();
   const postId = id;
   const dispatch = useDispatch();
 
-  const [commentContent, setCommentContent] = useState(''); // Local state to handle new comment content
+  const [commentContent, setCommentContent] = useState('');
 
-  // Fetch blog post details from the Redux store
   const blogPostDetails = useSelector(state => state.blogPostDetails);
   const { loading, error, post } = blogPostDetails;
 
-  // Fetch comments from Redux store
   const blogComments = useSelector(state => state.blogGetComments);
-  const { comments } = blogComments;
+  const { comments, loading: commentsLoading } = blogComments;
 
-  // Get user info to check if logged in
   const userLogin = useSelector(state => state.userLogin);
   const { userInfo } = userLogin;
 
-  // Fetch the specific post and comments when the component mounts
+  const blogCreateComment = useSelector(state => state.blogCreateComment);
+  const { success: commentSuccess } = blogCreateComment;
+
   useEffect(() => {
     dispatch(getBlogPostDetails(postId));
-    dispatch(getComments(postId)); // Fetch the comments when the page loads
+    dispatch(getComments(postId));
   }, [dispatch, postId]);
 
-  // Handle comment submission
+  // Re-fetch comments after successfully posting a new comment
+  useEffect(() => {
+    if (commentSuccess) {
+      dispatch(getComments(postId)); // Refresh comments after posting
+    }
+  }, [commentSuccess, dispatch, postId]);
+
   const handleCommentSubmit = () => {
     if (userInfo) {
       dispatch(createComment(postId, commentContent)); // Dispatch action to create a comment
@@ -65,12 +70,7 @@ const BlogPostPage = () => {
         <>
           {post && <BlogPost post={post} />}
 
-          {/* Comment Section */}
           <Box mt={50}>
-            {/* <Text fontSize="2xl" fontWeight="bold">
-              Comments
-            </Text> */}
-
             {/* Show comments if there are any */}
             {comments && comments.results && comments.results.length > 0 ? (
               comments.results.map(comment => (
@@ -80,11 +80,10 @@ const BlogPostPage = () => {
               <Text>No comments yet. Be the first to comment!</Text>
             )}
 
-            {/* Allow logged in users to submit a comment */}
             {userInfo ? (
               <VStack spacing={4} mt={6} align="stretch">
                 <Textarea
-                  placeholder="Do Add a comment..."
+                  placeholder="Add a comment..."
                   value={commentContent}
                   onChange={e => setCommentContent(e.target.value)}
                   size="md"

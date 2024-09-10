@@ -44,7 +44,7 @@ function BlogPost({ post }) {
         </Text>
       </HStack>
 
-      <Text>
+      <Text fontFamily={'lato'}>
         Likes: {post.likes_count} | Comments: {post.comments_count}
       </Text>
 

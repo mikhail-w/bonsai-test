@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Environment, OrbitControls } from '@react-three/drei';
-import { Center, useBreakpointValue, Box } from '@chakra-ui/react';
+import { Center, useBreakpointValue, Box, Spinner } from '@chakra-ui/react';
 import Earth from '../../public/Earth';
 import SaveTheWorldText from './SaveTheWorldText';
 
@@ -17,6 +17,13 @@ const CustomOrbitControls = ({ minDistance, maxDistance }) => {
     />
   );
 };
+
+// Loading Spinner for the Earth Model
+const LoadingFallback = () => (
+  <Center width="100%" height="100%">
+    <Spinner size="xl" color="teal.500" />
+  </Center>
+);
 
 // Main Globe Component
 const Globe = () => {
@@ -35,17 +42,18 @@ const Globe = () => {
   return (
     <Box>
       <Center width={containerSize} height={containerSize} margin="auto">
-        {/* R3F Canvas needs to only contain Three.js-compatible components */}
-        <Canvas className="earthContainer">
-          <ambientLight intensity={1} />
-          <Suspense fallback={<div>Loading Earth...</div>}>
+        {/* Chakra-based spinner outside of Canvas */}
+        <Suspense fallback={<LoadingFallback />}>
+          {/* R3F Canvas, containing only Three.js-compatible components */}
+          <Canvas className="earthContainer">
+            <ambientLight intensity={1} />
             <Earth /> {/* Earth model */}
-          </Suspense>
-          <CustomOrbitControls minDistance={minZoom} maxDistance={maxZoom} />
-          <Environment preset="sunset" />
-        </Canvas>
+            <CustomOrbitControls minDistance={minZoom} maxDistance={maxZoom} />
+            <Environment preset="sunset" />
+          </Canvas>
+        </Suspense>
       </Center>
-      {/* HTML components should be outside of the Canvas */}
+      {/* Save the world text is regular HTML */}
       <SaveTheWorldText />
     </Box>
   );
