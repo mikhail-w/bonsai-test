@@ -1,12 +1,26 @@
-import React from 'react';
-import { Suspense } from 'react';
+import React, { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Environment, OrbitControls } from '@react-three/drei';
-import Earth from '../../public/Earth';
 import { Center, useBreakpointValue } from '@chakra-ui/react';
+import Earth from '../../public/Earth';
 import SaveTheWorldText from './SaveTheWorldText';
 
-function Globe() {
+// Modular Orbit Controls with Zoom Limits
+const CustomOrbitControls = ({ minDistance, maxDistance }) => {
+  return (
+    <OrbitControls
+      enableZoom={true}
+      minDistance={minDistance}
+      maxDistance={maxDistance}
+      enablePan={false} // Disable panning for a cleaner experience
+      enableRotate={true} // Allow rotating
+    />
+  );
+};
+
+// Main Globe Component
+const Globe = () => {
+  // Responsive container size for the canvas
   const containerSize = useBreakpointValue({
     base: '300px', // Mobile devices
     sm: '400px', // Small screens (e.g., tablets)
@@ -14,26 +28,25 @@ function Globe() {
     lg: '800px', // Large screens
   });
 
+  // Zoom limits
+  const minZoom = 5.5; // Minimum zoom level (Zoom out limit)
+  const maxZoom = 8; // Maximum zoom level (Zoom in limit)
+
   return (
     <div>
-      <Center
-        // boxShadow={'outline'}
-        width={containerSize}
-        height={containerSize}
-        margin={'auto'}
-      >
+      <Center width={containerSize} height={containerSize} margin="auto">
         <Canvas className="earthContainer">
           <ambientLight intensity={1} />
-          <OrbitControls enableZoom={true} />
-          {/* <Suspense fallback={<div>Loading...</div>}> */}
-          <Earth />
-          {/* </Suspense> */}
+          <Suspense fallback={<div>Loading Earth...</div>}>
+            <Earth /> {/* Earth model */}
+          </Suspense>
+          <CustomOrbitControls minDistance={minZoom} maxDistance={maxZoom} />
           <Environment preset="sunset" />
         </Canvas>
       </Center>
       <SaveTheWorldText />
     </div>
   );
-}
+};
 
 export default Globe;
