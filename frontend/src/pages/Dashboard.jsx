@@ -291,9 +291,9 @@ const MobileNav = ({ onOpen, ...rest }) => {
               borderColor={useColorModeValue('gray.200', 'gray.700')}
             >
               <MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem>
-              <MenuItem onClick={() => navigate('/cart')}>
+              {/* <MenuItem onClick={() => navigate('/cart')}>
                 Cart ({cartItems.reduce((acc, item) => acc + item.qty, 0)})
-              </MenuItem>
+              </MenuItem> */}
               <MenuDivider />
               {userInfo ? (
                 <MenuItem onClick={logoutHandler}>Logout</MenuItem>

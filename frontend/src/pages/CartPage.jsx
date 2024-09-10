@@ -44,6 +44,7 @@ function CartPage() {
       title: 'Removed from Cart',
       description: `${name} removed from Cart`,
       status: 'error',
+      position: 'bottom-right',
       duration: 3000,
       isClosable: true,
     });

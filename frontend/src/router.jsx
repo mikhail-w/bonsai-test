@@ -25,7 +25,8 @@ import MapPage from './pages/MapPage.jsx';
 import Favorites from './pages/Favorites.jsx';
 import Settings from './pages/Settings.jsx';
 import MyInfo from './pages/MyInfo.jsx';
-import BlogPage from './pages/BlogPage.jsx';
+import BlogPage from './pages/BlogPage.jsx'; // List of all blog posts
+import BlogPostPage from './pages/BlogPostPage.jsx'; // Individual blog post page
 import AugmentedReality from './pages/AugmentedReality.jsx';
 import ContactPage from './pages/ContactPage.jsx';
 import AboutPage from './pages/AboutPage.jsx';
@@ -57,11 +58,10 @@ const router = createBrowserRouter([
           { path: 'info', element: <MyInfo /> },
           { path: 'trending', element: <Trending /> },
           { path: 'explore', element: <MapPage /> },
-          { path: 'blog', element: <BlogPage /> },
+          { path: 'blog', element: <BlogPage /> }, // List of all blog posts for user dashboard
           { path: 'ar', element: <AugmentedReality /> },
           { path: 'favorites', element: <Favorites /> },
           { path: 'chat', element: <Chat /> },
-          // { path: 'id', element: <PlantID /> },
           { path: 'id', element: <PlantIdentifier /> },
           { path: 'settings', element: <Settings /> },
           { path: 'admin/userlist', element: <UserListPage /> },
@@ -100,8 +100,12 @@ const router = createBrowserRouter([
         element: <AboutPage />,
       },
       {
-        path: '/blog',
+        path: '/blog', // Route for listing all blog posts
         element: <BlogPage />,
+      },
+      {
+        path: '/blog/:id?', // Route for viewing a specific blog post
+        element: <BlogPostPage />,
       },
       {
         path: '/contact',
@@ -123,26 +127,6 @@ const router = createBrowserRouter([
         path: '/product/:id?',
         element: <ProductPage />,
       },
-      // {
-      //   path: '/admin/userlist',
-      //   element: <UserListPage />,
-      // },
-      // {
-      //   path: '/admin/productlist',
-      //   element: <ProductListPage />,
-      // },
-      // {
-      //   path: '/admin/product/:id/edit',
-      //   element: <ProductEditPage />,
-      // },
-      // {
-      //   path: '/admin/orderlist',
-      //   element: <OrderListPage />,
-      // },
-      // {
-      //   path: '/admin/user/:id/edit',
-      //   element: <UserEditPage />,
-      // },
     ],
     errorElement: <NotFoundPage />,
   },
