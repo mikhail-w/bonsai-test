@@ -1,6 +1,6 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { FaHome } from "react-icons/fa";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { FaHome } from 'react-icons/fa';
 import {
   Box,
   Divider,
@@ -11,21 +11,21 @@ import {
   Image,
   UnorderedList,
   ListItem,
-  Button
-} from "@chakra-ui/react";
-import Water_Bonsai from "../assets/images/watering_bonsai.jpg";
-import Chokkan from "../assets/images/chokkan.jpeg";
-import Moyogi from "../assets/images/moyogi.jpeg";
-import Shakan from "../assets/images/shakan.jpeg";
-import Kengai from "../assets/images/kengai.jpeg";
-import HanKengai from "../assets/images/hankengai.jpeg";
-import Pruning from "../assets/images/pruning.jpeg";
-import Wiring from "../assets/images/wiring.jpeg";
-import Thinning from "../assets/images/thinning.jpeg";
-import Defoliation from "../assets/images/defoliation.jpeg";
-import Pots from "../assets/images/pots.jpeg";
-import Balance from "../assets/images/balance.jpeg";
-import Vision from "../assets/images/vision.jpeg";
+  Button,
+} from '@chakra-ui/react';
+import Water_Bonsai from '../assets/images/watering_bonsai.jpg';
+import Chokkan from '../assets/images/chokkan.jpeg';
+import Moyogi from '../assets/images/moyogi.jpeg';
+import Shakan from '../assets/images/shakan.jpeg';
+import Kengai from '../assets/images/kengai.jpeg';
+import HanKengai from '../assets/images/hankengai.jpeg';
+import Pruning from '../assets/images/pruning.jpeg';
+import Wiring from '../assets/images/wiring.jpeg';
+import Thinning from '../assets/images/thinning.jpeg';
+import Defoliation from '../assets/images/defoliation.jpeg';
+import Pots from '../assets/images/pots.jpeg';
+import Balance from '../assets/images/balance.jpeg';
+import Vision from '../assets/images/vision.jpeg';
 
 function CarePage_Style() {
   return (
@@ -34,11 +34,11 @@ function CarePage_Style() {
         <Image src={Water_Bonsai} w="100%" h="auto" />
         <Heading
           pos="absolute"
-          top={{ md: "50%", base: "30%" }}
-          left={{ md: "10%", base: "10%" }}
+          top={{ md: '50%', base: '30%' }}
+          left={{ md: '10%', base: '10%' }}
           color="black"
           sx={{
-            WebkitTextStroke: { base: "1px white", md: "none" },
+            WebkitTextStroke: { base: '1px white', md: 'none' },
           }}
         >
           Styling Your Bonsai Tree
@@ -47,9 +47,9 @@ function CarePage_Style() {
 
       <Center>
         <Container
-          w={{ md: "2000px", sm: "400px" }}
-          minH={"100vh"}
-          marginTop={"100px"}
+          w={{ md: '2000px', sm: '400px' }}
+          minH={'100vh'}
+          marginTop={'100px'}
         >
           <Heading as="h2" size="lg" mb="4">
             Understanding Bonsai Styles
@@ -205,11 +205,16 @@ function CarePage_Style() {
             through as your bonsai evolves over time.
           </Text>
           <Center>
-              <Link to="/profile/care">
-                <Button marginTop={10} marginBottom={10} marginRight={10} colorScheme="teal">
-                <FaHome/>
-                  Home
-                </Button>
+            <Link to="/profile/care">
+              <Button
+                marginTop={10}
+                marginBottom={10}
+                marginRight={10}
+                colorScheme="green"
+              >
+                <FaHome />
+                Home
+              </Button>
             </Link>
           </Center>
         </Container>

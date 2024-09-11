@@ -11,7 +11,7 @@ import { GrUserAdmin } from 'react-icons/gr';
 import { MdProductionQuantityLimits } from 'react-icons/md';
 import { BsCashCoin } from 'react-icons/bs';
 import { HiOutlineViewfinderCircle } from 'react-icons/hi2';
-import { GiPlantWatering } from "react-icons/gi";
+import { GiPlantWatering } from 'react-icons/gi';
 import { BiLeaf } from 'react-icons/bi';
 import Logo from '../assets/images/logo.png';
 import {
@@ -50,15 +50,15 @@ import {
 
 // Default public links
 const defaultLinks = [
-  { name: "Home", icon: FiHome, path: "/" },
-  { name: "My Info", icon: FiUser, path: "/profile/info" },
-  { name: "Trending", icon: FiTrendingUp, path: "/profile/trending" },
-  { name: "Explore", icon: FiCompass, path: "/profile/explore" },
-  { name: "Blog", icon: BlogIcon, path: "/profile/blog" },
-  { name: "Plant ID", icon: HiOutlineViewfinderCircle, path: "/profile/id" },
-  { name: "AR", icon: TbAugmentedReality, path: "/profile/ar" },
-  { name: "Zen Master", icon: BiLeaf, path: "/profile/chat" },
-  { name: "Care Instructions", icon: GiPlantWatering, path: "/profile/care" },
+  { name: 'Home', icon: FiHome, path: '/' },
+  { name: 'My Info', icon: FiUser, path: '/profile/info' },
+  { name: 'Trending', icon: FiTrendingUp, path: '/profile/trending' },
+  { name: 'Explore', icon: FiCompass, path: '/profile/explore' },
+  { name: 'Blog', icon: BlogIcon, path: '/profile/blog' },
+  { name: 'Plant ID', icon: HiOutlineViewfinderCircle, path: '/profile/id' },
+  { name: 'AR', icon: TbAugmentedReality, path: '/profile/ar' },
+  { name: 'Zen Master', icon: BiLeaf, path: '/profile/chat' },
+  { name: 'Care Instructions', icon: GiPlantWatering, path: '/profile/care' },
 ];
 
 // Admin links
@@ -207,6 +207,10 @@ const MobileNav = ({ onOpen, ...rest }) => {
       borderBottomWidth="1px"
       borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
       justifyContent={{ base: 'space-between', md: 'flex-end' }}
+      // boxShadow={'outline'}
+      pos="sticky"
+      top={0}
+      zIndex={3}
       {...rest}
     >
       <IconButton

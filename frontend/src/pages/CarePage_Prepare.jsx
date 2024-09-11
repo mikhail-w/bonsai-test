@@ -1,6 +1,6 @@
-import React from "react";
-import { FaHome, FaArrowRight } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { FaHome, FaArrowRight } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import {
   Box,
   Divider,
@@ -10,11 +10,11 @@ import {
   Heading,
   Image,
   Button,
-} from "@chakra-ui/react";
-import Soil from "../assets/images/soil.jpeg";
-import Tools from "../assets/images/tools.jpeg";
-import Fertilizer from "../assets/images/fertilizer.jpeg";
-import Repotting from "../assets/images/repotting.jpeg";
+} from '@chakra-ui/react';
+import Soil from '../assets/images/soil.jpeg';
+import Tools from '../assets/images/tools.jpeg';
+import Fertilizer from '../assets/images/fertilizer.jpeg';
+import Repotting from '../assets/images/repotting.jpeg';
 
 function CarePage_Prepare() {
   return (
@@ -23,11 +23,11 @@ function CarePage_Prepare() {
         <Image src={Soil} w="100%" h="auto" />
         <Heading
           pos="absolute"
-          top={{ md: "50%", base: "30%" }}
-          left={{ md: "10%", base: "10%" }}
+          top={{ md: '50%', base: '30%' }}
+          left={{ md: '10%', base: '10%' }}
           color="black"
           sx={{
-            WebkitTextStroke: { base: "1px white", md: "none" },
+            WebkitTextStroke: { base: '1px white', md: 'none' },
           }}
         >
           Prepare Your Bonsai Tree
@@ -36,9 +36,9 @@ function CarePage_Prepare() {
 
       <Center>
         <Container
-          w={{ md: "2000px", sm: "400px" }}
-          minH={"100vh"}
-          marginTop={"100px"}
+          w={{ md: '2000px', sm: '400px' }}
+          minH={'100vh'}
+          marginTop={'100px'}
         >
           <Heading as="h2" size="lg" mb="4">
             Preparing Your Bonsai Tree for Growth
@@ -133,14 +133,19 @@ function CarePage_Prepare() {
           {/*go to next page : Caring your Bonsai Button */}
           <Center>
             <Link to="/profile/care">
-              <Button marginTop={10} marginBottom={10} marginRight={10} colorScheme="teal">
-              <FaHome/>
+              <Button
+                marginTop={10}
+                marginBottom={10}
+                marginRight={10}
+                colorScheme="green"
+              >
+                <FaHome />
                 Home
               </Button>
             </Link>
 
             <Link to="/profile/care/caring">
-              <Button marginTop={10} marginBottom={10} colorScheme="teal">
+              <Button marginTop={10} marginBottom={10} colorScheme="green">
                 Caring Your Bonsai
                 <FaArrowRight />
               </Button>

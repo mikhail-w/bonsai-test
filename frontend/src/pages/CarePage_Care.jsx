@@ -1,6 +1,6 @@
-import React from "react";
-import { FaHome, FaArrowRight } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { FaHome, FaArrowRight } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import {
   Box,
   Divider,
@@ -9,12 +9,12 @@ import {
   Text,
   Heading,
   Image,
-  Button
-} from "@chakra-ui/react";
-import Watering from "../assets/images/watering.jpeg";
-import Sunlight from "../assets/images/sunlight.jpeg";
-import Pruning from "../assets/images/pruning.jpeg";
-import Protection from "../assets/images/protection.jpeg";
+  Button,
+} from '@chakra-ui/react';
+import Watering from '../assets/images/watering.jpeg';
+import Sunlight from '../assets/images/sunlight.jpeg';
+import Pruning from '../assets/images/pruning.jpeg';
+import Protection from '../assets/images/protection.jpeg';
 
 function CarePage_Care() {
   return (
@@ -23,11 +23,11 @@ function CarePage_Care() {
         <Image src={Watering} w="100%" h="auto" />
         <Heading
           pos="absolute"
-          top={{ md: "50%", base: "30%" }}
-          left={{ md: "10%", base: "10%" }}
+          top={{ md: '50%', base: '30%' }}
+          left={{ md: '10%', base: '10%' }}
           color="black"
           sx={{
-            WebkitTextStroke: { base: "1px white", md: "none" },
+            WebkitTextStroke: { base: '1px white', md: 'none' },
           }}
         >
           Caring for Your Bonsai Tree
@@ -36,9 +36,9 @@ function CarePage_Care() {
 
       <Center>
         <Container
-          w={{ md: "2000px", sm: "400px" }}
-          minH={"100vh"}
-          marginTop={"100px"}
+          w={{ md: '2000px', sm: '400px' }}
+          minH={'100vh'}
+          marginTop={'100px'}
         >
           <Heading as="h2" size="lg" mb="4">
             Essential Tips for Caring for Your Bonsai Tree
@@ -131,16 +131,21 @@ function CarePage_Care() {
             to come. Enjoy the process of nurturing your bonsai, and watch it
             grow into a stunning, miniature representation of nature.
           </Text>
-            <Center>
+          <Center>
             <Link to="/profile/care">
-              <Button marginTop={10} marginBottom={10} marginRight={10} colorScheme="teal">
-              <FaHome/>
+              <Button
+                marginTop={10}
+                marginBottom={10}
+                marginRight={10}
+                colorScheme="green"
+              >
+                <FaHome />
                 Home
               </Button>
             </Link>
 
             <Link to="/profile/care/styling">
-              <Button marginTop={10} marginBottom={10} colorScheme="teal">
+              <Button marginTop={10} marginBottom={10} colorScheme="green">
                 Styling Your Bonsai
                 <FaArrowRight />
               </Button>
