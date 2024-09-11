@@ -34,6 +34,12 @@ import PlantID from './pages/PlantID.jsx';
 import PlantIdentifier from './pages/PlantIdentifier.jsx';
 import Chat from './pages/Chat.jsx';
 
+//Instruction page
+import CarePage_Style from './pages/CarePage_Style.jsx';
+import CarePage from './pages/CarePage.jsx';
+import CarePage_Prepare from './pages/CarePage_Prepare.jsx';
+import CarePage_Care from './pages/CarePage_Care.jsx';
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -58,17 +64,27 @@ const router = createBrowserRouter([
           { path: 'info', element: <MyInfo /> },
           { path: 'trending', element: <Trending /> },
           { path: 'explore', element: <MapPage /> },
-          { path: 'blog', element: <BlogPage /> }, // List of all blog posts for user dashboard
+          { path: 'blog', element: <BlogPage /> },
           { path: 'ar', element: <AugmentedReality /> },
           { path: 'favorites', element: <Favorites /> },
           { path: 'chat', element: <Chat /> },
           { path: 'id', element: <PlantIdentifier /> },
           { path: 'settings', element: <Settings /> },
+          { path: 'order/:id?', element: <OrderPage /> },
           { path: 'admin/userlist', element: <UserListPage /> },
           { path: 'admin/user/:id/edit', element: <UserEditPage /> },
           { path: 'admin/productlist', element: <ProductListPage /> },
           { path: 'admin/product/:id/edit', element: <ProductEditPage /> },
           { path: 'admin/orderlist', element: <OrderListPage /> },
+          {
+            path: 'care',
+            element: <CarePage />,
+            children: [
+              { path: 'preparing', element: <CarePage_Prepare /> },
+              { path: 'caring', element: <CarePage_Care /> },
+              { path: 'styling', element: <CarePage_Style /> },
+            ],
+          },
         ],
       },
       {

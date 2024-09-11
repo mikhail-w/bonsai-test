@@ -95,10 +95,13 @@ const MyOrders = () => {
                     </Td>
                     <Td>
                       <Button
-                        as={RouterLink}
-                        to={`/order/${order._id}`}
                         size="sm"
-                        colorScheme="teal"
+                        colorScheme="green"
+                        onClick={e => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          navigate(`/profile/order/${order._id}`);
+                        }}
                       >
                         Details
                       </Button>

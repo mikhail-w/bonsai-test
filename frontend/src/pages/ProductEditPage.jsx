@@ -1,15 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link, useParams, useNavigate } from 'react-router-dom';
-import { Form, Button } from 'react-bootstrap';
+import { Link as RouterLink, useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import Loader from '../components/Loader';
-import Message from '../components/Message';
-import FormContainer from '../components/FormContainer';
 import { listProductDetails, updateProduct } from '../actions/productActions';
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants';
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Spinner,
+  Text,
+  Heading,
+  Textarea,
+  useToast,
+  Flex,
+  Stack,
+} from '@chakra-ui/react';
 
-function ProductEditPage() {
+const ProductEditPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const productId = id;
@@ -24,6 +34,7 @@ function ProductEditPage() {
   const [uploading, setUploading] = useState(false);
 
   const dispatch = useDispatch();
+  const toast = useToast();
 
   const productDetails = useSelector(state => state.productDetails);
   const { error, loading, product } = productDetails;
@@ -38,6 +49,7 @@ function ProductEditPage() {
   useEffect(() => {
     if (successUpdate) {
       dispatch({ type: PRODUCT_UPDATE_RESET });
+      toast({ title: 'Product updated successfully!', status: 'success' });
       navigate('/admin/productlist');
     } else {
       if (!product.name || product._id !== Number(productId)) {
@@ -71,10 +83,8 @@ function ProductEditPage() {
   };
 
   const uploadFileHandler = async e => {
-    console.log('File is uploading');
     const file = e.target.files[0];
     const formData = new FormData();
-
     formData.append('image', file);
     formData.append('product_id', productId);
 
@@ -88,7 +98,6 @@ function ProductEditPage() {
       };
 
       const { data } = await axios.post(
-        // 'http://127.0.0.1:8000/api/products/upload/',
         'http://127.0.0.1:8000/api/products/upload/',
         formData,
         config
@@ -97,114 +106,119 @@ function ProductEditPage() {
       setImage(data);
       setUploading(false);
     } catch (error) {
+      toast({ title: 'Error uploading image', status: 'error' });
       setUploading(false);
     }
   };
 
   return (
-    <div>
-      <Link to="/admin/productlist">Go Back</Link>
+    <Box
+      w="full"
+      maxW="900px"
+      mx="auto"
+      mt={10}
+      p={6}
+      bg="white"
+      shadow="md"
+      borderRadius="md"
+    >
+      <Button onClick={() => navigate(-1)} colorScheme="green" mb={6}>
+        Go Back
+      </Button>
 
-      <FormContainer>
-        <h1>Edit Product</h1>
-        {loadingUpdate && <Loader />}
-        {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
+      <Heading as="h1" size="lg" mb={6}>
+        Edit Product
+      </Heading>
 
-        {loading ? (
-          <Loader />
-        ) : error ? (
-          <Message variant="danger">{error}</Message>
-        ) : (
-          <Form onSubmit={submitHandler}>
-            <Form.Group controlId="name">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type="name"
+      {loadingUpdate && <Spinner />}
+      {errorUpdate && <Text color="red.500">{errorUpdate}</Text>}
+
+      {loading ? (
+        <Spinner />
+      ) : error ? (
+        <Text color="red.500">{error}</Text>
+      ) : (
+        <form onSubmit={submitHandler}>
+          <Stack spacing={4}>
+            <FormControl id="name">
+              <FormLabel>Name</FormLabel>
+              <Input
+                type="text"
                 placeholder="Enter name"
                 value={name}
                 onChange={e => setName(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
+              />
+            </FormControl>
 
-            <Form.Group controlId="price">
-              <Form.Label>Price</Form.Label>
-              <Form.Control
+            <FormControl id="price">
+              <FormLabel>Price</FormLabel>
+              <Input
                 type="number"
                 placeholder="Enter price"
                 value={price}
                 onChange={e => setPrice(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
+              />
+            </FormControl>
 
-            <Form.Group controlId="image">
-              <Form.Label>Image</Form.Label>
-              <Form.Control
+            <FormControl id="image">
+              <FormLabel>Image</FormLabel>
+              <Input
                 type="text"
-                placeholder="Enter image"
+                placeholder="Enter image URL"
                 value={image}
                 onChange={e => setImage(e.target.value)}
-              ></Form.Control>
-              <div className="mb-3">
-                <input
-                  className="form-control"
-                  type="file"
-                  id="image-file"
-                  label="Choose File"
-                  onChange={uploadFileHandler}
-                ></input>
-              </div>
+              />
+              <Input type="file" onChange={uploadFileHandler} mt={2} />
+              {uploading && <Spinner />}
+            </FormControl>
 
-              {uploading && <Loader />}
-            </Form.Group>
-
-            <Form.Group controlId="countinstock">
-              <Form.Label>Stock</Form.Label>
-              <Form.Control
+            <FormControl id="countInStock">
+              <FormLabel>Stock</FormLabel>
+              <Input
                 type="number"
                 placeholder="Enter stock"
                 value={countInStock}
                 onChange={e => setCountInStock(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
+              />
+            </FormControl>
 
-            <Form.Group controlId="category">
-              <Form.Label>Category</Form.Label>
-              <Form.Control
+            <FormControl id="category">
+              <FormLabel>Category</FormLabel>
+              <Input
                 type="text"
                 placeholder="Enter category"
                 value={category}
                 onChange={e => setCategory(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
+              />
+            </FormControl>
 
-            <Form.Group controlId="_type">
-              <Form.Label>Type</Form.Label>
-              <Form.Control
+            <FormControl id="type">
+              <FormLabel>Type</FormLabel>
+              <Input
                 type="text"
                 placeholder="Enter type"
                 value={_type}
                 onChange={e => setType(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
+              />
+            </FormControl>
 
-            <Form.Group controlId="description">
-              <Form.Label>Description</Form.Label>
-              <Form.Control
-                type="text"
+            <FormControl id="description">
+              <FormLabel>Description</FormLabel>
+              <Textarea
                 placeholder="Enter description"
                 value={description}
                 onChange={e => setDescription(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
+              />
+            </FormControl>
 
-            <Button type="submit" variant="primary">
-              Update
+            <Button type="submit" colorScheme="green" isFullWidth>
+              Update Product
             </Button>
-          </Form>
-        )}
-      </FormContainer>
-    </div>
+          </Stack>
+        </form>
+      )}
+    </Box>
   );
-}
+};
 
 export default ProductEditPage;
