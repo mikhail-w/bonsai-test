@@ -97,7 +97,7 @@ function ProductListPage() {
           </Heading>
           <Button
             leftIcon={<FaPlus />}
-            colorScheme="teal"
+            colorScheme="green"
             onClick={createProductHandler}
             fontFamily={'lato'}
           >
@@ -146,7 +146,7 @@ function ProductListPage() {
                         <HStack spacing={3}>
                           <IconButton
                             as={RouterLink}
-                            to={`/admin/product/${product._id}/edit`}
+                            to={`/profile/admin/product/${product._id}/edit`}
                             icon={<FaEdit />}
                             colorScheme="blue"
                             variant="outline"
