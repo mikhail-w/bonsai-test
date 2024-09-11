@@ -96,10 +96,10 @@ function OrderListPage() {
                       <Td>
                         <Button
                           as={RouterLink}
-                          to={`/order/${order._id}`}
+                          to={`/profile/order/${order._id}`}
                           size="sm"
                           variant="outline"
-                          colorScheme="teal"
+                          colorScheme="green"
                         >
                           Details
                         </Button>

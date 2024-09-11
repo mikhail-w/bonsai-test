@@ -70,6 +70,7 @@ const router = createBrowserRouter([
           { path: 'chat', element: <Chat /> },
           { path: 'id', element: <PlantIdentifier /> },
           { path: 'settings', element: <Settings /> },
+          { path: 'order/:id?', element: <OrderPage /> },
           { path: 'admin/userlist', element: <UserListPage /> },
           { path: 'admin/user/:id/edit', element: <UserEditPage /> },
           { path: 'admin/productlist', element: <ProductListPage /> },
