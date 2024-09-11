@@ -1,12 +1,29 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import {
+  Box,
+  Button,
+  Input,
+  VStack,
+  Heading,
+  Spinner,
+  Text,
+  Image,
+  useToast,
+  List,
+  ListItem,
+  ListIcon,
+} from '@chakra-ui/react';
+import { CheckCircleIcon } from '@chakra-ui/icons';
 
-const API_KEY = import.meta.env.PLANT_ID_API_KEY; // Replace with your valid API key
+const API_KEY = import.meta.env.VITE_PLANT_ID_API_KEY;
+console.log('API Key:', API_KEY);
 
 const PlantIdentifier = () => {
   const [image, setImage] = useState(null);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const toast = useToast();
 
   // Convert image to base64
   const toBase64 = file => {
@@ -23,8 +40,7 @@ const PlantIdentifier = () => {
     if (file) {
       setImage(file);
       const base64Image = await toBase64(file);
-      // Remove the "data:image/jpeg;base64," prefix if it's present
-      const imageWithoutPrefix = base64Image.split(',')[1];
+      const imageWithoutPrefix = base64Image.split(',')[1]; // Remove base64 prefix
       identifyPlant(imageWithoutPrefix);
     }
   };
@@ -32,14 +48,19 @@ const PlantIdentifier = () => {
   const identifyPlant = async base64Image => {
     setLoading(true);
 
-    // Request payload for Google Cloud Vision API
+    // Proper request body for the Google Cloud Vision API
     const body = {
       requests: [
         {
           image: {
-            content: base64Image, // Base64-encoded image without the data prefix
+            content: base64Image,
           },
-          features: [{ type: 'LABEL_DETECTION', maxResults: 5 }],
+          features: [
+            {
+              type: 'LABEL_DETECTION',
+              maxResults: 5,
+            },
+          ],
         },
       ],
     };
@@ -57,6 +78,13 @@ const PlantIdentifier = () => {
       const labels = response.data.responses[0].labelAnnotations;
       setResult(labels);
     } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Unable to identify the plant. Please try again.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
       console.error('Error identifying plant:', error.response?.data || error);
     }
 
@@ -64,26 +92,78 @@ const PlantIdentifier = () => {
   };
 
   return (
-    <div>
-      <h1>Identify a Plant</h1>
-      <input type="file" onChange={handleImageUpload} />
-      <button onClick={identifyPlant} disabled={!image || loading}>
-        {loading ? 'Identifying...' : 'Identify Plant'}
-      </button>
+    <Box
+      maxW="600px"
+      mx="auto"
+      p={6}
+      mt={10}
+      borderRadius="lg"
+      bg="white"
+      boxShadow="lg"
+      textAlign="center"
+    >
+      <Heading mb={6} color="green.600" fontSize="2xl" fontWeight="semibold">
+        Plant Identifier
+      </Heading>
+
+      <VStack spacing={4}>
+        <Input
+          type="file"
+          onChange={handleImageUpload}
+          accept="image/*"
+          size="lg"
+          borderColor="green.300"
+          focusBorderColor="green.500"
+          bg="gray.50"
+        />
+
+        {image && (
+          <Box>
+            <Text fontSize="md" color="gray.500" mt={2}>
+              Uploaded Image Preview:
+            </Text>
+            <Image
+              src={URL.createObjectURL(image)}
+              alt="Uploaded plant image"
+              borderRadius="md"
+              boxSize="200px"
+              objectFit="cover"
+              mt={2}
+            />
+          </Box>
+        )}
+
+        <Button
+          colorScheme="green"
+          onClick={identifyPlant}
+          isLoading={loading}
+          disabled={!image || loading}
+          loadingText="Identifying..."
+          size="lg"
+        >
+          Identify Plant
+        </Button>
+      </VStack>
+
+      {loading && <Spinner size="xl" color="green.500" mt={8} />}
+
       {result && (
-        <div>
-          <h2>Results:</h2>
-          <ul>
+        <Box mt={8}>
+          <Heading as="h2" size="md" color="green.600" mb={4}>
+            Identification Results:
+          </Heading>
+          <List spacing={3}>
             {result.map((label, index) => (
-              <li key={index}>
+              <ListItem key={index}>
+                <ListIcon as={CheckCircleIcon} color="green.500" />
                 {label.description} - Confidence:{' '}
                 {(label.score * 100).toFixed(2)}%
-              </li>
+              </ListItem>
             ))}
-          </ul>
-        </div>
+          </List>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 };
 

@@ -12,6 +12,7 @@ import { MdProductionQuantityLimits } from 'react-icons/md';
 import { BsCashCoin } from 'react-icons/bs';
 import { HiOutlineViewfinderCircle } from 'react-icons/hi2';
 import { GiPlantWatering } from 'react-icons/gi';
+import { Md3dRotation } from 'react-icons/md';
 import { BiLeaf } from 'react-icons/bi';
 import Logo from '../assets/images/logo.png';
 import {
@@ -52,7 +53,7 @@ import {
 const defaultLinks = [
   { name: 'Home', icon: FiHome, path: '/' },
   { name: 'My Info', icon: FiUser, path: '/profile/info' },
-  { name: 'Trending', icon: FiTrendingUp, path: '/profile/trending' },
+  { name: '3D Model', icon: Md3dRotation, path: '/profile/trending' },
   { name: 'Explore', icon: FiCompass, path: '/profile/explore' },
   { name: 'Blog', icon: BlogIcon, path: '/profile/blog' },
   { name: 'Plant ID', icon: HiOutlineViewfinderCircle, path: '/profile/id' },
@@ -227,6 +228,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
         fontWeight="300"
         pt={5}
         pl={4}
+        onClick={() => navigate('/')} // Navigate to home
       >
         BONSAI
       </Text>
