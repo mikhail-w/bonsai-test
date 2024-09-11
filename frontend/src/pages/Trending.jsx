@@ -4,15 +4,9 @@ import { Text } from '@chakra-ui/react';
 
 function Trending() {
   return (
-    // <>
-    //   <div>Trending</div>
-    // </>
     <div>
-      <Text ml={10} fontFamily={'lato'} fontSize={'3rem'} fontWeight={300}>
-        3D Model Viewer
-      </Text>
-      {/* Provide the correct URL to the .glb file */}
-      <ModelViewer modelUrl="../../public/ficus_bonsai.glb" />
+      <h1>3D Model Viewer</h1>
+      <ModelViewer modelUrl="../../public/ficus.glb" />
     </div>
   );
 }
