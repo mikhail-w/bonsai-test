@@ -7,7 +7,7 @@ function Trending() {
     <div>
       <Center mt={30}>
         <Text fontWeight={300} fontFamily={'lato'} fontSize={'2rem'}>
-          3D Model Viewer
+          3D Model Viewer test
         </Text>
       </Center>
       <ModelViewer modelUrl="../../public/ficus.glb" />
