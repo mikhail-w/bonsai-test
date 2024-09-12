@@ -33,6 +33,7 @@ function Scene({ url }) {
   }, [camera])
 
   return (
+
     <>
       <ambientLight intensity={1.5} />
       <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
@@ -46,6 +47,7 @@ function Scene({ url }) {
       />
     </>
   )
+
 }
 
 export default function Trending() {
