@@ -139,7 +139,7 @@ function CartPage() {
                   alignItems={{ base: 'flex-start', md: 'center' }} // Align items differently on mobile and desktop
                 >
                   {/* Image and product details in a VStack */}
-                  <HStack spacing={4}>
+                  <HStack spacing={4} minWidth={335}>
                     {/* Product Image */}
                     <Image
                       src={`http://127.0.0.1:8000${item.image}`}

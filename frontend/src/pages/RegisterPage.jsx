@@ -137,10 +137,11 @@ function RegisterPage() {
               <form onSubmit={handleSubmit}>
                 <FormControl variant="floating" mb={10} id="name" isRequired>
                   <Input
-                    type="name"
+                    type="text"
                     value={name}
                     onChange={e => setName(e.target.value)}
                     placeholder=""
+                    autoComplete="off" // Prevents browser autofill
                   />
                   <FormLabel>Enter your Name</FormLabel>
                 </FormControl>
@@ -150,6 +151,7 @@ function RegisterPage() {
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     placeholder=""
+                    autoComplete="off" // Prevents browser autofill
                   />
                   <FormLabel>Enter your Email</FormLabel>
                 </FormControl>
@@ -164,6 +166,7 @@ function RegisterPage() {
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                     placeholder=""
+                    autoComplete="off" // Prevents browser autofill
                   />
                   <FormLabel>Enter your Password</FormLabel>
                 </FormControl>
@@ -178,6 +181,7 @@ function RegisterPage() {
                     value={confirmPassword}
                     onChange={e => setConfirmPassword(e.target.value)}
                     placeholder=""
+                    autoComplete="off" // Prevents browser autofill
                   />
                   <FormLabel>Confirm Password</FormLabel>
                 </FormControl>
@@ -187,6 +191,7 @@ function RegisterPage() {
                     value={city}
                     onChange={e => setCity(e.target.value)}
                     placeholder=""
+                    autoComplete="off" // Prevents browser autofill
                   />
                   <FormLabel>Enter your City</FormLabel>
                 </FormControl>
@@ -196,6 +201,7 @@ function RegisterPage() {
                     value={state}
                     onChange={e => setState(e.target.value)}
                     placeholder=""
+                    autoComplete="off" // Prevents browser autofill
                   />
                   <FormLabel>Enter your State</FormLabel>
                 </FormControl>
@@ -253,4 +259,5 @@ function RegisterPage() {
     </>
   );
 }
+
 export default RegisterPage;
