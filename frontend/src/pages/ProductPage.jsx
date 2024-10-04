@@ -46,7 +46,7 @@ const Model = () => {
     <Canvas camera={{ position: [0, 0, 1] }}>
       {' '}
       {/* Adjust camera position */}
-      <OrbitControls enableZoom={true} minDistance={1} maxDistance={5} />
+      <OrbitControls enableZoom={true} minDistance={0.6} maxDistance={3} />
       <ambientLight intensity={0.5} />
       <directionalLight position={[5, 5, 5]} />
       <primitive object={scene} scale={0.8} /> {/* Adjust scale as needed */}
