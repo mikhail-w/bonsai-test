@@ -162,7 +162,7 @@ const Navigation = () => {
       'radial-gradient(circle,  rgba(116, 214, 128, 0.8), rgba(55, 139, 41, 0.8))',
     Blog: 'radial-gradient(circle at 10% 20%, rgba(4, 159, 108, 0.8) 0%, rgba(194, 254, 113, 0.8) 90.1%)',
     Cart: 'radial-gradient(circle, rgba(11, 163, 96, 0.8), rgba(50, 205, 50, 0.8))',
-    Shop: 'radial-gradient(circle,  rgba(81, 195, 123, 0.8) 2.3%, rgba(147, 249, 185, 0.9) 98.3%)',
+    Shop: 'radial-gradient(circle,  rgba(63, 181, 63, 0.8) 2.3%, rgba(168, 251, 60, 0.9) 98.3%)',
     Logout:
       'radial-gradient(circle, rgba(19, 78, 94, 0.8), rgba(113, 178, 128, 0.6))',
   };

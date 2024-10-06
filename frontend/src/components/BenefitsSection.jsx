@@ -4,7 +4,7 @@ import h3 from '../assets/images/hr4.jpg';
 
 const MotionBox = motion(Box);
 
-const BenifitsSection = () => {
+const BenefitsSection = () => {
   const benefits = [
     {
       icon: '🌿',
@@ -76,7 +76,7 @@ const BenifitsSection = () => {
                 >
                   {benefit.icon}
                 </Text>
-                <Heading as="h3" size="md" mb={2}>
+                <Heading color={'black'} as="h3" size="md" mb={2}>
                   {benefit.title}
                 </Heading>
                 <Text color="gray.600">{benefit.description}</Text>
@@ -89,4 +89,4 @@ const BenifitsSection = () => {
   );
 };
 
-export default BenifitsSection;
+export default BenefitsSection;

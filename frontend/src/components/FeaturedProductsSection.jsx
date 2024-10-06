@@ -11,7 +11,7 @@ import p3 from '../assets/images/h10.jpg';
 import p4 from '../assets/images/potters.jpg';
 import p5 from '../assets/images/can.jpg';
 
-const ProductsSection = () => {
+const FeaturedProductsSection = () => {
   const bg = useColorModeValue('white', 'gray.800');
   const textColor = useColorModeValue('gray.700', 'white');
 
@@ -85,7 +85,7 @@ const ProductsSection = () => {
                 as="h3"
                 size="lg"
                 mb={4}
-                color={textColor}
+                color={'black'}
               >
                 {product.title}
               </Heading>
@@ -110,4 +110,4 @@ const ProductsSection = () => {
   );
 };
 
-export default ProductsSection;
+export default FeaturedProductsSection;

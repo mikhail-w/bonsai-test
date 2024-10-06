@@ -1,4 +1,3 @@
-import React from 'react';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import {
@@ -8,6 +7,7 @@ import {
   Image,
   SimpleGrid,
   useBreakpointValue,
+  useColorModeValue, // Import useColorModeValue
 } from '@chakra-ui/react';
 import { SlArrowRight, SlArrowLeft } from 'react-icons/sl';
 import { FaQuoteRight } from 'react-icons/fa'; // Import the quote icon
@@ -92,7 +92,6 @@ const reviews = [
   },
 ];
 
-// Updated Review Card with Quote Icon
 const ReviewCard = ({ review }) => (
   <Box
     bg="white"
@@ -102,8 +101,10 @@ const ReviewCard = ({ review }) => (
     textAlign="center"
     maxW="350px"
     minW="300px"
+    minH="458px"
     m="auto"
-    position="relative" // For the quote icon positioning
+    mb={10}
+    position="relative"
   >
     {/* Image with Quote Icon */}
     <Box position="relative" display="inline-block">
@@ -116,8 +117,6 @@ const ReviewCard = ({ review }) => (
         mx="auto"
         mb={4}
       />
-
-      {/* Quote Icon in Top-Right */}
       <Box
         position="absolute"
         top="-5px"
@@ -134,10 +133,16 @@ const ReviewCard = ({ review }) => (
       </Box>
     </Box>
 
-    <Text fontFamily={'lato'} fontSize="md" fontStyle="italic" mb={4}>
+    <Text
+      color={'black'}
+      fontFamily={'lato'}
+      fontSize="md"
+      fontStyle="italic"
+      mb={4}
+    >
       {review.review}
     </Text>
-    <Heading as="h3" size="md" fontWeight="bold" mb={1}>
+    <Heading color={'black'} as="h3" size="md" fontWeight="bold" mb={1}>
       {review.name}
     </Heading>
     <Text color="gray.500">{review.position}</Text>
@@ -147,6 +152,10 @@ const ReviewCard = ({ review }) => (
 const ReviewsSection = () => {
   const isMobile = useBreakpointValue({ base: true, md: false });
 
+  // Use Chakra UI's useColorModeValue to dynamically set dot color
+  const dotColor = useColorModeValue('black', 'white');
+  const activeDotColor = useColorModeValue('teal.500', 'teal.300');
+
   const sliderSettings = {
     dots: true,
     infinite: true,
@@ -155,23 +164,43 @@ const ReviewsSection = () => {
     slidesToScroll: 1,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
+    appendDots: dots => (
+      <Box>
+        <ul style={{ margin: 0 }}>{dots}</ul>
+      </Box>
+    ),
+    customPaging: i => (
+      <Box
+        as="div"
+        bg={dotColor} // Default dot color
+        w="12px"
+        h="12px"
+        borderRadius="50%"
+        transition="background-color 0.3s ease"
+        _hover={{ bg: activeDotColor }} // Hover color
+        // Ensure active dots are styled differently
+        sx={{
+          '.slick-active &': {
+            bg: activeDotColor,
+          },
+        }}
+      />
+    ),
   };
 
   return (
     <Box mt={100} mb={50} py={10} px={15} mx={2}>
-      <Heading fontFamily={'lato'} as="h2" size="xl" textAlign="center" mb={8}>
+      <Heading fontFamily={'lato'} as="h2" size="xl" textAlign="center" mb={10}>
         What Our Customers Say
       </Heading>
 
       {isMobile ? (
-        // Use slider for mobile view
         <Slider {...sliderSettings}>
           {reviews.map((review, index) => (
             <ReviewCard key={index} review={review} />
           ))}
         </Slider>
       ) : (
-        // Show grid for desktop view
         <SimpleGrid columns={{ base: 1, md: 3 }} spacing={8}>
           {reviews.map((review, index) => (
             <ReviewCard key={index} review={review} />
