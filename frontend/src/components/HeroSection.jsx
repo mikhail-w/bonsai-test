@@ -101,6 +101,7 @@ function HeroSection() {
                 width="auto"
                 size="sm"
                 bg="white"
+                color={'black'}
                 paddingX="1.5rem"
                 paddingY="1rem"
                 boxShadow="md"
