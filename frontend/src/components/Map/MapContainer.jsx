@@ -136,6 +136,7 @@ const MapContainer = ({
   ]);
 
   const handleMouseOver = marker => {
+    // console.log(marker);
     clearTimeout(hoverTimeoutRef.current); // Clear any existing timeout
     setSelectedMarker(marker); // Correctly use the setSelectedMarker function
     setInfoWindowVisible(true);

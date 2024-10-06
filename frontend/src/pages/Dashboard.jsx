@@ -5,7 +5,6 @@ import { logout } from '../actions/userActions';
 import { clearCart } from '../actions/cartActions';
 import { Link as RouterLink } from 'react-router-dom';
 import { ShoppingCart } from 'lucide-react';
-import BlogIcon from '../assets/icons/blogger-alt.svg';
 import { TbAugmentedReality } from 'react-icons/tb';
 import { GrUserAdmin } from 'react-icons/gr';
 import { MdProductionQuantityLimits } from 'react-icons/md';
@@ -45,11 +44,10 @@ import {
   FiMenu,
   FiChevronDown,
   FiHome,
-  FiTrendingUp,
   FiCompass,
   FiUser,
 } from 'react-icons/fi';
-import { FaBloggerB } from 'react-icons/fa6';
+import { LiaBlogSolid } from 'react-icons/lia';
 
 // Default public links
 const defaultLinks = [
@@ -57,7 +55,7 @@ const defaultLinks = [
   { name: 'My Info', icon: FiUser, path: '/profile/info' },
   { name: '3D Model', icon: Md3dRotation, path: '/profile/trending' },
   { name: 'Explore', icon: FiCompass, path: '/profile/explore' },
-  { name: 'Blog', icon: FaBloggerB, path: '/profile/blog' },
+  { name: 'Blog', icon: LiaBlogSolid, path: '/profile/blog' },
   { name: 'Plant ID', icon: HiOutlineViewfinderCircle, path: '/profile/id' },
   { name: 'AR', icon: TbAugmentedReality, path: '/profile/ar' },
   { name: 'Zen Master', icon: BiLeaf, path: '/profile/chat' },
@@ -77,6 +75,9 @@ const adminLinks = [
 
 // Sidebar content with user/admin section separation
 const SidebarContent = ({ onClose, links, userInfo, ...rest }) => {
+  const bgColor = useColorModeValue('white', 'gray.900'); // White in light mode, dark gray in dark mode
+  const textColor = useColorModeValue('black', 'white'); // Black text in light mode, white text in dark mode
+
   return (
     <Box
       transition="3s ease"
@@ -118,7 +119,7 @@ const SidebarContent = ({ onClose, links, userInfo, ...rest }) => {
         <>
           <Box position="relative" padding="10">
             <Divider borderWidth="2px" borderColor="green.500" />
-            <AbsoluteCenter bg="white" px="4">
+            <AbsoluteCenter bg={bgColor} px="4" color={textColor} px="4">
               Admin
             </AbsoluteCenter>
           </Box>

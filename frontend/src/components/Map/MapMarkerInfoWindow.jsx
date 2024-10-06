@@ -57,7 +57,13 @@ const MapMarkerInfoWindow = ({
         />
 
         {/* Title and Directions Button */}
-        <HStack justifyContent="space-between" width="100%" p={0} pt={1}>
+        <HStack
+          justifyContent="space-between"
+          width="100%"
+          p={0}
+          pt={1}
+          // boxShadow={'outline'}
+        >
           <Text
             fontWeight="bold"
             fontSize="md"
@@ -92,10 +98,15 @@ const MapMarkerInfoWindow = ({
         </HStack>
 
         {/* Rating Section */}
-        <HStack spacing={0.5}>{renderStars(selectedMarker.rating)}</HStack>
+        <HStack spacing={0.5}>
+          <Text>Rating: </Text>
+          {renderStars(selectedMarker.rating)}
+          <Text>{selectedMarker.rating}</Text>
+        </HStack>
         <Text fontSize="xs" color="gray.500">
           ({selectedMarker.reviewCount}) reviews
         </Text>
+        <Text>{selectedMarker.address}</Text>
       </VStack>
     </InfoWindow>
   );

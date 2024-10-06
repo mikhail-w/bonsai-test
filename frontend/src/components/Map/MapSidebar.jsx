@@ -126,6 +126,7 @@ const MapSidebar = ({
                     fontFamily="rale"
                     fontWeight="bold"
                     fontSize={{ base: 'md', md: 'lg' }}
+                    color={'black'}
                   >
                     {location.name}
                   </Text>
