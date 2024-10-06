@@ -189,7 +189,7 @@ const MapContainer = ({
               onMouseOver={() => handleMouseOver(marker)}
               onMouseOut={handleMouseOut}
               onClick={() => {
-                setSelectedMarker(marker); // Ensure the selected marker is updated when clicked
+                setSelectedMarker(marker);
               }}
             />
           ))}

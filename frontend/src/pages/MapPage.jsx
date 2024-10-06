@@ -77,6 +77,7 @@ function MapPage() {
   };
 
   const handleSearch = () => {
+    console.log('Search Term: ', searchTerm);
     if (searchTerm.trim()) {
       setMarkers([]);
       setLocationList([]);
