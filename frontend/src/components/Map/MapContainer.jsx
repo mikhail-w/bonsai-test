@@ -136,9 +136,8 @@ const MapContainer = ({
   ]);
 
   const handleMouseOver = marker => {
-    // console.log(marker);
-    clearTimeout(hoverTimeoutRef.current); // Clear any existing timeout
-    setSelectedMarker(marker); // Correctly use the setSelectedMarker function
+    clearTimeout(hoverTimeoutRef.current);
+    setSelectedMarker(marker);
     setInfoWindowVisible(true);
   };
 
@@ -189,6 +188,9 @@ const MapContainer = ({
               zIndex={selectedMarker?.id === marker.id ? 999 : 1} // Set zIndex based on selection
               onMouseOver={() => handleMouseOver(marker)}
               onMouseOut={handleMouseOut}
+              onClick={() => {
+                setSelectedMarker(marker); // Ensure the selected marker is updated when clicked
+              }}
             />
           ))}
           {selectedMarker && infoWindowVisible && selectedMarker.position && (

@@ -17,7 +17,6 @@ import {
 import { CheckCircleIcon } from '@chakra-ui/icons';
 
 const API_KEY = import.meta.env.VITE_PLANT_ID_API_KEY;
-console.log('API Key:', API_KEY);
 
 const PlantIdentifier = () => {
   const [image, setImage] = useState(null);

@@ -5,8 +5,9 @@ import {
   Text,
   Image,
   IconButton,
-  useColorModeValue,
+  Box,
   Icon,
+  Tooltip,
 } from '@chakra-ui/react';
 import { FaStar, FaDirections } from 'react-icons/fa';
 
@@ -49,11 +50,11 @@ const MapMarkerInfoWindow = ({
         <Image
           src={selectedMarker.photo}
           alt={`${selectedMarker.name} thumbnail`}
-          width="100%" // Make the image fill the full width of the container
+          width="100%"
           height="100px"
           objectFit="cover"
-          borderTopRadius="0" // Remove border-radius to make the image touch the top border
-          marginTop="0" // Ensure no margin at the top
+          borderTopRadius="0"
+          marginTop="0"
         />
 
         {/* Title and Directions Button */}
@@ -62,7 +63,7 @@ const MapMarkerInfoWindow = ({
           width="100%"
           p={0}
           pt={1}
-          // boxShadow={'outline'}
+          color={'black'}
         >
           <Text
             fontWeight="bold"
@@ -71,34 +72,44 @@ const MapMarkerInfoWindow = ({
             fontFamily="rale"
             isTruncated
             maxWidth="70%" // Limit the text width to 70% of the container
-            display="inline-block" // Ensures the text block respects its width
-            whiteSpace="nowrap" // Prevents text from wrapping to the next line
-            overflow="hidden" // Ensures overflow text is hidden
-            textOverflow="ellipsis" // Adds ellipsis (...) at the end of the truncated text
+            display="inline-block"
+            whiteSpace="normal"
+            overflow="visible"
+            wordwrap="break-word"
           >
             {selectedMarker.name}
           </Text>
-          <IconButton
-            icon={<FaDirections />}
-            size="lg"
-            variant="ghost"
-            colorScheme="green"
-            aria-label="Get Directions"
-            as="a"
-            href={directionsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            position="absolute"
-            right={4}
-            transition="transform 0.2s" // Smooth transition effect
-            _hover={{
-              transform: 'scale(1.5)', // Increase the size to 150% on hover
-            }}
-          />
+          <Box>
+            <Tooltip
+              label={'Get Directions'}
+              bg="white"
+              placement="top"
+              color="gray.800"
+              fontSize="md"
+            >
+              <IconButton
+                icon={<FaDirections />}
+                size="lg"
+                variant="ghost"
+                color="green"
+                aria-label="Get Directions"
+                as="a"
+                href={directionsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                position="absolute"
+                right={4}
+                transition="transform 0.2s" // Smooth transition effect
+                _hover={{
+                  transform: 'scale(1.6)', // Increase the size to 160% on hover
+                }}
+              />
+            </Tooltip>
+          </Box>
         </HStack>
 
         {/* Rating Section */}
-        <HStack spacing={0.5}>
+        <HStack spacing={0.5} color={'black'}>
           <Text>Rating: </Text>
           {renderStars(selectedMarker.rating)}
           <Text>{selectedMarker.rating}</Text>
@@ -106,7 +117,7 @@ const MapMarkerInfoWindow = ({
         <Text fontSize="xs" color="gray.500">
           ({selectedMarker.reviewCount}) reviews
         </Text>
-        <Text>{selectedMarker.address}</Text>
+        <Text color={'black'}>{selectedMarker.address}</Text>
       </VStack>
     </InfoWindow>
   );

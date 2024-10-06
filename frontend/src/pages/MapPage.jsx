@@ -111,10 +111,11 @@ function MapPage() {
         handleSearch={handleSearch}
         locationList={locationList}
         setCenter={setCenter}
-        panTo={panTo} // Pass the panTo method
+        panTo={panTo}
+        selectedMarker={selectedMarker}
         setSelectedMarker={setSelectedMarker}
         handleIconClick={handleIconClick}
-        handleSelectLocation={handleMouseOver} // Use the same function for clicking a location
+        handleSelectLocation={handleMouseOver}
       />
 
       <MapContainer
@@ -122,18 +123,18 @@ function MapPage() {
         searchTerm={searchTerm}
         center={center}
         markers={markers}
-        setMarkers={setMarkers} // Pass setMarkers here
+        setMarkers={setMarkers}
         locationList={locationList}
-        setLocationList={setLocationList} // Pass setLocationList here
-        handleMouseOver={handleMouseOver} // Unified mouse over event for marker and InfoWindow
-        handleMouseOut={handleMouseOut} // Unified mouse out event for marker and InfoWindow
-        handleInfoWindowCloseClick={handleInfoWindowCloseClick} // Handle close click event for InfoWindow
+        setLocationList={setLocationList}
+        handleMouseOver={handleMouseOver}
+        handleMouseOut={handleMouseOut}
+        handleInfoWindowCloseClick={handleInfoWindowCloseClick}
         selectedMarker={selectedMarker}
         setSelectedMarker={setSelectedMarker}
         infoWindowVisible={infoWindowVisible}
-        onInfoWindowMouseOver={handleInfoWindowMouseOver} // Handle mouse over for InfoWindow
-        onInfoWindowMouseOut={handleInfoWindowMouseOut} // Handle mouse out for InfoWindow
-        setPanTo={setPanTo} // Pass setPanTo to MapContainer
+        onInfoWindowMouseOver={handleInfoWindowMouseOver}
+        onInfoWindowMouseOut={handleInfoWindowMouseOut}
+        setPanTo={setPanTo}
       />
 
       <MapDetailsPanel

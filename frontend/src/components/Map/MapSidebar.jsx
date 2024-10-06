@@ -98,7 +98,10 @@ const MapSidebar = ({
                   } else {
                     setCenter(latLng);
                   }
-                  setSelectedMarker(location); // Set the selected marker
+                  setSelectedMarker({
+                    id: location.place_id,
+                    ...location,
+                  });
                 } else {
                   console.error(
                     'Location geometry or location is undefined:',
