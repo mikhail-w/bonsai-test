@@ -14,7 +14,6 @@ function SearchBar() {
   const navigate = useNavigate();
 
   const submitHandler = e => {
-    // console.log('SEARCH:', e);
     e.preventDefault();
     if (keyword.trim()) {
       navigate(`/products/?keyword=${keyword.trim()}&page=1`);
@@ -35,8 +34,10 @@ function SearchBar() {
             value={keyword}
             onChange={e => setKeyword(e.target.value)}
             variant="filled"
-            focusBorderColor="teal.400"
-            _placeholder={{ color: 'gray.500' }}
+            bg="gray.100" // Fixed background color
+            color="black" // Fixed text color
+            focusBorderColor="teal.400" // Fixed focus border color
+            _placeholder={{ color: 'gray.500' }} // Placeholder color remains the same
             borderRadius="md"
             py={1} // Thinner padding (top and bottom)
             px={3} // Thinner padding (left and right)
@@ -47,7 +48,10 @@ function SearchBar() {
               type="submit"
               aria-label="Search"
               icon={<SearchIcon />}
-              colorScheme="teagreenl"
+              color="black" // Fixed icon color
+              bg="gray.100" // Fixed background color
+              _hover={{ bg: 'gray.200' }} // Fixed hover color
+              _active={{ bg: 'gray.300' }} // Fixed active color
               variant="ghost"
               size="sm"
               onClick={submitHandler}
