@@ -8,7 +8,6 @@ import store from './store.js';
 
 import router from './router';
 import './index.css';
-import '../bootstrap.min.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <ChakraProvider theme={theme}>
