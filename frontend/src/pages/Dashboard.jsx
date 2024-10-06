@@ -49,6 +49,7 @@ import {
   FiCompass,
   FiUser,
 } from 'react-icons/fi';
+import { FaBloggerB } from 'react-icons/fa6';
 
 // Default public links
 const defaultLinks = [
@@ -56,7 +57,7 @@ const defaultLinks = [
   { name: 'My Info', icon: FiUser, path: '/profile/info' },
   { name: '3D Model', icon: Md3dRotation, path: '/profile/trending' },
   { name: 'Explore', icon: FiCompass, path: '/profile/explore' },
-  { name: 'Blog', icon: BlogIcon, path: '/profile/blog' },
+  { name: 'Blog', icon: FaBloggerB, path: '/profile/blog' },
   { name: 'Plant ID', icon: HiOutlineViewfinderCircle, path: '/profile/id' },
   { name: 'AR', icon: TbAugmentedReality, path: '/profile/ar' },
   { name: 'Zen Master', icon: BiLeaf, path: '/profile/chat' },

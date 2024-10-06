@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControl,
+  FormLabel,
+  Heading,
+  Input,
+  VStack,
+} from '@chakra-ui/react';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import FormContainer from '../components/FormContainer';
@@ -42,7 +51,7 @@ function UserEditPage() {
         setIsAdmin(user.isAdmin);
       }
     }
-  }, [user, userId, successUpdate, navigate]);
+  }, [user, userId, successUpdate, navigate, dispatch]);
 
   const submitHandler = e => {
     e.preventDefault();
@@ -50,11 +59,14 @@ function UserEditPage() {
   };
 
   return (
-    <div>
+    <Box>
       <Link to="/profile/admin/userlist">Go Back</Link>
 
       <FormContainer>
-        <h1>Edit User</h1>
+        <Heading as="h1" mb={4}>
+          Edit User
+        </Heading>
+
         {loadingUpdate && <Loader />}
         {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
 
@@ -63,43 +75,45 @@ function UserEditPage() {
         ) : error ? (
           <Message variant="danger">{error}</Message>
         ) : (
-          <Form onSubmit={submitHandler} className="mt-4">
-            <Form.Group controlId="name">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type="name"
-                placeholder="Enter name"
-                value={name}
-                onChange={e => setName(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
+          <Box as="form" onSubmit={submitHandler} mt={4}>
+            <VStack spacing={4} align="stretch">
+              <FormControl id="name">
+                <FormLabel>Name</FormLabel>
+                <Input
+                  type="text"
+                  placeholder="Enter name"
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                />
+              </FormControl>
 
-            <Form.Group controlId="email" className="mt-3">
-              <Form.Label>Email Address</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Enter Email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
+              <FormControl id="email">
+                <FormLabel>Email Address</FormLabel>
+                <Input
+                  type="email"
+                  placeholder="Enter email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                />
+              </FormControl>
 
-            <Form.Group controlId="isadmin" className="mt-3">
-              <Form.Check
-                type="checkbox"
-                label="Is Admin"
-                checked={isAdmin}
-                onChange={e => setIsAdmin(e.target.checked)}
-              ></Form.Check>
-            </Form.Group>
+              <FormControl id="isadmin">
+                <Checkbox
+                  isChecked={isAdmin}
+                  onChange={e => setIsAdmin(e.target.checked)}
+                >
+                  Is Admin
+                </Checkbox>
+              </FormControl>
 
-            <Button type="submit" variant="primary" className="mt-4">
-              Update
-            </Button>
-          </Form>
+              <Button type="submit" colorScheme="blue" mt={4}>
+                Update
+              </Button>
+            </VStack>
+          </Box>
         )}
       </FormContainer>
-    </div>
+    </Box>
   );
 }
 

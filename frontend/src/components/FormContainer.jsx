@@ -1,14 +1,12 @@
 import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Box, Container } from '@chakra-ui/react';
 
 function FormContainer({ children }) {
   return (
-    <Container>
-      <Row className="justify-content-md-center">
-        <Col xs={12} md={6}>
-          {children}
-        </Col>
-      </Row>
+    <Container maxW="container.md" centerContent>
+      <Box w="100%" maxW="md" p={4}>
+        {children}
+      </Box>
     </Container>
   );
 }
