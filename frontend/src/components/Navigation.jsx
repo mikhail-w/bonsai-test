@@ -27,6 +27,7 @@ import {
   useDisclosure,
   useToast,
 } from '@chakra-ui/react';
+import ColorModeSwitcher from './ColorModeSwitcher';
 import { Link as ChakraLink } from '@chakra-ui/react';
 import { FaUser, FaBlog, FaShoppingCart, FaStore } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
@@ -408,7 +409,7 @@ const Navigation = () => {
                           </Flex>
                         </RouterLink>
                       ) : (
-                        // Non-Shop links (e.g., Login, Blog, Cart)
+                        // Non-Shop links (e.g.,  Blog, Cart)
                         <RouterLink to={link.url} onClick={handleLinkClick}>
                           <Flex
                             // as={RouterLink}
@@ -458,6 +459,18 @@ const Navigation = () => {
                   zIndex={3000}
                 >
                   <SearchBar />
+                </Box>
+                <Box
+                  position="absolute"
+                  width={200}
+                  top={10}
+                  right={-150}
+                  display="flex"
+                  alignItems="center"
+                  mt="2rem"
+                  zIndex={3000}
+                >
+                  <ColorModeSwitcher />
                 </Box>
               </Box>
             )}

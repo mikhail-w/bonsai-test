@@ -40,6 +40,7 @@ import {
   Divider,
   AbsoluteCenter,
 } from '@chakra-ui/react';
+import ColorModeSwitcher from '../components/ColorModeSwitcher';
 import {
   FiMenu,
   FiChevronDown,
@@ -234,6 +235,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
       </Text>
 
       <HStack spacing={{ base: '3', md: '6' }}>
+        <ColorModeSwitcher />
         {userInfo == null || !userInfo.isAdmin ? (
           <RouterLink
             to="/cart"

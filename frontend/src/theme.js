@@ -19,14 +19,6 @@ const theme = extendTheme({
       dark: '#28b485',
     },
   },
-  styles: {
-    global: {
-      body: {
-        bg: 'white', // Ensure that the background is white
-        color: 'black',
-      },
-    },
-  },
 });
 
 export default theme;
