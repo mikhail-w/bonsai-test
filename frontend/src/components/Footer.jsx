@@ -1,44 +1,42 @@
+import React from 'react';
 import {
   Box,
-  chakra,
   Container,
   Stack,
   Text,
   Link,
-  VisuallyHidden,
   Button,
-  IconButton,
   useColorModeValue,
   Image,
-  HStack,
   Flex,
 } from '@chakra-ui/react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FaFacebook, FaInstagram, FaTwitter } from 'react-icons/fa';
-import bonsaiLogo from '../assets/images/logo.png'; // replace with your logo path
+import bonsaiLogo from '../assets/images/logo.png'; // Replace with your logo path
 
 const withoutSidebarRoutes = ['/login', '/register', '/profile'];
 
 const SocialButton = ({ label, href, icon }) => {
+  const iconColor = useColorModeValue('green.700', 'gray.300');
   return (
     <Button
       as={Link}
       href={href}
       bg={useColorModeValue('green.50', 'gray.700')}
       rounded="full"
-      w={10}
-      h={10}
+      w={12} // Larger button size
+      h={12} // Larger button size
       display="inline-flex"
       alignItems="center"
       justifyContent="center"
       transition="background 0.3s ease"
       _hover={{ bg: useColorModeValue('green.100', 'gray.600') }}
       aria-label={label}
-      target="_blank" // This opens the link in a new tab
+      target="_blank"
       rel="noopener noreferrer"
     >
-      <VisuallyHidden>{label}</VisuallyHidden>
-      {icon}
+      {icon && React.cloneElement(icon, { size: '24px', color: iconColor })}{' '}
+      {/* Bigger icons */}
     </Button>
   );
 };
@@ -55,24 +53,29 @@ function Footer() {
         top: 0,
         behavior: 'smooth',
       });
-    }, 100); // A slight delay to ensure the page navigates before scrolling
+    }, 100);
   };
+
+  const textColor = useColorModeValue('green.700', 'green.300');
+  const hoverColor = useColorModeValue('white', 'gray.300');
+  const backgroundColor = useColorModeValue('#353238', '#2D3748');
+  const logoTextColor = useColorModeValue('green.700', 'green.300');
 
   return (
     <Box
-      bg={useColorModeValue('#353238', '#2D3748')}
+      bg={backgroundColor}
       color={useColorModeValue('gray.700', 'gray.200')}
       mt={50}
     >
       <Container as={Stack} maxW="6xl" py={10} spacing={8}>
         <Stack direction="row" align="center" justify="space-between">
-          <Flex alignItems="end">
+          <Flex alignItems="center">
             <Image src={bonsaiLogo} alt="Bonsai Logo" boxSize="50px" />
             <Text
-              fontFamily={'lato'}
+              fontFamily="lato"
               fontWeight="bold"
               fontSize="xl"
-              color="green.700"
+              color={logoTextColor}
               ml={4}
               transform="translateY(5.5px)"
             >
@@ -101,33 +104,33 @@ function Footer() {
 
         <Stack direction="row" justify="center" spacing={4}>
           <Link
-            fontFamily={'lato'}
-            color="green.700"
-            _hover={{ textDecoration: 'underline', color: 'white' }}
+            fontFamily="lato"
+            color={textColor}
+            _hover={{ textDecoration: 'underline', color: hoverColor }}
             onClick={() => handleNavigation('/about')}
           >
             About Us
           </Link>
           <Link
-            fontFamily={'lato'}
-            color="green.700"
-            _hover={{ textDecoration: 'underline', color: 'white' }}
+            fontFamily="lato"
+            color={textColor}
+            _hover={{ textDecoration: 'underline', color: hoverColor }}
             onClick={() => handleNavigation('/products')}
           >
             Shop
           </Link>
           <Link
-            fontFamily={'lato'}
-            color="green.700"
-            _hover={{ textDecoration: 'underline', color: 'white' }}
+            fontFamily="lato"
+            color={textColor}
+            _hover={{ textDecoration: 'underline', color: hoverColor }}
             onClick={() => handleNavigation('/contact')}
           >
             Contact
           </Link>
           <Link
-            fontFamily={'lato'}
-            color="green.700"
-            _hover={{ textDecoration: 'underline', color: 'white' }}
+            fontFamily="lato"
+            color={textColor}
+            _hover={{ textDecoration: 'underline', color: hoverColor }}
             onClick={() => handleNavigation('/blog')}
           >
             Blog
@@ -135,10 +138,10 @@ function Footer() {
         </Stack>
 
         <Text
-          fontFamily={'lato'}
+          fontFamily="lato"
           textAlign="center"
           fontSize="sm"
-          color="white"
+          color={hoverColor}
         >
           © {new Date().getFullYear()} Bonsai. All rights reserved.
         </Text>
