@@ -45,7 +45,10 @@ const Globe = () => {
         {/* Chakra-based spinner outside of Canvas */}
         <Suspense fallback={<LoadingFallback />}>
           {/* R3F Canvas, containing only Three.js-compatible components */}
-          <Canvas className="earthContainer">
+          <Canvas
+            className="earthContainer"
+            camera={{ position: [0, 0, 8] }} // Default zoom level (adjust the Z value for zoom)
+          >
             <ambientLight intensity={1} />
             <Earth /> {/* Earth model */}
             <CustomOrbitControls minDistance={minZoom} maxDistance={maxZoom} />
