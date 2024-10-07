@@ -15,6 +15,7 @@ import MapDrawer from '../components/Map/MapDrawer';
 
 function MapPage() {
   const [markers, setMarkers] = useState([]);
+  const [activeMarker, setActiveMarker] = useState(null); // Track active marker
   const [locationList, setLocationList] = useState([]);
   const [center, setCenter] = useState({ lat: 0, lng: 0 });
   const [error, setError] = useState('');
@@ -78,6 +79,7 @@ function MapPage() {
 
   const handleSearch = () => {
     console.log('Search Term: ', searchTerm);
+    setSearchTerm(searchTerm);
     if (searchTerm.trim()) {
       setMarkers([]);
       setLocationList([]);
@@ -85,10 +87,10 @@ function MapPage() {
   };
 
   const handleIconClick = location => {
-    setSelectedLocation({
-      ...location,
-      photo: location.photos ? location.photos[0].getUrl() : null, // Ensure the photo is included
-    });
+    console.log('Selected Marker:', location);
+    setSelectedLocation(location);
+    const selectedMarker = markers.find(marker => marker.id === location.id);
+    setActiveMarker(selectedMarker); // Update the active marker when a location link is clicked
     setPanelOpen(true);
   };
 
@@ -113,10 +115,18 @@ function MapPage() {
         locationList={locationList}
         setCenter={setCenter}
         panTo={panTo}
-        selectedMarker={selectedMarker}
         setSelectedMarker={setSelectedMarker}
         handleIconClick={handleIconClick}
         handleSelectLocation={handleMouseOver}
+      />
+
+      <MapDrawer
+        isOpen={isOpen}
+        onClose={onClose}
+        locationList={locationList}
+        setCenter={setCenter}
+        setSelectedMarker={setSelectedMarker}
+        handleIconClick={handleIconClick}
       />
 
       <MapContainer
@@ -136,19 +146,13 @@ function MapPage() {
         onInfoWindowMouseOver={handleInfoWindowMouseOver}
         onInfoWindowMouseOut={handleInfoWindowMouseOut}
         setPanTo={setPanTo}
+        activeMarker={activeMarker} // Pass the active marker state
       />
 
       <MapDetailsPanel
         selectedLocation={selectedLocation}
         closePanel={closePanel}
         isPanelOpen={isPanelOpen}
-      />
-
-      <MapDrawer
-        isOpen={isOpen}
-        onClose={onClose}
-        locationList={locationList}
-        setCenter={setCenter}
       />
 
       {isMobile && (
@@ -160,6 +164,8 @@ function MapPage() {
           colorScheme="green"
           onClick={onOpen}
           zIndex="1000"
+          borderRadius={0}
+          height={'50px'}
         >
           Show Locations
         </Button>

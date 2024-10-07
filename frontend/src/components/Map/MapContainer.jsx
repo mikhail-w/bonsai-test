@@ -24,6 +24,7 @@ const MapContainer = ({
   setPanTo,
   selectedMarker, // Receiving selectedMarker
   setSelectedMarker, // Receiving setSelectedMarker
+  activeMarker, // Receiving activeMarker
 }) => {
   const mapRef = useRef(null);
   const { isLoaded, loadError } = useMapLogic();
@@ -185,7 +186,7 @@ const MapContainer = ({
                     : CustomMarker, // Change icon based on selection
                 scaledSize: new window.google.maps.Size(38, 95),
               }}
-              zIndex={selectedMarker?.id === marker.id ? 999 : 1} // Set zIndex based on selection
+              zIndex={selectedMarker?.id === marker.id ? 999 : 1}
               onMouseOver={() => handleMouseOver(marker)}
               onMouseOut={handleMouseOut}
               onClick={() => {

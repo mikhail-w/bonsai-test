@@ -15,7 +15,14 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 
-const MapDrawer = ({ isOpen, onClose, locationList, setCenter }) => {
+const MapDrawer = ({
+  isOpen,
+  onClose,
+  locationList,
+  setCenter,
+  handleIconClick,
+  setSelectedMarker,
+}) => {
   return (
     <Drawer placement="bottom" onClose={onClose} isOpen={isOpen}>
       <DrawerOverlay />
@@ -39,6 +46,10 @@ const MapDrawer = ({ isOpen, onClose, locationList, setCenter }) => {
                   setCenter({
                     lat: location.geometry.location.lat(),
                     lng: location.geometry.location.lng(),
+                  });
+                  setSelectedMarker({
+                    id: location.place_id,
+                    ...location,
                   });
                   onClose(); // Close the drawer after selecting a location
                 }}
