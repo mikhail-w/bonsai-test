@@ -62,7 +62,7 @@ const Product = ({ product }) => {
             height="300px"
             width="100%"
             transition="all 0.3s ease"
-            _hover={{ transform: 'scale(1.1)' }}
+            // _hover={{ transform: 'scale(1.1)', }}
           />
         </Link>
         <Divider />

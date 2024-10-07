@@ -24,8 +24,8 @@ const SocialButton = ({ label, href, icon }) => {
       href={href}
       bg={useColorModeValue('green.50', 'gray.700')}
       rounded="full"
-      w={12} // Larger button size
-      h={12} // Larger button size
+      w={{ base: 8, md: 12 }}
+      h={{ base: 8, md: 12 }}
       display="inline-flex"
       alignItems="center"
       justifyContent="center"
@@ -35,8 +35,13 @@ const SocialButton = ({ label, href, icon }) => {
       target="_blank"
       rel="noopener noreferrer"
     >
-      {icon && React.cloneElement(icon, { size: '24px', color: iconColor })}{' '}
-      {/* Bigger icons */}
+      {icon &&
+        React.cloneElement(icon, {
+          size: '16px',
+          md: '24px',
+          color: iconColor,
+        })}
+      {/* Responsive icon size: smaller in mobile */}
     </Button>
   );
 };

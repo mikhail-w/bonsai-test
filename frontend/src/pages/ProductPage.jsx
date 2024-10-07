@@ -23,6 +23,12 @@ import {
   ModalFooter,
   useDisclosure,
   Icon,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment, useGLTF } from '@react-three/drei';
@@ -41,15 +47,13 @@ import BackButton from '../components/BackButton';
 
 // Component to render the 3D Model inside a Modal
 const Model = () => {
-  const { scene } = useGLTF('../../public/ficus.glb'); // Ensure this path is correct
+  const { scene } = useGLTF('../../public/ficus.glb');
   return (
     <Canvas camera={{ position: [0, 0, 1] }}>
-      {' '}
-      {/* Adjust camera position */}
       <OrbitControls enableZoom={true} minDistance={0.6} maxDistance={3} />
       <ambientLight intensity={0.5} />
       <directionalLight position={[5, 5, 5]} />
-      <primitive object={scene} scale={0.8} /> {/* Adjust scale as needed */}
+      <primitive object={scene} scale={0.8} />
       <Environment preset="sunset" />
     </Canvas>
   );
@@ -86,7 +90,7 @@ const ProductButtons = () => {
             p={3}
             textAlign="center"
             flex="1"
-            h="80px" // Adjusted height to fit the max width
+            h="80px"
             cursor="pointer"
             _hover={{ boxShadow: 'lg' }}
           >
@@ -112,7 +116,7 @@ const ProductButtons = () => {
             p={3}
             textAlign="center"
             flex="1"
-            h="80px" // Adjusted height to fit the max width
+            h="80px"
             cursor="pointer"
             _hover={{ boxShadow: 'lg' }}
           >
@@ -128,15 +132,12 @@ const ProductButtons = () => {
         </HStack>
       </Flex>
 
-      {/* 3D Model Modal */}
       <Modal isOpen={isOpen} onClose={onClose} size="xl">
         <ModalOverlay />
         <ModalContent top="10%">
           <ModalHeader>3D Model Viewer</ModalHeader>
           <ModalCloseButton />
           <ModalBody h="500px" overflowY="scroll">
-            {' '}
-            {/* Set a fixed height and allow scrolling */}
             <Box w="100%" h="500px">
               <ThreeDModelViewer />
             </Box>
@@ -149,7 +150,6 @@ const ProductButtons = () => {
         </ModalContent>
       </Modal>
 
-      {/* QR Code Modal */}
       <Modal isOpen={isQrOpen} onClose={onQrClose} size="md">
         <ModalOverlay />
         <ModalContent>
@@ -168,8 +168,6 @@ const ProductButtons = () => {
     </>
   );
 };
-
-// Other components (ProductImage, ProductDetails, etc.) remain unchanged
 
 // WriteReviewForm component
 const WriteReviewForm = ({
@@ -267,69 +265,96 @@ const ProductDetails = ({ product }) => (
   </VStack>
 );
 
-const ProductPurchaseOptions = ({ product, qty, setQty, addToCartHandler }) => (
-  <VStack
-    spacing={6}
-    align="stretch"
-    w="full"
-    maxH={300}
-    p={{ base: 4, md: 6 }}
-    shadow="lg"
-    borderWidth="1px"
-    borderRadius="lg"
-    bg="white"
-  >
-    <VStack spacing={6} align="stretch">
-      <Flex justify="space-between">
-        <Text fontFamily="lato">Price:</Text>
-        <Text fontFamily="lato" fontWeight="bold">
-          ${product.price}
-        </Text>
-      </Flex>
+const ProductPurchaseOptions = ({ product, qty, setQty, addToCartHandler }) => {
+  const handleQtyChange = valueString => {
+    const value = Number(valueString);
+    if (value <= product.countInStock) {
+      setQty(value);
+    } else {
+      setQty(product.countInStock); // Prevent setting qty higher than stock
+    }
+  };
 
-      <Flex justify="space-between">
-        <Text fontFamily="lato">Status:</Text>
-        <Text>
-          {product.countInStock > 0 ? (
-            <Badge fontFamily="lato" colorScheme="green">
-              In Stock
-            </Badge>
-          ) : (
-            <Badge fontFamily="lato" colorScheme="red">
-              Out of Stock
-            </Badge>
-          )}
-        </Text>
-      </Flex>
-
-      {product.countInStock > 0 && (
-        <HStack spacing={4}>
-          <Text fontFamily="lato">Qty</Text>
-          <Select
-            value={qty}
-            onChange={e => setQty(e.target.value)}
-            borderColor="gray.300"
-          >
-            {[...Array(product.countInStock).keys()].map(x => (
-              <option key={x + 1} value={x + 1}>
-                {x + 1}
-              </option>
-            ))}
-          </Select>
-        </HStack>
-      )}
-
-      <Button
-        colorScheme="green"
-        onClick={addToCartHandler}
-        isDisabled={product.countInStock === 0}
-        size="lg"
-      >
-        Add to Cart
-      </Button>
+  return (
+    <VStack
+      spacing={6}
+      align="stretch"
+      w="full"
+      maxH={300}
+      p={{ base: 4, md: 6 }}
+      shadow="lg"
+      borderWidth="1px"
+      borderRadius="lg"
+      bg="white"
+    >
+      <VStack spacing={6} align="stretch">
+        <Flex justify="space-between">
+          <Text color={'black'} fontFamily="lato">
+            Price:
+          </Text>
+          <Text color={'black'} fontFamily="lato" fontWeight="bold">
+            ${product.price}
+          </Text>
+        </Flex>
+        <Flex justify="space-between">
+          <Text color={'black'} fontFamily="lato">
+            Status:
+          </Text>
+          <Text>
+            {product.countInStock > 0 ? (
+              <Badge fontFamily="lato" colorScheme="green">
+                In Stock
+              </Badge>
+            ) : (
+              <Badge fontFamily="lato" colorScheme="red">
+                Out of Stock
+              </Badge>
+            )}
+          </Text>
+        </Flex>
+        {product.countInStock > 0 && (
+          <HStack spacing={4}>
+            <Text color={useColorModeValue('black', 'black')} fontFamily="lato">
+              Qty
+            </Text>
+            <NumberInput
+              value={qty}
+              onChange={handleQtyChange}
+              min={1}
+              max={product.countInStock}
+              clampValueOnBlur={false}
+              size="md"
+              borderColor={useColorModeValue('gray.300', 'gray.600')}
+            >
+              <NumberInputField
+                bg={useColorModeValue('white', 'gray.700')}
+                color={useColorModeValue('black', 'white')}
+              />
+              <NumberInputStepper>
+                <NumberIncrementStepper
+                  borderColor={useColorModeValue('gray.300', 'gray.600')}
+                  color={useColorModeValue('black', 'white')}
+                />
+                <NumberDecrementStepper
+                  borderColor={useColorModeValue('gray.300', 'gray.600')}
+                  color={useColorModeValue('black', 'white')}
+                />
+              </NumberInputStepper>
+            </NumberInput>
+          </HStack>
+        )}
+        <Button
+          colorScheme="green"
+          onClick={addToCartHandler}
+          isDisabled={product.countInStock === 0}
+          size="lg"
+        >
+          Add to Cart
+        </Button>
+      </VStack>
     </VStack>
-  </VStack>
-);
+  );
+};
 
 const ProductReviews = ({
   product,
@@ -348,7 +373,7 @@ const ProductReviews = ({
       Reviews
     </Heading>
     {product.reviews.length === 0 && (
-      <Box w="100%" display="flex" justifyContent="center" maxW="600px">
+      <Box w="100%" display="flex" justifyContent="center" maxW="600px" mb={10}>
         <Message variant="info" w="100%" textAlign="center">
           No Reviews
         </Message>
@@ -366,7 +391,7 @@ const ProductReviews = ({
         >
           <VStack align="start" spacing={2}>
             <Flex justify="space-between" w="full">
-              <Text fontFamily="lato" fontWeight="bold">
+              <Text color={'black'} fontFamily="lato" fontWeight="bold">
                 {review.name}
               </Text>
               <Rating value={review.rating} color="#008b4a" />
@@ -374,7 +399,9 @@ const ProductReviews = ({
             <Text fontFamily="lato" fontSize="sm" color="gray.500">
               {review.createdAt.substring(0, 10)}
             </Text>
-            <Text fontFamily="lato">{review.comment}</Text>
+            <Text color={'black'} fontFamily="lato">
+              {review.comment}
+            </Text>
           </VStack>
         </Box>
       ))}
@@ -411,22 +438,20 @@ const ProductReviews = ({
 
 const ProductImageAndButtons = ({ image, name }) => (
   <Flex
-    direction={{ base: 'column', md: 'column' }} // Stack vertically on mobile
+    direction={{ base: 'column', md: 'column' }}
     align="center"
     justify="center"
     maxWidth={370}
-    mb={10}
-    // boxShadow={'outline'}
+    // mb={10}
   >
     {/* Product Image */}
     <ProductImage image={image} name={name} />
 
-    {/* Product Buttons - Directly below the image */}
+    {/* Product Buttons */}
     <ProductButtons />
   </Flex>
 );
 
-// Now use this component inside the ProductPage component where the ProductImage and ProductButtons are used together
 function ProductPage() {
   const [qty, setQty] = useState(1);
   const [rating, setRating] = useState(0);
@@ -480,7 +505,6 @@ function ProductPage() {
         maxW="container.xl"
         py={{ base: 4, md: 10 }}
         minH="100vh"
-        // boxShadow={'outline'}
       >
         <Box>
           {loading ? (
