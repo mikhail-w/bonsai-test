@@ -13,7 +13,9 @@ function Paginate({ page, pages, keyword = '', isAdmin = false }) {
   // Handle page click
   const handleClick = pageNumber => {
     if (isAdmin) {
-      navigate(`/admin/productlist/?keyword=${keyword}&page=${pageNumber}`);
+      navigate(
+        `/profile/admin/productlist/?keyword=${keyword}&page=${pageNumber}`
+      );
     } else {
       navigate(`?keyword=${keyword}&page=${pageNumber}`);
     }
