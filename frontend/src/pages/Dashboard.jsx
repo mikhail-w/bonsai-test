@@ -119,7 +119,7 @@ const SidebarContent = ({ onClose, links, userInfo, ...rest }) => {
         <>
           <Box position="relative" padding="10">
             <Divider borderWidth="2px" borderColor="green.500" />
-            <AbsoluteCenter bg={bgColor} px="4" color={textColor} px="4">
+            <AbsoluteCenter bg={bgColor} px="4" color={textColor}>
               Admin
             </AbsoluteCenter>
           </Box>

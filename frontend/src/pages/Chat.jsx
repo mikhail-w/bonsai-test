@@ -13,8 +13,6 @@ import {
   useToast,
   Flex,
 } from '@chakra-ui/react';
-import Monstera from '../assets/images/monstera.jpg';
-// import c1 from '../assets/images/hero.jpg';
 import c1 from '../assets/images/h3.png';
 
 function Chat() {
