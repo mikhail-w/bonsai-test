@@ -71,10 +71,18 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     reviews = serializers.SerializerMethodField(read_only=True)
+    image_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
         fields = "__all__"
+
+    def get_image_url(self, obj):
+        # If image exists, return the media URL
+        if obj.image and hasattr(obj.image, "url"):
+            return obj.image.url
+        # Otherwise, return the default static image path
+        return "/static/images/placeholder.jpg"
 
     def get_reviews(self, obj):
         reviews = obj.review_set.all()

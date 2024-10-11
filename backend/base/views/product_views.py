@@ -130,7 +130,12 @@ def uploadImage(request):
     product_id = data["product_id"]
     product = Product.objects.get(_id=product_id)
 
-    product.image = request.FILES.get("image")
+    if "image" in request.FILES:
+        product.image = request.FILES["image"]
+        product.image.name = (
+            "static/images/" + product.image.name
+        )  # Specify the static/images directory
+
     product.save()
 
     return Response("Image was uploaded")
