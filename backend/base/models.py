@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
-    avatar = models.ImageField(null=True, blank=True, default="/avatar.png")
+    avatar = models.ImageField(null=True, blank=True, default="/avatar.jpg")
 
     def __str__(self):
         return self.user.email
@@ -14,7 +14,7 @@ class UserProfile(models.Model):
 class Product(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200, null=True, blank=True)
-    image = models.ImageField(null=True, blank=True, default="/placeholder.png")
+    image = models.ImageField(null=True, blank=True, default="/placeholder.jpg")
     _type = models.CharField(max_length=200, null=True, blank=True)
     category = models.CharField(max_length=200, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
