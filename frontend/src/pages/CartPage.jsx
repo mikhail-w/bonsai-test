@@ -15,6 +15,12 @@ import {
   Center,
   VStack,
   HStack,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInputStepper,
+  NumberInputField,
+  NumberInput,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { addToCart, removeFromCart } from '../actions/cartActions';
 // import EmptyCart from '../assets/images/emptycart2.png';
@@ -32,6 +38,11 @@ function CartPage() {
   const { userInfo } = userLogin;
   const cart = useSelector(state => state.cart);
   const { cartItems } = cart;
+
+  const textColor = useColorModeValue('black', 'white');
+  const borderColor = useColorModeValue('gray.300', 'gray.600');
+  const backgroundColor = useColorModeValue('white', 'gray.700');
+  const subtotalColor = useColorModeValue('black', 'white');
 
   useEffect(() => {
     if (productId) {
@@ -72,7 +83,7 @@ function CartPage() {
       pt={{ base: 0, md: 0 }}
     >
       <Center flexDirection="column" mt={12} mb={12}>
-        <Heading as="h1" size="xl" mb={6} fontFamily="lato">
+        <Heading as="h1" size="xl" mb={6} fontFamily="lato" color={textColor}>
           Shopping Cart
         </Heading>
       </Center>
@@ -85,7 +96,7 @@ function CartPage() {
             mb={6}
             boxSize="250px"
           />
-          <Text fontFamily={'lato'} mb={4} fontSize="lg" color="gray.600">
+          <Text fontFamily={'lato'} mb={4} fontSize="lg" color={textColor}>
             Your cart is currently empty
           </Text>
           <Button
@@ -131,7 +142,7 @@ function CartPage() {
                 borderRadius="lg" // Rounded corners for the box
                 mb={6} // Margin bottom between items
                 shadow="md" // Box shadow for a slightly elevated look
-                bg="white" // White background
+                bg={backgroundColor}
               >
                 <Stack
                   direction={{ base: 'column', md: 'row' }} // Column for mobile, row for larger screens
@@ -153,33 +164,40 @@ function CartPage() {
                     <VStack align="start" spacing={3}>
                       {/* Product Name */}
                       <Link to={`/product/${item.product}`}>
-                        <Text fontSize="lg" fontWeight="bold" fontFamily="lato">
+                        <Text
+                          fontSize="lg"
+                          fontWeight="bold"
+                          fontFamily="lato"
+                          color={textColor}
+                        >
                           {item.name}
                         </Text>
                       </Link>
 
                       {/* Product Price */}
-                      <Text fontFamily={'lato'} fontSize="lg" color="gray.500">
+                      <Text fontFamily={'lato'} fontSize="lg" color={textColor}>
                         ${item.price}
                       </Text>
 
                       {/* Quantity Selector */}
-                      <Select
+                      <NumberInput
                         value={item.qty}
-                        onChange={e =>
-                          dispatch(
-                            addToCart(item.product, Number(e.target.value))
-                          )
+                        min={1}
+                        max={item.countInStock}
+                        onChange={valueString =>
+                          dispatch(addToCart(item.product, Number(valueString)))
                         }
+                        clampValueOnBlur={false}
+                        size="md"
                         maxW="100px"
-                        borderColor="gray.300"
+                        borderColor={borderColor}
                       >
-                        {[...Array(item.countInStock).keys()].map(x => (
-                          <option key={x + 1} value={x + 1}>
-                            {x + 1}
-                          </option>
-                        ))}
-                      </Select>
+                        <NumberInputField />
+                        <NumberInputStepper>
+                          <NumberIncrementStepper />
+                          <NumberDecrementStepper />
+                        </NumberInputStepper>
+                      </NumberInput>
                     </VStack>
                   </HStack>
 
@@ -207,16 +225,28 @@ function CartPage() {
               borderWidth="1px"
               borderRadius="lg"
               shadow="md"
-              bg="white"
+              bg={backgroundColor}
             >
-              <Text fontFamily={'lato'} fontSize="lg" fontWeight="bold" mb={4}>
+              <Text
+                fontFamily={'lato'}
+                fontSize="lg"
+                fontWeight="bold"
+                mb={4}
+                color={subtotalColor}
+              >
                 Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)}{' '}
                 {cartItems.reduce((acc, item) => acc + item.qty, 0) === 1
                   ? 'item'
                   : 'items'}
                 )
               </Text>
-              <Text fontFamily={'lato'} fontSize="2xl" fontWeight="bold" mb={6}>
+              <Text
+                fontFamily={'lato'}
+                fontSize="2xl"
+                fontWeight="bold"
+                mb={6}
+                color={subtotalColor}
+              >
                 $
                 {cartItems
                   .reduce((acc, item) => acc + item.qty * item.price, 0)

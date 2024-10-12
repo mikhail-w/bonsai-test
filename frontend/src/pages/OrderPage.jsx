@@ -10,6 +10,7 @@ import {
   Button,
   Divider,
   Badge,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -46,6 +47,13 @@ function OrderPage() {
 
   const userLogin = useSelector(state => state.userLogin);
   const { userInfo } = userLogin;
+
+  // Define colors using useColorModeValue to toggle colors based on theme
+  const bgColor = useColorModeValue('white', 'gray.800');
+  const textColor = useColorModeValue('black', 'white');
+  const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const badgeColorSchemePaid = useColorModeValue('green', 'green');
+  const badgeColorSchemeUnpaid = useColorModeValue('red', 'red');
 
   if (!loading && !error) {
     order.itemsPrice = order.orderItems
@@ -122,9 +130,6 @@ function OrderPage() {
       mt={130}
       mb={100}
       mx={5}
-
-      // px={10}
-      // boxShadow={'outline'}
     >
       {/* Shipping, Payment Method, Ordered Items */}
       <VStack
@@ -136,7 +141,7 @@ function OrderPage() {
         mb={10}
       >
         {/* Shipping Section */}
-        <Box bg="white" p={1} w="full" mb={-5}>
+        <Box bg={bgColor} p={1} w="full" mb={-5}>
           <Heading mb={4}>Shipping</Heading>
           <Text fontFamily={'lato'} fontWeight={300}>
             <strong>Name: </strong> {order.user.name}
@@ -151,19 +156,19 @@ function OrderPage() {
             {order.shippingAddress.postalCode}, {order.shippingAddress.country}
           </Text>
           {order.isDelivered ? (
-            <Badge colorScheme="green" px={2}>
+            <Badge colorScheme="green" mt={3} px={2}>
               Delivered on {order.deliveredAt}
             </Badge>
           ) : (
-            <Badge colorScheme="red" px={2}>
+            <Badge colorScheme="red" mt={3} px={2}>
               Not Delivered
             </Badge>
           )}
-          <Divider orientation="horizontal" color={'black'} />
+          <Divider orientation="horizontal" color={'black'} p={2} />
         </Box>
 
         {/* Payment Method */}
-        <Box bg="white" p={1} w="full" mb={-5}>
+        <Box bg={bgColor} p={1} w="full" mb={-5}>
           <Heading as="h3" size="lg" mb={4}>
             Payment Method
           </Heading>
@@ -171,19 +176,19 @@ function OrderPage() {
             <strong>Method: </strong> {order.paymentMethod}
           </Text>
           {order.isPaid ? (
-            <Badge colorScheme="green" px={2}>
+            <Badge colorScheme="green" mt={3} px={2}>
               Paid on {order.paidAt}
             </Badge>
           ) : (
-            <Badge colorScheme="red" px={2}>
+            <Badge colorScheme="red" mt={3} px={2}>
               Not Paid
             </Badge>
           )}
-          <Divider orientation="horizontal" color={'black'} />
+          <Divider orientation="horizontal" color={'black'} p={2} />
         </Box>
 
         {/* Ordered Items */}
-        <Box bg="white" p={1} w="full">
+        <Box bg={bgColor} p={1} w="full">
           <Heading as="h3" size="lg" mb={4}>
             Ordered Items
           </Heading>
@@ -218,28 +223,28 @@ function OrderPage() {
       </VStack>
 
       {/* Order Summary */}
-      <Box w="full" maxW="sm" bg="white" p={6} shadow="md" rounded="md">
+      <Box w="full" maxW="sm" bg={bgColor} p={6} shadow="md" rounded="md">
         <Heading as="h3" size="lg" mb={4}>
           Order Summary
         </Heading>
-        <Divider mb={4} />
+        <Divider mb={4} borderColor={borderColor} />
         <VStack spacing={4} align="stretch">
           <Flex
             justify="space-between"
             borderBottom="1px solid"
-            borderColor="gray.200"
+            borderColor={borderColor}
           >
-            <Text fontWeight={300} fontFamily={'lato'}>
+            <Text fontWeight={300} fontFamily={'lato'} color={textColor}>
               Items:
             </Text>
-            <Text fontWeight={300} fontFamily={'lato'}>
+            <Text fontWeight={300} fontFamily={'lato'} color={textColor}>
               ${order.itemsPrice}
             </Text>
           </Flex>
           <Flex
             justify="space-between"
             borderBottom="1px solid"
-            borderColor="gray.200"
+            borderColor={borderColor}
           >
             <Text fontWeight={300} fontFamily={'lato'}>
               Shipping:
@@ -251,7 +256,7 @@ function OrderPage() {
           <Flex
             justify="space-between"
             borderBottom="1px solid"
-            borderColor="gray.200"
+            borderColor={borderColor}
           >
             <Text fontWeight={300} fontFamily={'lato'}>
               Tax:
@@ -264,7 +269,7 @@ function OrderPage() {
             justify="space-between"
             fontWeight="bold"
             borderBottom="1px solid"
-            borderColor="gray.200"
+            borderColor={borderColor}
           >
             <Text fontWeight={300} fontFamily={'lato'}>
               Total:
