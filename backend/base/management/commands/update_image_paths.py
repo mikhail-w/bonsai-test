@@ -9,9 +9,9 @@ class Command(BaseCommand):
         # Update the image paths for all products
         for product in Product.objects.all():
             if product.image:  # Check if the product has an image
-                if product.image.name.startswith("static/images/"):
+                if product.image.name.startswith("media/products/"):
                     new_path = product.image.name.replace(
-                        "static/images/", "media/products/"
+                        "media/products/", "products/"
                     )
                     product.image.name = new_path
                     product.save()
