@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import UserProfile
+from django.conf import settings
 
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Product, Order, OrderItem, ShippingAddress, Review
@@ -82,7 +83,7 @@ class ProductSerializer(serializers.ModelSerializer):
         if obj.image and hasattr(obj.image, "url"):
             return obj.image.url
         # Otherwise, return the default static image path
-        return "/static/images/placeholder.jpg"
+        return settings.PLACEHOLDER_IMAGE_URL
 
     def get_reviews(self, obj):
         reviews = obj.review_set.all()

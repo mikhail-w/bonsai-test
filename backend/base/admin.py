@@ -1,7 +1,8 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+
 from .models import *
 from .models import UserProfile
-from django.contrib.auth.admin import UserAdmin
 
 # Register your models here.
 
@@ -18,7 +19,20 @@ class CustomizedUserAdmin(UserAdmin):
 
 admin.site.unregister(User)
 admin.site.register(User, CustomizedUserAdmin)
-admin.site.register(Product)
+
+
+# Product admin with image preview
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ("name", "get_image_preview")
+
+    def get_image_preview(self, obj):
+        return f'<img src="{obj.get_image_url(obj)}" width="50" />'
+
+    get_image_preview.allow_tags = True
+    get_image_preview.short_description = "Image"
+
+
 admin.site.register(Review)
 admin.site.register(Order)
 admin.site.register(OrderItem)

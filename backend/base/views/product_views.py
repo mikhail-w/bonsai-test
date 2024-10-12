@@ -133,7 +133,7 @@ def uploadImage(request):
     if "image" in request.FILES:
         product.image = request.FILES["image"]
         product.image.name = (
-            "static/images/" + product.image.name
+            "products/" + product.image.name
         )  # Specify the static/images directory
 
     product.save()

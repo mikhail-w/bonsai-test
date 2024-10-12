@@ -17,8 +17,8 @@ class Product(models.Model):
     image = models.ImageField(
         null=True,
         blank=True,
-        upload_to="static/images/",
-        default="static/images/placeholder.jpg",
+        upload_to="products/",
+        default="products/placeholder.jpg",
     )
     _type = models.CharField(max_length=200, null=True, blank=True)
     category = models.CharField(max_length=200, null=True, blank=True)

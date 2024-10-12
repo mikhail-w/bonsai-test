@@ -194,6 +194,7 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 # Media files (user uploads)
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+PLACEHOLDER_IMAGE_URL = "/media/products/placeholder.jpg"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
