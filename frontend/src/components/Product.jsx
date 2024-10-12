@@ -110,7 +110,7 @@ const Product = ({ product }) => {
               <Box
                 as="span"
                 ml="2"
-                color="gray.600"
+                color={useColorModeValue('gray.800', 'white')}
                 fontSize="sm"
                 fontFamily="lato"
               >
@@ -118,7 +118,12 @@ const Product = ({ product }) => {
               </Box>
             </Box>
             <Box fontSize="lg" color={useColorModeValue('gray.800', 'white')}>
-              <Box as="span" color="gray.600" fontSize="lg" fontFamily="lato">
+              <Box
+                as="span"
+                color={useColorModeValue('gray.800', 'white')}
+                fontSize="lg"
+                fontFamily="lato"
+              >
                 ${product.price}
               </Box>
             </Box>
