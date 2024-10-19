@@ -31,11 +31,14 @@ function Chat() {
   const { userInfo } = userLogin;
 
   // Updated color scheme
-  const bgColor = 'white';
+  const bgColor = useColorModeValue(
+    'rgba(255, 255, 255, 0.3)',
+    'rgba(0, 0, 0, 0.7)'
+  );
   // const userMsgColor = useColorModeValue('blue.100', 'blue.700');
   const userMsgColor = '#d9fdd3';
   const botMsgColor = 'white';
-  const stoneBg = useColorModeValue(
+  const titleColor = useColorModeValue(
     'rgba(255, 255, 255, 0.3)',
     'rgba(0, 0, 0, 0.7)'
   );
