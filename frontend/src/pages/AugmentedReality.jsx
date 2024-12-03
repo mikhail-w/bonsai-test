@@ -1,25 +1,26 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import QRCode from 'qrcode';
 import { Box, VStack, Text, Button } from '@chakra-ui/react';
-// import Bonsai from '../assets/images/ficus_bonsai.glb';
 
 const AugmentedReality = () => {
   const canvasRef = useRef();
-  const gltfUrl = 'https://go.echo3d.co/qM5A';
-  // const gltfUrl = Bonsai;
-  // const gltfUrl = '../assets/images/ficus_bonsai.glb';
-  // const gltfUrl =
-  //   'https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models/2.0/BoomBox/glTF-Binary/BoomBox.glb';
-  const usdzUrl =
-    // 'https://developer.apple.com/augmented-reality/quick-look/models/teapot/teapot.usdz';
-    'https://developer.apple.com/augmented-reality/quick-look/models/banjo/banjo.usdz';
 
+  // URL for the `.glb` and `.usdz` files hosted on AWS S3
+  const gltfUrl =
+    'https://mikhail-bonsai-model.s3-accelerate.amazonaws.com/ficus_bonsai.glb';
+  const usdzUrl =
+    'https://mikhail-bonsai-model.s3-accelerate.amazonaws.com/ficus_bonsai.usdz'; // For iOS devices
+
+  // Detect if the user is on an iOS device
   const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  // Construct the AR viewer link based on the platform
   const arLink = isIOS
-    ? usdzUrl // Directly open in AR Quick Look on iOS
-    : `https://arvr.google.com/scene-viewer/1.0?file=${gltfUrl}&mode=ar-only`;
+    ? usdzUrl // iOS uses .usdz files for Quick Look
+    : `https://arvr.google.com/scene-viewer/1.0?file=${gltfUrl}&mode=ar-only`; // Android uses .glb files for Scene Viewer
 
   useEffect(() => {
+    // Generate a QR code for the AR link
     QRCode.toCanvas(canvasRef.current, arLink, { width: 200 });
   }, [arLink]);
 
@@ -32,8 +33,9 @@ const AugmentedReality = () => {
           fontWeight="bold"
           color="green.600"
         >
-          View 3D Model in AR
+          View Bonsai in AR
         </Text>
+        {/* Canvas element to render the QR Code */}
         <canvas ref={canvasRef} />
         <Button
           fontFamily={'rale'}
