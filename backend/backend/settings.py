@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv(BASE_DIR / ".env")
 # MISTRAL_API_KEY = os.environ.get('MISTRAL_API_KEY')
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+# OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "base",
     "blog",
-    "chatbot",
+    # "chatbot",
 ]
 
 REST_FRAMEWORK = {
@@ -64,11 +64,11 @@ REST_FRAMEWORK = {
 
 from datetime import timedelta
 
-HAYSTACK_CONNECTIONS = {
-    "default": {
-        "ENGINE": "haystack.document_stores.in_memory.InMemoryDocumentStore",
-    }
-}
+# HAYSTACK_CONNECTIONS = {
+#     "default": {
+#         "ENGINE": "haystack.document_stores.in_memory.InMemoryDocumentStore",
+#     }
+# }
 
 
 SIMPLE_JWT = {
