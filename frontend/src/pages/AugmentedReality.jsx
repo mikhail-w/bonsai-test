@@ -8,6 +8,7 @@ const AugmentedReality = () => {
   // URL for the `.glb` and `.usdz` files hosted on AWS S3
   const gltfUrl =
     'https://mikhail-bonsai-model.s3-accelerate.amazonaws.com/ficus_bonsai.glb';
+  // 'https://mikhail-bonsai-model.s3.us-east-1.amazonaws.com/pergolesi-side-chair.glb';
   const usdzUrl =
     'https://mikhail-bonsai-model.s3-accelerate.amazonaws.com/ficus_bonsai.usdz'; // For iOS devices
 
