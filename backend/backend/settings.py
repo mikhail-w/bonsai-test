@@ -211,4 +211,4 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://34.207.125.125",
 ]
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
