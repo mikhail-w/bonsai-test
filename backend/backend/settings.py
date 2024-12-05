@@ -148,7 +148,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "bonsai_store",
         "USER": "admin",
-        "PASSWORD": "adminpassword",
+        "PASSWORD": "password",
         "HOST": "localhost",
         "PORT": "5432",
     }
