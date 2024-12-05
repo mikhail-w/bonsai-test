@@ -37,7 +37,10 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 DEBUG = True
 
 # ALLOWED_HOSTS = ["*"]
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "34.207.125.125",
+    "http://mikhail-bonsai.s3-website-us-east-1.amazonaws.com",
+]
 
 
 # Application definition
@@ -144,6 +147,10 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "bonsai_store",
+        "USER": "admin",
+        "PASSWORD": "adminpassword",
+        "HOST": "localhost",
+        "PORT": "5432",
     }
 }
 
@@ -200,4 +207,8 @@ PLACEHOLDER_IMAGE_URL = "/media/products/placeholder.jpg"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://34.207.125.125",
+]
 CORS_ALLOW_ALL_ORIGINS = True

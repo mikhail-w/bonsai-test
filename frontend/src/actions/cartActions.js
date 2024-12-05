@@ -7,8 +7,10 @@ import {
   CART_CLEAR_ITEMS,
 } from '../constants/cartConstants';
 
+const API_URL = 'http://34.207.125.125:80/443/api/';
+
 export const addToCart = (id, qty) => async (dispatch, getState) => {
-  const { data } = await axios.get(`/api/products/${id}`);
+  const { data } = await axios.get(`${API_URL}products/${id}`);
 
   dispatch({
     type: CART_ADD_ITEM,

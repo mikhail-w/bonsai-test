@@ -281,7 +281,8 @@ const MobileNav = ({ onOpen, ...rest }) => {
               <HStack alignItems={'end'}>
                 <Avatar
                   size={'md'}
-                  src={`http://127.0.0.1:8000${userInfo.avatar}`}
+                  // src={`http://127.0.0.1:8000${userInfo.avatar}`}
+                  src={`${userInfo.avatar}`}
                 />
                 <VStack
                   display={{ base: 'none', md: 'flex' }}

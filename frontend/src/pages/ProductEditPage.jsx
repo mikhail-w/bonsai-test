@@ -19,6 +19,8 @@ import {
   Stack,
 } from '@chakra-ui/react';
 
+const API_URL = 'http://34.207.125.125:80/443/api/';
+
 const ProductEditPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -98,7 +100,7 @@ const ProductEditPage = () => {
       };
 
       const { data } = await axios.post(
-        'http://127.0.0.1:8000/api/products/upload/',
+        `${API_URL}products/upload/`,
         formData,
         config
       );

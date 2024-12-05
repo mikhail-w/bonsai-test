@@ -112,7 +112,8 @@ function PlaceOrderPage() {
                 {cart.cartItems.map((item, index) => (
                   <Flex key={index} align="center" justify="space-between">
                     <Image
-                      src={`http://127.0.0.1:8000${item.image}`}
+                      // src={`http://127.0.0.1:8000${item.image}`}
+                      src={`${item.image}`}
                       alt={item.name}
                       width="100px"
                       height="100px"

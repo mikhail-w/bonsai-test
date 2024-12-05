@@ -126,7 +126,8 @@ const ProductButtons = ({ product }) => {
 const ProductImage = ({ image, name }) => (
   <VStack spacing={4} align="center">
     <Image
-      src={`http://127.0.0.1:8000${image}`}
+      // src={`http://127.0.0.1:8000${image}`}
+      src={`${image}`}
       alt={name}
       boxSize={{ base: '100%', md: '400px', lg: '500px' }} // Adjusting image size for responsiveness
       objectFit="cover"
