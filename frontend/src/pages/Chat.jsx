@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import c1 from '../assets/images/h3.png';
 
-const API_URL = 'http://34.207.125.125:80/443/api/';
+const API_URL = 'http://54.146.127.76:80/443/api/';
 
 function Chat() {
   const [messages, setMessages] = useState([

@@ -38,7 +38,7 @@ DEBUG = True
 
 # ALLOWED_HOSTS = ["*"]
 ALLOWED_HOSTS = [
-    "34.207.125.125",
+    "54.146.127.76",
     "http://mikhail-bonsai.s3-website-us-east-1.amazonaws.com",
 ]
 
@@ -209,6 +209,6 @@ PLACEHOLDER_IMAGE_URL = "/media/products/placeholder.jpg"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "http://34.207.125.125",
+    "http://54.146.127.76",
 ]
 # CORS_ALLOW_ALL_ORIGINS = True
