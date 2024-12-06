@@ -33,14 +33,11 @@ load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = False
-DEBUG = True
+DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"
+
 
 # ALLOWED_HOSTS = ["*"]
-ALLOWED_HOSTS = [
-    "54.146.127.76",
-    "http://mikhail-bonsai.s3-website-us-east-1.amazonaws.com",
-]
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "").split(",")
 
 
 # Application definition
@@ -146,11 +143,11 @@ WSGI_APPLICATION = "backend.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "bonsai_store",
-        "USER": "admin",
-        "PASSWORD": "password",
-        "HOST": "localhost",
-        "PORT": "5432",
+        "NAME": os.getenv("DB_NAME"),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASSWORD"),
+        "HOST": os.getenv("DB_HOST"),
+        "PORT": os.getenv("DB_PORT", "5432"),
     }
 }
 
@@ -193,22 +190,21 @@ USE_TZ = True
 STATIC_URL = "/static/"
 
 # The directory where collectstatic will gather all static files
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Additional directories for static files during development
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Media files (user uploads)
 MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_ROOT = BASE_DIR / "media"
 PLACEHOLDER_IMAGE_URL = "/media/products/placeholder.jpg"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://54.146.127.76",
+    "http://mikhail-bonsai.s3-website-us-east-1.amazonaws.com",
 ]
-# CORS_ALLOW_ALL_ORIGINS = True
