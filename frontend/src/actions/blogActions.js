@@ -27,7 +27,7 @@ import {
   BLOG_LIST_FAIL,
 } from '../constants/blogConstants';
 
-const API_URL = 'http://54.146.127.76:80/443/api/';
+const API_URL = 'http://54.146.127.76/api/';
 
 // Get all blog posts
 export const listBlogPosts = () => async (dispatch, getState) => {

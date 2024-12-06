@@ -23,7 +23,7 @@ import {
   ORDER_DELIVER_RESET,
 } from '../constants/orderConstants';
 
-const API_URL = 'http://54.146.127.76:80/443/api/';
+const API_URL = 'http://54.146.127.76/api/';
 
 import { CART_CLEAR_ITEMS } from '../constants/cartConstants';
 

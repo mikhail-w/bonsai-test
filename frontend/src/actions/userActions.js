@@ -26,7 +26,7 @@ import {
   USER_UPDATE_FAIL,
 } from '../constants/userConstants';
 
-const API_URL = 'http://54.146.127.76:80/443/api/';
+const API_URL = 'http://54.146.127.76/api/';
 
 import { ORDER_LIST_MY_RESET } from '../constants/orderConstants';
 
