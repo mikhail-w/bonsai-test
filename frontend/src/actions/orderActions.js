@@ -23,7 +23,7 @@ import {
   ORDER_DELIVER_RESET,
 } from '../constants/orderConstants';
 
-const API_URL = 'http://54.146.127.76/api/';
+const API_URL = import.meta.env.VITE_API_URL;
 
 import { CART_CLEAR_ITEMS } from '../constants/cartConstants';
 

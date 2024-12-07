@@ -27,7 +27,7 @@ import {
   BLOG_LIST_FAIL,
 } from '../constants/blogConstants';
 
-const API_URL = 'http://54.146.127.76/api/';
+const API_URL = import.meta.env.VITE_API_URL;
 
 // Get all blog posts
 export const listBlogPosts = () => async (dispatch, getState) => {

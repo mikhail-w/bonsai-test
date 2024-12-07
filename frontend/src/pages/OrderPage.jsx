@@ -31,7 +31,7 @@ function OrderPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const orderId = id;
-  const PAYPAL_CLIENT_ID = import.meta.env.VITE_PAYPAL_CLIENT_ID_2;
+  const PAYPAL_CLIENT_ID = import.meta.env.VITE_PAYPAL_CLIENT_ID;
   const dispatch = useDispatch();
 
   const [sdkReady, setSdkReady] = useState(false);

@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import c1 from '../assets/images/h3.png';
 
-const API_URL = 'http://54.146.127.76/api/';
+const API_URL = import.meta.env.VITE_API_URL;
 
 function Chat() {
   const [messages, setMessages] = useState([

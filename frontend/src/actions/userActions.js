@@ -26,7 +26,7 @@ import {
   USER_UPDATE_FAIL,
 } from '../constants/userConstants';
 
-const API_URL = 'http://54.146.127.76/api/';
+const API_URL = import.meta.env.VITE_API_URL;
 
 import { ORDER_LIST_MY_RESET } from '../constants/orderConstants';
 

@@ -32,7 +32,7 @@ import {
   PRODUCT_ESSENTIALS_FAIL,
 } from '../constants/productConstants';
 
-const API_URL = 'http://54.146.127.76/api/';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const listProducts =
   (keyword = '') =>

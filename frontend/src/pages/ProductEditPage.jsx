@@ -19,7 +19,7 @@ import {
   Stack,
 } from '@chakra-ui/react';
 
-const API_URL = 'http://54.146.127.76/api/';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const ProductEditPage = () => {
   const { id } = useParams();

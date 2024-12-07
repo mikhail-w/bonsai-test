@@ -33,7 +33,7 @@ load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"
+DEBUG = False
 
 
 # ALLOWED_HOSTS = ["*"]
@@ -204,7 +204,7 @@ PLACEHOLDER_IMAGE_URL = "/media/products/placeholder.jpg"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-CORS_ORIGIN_ALLOW_ALL = False
-CORS_ALLOWED_ORIGINS = [
-    "http://mikhail-bonsai.s3-website-us-east-1.amazonaws.com",
-]
+CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ALLOWED_ORIGINS = [
+#     "http://mikhail-bonsai.s3-website-us-east-1.amazonaws.com",
+# ]
