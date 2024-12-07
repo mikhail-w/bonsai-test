@@ -1,10 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import UserProfile
 from django.conf import settings
-
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Product, Order, OrderItem, ShippingAddress, Review
+from .models import UserProfile, Product, Order, OrderItem, ShippingAddress, Review
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
@@ -21,7 +19,6 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        # fields = ["id", "username", "email"]
         fields = ["id", "_id", "username", "email", "name", "isAdmin", "avatar"]
 
     def get__id(self, obj):
@@ -31,16 +28,13 @@ class UserSerializer(serializers.ModelSerializer):
         return obj.is_staff
 
     def get_name(self, obj):
-        name = obj.first_name
-        if name == "":
-            name = obj.email
-        return name
+        return obj.first_name or obj.email
 
     def get_avatar(self, obj):
         try:
             return obj.userprofile.avatar.url
         except UserProfile.DoesNotExist:
-            return None
+            return settings.DEFAULT_AVATAR_URL
 
 
 class UserSerializerWithToken(UserSerializer):
@@ -79,10 +73,8 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def get_image_url(self, obj):
-        # If image exists, return the media URL
         if obj.image and hasattr(obj.image, "url"):
             return obj.image.url
-        # Otherwise, return the default static image path
         return settings.PLACEHOLDER_IMAGE_URL
 
     def get_reviews(self, obj):
@@ -118,14 +110,10 @@ class OrderSerializer(serializers.ModelSerializer):
         return serializer.data
 
     def get_shippingAddress(self, obj):
-        try:
-            address = ShippingAddressSerializer(obj.shippingaddress, many=False).data
-        except:
-            address = False
-            raise
-        return address
+        if hasattr(obj, "shippingaddress"):
+            return ShippingAddressSerializer(obj.shippingaddress, many=False).data
+        return None
 
     def get_user(self, obj):
         user = obj.user
-        serializer = UserSerializer(user, many=False)
-        return serializer.data
+        return UserSerializer(user, many=False).data

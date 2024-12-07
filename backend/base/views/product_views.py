@@ -1,6 +1,6 @@
 from base.models import Product, Review
 from base.serializers import ProductSerializer
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
@@ -10,16 +10,11 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 @api_view(["GET"])
 def getProducts(request):
-    query = request.query_params.get("keyword")
-
-    if query is None:
-        query = ""
-
-    print("query:", query)
+    query = request.query_params.get("keyword", "")
 
     products = Product.objects.filter(name__icontains=query)
 
-    page = request.query_params.get("page")
+    page = request.query_params.get("page", 1)
     paginator = Paginator(products, 4)
 
     try:
@@ -29,21 +24,16 @@ def getProducts(request):
     except EmptyPage:
         products = paginator.page(paginator.num_pages)
 
-    if page is None:
-        page = 1
-
-    page = int(page)
-
     serializer = ProductSerializer(products, many=True)
 
     return Response(
-        {"products": serializer.data, "page": page, "pages": paginator.num_pages}
+        {"products": serializer.data, "page": int(page), "pages": paginator.num_pages}
     )
 
 
 @api_view(["GET"])
 def getTopProducts(request):
-    products = Product.objects.filter(rating__gte=4).order_by("-rating")[0:5]
+    products = Product.objects.filter(rating__gte=4).order_by("-rating")[:5]
     serializer = ProductSerializer(products, many=True)
     return Response(serializer.data)
 
@@ -71,9 +61,8 @@ def getEssentialProducts(request):
 
 @api_view(["GET"])
 def getProduct(request, pk):
-    product = Product.objects.get(_id=pk)
+    product = get_object_or_404(Product, _id=pk)
     serializer = ProductSerializer(product, many=False)
-
     return Response(serializer.data)
 
 
@@ -93,21 +82,21 @@ def createProduct(request):
     )
 
     serializer = ProductSerializer(product, many=False)
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 @api_view(["PUT"])
 @permission_classes([IsAdminUser])
 def updateProduct(request, pk):
     data = request.data
-    product = Product.objects.get(_id=pk)
+    product = get_object_or_404(Product, _id=pk)
 
-    product.name = data["name"]
-    product.price = data["price"]
-    product._type = data["_type"]
-    product.countInStock = data["countInStock"]
-    product.category = data["category"]
-    product.description = data["description"]
+    product.name = data.get("name", product.name)
+    product.price = data.get("price", product.price)
+    product._type = data.get("_type", product._type)
+    product.countInStock = data.get("countInStock", product.countInStock)
+    product.category = data.get("category", product.category)
+    product.description = data.get("description", product.description)
 
     product.save()
 
@@ -118,65 +107,65 @@ def updateProduct(request, pk):
 @api_view(["DELETE"])
 @permission_classes([IsAdminUser])
 def deleteProduct(request, pk):
-    product = Product.objects.get(_id=pk)
+    product = get_object_or_404(Product, _id=pk)
     product.delete()
-    return Response("Producted Deleted")
+    return Response(
+        {"detail": "Product deleted successfully"}, status=status.HTTP_200_OK
+    )
 
 
 @api_view(["POST"])
 def uploadImage(request):
     data = request.data
+    product_id = data.get("product_id")
 
-    product_id = data["product_id"]
-    product = Product.objects.get(_id=product_id)
+    product = get_object_or_404(Product, _id=product_id)
 
     if "image" in request.FILES:
         product.image = request.FILES["image"]
-        product.image.name = (
-            "products/" + product.image.name
-        )  # Specify the static/images directory
+        product.image.name = f"products/{product.image.name}"
 
     product.save()
 
-    return Response("Image was uploaded")
+    return Response(
+        {"detail": "Image uploaded successfully"}, status=status.HTTP_200_OK
+    )
 
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def createProductReview(request, pk):
     user = request.user
-    product = Product.objects.get(_id=pk)
+    product = get_object_or_404(Product, _id=pk)
     data = request.data
 
-    # 1 - Review already exists
-    alreadyExists = product.review_set.filter(user=user).exists()
-    if alreadyExists:
-        content = {"detail": "Product already reviewed"}
-        return Response(content, status=status.HTTP_400_BAD_REQUEST)
-
-    # 2 - No Rating or 0
-    elif data["rating"] == 0:
-        content = {"detail": "Please select a rating"}
-        return Response(content, status=status.HTTP_400_BAD_REQUEST)
-
-    # 3 - Create review
-    else:
-        review = Review.objects.create(
-            user=user,
-            product=product,
-            name=user.first_name,
-            rating=data["rating"],
-            comment=data["comment"],
+    # 1 - Check if review already exists
+    if product.review_set.filter(user=user).exists():
+        return Response(
+            {"detail": "Product already reviewed"}, status=status.HTTP_400_BAD_REQUEST
         )
 
-        reviews = product.review_set.all()
-        product.numReviews = len(reviews)
+    # 2 - Validate rating
+    if data.get("rating") is None or data["rating"] == 0:
+        return Response(
+            {"detail": "Please provide a rating"}, status=status.HTTP_400_BAD_REQUEST
+        )
 
-        total = 0
-        for i in reviews:
-            total += i.rating
+    # 3 - Create the review
+    review = Review.objects.create(
+        user=user,
+        product=product,
+        name=user.first_name,
+        rating=data["rating"],
+        comment=data.get("comment", ""),
+    )
 
-        product.rating = total / len(reviews)
-        product.save()
+    # Update product rating and review count
+    reviews = product.review_set.all()
+    product.numReviews = reviews.count()
+    product.rating = sum([review.rating for review in reviews]) / reviews.count()
+    product.save()
 
-        return Response("Review Added")
+    return Response(
+        {"detail": "Review added successfully"}, status=status.HTTP_201_CREATED
+    )
