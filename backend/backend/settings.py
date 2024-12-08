@@ -102,18 +102,26 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
+# Local Static file location
+STATIC_ROOT = BASE_DIR / "staticfiles"
+MEDIA_ROOT = BASE_DIR / "media"
+
+# Deployed Static file location
+# STATIC_ROOT = "/home/ubuntu/bonsai-test/backend/staticfiles/"
+# MEDIA_ROOT = "/home/ubuntu/bonsai-test/backend/media/"
+
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [BASE_DIR / "static"]
+
 
 # Media files (user uploads)
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
 PLACEHOLDER_IMAGE_URL = f"{MEDIA_URL}default/placeholder.jpg"
 DEFAULT_AVATAR_URL = f"{MEDIA_URL}default/avatar.jpg"
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
 
 # REST framework settings
 REST_FRAMEWORK = {
