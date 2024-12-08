@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "corsheaders",
+    "storages",  # Added for S3 storage
     "base",
     "blog",
     # "chatbot",
@@ -102,26 +103,25 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
-# Local Static file location
+# S3 Configuration
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
+AWS_S3_REGION_NAME = os.getenv(
+    "AWS_S3_REGION_NAME", "us-east-1"
+)  # Default to us-east-1
+AWS_QUERYSTRING_AUTH = False  # For public access to files
+
+# Static and Media Files with S3
+STATICFILES_STORAGE = "backend.storage_backends.StaticStorage"
+DEFAULT_FILE_STORAGE = "backend.storage_backends.MediaStorage"
+
+STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/static/"
+MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/"
+
+# Local Static and Media Files (for fallback or local development)
 STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_ROOT = BASE_DIR / "media"
-
-# Deployed Static file location
-# STATIC_ROOT = "/home/ubuntu/bonsai-test/backend/staticfiles/"
-# MEDIA_ROOT = "/home/ubuntu/bonsai-test/backend/media/"
-
-# Static files (CSS, JavaScript, Images)
-STATIC_URL = "/static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]
-
-
-# Media files (user uploads)
-MEDIA_URL = "/media/"
-PLACEHOLDER_IMAGE_URL = f"{MEDIA_URL}default/placeholder.jpg"
-DEFAULT_AVATAR_URL = f"{MEDIA_URL}default/avatar.jpg"
-# Default primary key field type
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
 
 # REST framework settings
 REST_FRAMEWORK = {
