@@ -6,4 +6,8 @@ class BaseConfig(AppConfig):
     name = "base"
 
     def ready(self):
-        import base.signals
+        # Import signals only when the app is ready to avoid circular imports
+        try:
+            import base.signals
+        except ImportError as e:
+            raise ImportError(f"Failed to import signals: {e}")

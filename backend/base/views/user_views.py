@@ -6,18 +6,16 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from base.models import UserProfile  # Import UserProfile model
+from base.models import UserProfile
 from base.serializers import UserSerializer, UserSerializerWithToken
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
-
         # Include additional user data in the token response
         serializer = UserSerializerWithToken(self.user).data
         data.update(serializer)
-
         return data
 
 
@@ -30,7 +28,7 @@ def registerUser(request):
     data = request.data
     try:
         # Check if user with email already exists
-        if User.objects.filter(email=data["email"]).exists():
+        if User.objects.filter(email=data.get("email")).exists():
             return Response(
                 {"detail": "User with this email already exists"},
                 status=status.HTTP_400_BAD_REQUEST,
@@ -43,14 +41,13 @@ def registerUser(request):
             password=make_password(data.get("password")),
         )
 
-        # Handle the avatar file (optional)
+        # Create a user profile with an optional avatar
         avatar = request.FILES.get("avatar")
-        UserProfile.objects.create(
-            user=user, avatar=avatar  # Defaults are used if `avatar` is None
-        )
+        UserProfile.objects.create(user=user, avatar=avatar)
 
         serializer = UserSerializerWithToken(user, many=False)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
     except KeyError as e:
         return Response(
             {"detail": f"Missing field: {str(e)}"},
@@ -68,7 +65,6 @@ def registerUser(request):
 def updateUserProfile(request):
     user = request.user
     data = request.data
-
     try:
         user.first_name = data.get("name", user.first_name)
         user.username = data.get("email", user.username)
@@ -81,11 +77,7 @@ def updateUserProfile(request):
 
         serializer = UserSerializerWithToken(user, many=False)
         return Response(serializer.data)
-    except KeyError as e:
-        return Response(
-            {"detail": f"Missing field: {str(e)}"},
-            status=status.HTTP_400_BAD_REQUEST,
-        )
+
     except Exception as e:
         return Response(
             {"detail": f"An error occurred: {str(e)}"},
@@ -127,7 +119,7 @@ def getUserById(request, pk):
 @permission_classes([IsAdminUser])
 def updateUser(request, pk):
     try:
-        user = User.objects.get(id=pk)
+        user = get_object_or_404(User, id=pk)
         data = request.data
 
         user.first_name = data.get("name", user.first_name)
@@ -139,11 +131,6 @@ def updateUser(request, pk):
 
         serializer = UserSerializer(user, many=False)
         return Response(serializer.data)
-    except User.DoesNotExist:
-        return Response(
-            {"detail": "User not found"},
-            status=status.HTTP_404_NOT_FOUND,
-        )
     except KeyError as e:
         return Response(
             {"detail": f"Missing field: {str(e)}"},
@@ -160,14 +147,9 @@ def updateUser(request, pk):
 @permission_classes([IsAdminUser])
 def deleteUser(request, pk):
     try:
-        user = User.objects.get(id=pk)
+        user = get_object_or_404(User, id=pk)
         user.delete()
         return Response({"detail": "User was deleted successfully"})
-    except User.DoesNotExist:
-        return Response(
-            {"detail": "User not found"},
-            status=status.HTTP_404_NOT_FOUND,
-        )
     except Exception as e:
         return Response(
             {"detail": f"An error occurred: {str(e)}"},

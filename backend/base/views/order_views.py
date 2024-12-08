@@ -23,7 +23,7 @@ def addOrderItems(request):
         )
 
     try:
-        # (1) Create the order
+        # Create the order
         order = Order.objects.create(
             user=user,
             paymentMethod=data.get("paymentMethod"),
@@ -32,7 +32,7 @@ def addOrderItems(request):
             totalPrice=data.get("totalPrice", 0),
         )
 
-        # (2) Create the shipping address
+        # Create the shipping address
         shipping_address_data = data.get("shippingAddress", {})
         ShippingAddress.objects.create(
             order=order,
@@ -42,28 +42,28 @@ def addOrderItems(request):
             country=shipping_address_data.get("country", ""),
         )
 
-        # (3) Create order items and update stock
+        # Create order items and update stock
         for item_data in orderItems:
             product = get_object_or_404(Product, _id=item_data["product"])
 
-            # Create order item
-            item = OrderItem.objects.create(
-                product=product,
-                order=order,
-                name=product.name,
-                qty=item_data["qty"],
-                price=item_data["price"],
-                image=product.image.url,
-            )
-
-            # Update product stock
-            if product.countInStock < item.qty:
+            if product.countInStock < item_data["qty"]:
                 return Response(
                     {"detail": f"Not enough stock for product {product.name}"},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
 
-            product.countInStock -= item.qty
+            # Create order item
+            OrderItem.objects.create(
+                product=product,
+                order=order,
+                name=product.name,
+                qty=item_data["qty"],
+                price=item_data["price"],
+                image=product.image.url if product.image else "",
+            )
+
+            # Update product stock
+            product.countInStock -= item_data["qty"]
             product.save()
 
         serializer = OrderSerializer(order, many=False)
@@ -85,7 +85,7 @@ def addOrderItems(request):
 @permission_classes([IsAuthenticated])
 def getMyOrders(request):
     user = request.user
-    orders = user.order_set.all()
+    orders = user.order_set.all().order_by("-createdAt")
     serializer = OrderSerializer(orders, many=True)
     return Response(serializer.data)
 
@@ -93,7 +93,7 @@ def getMyOrders(request):
 @api_view(["GET"])
 @permission_classes([IsAdminUser])
 def getOrders(request):
-    orders = Order.objects.all()
+    orders = Order.objects.all().order_by("-createdAt")
     serializer = OrderSerializer(orders, many=True)
     return Response(serializer.data)
 
@@ -125,11 +125,18 @@ def updateOrderToPaid(request, pk):
     try:
         order = get_object_or_404(Order, _id=pk)
 
-        order.isPaid = True
-        order.paidAt = datetime.now()
-        order.save()
-
-        return Response({"detail": "Order marked as paid"}, status=status.HTTP_200_OK)
+        if not order.isPaid:
+            order.isPaid = True
+            order.paidAt = datetime.now()
+            order.save()
+            return Response(
+                {"detail": "Order marked as paid"}, status=status.HTTP_200_OK
+            )
+        else:
+            return Response(
+                {"detail": "Order is already marked as paid"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
     except Exception as e:
         return Response(
             {"detail": f"An error occurred: {str(e)}"},
@@ -143,13 +150,18 @@ def updateOrderToDelivered(request, pk):
     try:
         order = get_object_or_404(Order, _id=pk)
 
-        order.isDelivered = True
-        order.deliveredAt = datetime.now()
-        order.save()
-
-        return Response(
-            {"detail": "Order marked as delivered"}, status=status.HTTP_200_OK
-        )
+        if not order.isDelivered:
+            order.isDelivered = True
+            order.deliveredAt = datetime.now()
+            order.save()
+            return Response(
+                {"detail": "Order marked as delivered"}, status=status.HTTP_200_OK
+            )
+        else:
+            return Response(
+                {"detail": "Order is already marked as delivered"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
     except Exception as e:
         return Response(
             {"detail": f"An error occurred: {str(e)}"},

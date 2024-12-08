@@ -32,9 +32,13 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_avatar(self, obj):
         try:
-            return obj.userprofile.avatar.url
+            return (
+                obj.profile.avatar.url
+            )  # Use the related_name `profile` from the model
         except UserProfile.DoesNotExist:
-            return settings.DEFAULT_AVATAR_URL
+            return (
+                settings.DEFAULT_AVATAR_URL
+            )  # Ensure DEFAULT_AVATAR_URL is set in settings
 
 
 class UserSerializerWithToken(UserSerializer):
@@ -59,13 +63,18 @@ class UserSerializerWithToken(UserSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = Review
         fields = "__all__"
 
+    def get_user(self, obj):
+        return obj.user.first_name or obj.user.username
+
 
 class ProductSerializer(serializers.ModelSerializer):
-    reviews = serializers.SerializerMethodField(read_only=True)
+    reviews = ReviewSerializer(many=True, read_only=True)  # Use nested serializer
     image_url = serializers.SerializerMethodField()
 
     class Meta:
@@ -75,12 +84,9 @@ class ProductSerializer(serializers.ModelSerializer):
     def get_image_url(self, obj):
         if obj.image and hasattr(obj.image, "url"):
             return obj.image.url
-        return settings.PLACEHOLDER_IMAGE_URL
-
-    def get_reviews(self, obj):
-        reviews = obj.review_set.all()
-        serializer = ReviewSerializer(reviews, many=True)
-        return serializer.data
+        return (
+            settings.PLACEHOLDER_IMAGE_URL
+        )  # Ensure PLACEHOLDER_IMAGE_URL is set in settings
 
 
 class ShippingAddressSerializer(serializers.ModelSerializer):
@@ -90,30 +96,23 @@ class ShippingAddressSerializer(serializers.ModelSerializer):
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
+    product = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = OrderItem
         fields = "__all__"
 
+    def get_product(self, obj):
+        return ProductSerializer(obj.product, many=False).data
+
 
 class OrderSerializer(serializers.ModelSerializer):
-    orderItems = serializers.SerializerMethodField(read_only=True)
-    shippingAddress = serializers.SerializerMethodField(read_only=True)
-    user = serializers.SerializerMethodField(read_only=True)
+    orderItems = OrderItemSerializer(many=True, source="order_items", read_only=True)
+    shippingAddress = ShippingAddressSerializer(
+        source="shipping_address", read_only=True
+    )
+    user = UserSerializer(read_only=True)
 
     class Meta:
         model = Order
         fields = "__all__"
-
-    def get_orderItems(self, obj):
-        items = obj.orderitem_set.all()
-        serializer = OrderItemSerializer(items, many=True)
-        return serializer.data
-
-    def get_shippingAddress(self, obj):
-        if hasattr(obj, "shippingaddress"):
-            return ShippingAddressSerializer(obj.shippingaddress, many=False).data
-        return None
-
-    def get_user(self, obj):
-        user = obj.user
-        return UserSerializer(user, many=False).data

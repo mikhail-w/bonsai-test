@@ -110,9 +110,8 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 # Media files (user uploads)
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
-PLACEHOLDER_IMAGE_URL = "/media/products/placeholder.jpg"
-DEFAULT_AVATAR_URL = "/static/images/default_avatar.jpg"
-
+PLACEHOLDER_IMAGE_URL = f"{MEDIA_URL}default/placeholder.jpg"
+DEFAULT_AVATAR_URL = f"{MEDIA_URL}default/avatar.jpg"
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

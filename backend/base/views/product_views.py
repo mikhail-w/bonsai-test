@@ -11,7 +11,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 @api_view(["GET"])
 def getProducts(request):
     query = request.query_params.get("keyword", "")
-
     products = Product.objects.filter(name__icontains=query)
 
     page = request.query_params.get("page", 1)
@@ -139,29 +138,30 @@ def createProductReview(request, pk):
     product = get_object_or_404(Product, _id=pk)
     data = request.data
 
-    # 1 - Check if review already exists
-    if product.review_set.filter(user=user).exists():
+    # Check if review already exists
+    if product.reviews.filter(user=user).exists():  # Use the `related_name` reviews
         return Response(
             {"detail": "Product already reviewed"}, status=status.HTTP_400_BAD_REQUEST
         )
 
-    # 2 - Validate rating
+    # Validate rating
     if data.get("rating") is None or data["rating"] == 0:
         return Response(
-            {"detail": "Please provide a rating"}, status=status.HTTP_400_BAD_REQUEST
+            {"detail": "Please provide a valid rating"},
+            status=status.HTTP_400_BAD_REQUEST,
         )
 
-    # 3 - Create the review
+    # Create the review
     review = Review.objects.create(
         user=user,
         product=product,
-        name=user.first_name,
+        name=user.first_name or user.username,
         rating=data["rating"],
         comment=data.get("comment", ""),
     )
 
     # Update product rating and review count
-    reviews = product.review_set.all()
+    reviews = product.reviews.all()  # Use `related_name` reviews
     product.numReviews = reviews.count()
     product.rating = sum([review.rating for review in reviews]) / reviews.count()
     product.save()
