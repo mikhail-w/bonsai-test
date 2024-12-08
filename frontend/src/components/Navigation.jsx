@@ -264,7 +264,16 @@ const Navigation = () => {
             {userInfo && isOpen && isCircleAnimationDone && (
               <RouterLink to="/profile">
                 <Avatar
-                  src={`http://127.0.0.1:8000${userInfo.avatar}`}
+                  src={
+                    userInfo.avatar
+                      ? `${import.meta.env.VITE_API_URL.replace('/api/', '')}${
+                          userInfo.avatar
+                        }`
+                      : `${import.meta.env.VITE_API_URL.replace(
+                          '/api/',
+                          ''
+                        )}/media/default/avatar.jpg`
+                  }
                   size="md"
                   position="absolute"
                   top="0px"
@@ -273,6 +282,7 @@ const Navigation = () => {
                 />
               </RouterLink>
             )}
+
             {isOpen && isCircleAnimationDone && (
               <Box>
                 {/* Navigation Links Positioned with 90-degree Counterclockwise Rotation */}

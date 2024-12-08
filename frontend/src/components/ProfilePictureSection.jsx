@@ -28,7 +28,16 @@ const ProfilePictureSection = () => {
         <Avatar
           size="2xl"
           name={userInfo.name || 'JWT User'} // Display user's name if available
-          src={`http://127.0.0.1:8000${userInfo.avatar}`}
+          src={
+            userInfo.avatar
+              ? `${import.meta.env.VITE_API_URL.replace('/api/', '')}${
+                  userInfo.avatar
+                }`
+              : `${import.meta.env.VITE_API_URL.replace(
+                  '/api/',
+                  ''
+                )}/media/default/avatar.jpg`
+          }
           mb={4}
         />
         <Text fontFamily="rale" mb={2} fontWeight="500">
