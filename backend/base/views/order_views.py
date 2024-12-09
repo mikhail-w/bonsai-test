@@ -1,12 +1,27 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import render
+
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
+
+from base.models import Product, Order, OrderItem, ShippingAddress
+from base.serializers import ProductSerializer, OrderSerializer
+
 from rest_framework import status
 from datetime import datetime
 
-from base.models import Product, Order, OrderItem, ShippingAddress
-from base.serializers import OrderSerializer
+import logging
+
+logger = logging.getLogger(__name__)
+
+logging.basicConfig(
+    level=logging.INFO,  # Set the logging level to INFO
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",  # Format of log messages
+)
+
+# Test logging to verify setup
+logging.info("Test log - INFO level")
+logging.warning("Test log - WARNING level")
 
 
 @api_view(["POST"])
@@ -15,85 +30,73 @@ def addOrderItems(request):
     user = request.user
     data = request.data
 
-    # Validate order items
-    orderItems = data.get("orderItems", [])
-    if not orderItems or len(orderItems) == 0:
-        return Response(
-            {"detail": "No order items provided"}, status=status.HTTP_400_BAD_REQUEST
-        )
+    orderItems = data["orderItems"]
 
-    try:
-        # Create the order
+    if orderItems and len(orderItems) == 0:
+        return Response(
+            {"detail": "No Order Items"}, status=status.HTTP_400_BAD_REQUEST
+        )
+    else:
+
+        # (1) Create order
+
         order = Order.objects.create(
             user=user,
-            paymentMethod=data.get("paymentMethod"),
-            taxPrice=data.get("taxPrice", 0),
-            shippingPrice=data.get("shippingPrice", 0),
-            totalPrice=data.get("totalPrice", 0),
+            paymentMethod=data["paymentMethod"],
+            taxPrice=data["taxPrice"],
+            shippingPrice=data["shippingPrice"],
+            totalPrice=data["totalPrice"],
         )
 
-        # Create the shipping address
-        shipping_address_data = data.get("shippingAddress", {})
-        ShippingAddress.objects.create(
+        # (2) Create shipping address
+
+        shipping = ShippingAddress.objects.create(
             order=order,
-            address=shipping_address_data.get("address", ""),
-            city=shipping_address_data.get("city", ""),
-            postalCode=shipping_address_data.get("postalCode", ""),
-            country=shipping_address_data.get("country", ""),
+            address=data["shippingAddress"]["address"],
+            city=data["shippingAddress"]["city"],
+            postalCode=data["shippingAddress"]["postalCode"],
+            country=data["shippingAddress"]["country"],
         )
 
-        # Create order items and update stock
-        for item_data in orderItems:
-            product = get_object_or_404(Product, _id=item_data["product"])
+        # (3) Create order items and set order to orderItem relationship
+        for i in orderItems:
+            product = Product.objects.get(_id=i["product"])
 
-            if product.countInStock < item_data["qty"]:
-                return Response(
-                    {"detail": f"Not enough stock for product {product.name}"},
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
-
-            # Create order item
-            OrderItem.objects.create(
+            item = OrderItem.objects.create(
                 product=product,
                 order=order,
                 name=product.name,
-                qty=item_data["qty"],
-                price=item_data["price"],
-                image=product.image.url if product.image else "",
+                qty=i["qty"],
+                price=i["price"],
+                image=product.image.url,
             )
 
-            # Update product stock
-            product.countInStock -= item_data["qty"]
+            # (4) Update stock
+
+            product.countInStock -= item.qty
             product.save()
 
         serializer = OrderSerializer(order, many=False)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-    except KeyError as e:
-        return Response(
-            {"detail": f"Missing field: {str(e)}"},
-            status=status.HTTP_400_BAD_REQUEST,
-        )
-    except Exception as e:
-        return Response(
-            {"detail": f"An error occurred: {str(e)}"},
-            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        )
+        return Response(serializer.data)
 
 
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def getMyOrders(request):
     user = request.user
-    orders = user.order_set.all().order_by("-createdAt")
+    logger.info(f"Fetching orders for user: {user}")
+    orders = user.order_set.all()
+    logger.info(f"Orders retrieved: {orders}")
     serializer = OrderSerializer(orders, many=True)
+    logger.info(f"Total Serialized Data Count: {len(serializer.data)}\n")
     return Response(serializer.data)
 
 
 @api_view(["GET"])
+@permission_classes([IsAuthenticated])
 @permission_classes([IsAdminUser])
 def getOrders(request):
-    orders = Order.objects.all().order_by("-createdAt")
+    orders = Order.objects.all()
     serializer = OrderSerializer(orders, many=True)
     return Response(serializer.data)
 
@@ -101,69 +104,46 @@ def getOrders(request):
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def getOrderById(request, pk):
+
     user = request.user
+
     try:
-        order = get_object_or_404(Order, _id=pk)
+        order = Order.objects.get(_id=pk)
         if user.is_staff or order.user == user:
             serializer = OrderSerializer(order, many=False)
             return Response(serializer.data)
         else:
-            return Response(
+            Response(
                 {"detail": "Not authorized to view this order"},
-                status=status.HTTP_403_FORBIDDEN,
+                status=status.HTTP_400_BAD_REQUEST,
             )
-    except Exception as e:
+    except:
+
         return Response(
-            {"detail": f"Order does not exist: {str(e)}"},
-            status=status.HTTP_404_NOT_FOUND,
+            {"detail": "Order does not exist"}, status=status.HTTP_400_BAD_REQUEST
         )
+        raise
 
 
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
 def updateOrderToPaid(request, pk):
-    try:
-        order = get_object_or_404(Order, _id=pk)
+    order = Order.objects.get(_id=pk)
 
-        if not order.isPaid:
-            order.isPaid = True
-            order.paidAt = datetime.now()
-            order.save()
-            return Response(
-                {"detail": "Order marked as paid"}, status=status.HTTP_200_OK
-            )
-        else:
-            return Response(
-                {"detail": "Order is already marked as paid"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-    except Exception as e:
-        return Response(
-            {"detail": f"An error occurred: {str(e)}"},
-            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        )
+    order.isPaid = True
+    order.paidAt = datetime.now()
+    order.save()
+
+    return Response("Order was paid")
 
 
 @api_view(["PUT"])
 @permission_classes([IsAdminUser])
 def updateOrderToDelivered(request, pk):
-    try:
-        order = get_object_or_404(Order, _id=pk)
+    order = Order.objects.get(_id=pk)
 
-        if not order.isDelivered:
-            order.isDelivered = True
-            order.deliveredAt = datetime.now()
-            order.save()
-            return Response(
-                {"detail": "Order marked as delivered"}, status=status.HTTP_200_OK
-            )
-        else:
-            return Response(
-                {"detail": "Order is already marked as delivered"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-    except Exception as e:
-        return Response(
-            {"detail": f"An error occurred: {str(e)}"},
-            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        )
+    order.isDelivered = True
+    order.deliveredAt = datetime.now()
+    order.save()
+
+    return Response("Order was delivered")

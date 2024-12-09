@@ -1,8 +1,14 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from .models import UserProfile
 from django.conf import settings
+
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import UserProfile, Product, Order, OrderItem, ShippingAddress, Review
+from .models import Product, Order, OrderItem, ShippingAddress, Review
+
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
@@ -19,6 +25,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
+        # fields = ["id", "username", "email"]
         fields = ["id", "_id", "username", "email", "name", "isAdmin", "avatar"]
 
     def get__id(self, obj):
@@ -28,17 +35,16 @@ class UserSerializer(serializers.ModelSerializer):
         return obj.is_staff
 
     def get_name(self, obj):
-        return obj.first_name or obj.email
+        name = obj.first_name
+        if name == "":
+            name = obj.email
+        return name
 
     def get_avatar(self, obj):
         try:
-            return (
-                obj.profile.avatar.url
-            )  # Use the related_name `profile` from the model
+            return obj.userprofile.avatar.url
         except UserProfile.DoesNotExist:
-            return (
-                settings.DEFAULT_AVATAR_URL
-            )  # Ensure DEFAULT_AVATAR_URL is set in settings
+            return None
 
 
 class UserSerializerWithToken(UserSerializer):
@@ -63,18 +69,13 @@ class UserSerializerWithToken(UserSerializer):
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField(read_only=True)
-
     class Meta:
         model = Review
         fields = "__all__"
 
-    def get_user(self, obj):
-        return obj.user.first_name or obj.user.username
-
 
 class ProductSerializer(serializers.ModelSerializer):
-    reviews = ReviewSerializer(many=True, read_only=True)  # Use nested serializer
+    reviews = serializers.SerializerMethodField(read_only=True)
     image_url = serializers.SerializerMethodField()
 
     class Meta:
@@ -82,11 +83,16 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def get_image_url(self, obj):
+        # If image exists, return the media URL
         if obj.image and hasattr(obj.image, "url"):
             return obj.image.url
-        return (
-            settings.PLACEHOLDER_IMAGE_URL
-        )  # Ensure PLACEHOLDER_IMAGE_URL is set in settings
+        # Otherwise, return the default static image path
+        return settings.PLACEHOLDER_IMAGE_URL
+
+    def get_reviews(self, obj):
+        reviews = obj.review_set.all()
+        serializer = ReviewSerializer(reviews, many=True)
+        return serializer.data
 
 
 class ShippingAddressSerializer(serializers.ModelSerializer):
@@ -96,22 +102,15 @@ class ShippingAddressSerializer(serializers.ModelSerializer):
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
-    product = serializers.SerializerMethodField(read_only=True)
-
     class Meta:
         model = OrderItem
         fields = "__all__"
 
-    def get_product(self, obj):
-        return ProductSerializer(obj.product, many=False).data
-
 
 class OrderSerializer(serializers.ModelSerializer):
-    orderItems = OrderItemSerializer(many=True, source="order_items", read_only=True)
-    shippingAddress = ShippingAddressSerializer(
-        source="shipping_address", read_only=True
-    )
-    user = UserSerializer(read_only=True)
+    orderItems = serializers.SerializerMethodField(read_only=True)
+    shippingAddress = serializers.SerializerMethodField(read_only=True)
+    user = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Order
@@ -119,13 +118,17 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def get_orderItems(self, obj):
         items = obj.orderitem_set.all()
+        logging.info(f"Order items for {obj}: {items}")
         serializer = OrderItemSerializer(items, many=True)
+        logging.info(f"Serialized order items Count: {len(serializer.data)}\n")
         return serializer.data
 
     def get_shippingAddress(self, obj):
         try:
             address = ShippingAddressSerializer(obj.shippingaddress, many=False).data
-        except:
+            # logging.info(f"Shipping address for {obj}: {address}")
+        except Exception as e:
+            # logging.error(f"Error fetching shipping address: {e}")
             address = False
             raise
         return address
