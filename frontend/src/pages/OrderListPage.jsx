@@ -38,6 +38,7 @@ function OrderListPage() {
     } else {
       navigate('/login');
     }
+    console.log('Order List Page Orders:', orders);
   }, [dispatch, navigate, userInfo]);
 
   return (

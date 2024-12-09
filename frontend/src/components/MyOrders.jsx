@@ -34,6 +34,7 @@ const MyOrders = () => {
 
   const orderListMy = useSelector(state => state.orderListMy);
   const { loading: loadingOrders, error: errorOrders, orders } = orderListMy;
+  console.log('My Orders:', orders);
 
   useEffect(() => {
     if (!userInfo) {

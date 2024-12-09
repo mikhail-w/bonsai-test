@@ -178,6 +178,7 @@ export const deliverOrder = order => async (dispatch, getState) => {
 
 export const listMyOrders = () => async (dispatch, getState) => {
   try {
+    console.log('Request initiated for fetching orders');
     dispatch({
       type: ORDER_LIST_MY_REQUEST,
     });
@@ -193,13 +194,18 @@ export const listMyOrders = () => async (dispatch, getState) => {
       },
     };
 
+    console.log('Request config:', config);
+
     const { data } = await axios.get(`/api/orders/myorders/`, config);
+
+    console.log('Response data:', data);
 
     dispatch({
       type: ORDER_LIST_MY_SUCCESS,
       payload: data,
     });
   } catch (error) {
+    console.error('Error fetching orders:', error);
     dispatch({
       type: ORDER_LIST_MY_FAIL,
       payload:
