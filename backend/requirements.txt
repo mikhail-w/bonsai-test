@@ -22,16 +22,13 @@ certifi==2024.2.2
 chardet==4.0.0
 charset-normalizer==3.4.0
 click==8.0.3
-cloud-init==24.3.1
 colorama==0.4.6
-command-not-found==0.3
 configobj==5.0.6
 constantly==15.1.0
 cryptography==3.4.8
 dbus-python==1.2.18
 distlib==0.3.8
 distro==1.7.0
-distro-info==1.1+ubuntu0.2
 Django==5.0.6
 django-cors-headers==4.6.0
 django-storages==1.14.4
@@ -45,7 +42,6 @@ filelock==3.14.0
 frozenlist==1.5.0
 fsspec==2024.10.0
 greenlet==3.1.1
-gyp==0.1
 h11==0.14.0
 httpcore==1.0.7
 httplib2==0.20.2
@@ -123,7 +119,6 @@ pyparsing==2.4.7
 pyrsistent==0.18.1
 pyserial==3.5
 pytest==8.2.1
-python-apt==2.4.0+ubuntu4
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
 pytz==2022.1
@@ -147,7 +142,6 @@ SQLAlchemy==2.0.36
 sqlparse==0.5.0
 sseclient-py==1.8.0
 sympy==1.13.1
-systemd-python==234
 tenacity==9.0.0
 threadpoolctl==3.5.0
 tiktoken==0.8.0
@@ -162,7 +156,6 @@ Twisted==22.1.0
 typeguard==4.4.1
 typing_extensions==4.12.1
 tzdata==2024.2
-ubuntu-pro-client==8001
 ufw==0.36.1
 unattended-upgrades==0.1
 url-normalize==1.4.3
