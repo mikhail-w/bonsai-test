@@ -26,7 +26,8 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "your-default-secret-key")
 DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() in ("true", "1")
 
 # ALLOWED_HOSTS from environment or default to localhost
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost").split(",")
+# ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost").split(",")
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 # Application definition
 INSTALLED_APPS = [
@@ -113,11 +114,14 @@ AWS_S3_REGION_NAME = os.getenv(
 AWS_QUERYSTRING_AUTH = False  # For public access to files
 
 # Static and Media Files with S3
-STATICFILES_STORAGE = "backend.storage_backends.StaticStorage"
-DEFAULT_FILE_STORAGE = "backend.storage_backends.MediaStorage"
+# STATICFILES_STORAGE = "backend.storage_backends.StaticStorage"
+# DEFAULT_FILE_STORAGE = "backend.storage_backends.MediaStorage"
 
-STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/static/"
-MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/"
+# STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/static/"
+# MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/"
+
+STATIC_URL = "/static/"
+MEDIA_URL = "/media/"
 
 # Local Static and Media Files (for fallback or local development)
 STATIC_ROOT = BASE_DIR / "staticfiles"
@@ -146,7 +150,9 @@ SIMPLE_JWT = {
 }
 
 # CORS settings
-CORS_ORIGIN_ALLOW_ALL = os.getenv("CORS_ALLOW_ALL", "True").lower() in ("true", "1")
+# CORS_ORIGIN_ALLOW_ALL = os.getenv("CORS_ALLOW_ALL", "True").lower() in ("true", "1")
+CORS_ORIGIN_ALLOW_ALL = True
+
 
 # Uncomment and configure if you want to restrict allowed origins
 # CORS_ALLOWED_ORIGINS = [
