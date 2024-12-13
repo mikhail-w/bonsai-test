@@ -70,12 +70,18 @@ const ProductButtons = () => {
         </HStack>
       </Flex>
       {/* 3D Model Modal */}
-      <Modal isOpen={isOpen} onClose={onClose} size="xl">
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent top="10%">
+        <ModalContent
+          maxW="800px" // Set maximum width
+          h="600px" // Set height
+          mx="auto" // Center horizontally
+          mt="auto" // Center vertically
+          transform="translateY(10%)" // Adjust for fine centering
+        >
           <ModalHeader>3D Model Viewer</ModalHeader>
           <ModalCloseButton />
-          <ModalBody h="500px" overflowY="scroll">
+          <ModalBody>
             <ThreeDModelViewer />
           </ModalBody>
           <ModalFooter>

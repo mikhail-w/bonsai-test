@@ -25,6 +25,8 @@ const ProductPurchaseOptions = ({ product, qty, setQty, addToCartHandler }) => {
       spacing={6}
       align="stretch"
       w="full"
+      maxH={300}
+      p={{ base: 4, md: 6 }}
       shadow="lg"
       borderWidth="1px"
       borderRadius="lg"

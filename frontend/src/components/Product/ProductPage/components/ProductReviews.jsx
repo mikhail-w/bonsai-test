@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Heading, VStack } from '@chakra-ui/react';
+import { Box, Flex, Heading, Text, VStack } from '@chakra-ui/react';
 import Message from '../../../Message';
 import Rating from '../../../Rating';
 import WriteReviewForm from './WriteReviewForm';
@@ -21,7 +21,11 @@ const ProductReviews = ({
       Reviews
     </Heading>
     {product.reviews.length === 0 ? (
-      <Message variant="info">No Reviews</Message>
+      <Box w="100%" display="flex" justifyContent="center" maxW="600px" mb={10}>
+        <Message variant="info" w="100%" textAlign="center">
+          No Reviews
+        </Message>
+      </Box>
     ) : (
       <VStack spacing={4} align="left" maxW="600px" w="100%">
         {product.reviews.map(review => (

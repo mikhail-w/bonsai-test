@@ -10,7 +10,7 @@ const WriteReviewForm = ({
   loadingProductReview,
 }) => (
   <Box as="form" onSubmit={submitHandler}>
-    <VStack spacing={4} align="stretch">
+    <VStack spacing={4} align="stretch" maxW="600px" w="100%">
       <Select
         placeholder="Select rating"
         value={rating}
