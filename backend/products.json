@@ -3,7 +3,7 @@
     "model": "base.product",
     "pk": 2,
     "fields": {
-      "user": 1,
+      "user": null,
       "name": "Korean Yew Bonsai",
       "image": "products/korean_yew_bonsai.png",
       "_type": "Bonsai Spruce",
@@ -20,7 +20,7 @@
     "model": "base.product",
     "pk": 4,
     "fields": {
-      "user": 1,
+      "user": null,
       "name": "Procumbens Juniper",
       "image": "products/procumbens_juniper.jpg",
       "_type": "Japanese Albizia julibrissin ‘Summer Chocolate’",
@@ -37,7 +37,7 @@
     "model": "base.product",
     "pk": 6,
     "fields": {
-      "user": 1,
+      "user": null,
       "name": "Spruce Bonsai",
       "image": "products/spruce_bonsai.jpg",
       "_type": "Bonsai",
@@ -54,7 +54,7 @@
     "model": "base.product",
     "pk": 7,
     "fields": {
-      "user": 1,
+      "user": null,
       "name": "Juniperus Chinensis Shimpaku",
       "image": "products/juniperus_chinensis_shimpaku.png",
       "_type": "Juniperus Chinensis Shimpaku",
@@ -71,7 +71,7 @@
     "model": "base.product",
     "pk": 8,
     "fields": {
-      "user": 1,
+      "user": null,
       "name": "Feroniella Bonsai",
       "image": "products/feronallis-bonsai.jpg",
       "_type": "Feroniella Bonsai",
@@ -88,7 +88,7 @@
     "model": "base.product",
     "pk": 9,
     "fields": {
-      "user": 1,
+      "user": null,
       "name": "Hinoki Bonsai",
       "image": "products/hinoki_bonsai.jpg",
       "_type": "Hinoki Bonsai",
@@ -105,7 +105,7 @@
     "model": "base.product",
     "pk": 10,
     "fields": {
-      "user": 1,
+      "user": null,
       "name": "Bonsai Azalea",
       "image": "products/bonsai_azalea_.jpg",
       "_type": "Bonsai Azalea",
@@ -122,7 +122,7 @@
     "model": "base.product",
     "pk": 11,
     "fields": {
-      "user": 1,
+      "user": null,
       "name": "Bending-Black-Pine-Bonsai",
       "image": "products/bending_black_pine_bonsai.jpg",
       "_type": "Bending-Black-Pine-Bonsai",
@@ -139,7 +139,7 @@
     "model": "base.product",
     "pk": 12,
     "fields": {
-      "user": 1,
+      "user": null,
       "name": "Procumbens Nana Sonare Juniper",
       "image": "products/procumbens_nana_sonare_juniper.png",
       "_type": "Procumbens nana sonare juniper",
@@ -156,7 +156,7 @@
     "model": "base.product",
     "pk": 13,
     "fields": {
-      "user": 1,
+      "user": null,
       "name": "Japanese White Pine ‘Negishi",
       "image": "products/japanese_white_pine_negishi.jpg",
       "_type": "Japanese White Pine ‘Negishi",
@@ -173,7 +173,7 @@
     "model": "base.product",
     "pk": 14,
     "fields": {
-      "user": 1,
+      "user": null,
       "name": "Bonsai Hedera",
       "image": "products/bonsai_hedera.jpg",
       "_type": "Korean Hedera",
@@ -190,7 +190,7 @@
     "model": "base.product",
     "pk": 15,
     "fields": {
-      "user": 1,
+      "user": null,
       "name": "Bonsai Satsuki Azalea",
       "image": "products/bonsai_satsuk_azalea.png",
       "_type": "Phyllanthus Mirabilis",
@@ -207,7 +207,7 @@
     "model": "base.product",
     "pk": 16,
     "fields": {
-      "user": 1,
+      "user": null,
       "name": "Stephania Kaweesakii ‘Nova’",
       "image": "products/stephania_kaweesaki_nova.jpg",
       "_type": "Stephania Kaweesakii ‘Nova’",
@@ -224,7 +224,7 @@
     "model": "base.product",
     "pk": 17,
     "fields": {
-      "user": 1,
+      "user": null,
       "name": "Stephania Suberosa",
       "image": "products/stephania_suberosa.jpg",
       "_type": "Stephania Suberosa",
@@ -241,7 +241,7 @@
     "model": "base.product",
     "pk": 35,
     "fields": {
-      "user": 1,
+      "user": null,
       "name": "White-Seal",
       "image": "products/white_seal.jpg",
       "_type": "Planter",
@@ -258,7 +258,7 @@
     "model": "base.product",
     "pk": 36,
     "fields": {
-      "user": 1,
+      "user": null,
       "name": "Charcoal Ducku",
       "image": "products/charcoal_duck.jpg",
       "_type": "Planter",
@@ -275,7 +275,7 @@
     "model": "base.product",
     "pk": 37,
     "fields": {
-      "user": 1,
+      "user": null,
       "name": "Bishop-Snow",
       "image": "products/bishop_snow.jpg",
       "_type": "Planter",
@@ -292,7 +292,7 @@
     "model": "base.product",
     "pk": 38,
     "fields": {
-      "user": 1,
+      "user": null,
       "name": "Black-Moon-Pot",
       "image": "products/black_moon_pot.jpg",
       "_type": "Planter",
@@ -309,7 +309,7 @@
     "model": "base.product",
     "pk": 39,
     "fields": {
-      "user": 1,
+      "user": null,
       "name": "Watering Can (Black)",
       "image": "products/watering_can_black.jpg",
       "_type": "Essentials",
@@ -326,7 +326,7 @@
     "model": "base.product",
     "pk": 40,
     "fields": {
-      "user": 1,
+      "user": null,
       "name": "Watering Can (Silver)",
       "image": "products/watering_can_silver.jpg",
       "_type": "Essentials",
@@ -343,7 +343,7 @@
     "model": "base.product",
     "pk": 41,
     "fields": {
-      "user": 1,
+      "user": null,
       "name": "Shovel",
       "image": "products/shovel.jpg",
       "_type": "Essentials",
