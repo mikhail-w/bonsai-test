@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Flex, Heading, Text, VStack } from '@chakra-ui/react';
-import Message from '../../../Message';
-import Rating from '../../../Rating';
+import Message from '../Message';
+import Rating from '../Rating';
 import WriteReviewForm from './WriteReviewForm';
 
 const ProductReviews = ({

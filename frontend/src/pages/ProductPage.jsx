@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Box, SimpleGrid } from '@chakra-ui/react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useDispatchSelector } from '../../../hooks/useDispatchSelector';
+import { useDispatchSelector } from '../hooks/useDispatchSelector';
 import {
   listProductDetails,
   createProductReview,
-} from '../../../actions/productActions';
-import { PRODUCT_CREATE_REVIEW_RESET } from '../../../constants/productConstants';
+} from '../actions/productActions';
+import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants';
 
-import BackButton from '../../BackButton';
-import Loader from '../../Loader';
-import Message from '../../Message';
-import ProductImageAndButtons from './components/ProductImageAndButtons';
-import ProductDetails from './components/ProductDetails';
-import ProductPurchaseOptions from './components/ProductPurchaseOptions';
-import ProductReviews from './components/ProductReviews';
+import BackButton from '../components/BackButton';
+import Loader from '../components/Loader';
+import Message from '../components/Message';
+import ProductImageAndButtons from '../components/Product/ProductImageAndButtons';
+import ProductDetails from '../components/Product/ProductDetails';
+import ProductPurchaseOptions from '../components/Product/ProductPurchaseOptions';
+import ProductReviews from '../components/Product/ProductReviews';
 
 const ProductPage = () => {
   const [qty, setQty] = useState(1);

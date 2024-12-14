@@ -1,6 +1,6 @@
 import React from 'react';
 import { VStack, Heading, Text, Box } from '@chakra-ui/react';
-import Rating from '../../../Rating';
+import Rating from '../Rating';
 
 const ProductDetails = ({ product }) => (
   <VStack

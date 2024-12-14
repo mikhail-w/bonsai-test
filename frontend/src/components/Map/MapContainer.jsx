@@ -90,20 +90,28 @@ const MapContainer = ({
             );
 
             setMarkers(
-              filteredResults.map(place => ({
-                id: place.place_id,
-                name: place.name,
-                position: place.geometry.location,
-                type: place.types || [],
-                address: place.vicinity,
-                photo: place.photos ? place.photos[0].getUrl() : DefaultImg,
-                rating: place.rating || 0,
-                reviewCount: place.user_ratings_total || 0,
-                isOpen: place.opening_hours?.isOpen() || false,
-                closingTime: place.opening_hours?.periods
-                  ? place.opening_hours.periods[0]?.close?.time || 'N/A'
-                  : 'N/A', // Default to 'N/A' if periods or close time isn't available
-              }))
+              filteredResults.map(place => {
+                const photoUrl = place.photos
+                  ? place.photos[0].getUrl({ maxWidth: 400 })
+                  : DefaultImg;
+
+                console.log('Photo URL:', photoUrl); // Log the URL for debugging
+
+                return {
+                  id: place.place_id,
+                  name: place.name,
+                  position: place.geometry.location,
+                  type: place.types || [],
+                  address: place.vicinity,
+                  photo: photoUrl, // Use updated photo URL logic
+                  rating: place.rating || 0,
+                  reviewCount: place.user_ratings_total || 0,
+                  isOpen: place.opening_hours?.isOpen() || false,
+                  closingTime: place.opening_hours?.periods
+                    ? place.opening_hours.periods[0]?.close?.time || 'N/A'
+                    : 'N/A',
+                };
+              })
             );
 
             // Set the location list only on the initial load or search

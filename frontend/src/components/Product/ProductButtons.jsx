@@ -17,7 +17,7 @@ import {
   Image,
 } from '@chakra-ui/react';
 import { FaCube, FaArrowsAlt } from 'react-icons/fa';
-import ThreeDModelViewer from '../3DModel/ThreeDModelViewer';
+import ThreeDModelViewer from './3DModel/ThreeDModelViewer';
 
 const ProductButtons = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
