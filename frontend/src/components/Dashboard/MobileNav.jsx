@@ -59,7 +59,18 @@ const MobileNav = ({ onOpen }) => {
         <Menu>
           <MenuButton>
             <HStack>
-              <Avatar src={userInfo?.avatar || '/media/default/avatar.jpg'} />
+              <Avatar
+                src={
+                  userInfo.avatar
+                    ? `${import.meta.env.VITE_API_URL.replace('/api/', '')}${
+                        userInfo.avatar
+                      }`
+                    : `${import.meta.env.VITE_API_URL.replace(
+                        '/api/',
+                        ''
+                      )}/media/default/avatar.jpg`
+                }
+              />
               <FiChevronDown />
             </HStack>
           </MenuButton>

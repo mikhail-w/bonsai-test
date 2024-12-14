@@ -278,7 +278,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
               transition="all 0.3s"
               _focus={{ boxShadow: 'none' }}
             >
-              <HStack alignItems={'end'}>
+              <HStack alignItems={'end'} outline={'2px solid red'}>
                 <Avatar
                   size={'md'}
                   src={
