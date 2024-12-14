@@ -45,6 +45,8 @@ class UserSerializer(serializers.ModelSerializer):
             return obj.userprofile.avatar.url
         except UserProfile.DoesNotExist:
             return None
+        except AttributeError:
+            return None
 
 
 class UserSerializerWithToken(UserSerializer):
@@ -65,6 +67,7 @@ class UserSerializerWithToken(UserSerializer):
 
     def get_token(self, obj):
         token = RefreshToken.for_user(obj)
+        print(f"Generated Token for User ID {obj.id}: {token}")
         return str(token.access_token)
 
 

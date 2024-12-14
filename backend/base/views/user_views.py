@@ -25,10 +25,13 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
 @api_view(["POST"])
 def registerUser(request):
+    print("RegisterUser View Called")  # Indicate the view was reached
+    print(f"Request Data: {request.data}")  # Log incoming request data
     data = request.data
     try:
         # Check if user with email already exists
         if User.objects.filter(email=data.get("email")).exists():
+            print(f"Email already exists: {data.get('email')}")
             return Response(
                 {"detail": "User with this email already exists"},
                 status=status.HTTP_400_BAD_REQUEST,
@@ -41,11 +44,16 @@ def registerUser(request):
             password=make_password(data.get("password")),
         )
 
+        print(f"User Created: {user}")
+
         # Create a user profile with an optional avatar
         avatar = request.FILES.get("avatar")
         UserProfile.objects.create(user=user, avatar=avatar)
 
+        print(f"UserProfile Created for User ID {user.id}")
+
         serializer = UserSerializerWithToken(user, many=False)
+        print(f"Serialized User Data: {serializer.data}")
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     except KeyError as e:
@@ -54,6 +62,7 @@ def registerUser(request):
             status=status.HTTP_400_BAD_REQUEST,
         )
     except Exception as e:
+        print(f"Error in registerUser: {e}")
         return Response(
             {"detail": f"An error occurred: {str(e)}"},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -63,26 +72,27 @@ def registerUser(request):
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
 def updateUserProfile(request):
-    user = request.user
-    data = request.data
-    try:
-        user.first_name = data.get("name", user.first_name)
-        user.username = data.get("email", user.username)
-        user.email = data.get("email", user.email)
+    print("UpdateUserProfile view called.")  # Log the view call
+    print(f"Authenticated User: {request.user}")  # Log authenticated user
+    print(f"Request Data: {request.data}")  # Log incoming request data
 
-        if data.get("password"):
-            user.password = make_password(data["password"])
+    try:
+        user = request.user
+        user.first_name = request.data.get("name", user.first_name)
+        user.username = request.data.get("email", user.username)
+        user.email = request.data.get("email", user.email)
+        if request.data.get("password"):
+            user.password = make_password(request.data["password"])
 
         user.save()
+        print(f"Updated User: {user}")  # Log the updated user object
 
         serializer = UserSerializerWithToken(user, many=False)
+        print(f"Serialized Updated User Data: {serializer.data}")  # Log serialized data
         return Response(serializer.data)
-
     except Exception as e:
-        return Response(
-            {"detail": f"An error occurred: {str(e)}"},
-            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        )
+        print(f"Error in updateUserProfile: {e}")  # Log unexpected errors
+        return Response({"detail": str(e)}, status=500)
 
 
 @api_view(["GET"])

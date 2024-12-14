@@ -98,7 +98,7 @@ function RegisterPage() {
       });
       return;
     }
-    dispatch(register(name, email, password, city, state, avatar));
+    dispatch(register(name, email, password, avatar));
     toast({
       title: 'Account created.',
       description: "We've created your account for you.",

@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import Watering from '../assets/images/watering.jpeg';
 import Sunlight from '../assets/images/sunlight.jpeg';
-import Pruning from '../assets/images/pruning.jpeg';
+import Pruning from '../assets/images/pruning.jpg';
 import Protection from '../assets/images/protection.jpeg';
 
 function CarePage_Care() {

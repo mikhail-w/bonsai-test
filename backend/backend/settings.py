@@ -15,6 +15,7 @@ import os
 from dotenv import load_dotenv
 from datetime import timedelta
 
+
 # Load environment variables from .env file
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
@@ -173,3 +174,6 @@ if not DEBUG:
         "true",
         "1",
     )
+
+print(f"DEBUG Mode: {DEBUG}")  # Log if debug mode is on
+print(f"Database Settings: {DATABASES}")  # Log database configuration
