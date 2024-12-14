@@ -16,7 +16,7 @@ const ProductDetails = ({ product }) => (
       <Rating
         value={product.rating}
         text={`${product.numReviews} ${
-          product.reviews.length === 1 ? 'review' : 'reviews'
+          product.numReviews === 1 ? 'review' : 'reviews'
         }`}
         color="#008b4a"
       />
