@@ -19,7 +19,7 @@ import ProductListPage from './pages/ProductListPage.jsx';
 import OrderListPage from './pages/OrderListPage.jsx';
 import ProductEditPage from './pages/ProductEditPage.jsx';
 import ProductsPage from './pages/ProductsPage.jsx';
-import Dashboard from './pages/Dashboard.jsx';
+import Dashboard from './components/Dashboard/Dashboard.jsx';
 import Trending from './pages/Trending.jsx';
 import MapPage from './pages/MapPage.jsx';
 import Favorites from './pages/Favorites.jsx';
