@@ -64,7 +64,7 @@ function Scene({ url }) {
   );
 }
 
-export default function Trending() {
+export default function ThreeDModel() {
   return (
     <div style={{ width: '100%', height: '100vh' }}>
       <Canvas>

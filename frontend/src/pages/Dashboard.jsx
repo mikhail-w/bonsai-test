@@ -53,7 +53,7 @@ import { LiaBlogSolid } from 'react-icons/lia';
 const defaultLinks = [
   { name: 'Home', icon: FiHome, path: '/' },
   { name: 'My Info', icon: FiUser, path: '/profile/info' },
-  { name: '3D Model', icon: Md3dRotation, path: '/profile/trending' },
+  { name: '3D Model', icon: Md3dRotation, path: '/profile/threeDModel' },
   { name: 'Explore', icon: FiCompass, path: '/profile/explore' },
   { name: 'Blog', icon: LiaBlogSolid, path: '/profile/blog' },
   { name: 'Plant ID', icon: HiOutlineViewfinderCircle, path: '/profile/id' },
