@@ -45,6 +45,9 @@ const DashNav = ({ onOpen }) => {
       justifyContent="space-between"
       bg={bgColor}
       borderBottom={'.1px solid'}
+      position={'sticky'}
+      top={'0px'}
+      zIndex={'1000'}
     >
       <IconButton
         display={{ base: 'flex', md: 'none' }}
