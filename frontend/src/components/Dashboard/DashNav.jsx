@@ -15,16 +15,20 @@ import {
   MenuList,
   Badge,
   Button,
+  useColorModeValue,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { FiMenu, FiChevronDown } from 'react-icons/fi';
 import { ShoppingCart } from 'lucide-react';
 import ColorModeSwitcher from '../ColorModeSwitcher';
 
-const MobileNav = ({ onOpen }) => {
+const DashNav = ({ onOpen }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { userInfo } = useSelector(state => state.userLogin);
   const { cartItems } = useSelector(state => state.cart);
+  const bgColor = useColorModeValue('white', 'gray.900');
+  const isMobile = useBreakpointValue({ base: true, md: false });
+  const { userInfo } = useSelector(state => state.userLogin);
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -39,6 +43,8 @@ const MobileNav = ({ onOpen }) => {
       height="20"
       alignItems="center"
       justifyContent="space-between"
+      bg={bgColor}
+      borderBottom={'.1px solid'}
     >
       <IconButton
         display={{ base: 'flex', md: 'none' }}
@@ -48,7 +54,7 @@ const MobileNav = ({ onOpen }) => {
       <Text fontSize="2xl" onClick={() => navigate('/')} cursor="pointer">
         BONSAI
       </Text>
-      <HStack>
+      <HStack spacing={isMobile ? '' : '30px'}>
         <ColorModeSwitcher />
         <RouterLink to="/cart">
           <Button variant="link">
@@ -71,6 +77,7 @@ const MobileNav = ({ onOpen }) => {
                       )}/media/default/avatar.jpg`
                 }
               />
+              {isMobile ? '' : <Text>{userInfo.name}</Text>}
               <FiChevronDown />
             </HStack>
           </MenuButton>
@@ -84,4 +91,4 @@ const MobileNav = ({ onOpen }) => {
   );
 };
 
-export default MobileNav;
+export default DashNav;

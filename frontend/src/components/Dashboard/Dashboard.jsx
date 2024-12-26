@@ -8,7 +8,7 @@ import {
   DrawerContent,
 } from '@chakra-ui/react';
 import SidebarContent from './SidebarContent';
-import MobileNav from './MobileNav';
+import DashNav from './DashNav';
 import { defaultLinks } from './Links';
 import { useSelector } from 'react-redux';
 
@@ -43,7 +43,7 @@ const Dashboard = () => {
           <SidebarContent onClose={onClose} links={links} userInfo={userInfo} />
         </DrawerContent>
       </Drawer>
-      <MobileNav onOpen={onOpen} />
+      <DashNav onOpen={onOpen} />
       <Box ml={{ base: 0, md: 60 }}>
         <Outlet />
       </Box>
