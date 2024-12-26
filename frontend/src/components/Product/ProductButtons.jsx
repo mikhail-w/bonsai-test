@@ -75,9 +75,7 @@ const ProductButtons = () => {
         <ModalContent
           maxW="800px" // Set maximum width
           h="600px" // Set height
-          mx="auto" // Center horizontally
-          mt="auto" // Center vertically
-          transform="translateY(10%)" // Adjust for fine centering
+          mt="100px" // Center vertically
         >
           <ModalHeader>3D Model Viewer</ModalHeader>
           <ModalCloseButton />
