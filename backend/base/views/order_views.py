@@ -10,6 +10,19 @@ from base.serializers import ProductSerializer, OrderSerializer
 from rest_framework import status
 from datetime import datetime
 
+import logging
+
+logger = logging.getLogger(__name__)
+
+logging.basicConfig(
+    level=logging.INFO,  # Set the logging level to INFO
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",  # Format of log messages
+)
+
+# Test logging to verify setup
+logging.info("Test log - INFO level")
+logging.warning("Test log - WARNING level")
+
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
@@ -71,8 +84,11 @@ def addOrderItems(request):
 @permission_classes([IsAuthenticated])
 def getMyOrders(request):
     user = request.user
+    logger.info(f"Fetching orders for user: {user}")
     orders = user.order_set.all()
+    logger.info(f"Orders retrieved: {orders}")
     serializer = OrderSerializer(orders, many=True)
+    logger.info(f"Total Serialized Data Count: {len(serializer.data)}\n")
     return Response(serializer.data)
 
 

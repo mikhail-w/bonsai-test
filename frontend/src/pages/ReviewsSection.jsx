@@ -7,7 +7,7 @@ import {
   Image,
   SimpleGrid,
   useBreakpointValue,
-  useColorModeValue, // Import useColorModeValue
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { SlArrowRight, SlArrowLeft } from 'react-icons/sl';
 import { FaQuoteRight } from 'react-icons/fa'; // Import the quote icon

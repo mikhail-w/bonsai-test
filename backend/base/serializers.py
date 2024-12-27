@@ -6,6 +6,10 @@ from django.conf import settings
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Product, Order, OrderItem, ShippingAddress, Review
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -41,6 +45,8 @@ class UserSerializer(serializers.ModelSerializer):
             return obj.userprofile.avatar.url
         except UserProfile.DoesNotExist:
             return None
+        except AttributeError:
+            return None
 
 
 class UserSerializerWithToken(UserSerializer):
@@ -61,6 +67,7 @@ class UserSerializerWithToken(UserSerializer):
 
     def get_token(self, obj):
         token = RefreshToken.for_user(obj)
+        print(f"Generated Token for User ID {obj.id}: {token}")
         return str(token.access_token)
 
 
@@ -114,13 +121,17 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def get_orderItems(self, obj):
         items = obj.orderitem_set.all()
+        logging.info(f"Order items for {obj}: {items}")
         serializer = OrderItemSerializer(items, many=True)
+        logging.info(f"Serialized order items Count: {len(serializer.data)}\n")
         return serializer.data
 
     def get_shippingAddress(self, obj):
         try:
             address = ShippingAddressSerializer(obj.shippingaddress, many=False).data
-        except:
+            # logging.info(f"Shipping address for {obj}: {address}")
+        except Exception as e:
+            # logging.error(f"Error fetching shipping address: {e}")
             address = False
             raise
         return address

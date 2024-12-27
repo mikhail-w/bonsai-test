@@ -55,7 +55,16 @@ const Product = ({ product }) => {
       >
         <Link to={`/product/${product._id}`}>
           <Image
-            src={`http://127.0.0.1:8000${product.image}`}
+            src={
+              product.image
+                ? `${import.meta.env.VITE_API_URL.replace('/api/', '')}${
+                    product.image
+                  }`
+                : `${import.meta.env.VITE_API_URL.replace(
+                    '/api/',
+                    ''
+                  )}/media/default/placeholder.jpg`
+            }
             alt={`Picture of ${product.name}`}
             roundedTop="lg"
             objectFit="cover"
@@ -65,6 +74,7 @@ const Product = ({ product }) => {
             // _hover={{ transform: 'scale(1.1)', }}
           />
         </Link>
+
         <Divider />
         <Box p="6">
           <Flex mt="2" justifyContent="space-between" alignItems="center">

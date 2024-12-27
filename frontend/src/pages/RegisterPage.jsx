@@ -10,10 +10,8 @@ import {
   Stack,
   Image,
   useToast,
-  FormErrorMessage,
   FormHelperText,
   extendTheme,
-  Box,
 } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
@@ -21,7 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { register } from '../actions/userActions';
-import ResgisterPageImage from '../assets/images/b7.jpg';
+import RegisterPageImage from '../assets/images/b7.jpg';
 import BackButton from '../components/BackButton';
 
 const activeLabelStyles = {
@@ -75,8 +73,7 @@ function RegisterPage() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  let location = useLocation();
+  const location = useLocation();
   const redirect = location.search ? location.search.split('=')[1] : '/';
 
   const userRegister = useSelector(state => state.userRegister);
@@ -89,9 +86,8 @@ function RegisterPage() {
   }, [navigate, userInfo, redirect]);
 
   const handleSubmit = e => {
-    console.log('INFO:', name, email, password, avatar);
     e.preventDefault();
-    if (password !== confirmPassword) {
+    if (password.trim() !== confirmPassword.trim()) {
       setMessage('Passwords do not match');
       toast({
         title: 'Error',
@@ -102,13 +98,12 @@ function RegisterPage() {
       });
       return;
     }
-    // dispatch(register(name, email, password, city, state, avatar));
     dispatch(register(name, email, password, avatar));
     toast({
       title: 'Account created.',
       description: "We've created your account for you.",
       status: 'success',
-      duration: 9000,
+      duration: 3000,
       isClosable: true,
     });
   };
@@ -118,145 +113,124 @@ function RegisterPage() {
   };
 
   return (
-    <>
-      <ChakraProvider theme={theme}>
-        {message && <Message variant="danger">{message}</Message>}
-        {error && <Message variant="danger">{error}</Message>}
-        {loading && <Loader />}
-        <Stack minH={'100vh'} direction={{ base: 'column', md: 'row' }}>
-          <Flex
-            p={8}
-            flex={1}
-            align={'center'}
-            justify={'center'}
-            direction={'column'}
-          >
-            <Stack spacing={4} w={'full'} maxW={'md'}>
-              <Heading fontSize={'2xl'}>Register</Heading>
-
-              <form onSubmit={handleSubmit}>
-                <FormControl variant="floating" mb={10} id="name" isRequired>
-                  <Input
-                    type="text"
-                    value={name}
-                    onChange={e => setName(e.target.value)}
-                    placeholder=""
-                    autoComplete="off" // Prevents browser autofill
-                  />
-                  <FormLabel>Enter your Name</FormLabel>
-                </FormControl>
-                <FormControl variant="floating" mb={10} id="email" isRequired>
-                  <Input
-                    type="email"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    placeholder=""
-                    autoComplete="off" // Prevents browser autofill
-                  />
-                  <FormLabel>Enter your Email</FormLabel>
-                </FormControl>
-                <FormControl
-                  variant="floating"
-                  mb={10}
-                  id="password"
-                  isRequired
+    <ChakraProvider theme={theme}>
+      {message && <Message variant="danger">{message}</Message>}
+      {error && <Message variant="danger">{error}</Message>}
+      {loading && <Loader />}
+      <Stack minH={'100vh'} direction={{ base: 'column', md: 'row' }}>
+        <Flex
+          p={8}
+          flex={1}
+          align={'center'}
+          justify={'center'}
+          direction={'column'}
+        >
+          <Stack spacing={4} w={'full'} maxW={'md'}>
+            <Heading fontSize={'2xl'}>Register</Heading>
+            <form onSubmit={handleSubmit}>
+              <FormControl variant="floating" mb={10} id="name" isRequired>
+                <Input
+                  type="text"
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                  placeholder=""
+                />
+                <FormLabel>Enter your Name</FormLabel>
+              </FormControl>
+              <FormControl variant="floating" mb={10} id="email" isRequired>
+                <Input
+                  type="email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  placeholder=""
+                />
+                <FormLabel>Enter your Email</FormLabel>
+              </FormControl>
+              <FormControl variant="floating" mb={10} id="password" isRequired>
+                <Input
+                  type="password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  placeholder=""
+                />
+                <FormLabel>Enter your Password</FormLabel>
+              </FormControl>
+              <FormControl
+                variant="floating"
+                mb={10}
+                id="passwordConfirm"
+                isRequired
+              >
+                <Input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={e => setConfirmPassword(e.target.value)}
+                  placeholder=""
+                />
+                <FormLabel>Confirm Password</FormLabel>
+              </FormControl>
+              <FormControl variant="floating" mb={10} id="city" isRequired>
+                <Input
+                  type="text"
+                  value={city}
+                  onChange={e => setCity(e.target.value)}
+                  placeholder=""
+                />
+                <FormLabel>Enter your City</FormLabel>
+              </FormControl>
+              <FormControl variant="floating" mb={10} id="state" isRequired>
+                <Input
+                  type="text"
+                  value={state}
+                  onChange={e => setState(e.target.value)}
+                  placeholder=""
+                />
+                <FormLabel>Enter your State</FormLabel>
+              </FormControl>
+              <FormControl mb={10} id="profileImage">
+                <FormLabel>Upload Profile Image</FormLabel>
+                <Input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleAvatarImageChange}
+                />
+                <FormHelperText>
+                  Optional: Upload your profile image.
+                </FormHelperText>
+              </FormControl>
+              <Stack spacing={6}>
+                <Button
+                  colorScheme="green"
+                  size="lg"
+                  type="submit"
+                  width="full"
+                  mt={4}
                 >
-                  <Input
-                    type="password"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    placeholder=""
-                    autoComplete="off" // Prevents browser autofill
-                  />
-                  <FormLabel>Enter your Password</FormLabel>
-                </FormControl>
-                <FormControl
-                  variant="floating"
-                  mb={10}
-                  id="passwordConfirm"
-                  isRequired
-                >
-                  <Input
-                    type="password"
-                    value={confirmPassword}
-                    onChange={e => setConfirmPassword(e.target.value)}
-                    placeholder=""
-                    autoComplete="off" // Prevents browser autofill
-                  />
-                  <FormLabel>Confirm Password</FormLabel>
-                </FormControl>
-                <FormControl variant="floating" mb={10} id="city" isRequired>
-                  <Input
-                    type="text"
-                    value={city}
-                    onChange={e => setCity(e.target.value)}
-                    placeholder=""
-                    autoComplete="off" // Prevents browser autofill
-                  />
-                  <FormLabel>Enter your City</FormLabel>
-                </FormControl>
-                <FormControl variant="floating" mb={10} id="state" isRequired>
-                  <Input
-                    type="text"
-                    value={state}
-                    onChange={e => setState(e.target.value)}
-                    placeholder=""
-                    autoComplete="off" // Prevents browser autofill
-                  />
-                  <FormLabel>Enter your State</FormLabel>
-                </FormControl>
-                <FormControl mb={10} id="profileImage">
-                  <FormLabel>Upload Profile Image</FormLabel>
-                  <Input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleAvatarImageChange}
-                  />
-                  <FormHelperText>
-                    Optional: Upload your profile image.
-                  </FormHelperText>
-                </FormControl>
-                <Stack spacing={6}>
-                  <Stack
-                    direction={{ base: 'column', sm: 'row' }}
-                    align={'start'}
-                    justify={'space-between'}
-                  ></Stack>
-                  <Button
-                    colorScheme="green"
-                    size="lg"
-                    type="submit"
-                    width="full"
-                    mt={4}
-                  >
-                    Register
-                  </Button>
-                  <BackButton nav={navigate} />
-                </Stack>
-              </form>
-              <Text textAlign="center" mt={4} color="gray.500">
-                Have an Account?{' '}
-                <Button variant="link" colorScheme="green">
-                  <Link
-                    to={redirect ? `/login?redirect=${redirect}` : '/login'}
-                  >
-                    Sign In
-                  </Link>
+                  Register
                 </Button>
-              </Text>
-            </Stack>
-          </Flex>
-          <Flex flex={1} display={{ base: 'none', lg: 'block' }}>
-            <Image
-              boxSize="100vh"
-              objectFit="cover"
-              alt={'Login Image'}
-              src={ResgisterPageImage}
-            />
-          </Flex>
-        </Stack>
-      </ChakraProvider>
-    </>
+                <BackButton nav={navigate} />
+              </Stack>
+            </form>
+            <Text textAlign="center" mt={4} color="gray.500">
+              Have an Account?{' '}
+              <Button variant="link" colorScheme="green">
+                <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>
+                  Sign In
+                </Link>
+              </Button>
+            </Text>
+          </Stack>
+        </Flex>
+        <Flex flex={1} display={{ base: 'none', lg: 'block' }}>
+          <Image
+            boxSize="100vh"
+            objectFit="cover"
+            alt={'Register Page Image'}
+            src={RegisterPageImage}
+          />
+        </Flex>
+      </Stack>
+    </ChakraProvider>
   );
 }
 

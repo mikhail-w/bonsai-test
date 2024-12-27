@@ -1,359 +1,359 @@
 [
-{
+  {
     "model": "base.product",
     "pk": 2,
     "fields": {
-        "user": 2,
-        "name": "Korean Yew Bonsai",
-        "image": "products/korean_yew_bonsai.png",
-        "_type": "Bonsai Spruce",
-        "category": "Potted Plants",
-        "description": "The yew is an evergreen dioecious (male and female flowers grow on separate trees ) \r\nshrub or tree with dark green needle-shaped foliage. The genus Taxus occurs \r\nin the temperate zones of the northern hemisphere. \r\nAlthough the yew is considered to be a conifer, it does not bear woody cones \r\nbut produces seed cones with a single seed surrounded by a berry-like \r\nred aril which is open at the end.",
-        "rating": "5.00",
-        "numReviews": 1,
-        "price": "118.00",
-        "countInStock": 0,
-        "createdAt": "2024-08-10T16:44:58.527Z"
+      "user": null,
+      "name": "Korean Yew Bonsai",
+      "image": "products/korean_yew_bonsai.png",
+      "_type": "Bonsai Spruce",
+      "category": "Potted Plants",
+      "description": "The yew is an evergreen dioecious (male and female flowers grow on separate trees ) \r\nshrub or tree with dark green needle-shaped foliage. The genus Taxus occurs \r\nin the temperate zones of the northern hemisphere. \r\nAlthough the yew is considered to be a conifer, it does not bear woody cones \r\nbut produces seed cones with a single seed surrounded by a berry-like \r\nred aril which is open at the end.",
+      "rating": "5.00",
+      "numReviews": 1,
+      "price": "118.00",
+      "countInStock": 0,
+      "createdAt": "2024-08-10T16:44:58.527Z"
     }
-},
-{
+  },
+  {
     "model": "base.product",
     "pk": 4,
     "fields": {
-        "user": 2,
-        "name": "Procumbens Juniper",
-        "image": "products/procumbens_juniper.jpg",
-        "_type": "Japanese Albizia julibrissin ‘Summer Chocolate’",
-        "category": "Potted Plants",
-        "description": "Procumbens nana sonare juniper is an evergreen dioecious \r\n(male and female flowers grow on separate trees ) shrub or tree with \r\ndark green needle-shaped foliage. The genus Taxus occurs in the \r\ntemperate zones of the northern hemisphere. Although the yew is \r\nconsidered to be a conifer, it does not bear woody cones but \r\nproduces seed cones with a single seed surrounded by a berry-like \r\nred aril which is open at the end.",
-        "rating": "5.00",
-        "numReviews": 1,
-        "price": "498.00",
-        "countInStock": 89,
-        "createdAt": "2024-08-10T16:49:10.224Z"
+      "user": null,
+      "name": "Procumbens Juniper",
+      "image": "products/procumbens_juniper.jpg",
+      "_type": "Japanese Albizia julibrissin ‘Summer Chocolate’",
+      "category": "Potted Plants",
+      "description": "Procumbens nana sonare juniper is an evergreen dioecious \r\n(male and female flowers grow on separate trees ) shrub or tree with \r\ndark green needle-shaped foliage. The genus Taxus occurs in the \r\ntemperate zones of the northern hemisphere. Although the yew is \r\nconsidered to be a conifer, it does not bear woody cones but \r\nproduces seed cones with a single seed surrounded by a berry-like \r\nred aril which is open at the end.",
+      "rating": "5.00",
+      "numReviews": 1,
+      "price": "498.00",
+      "countInStock": 89,
+      "createdAt": "2024-08-10T16:49:10.224Z"
     }
-},
-{
+  },
+  {
     "model": "base.product",
     "pk": 6,
     "fields": {
-        "user": 2,
-        "name": "Spruce Bonsai",
-        "image": "products/spruce_bonsai.jpg",
-        "_type": "Bonsai",
-        "category": "Potted Plants",
-        "description": "The Spruce Bonsai is an evergreen dioecious \r\n(male and female flowers grow on separate trees ) shrub or tree with \r\ndark green needle-shaped foliage. The genus Taxus occurs in the \r\ntemperate zones of the northern hemisphere. Although the yew is \r\nconsidered to be a conifer, it does not bear woody cones but \r\nproduces seed cones with a single seed surrounded by a berry-like \r\nred aril which is open at the end.",
-        "rating": "5.00",
-        "numReviews": 8,
-        "price": "1705.00",
-        "countInStock": 0,
-        "createdAt": "2024-08-10T16:54:49.425Z"
+      "user": null,
+      "name": "Spruce Bonsai",
+      "image": "products/spruce_bonsai.jpg",
+      "_type": "Bonsai",
+      "category": "Potted Plants",
+      "description": "The Spruce Bonsai is an evergreen dioecious \r\n(male and female flowers grow on separate trees ) shrub or tree with \r\ndark green needle-shaped foliage. The genus Taxus occurs in the \r\ntemperate zones of the northern hemisphere. Although the yew is \r\nconsidered to be a conifer, it does not bear woody cones but \r\nproduces seed cones with a single seed surrounded by a berry-like \r\nred aril which is open at the end.",
+      "rating": "5.00",
+      "numReviews": 8,
+      "price": "1705.00",
+      "countInStock": 0,
+      "createdAt": "2024-08-10T16:54:49.425Z"
     }
-},
-{
+  },
+  {
     "model": "base.product",
     "pk": 7,
     "fields": {
-        "user": 2,
-        "name": "Juniperus Chinensis Shimpaku",
-        "image": "products/juniperus_chinensis_shimpaku.png",
-        "_type": "Juniperus Chinensis Shimpaku",
-        "category": "Potted Plants",
-        "description": "This plant is grown as bonsai and requires minimal pruning. A bright environment will be perfect for this centerpiece.\r\n\r\nDimensions:\r\nPotted Plant: W 15-20 cm x H 20-25cm",
-        "rating": "5.00",
-        "numReviews": 7,
-        "price": "1899.00",
-        "countInStock": 12,
-        "createdAt": "2024-08-10T16:57:30.456Z"
+      "user": null,
+      "name": "Juniperus Chinensis Shimpaku",
+      "image": "products/juniperus_chinensis_shimpaku.png",
+      "_type": "Juniperus Chinensis Shimpaku",
+      "category": "Potted Plants",
+      "description": "This plant is grown as bonsai and requires minimal pruning. A bright environment will be perfect for this centerpiece.\r\n\r\nDimensions:\r\nPotted Plant: W 15-20 cm x H 20-25cm",
+      "rating": "5.00",
+      "numReviews": 7,
+      "price": "1899.00",
+      "countInStock": 12,
+      "createdAt": "2024-08-10T16:57:30.456Z"
     }
-},
-{
+  },
+  {
     "model": "base.product",
     "pk": 8,
     "fields": {
-        "user": 2,
-        "name": "Feroniella Bonsai",
-        "image": "products/feronallis-bonsai.jpg",
-        "_type": "Feroniella Bonsai",
-        "category": "Potted Plants",
-        "description": "This plant is grown as bonsai, and requires minimal pruning. A bright environment will be perfect for this centerpiece.\r\n\r\nDimensions:\r\nPotted Plant: W 9 - 12 cm x H 15-20 cm",
-        "rating": "5.00",
-        "numReviews": 4,
-        "price": "158.00",
-        "countInStock": 0,
-        "createdAt": "2024-08-10T16:59:22.701Z"
+      "user": null,
+      "name": "Feroniella Bonsai",
+      "image": "products/feronallis-bonsai.jpg",
+      "_type": "Feroniella Bonsai",
+      "category": "Potted Plants",
+      "description": "This plant is grown as bonsai, and requires minimal pruning. A bright environment will be perfect for this centerpiece.\r\n\r\nDimensions:\r\nPotted Plant: W 9 - 12 cm x H 15-20 cm",
+      "rating": "5.00",
+      "numReviews": 4,
+      "price": "158.00",
+      "countInStock": 0,
+      "createdAt": "2024-08-10T16:59:22.701Z"
     }
-},
-{
+  },
+  {
     "model": "base.product",
     "pk": 9,
     "fields": {
-        "user": 2,
-        "name": "Hinoki Bonsai",
-        "image": "products/hinoki_bonsai.jpg",
-        "_type": "Hinoki Bonsai",
-        "category": "Potted Plants",
-        "description": "Japanese Hinoki Bonsai is a slow-growing, evergreen tree native to Japan, valued for its fine-textured foliage, elegant form, and aromatic wood. It requires careful pruning, wiring, and soil management to thrive as a bonsai.\r\n\r\nThis plant is grown as bonsai and requires minimal pruning. A bright environment will be perfect for this centrepiece.\r\n\r\nPotted in Sprout Handmade Bonsai Planter from South Korea\r\n\r\nDimensions:\r\nPotted Plant: W 20-25 cm x H 20-25 cm",
-        "rating": "5.00",
-        "numReviews": 15,
-        "price": "459.00",
-        "countInStock": 1,
-        "createdAt": "2024-08-10T17:00:59.338Z"
+      "user": null,
+      "name": "Hinoki Bonsai",
+      "image": "products/hinoki_bonsai.jpg",
+      "_type": "Hinoki Bonsai",
+      "category": "Potted Plants",
+      "description": "Japanese Hinoki Bonsai is a slow-growing, evergreen tree native to Japan, valued for its fine-textured foliage, elegant form, and aromatic wood. It requires careful pruning, wiring, and soil management to thrive as a bonsai.\r\n\r\nThis plant is grown as bonsai and requires minimal pruning. A bright environment will be perfect for this centrepiece.\r\n\r\nPotted in Sprout Handmade Bonsai Planter from South Korea\r\n\r\nDimensions:\r\nPotted Plant: W 20-25 cm x H 20-25 cm",
+      "rating": "5.00",
+      "numReviews": 15,
+      "price": "459.00",
+      "countInStock": 1,
+      "createdAt": "2024-08-10T17:00:59.338Z"
     }
-},
-{
+  },
+  {
     "model": "base.product",
     "pk": 10,
     "fields": {
-        "user": 2,
-        "name": "Bonsai Azalea",
-        "image": "products/bonsai_azalea_.jpg",
-        "_type": "Bonsai Azalea",
-        "category": "Potted Plants",
-        "description": "Bonsai Azalea is a slow-growing, evergreen tree native to Japan, valued for its fine-textured foliage, elegant form, and aromatic wood. It requires careful pruning, wiring, and soil management to thrive as a bonsai.\r\n\r\nThis plant is grown as bonsai and requires minimal pruning. A bright environment will be perfect for this centrepiece.\r\n\r\nPlease note that due to natural variations, each plant is unique, and its appearance may differ from the product image.\r\n\r\nDimensions:\r\nPotted Plant: W 10-12 cm x H 14-18 cm",
-        "rating": "4.50",
-        "numReviews": 7,
-        "price": "232.00",
-        "countInStock": 11,
-        "createdAt": "2024-08-10T17:03:29.815Z"
+      "user": null,
+      "name": "Bonsai Azalea",
+      "image": "products/bonsai_azalea_.jpg",
+      "_type": "Bonsai Azalea",
+      "category": "Potted Plants",
+      "description": "Bonsai Azalea is a slow-growing, evergreen tree native to Japan, valued for its fine-textured foliage, elegant form, and aromatic wood. It requires careful pruning, wiring, and soil management to thrive as a bonsai.\r\n\r\nThis plant is grown as bonsai and requires minimal pruning. A bright environment will be perfect for this centrepiece.\r\n\r\nPlease note that due to natural variations, each plant is unique, and its appearance may differ from the product image.\r\n\r\nDimensions:\r\nPotted Plant: W 10-12 cm x H 14-18 cm",
+      "rating": "4.50",
+      "numReviews": 7,
+      "price": "232.00",
+      "countInStock": 11,
+      "createdAt": "2024-08-10T17:03:29.815Z"
     }
-},
-{
+  },
+  {
     "model": "base.product",
     "pk": 11,
     "fields": {
-        "user": 2,
-        "name": "Bending-Black-Pine-Bonsai",
-        "image": "products/bending_black_pine_bonsai.jpg",
-        "_type": "Bending-Black-Pine-Bonsai",
-        "category": "Potted Plants",
-        "description": "The Japanese Black Pine Bonsai is an elegant miniature tree with dark green needles, rugged bark, and graceful, windswept branches. Imported from Japan\r\n\r\nDimensions:\r\nPotted Plant: W 9-12 cm x H 15-20 cm",
-        "rating": "4.00",
-        "numReviews": 6,
-        "price": "138.00",
-        "countInStock": 21,
-        "createdAt": "2024-08-10T17:05:11.078Z"
+      "user": null,
+      "name": "Bending-Black-Pine-Bonsai",
+      "image": "products/bending_black_pine_bonsai.jpg",
+      "_type": "Bending-Black-Pine-Bonsai",
+      "category": "Potted Plants",
+      "description": "The Japanese Black Pine Bonsai is an elegant miniature tree with dark green needles, rugged bark, and graceful, windswept branches. Imported from Japan\r\n\r\nDimensions:\r\nPotted Plant: W 9-12 cm x H 15-20 cm",
+      "rating": "4.00",
+      "numReviews": 6,
+      "price": "138.00",
+      "countInStock": 21,
+      "createdAt": "2024-08-10T17:05:11.078Z"
     }
-},
-{
+  },
+  {
     "model": "base.product",
     "pk": 12,
     "fields": {
-        "user": 2,
-        "name": "Procumbens Nana Sonare Juniper",
-        "image": "products/procumbens_nana_sonare_juniper.png",
-        "_type": "Procumbens nana sonare juniper",
-        "category": "Potted Plants",
-        "description": "Procumbens nana Bonsai tree is a Japanese Juniper with a Thick Gnarly trunk\r\n Beautiful tree that is established and healthy, it is an 18 year old tree\r\n Loves to grow outside in full sun, but can be grown inside with lights or if you have a lot of sunlight , needs at least four hours direct sun daily.",
-        "rating": "5.00",
-        "numReviews": 15,
-        "price": "168.00",
-        "countInStock": 27,
-        "createdAt": "2024-08-10T17:06:46.920Z"
+      "user": null,
+      "name": "Procumbens Nana Sonare Juniper",
+      "image": "products/procumbens_nana_sonare_juniper.png",
+      "_type": "Procumbens nana sonare juniper",
+      "category": "Potted Plants",
+      "description": "Procumbens nana Bonsai tree is a Japanese Juniper with a Thick Gnarly trunk\r\n Beautiful tree that is established and healthy, it is an 18 year old tree\r\n Loves to grow outside in full sun, but can be grown inside with lights or if you have a lot of sunlight , needs at least four hours direct sun daily.",
+      "rating": "5.00",
+      "numReviews": 15,
+      "price": "168.00",
+      "countInStock": 27,
+      "createdAt": "2024-08-10T17:06:46.920Z"
     }
-},
-{
+  },
+  {
     "model": "base.product",
     "pk": 13,
     "fields": {
-        "user": 2,
-        "name": "Japanese White Pine ‘Negishi",
-        "image": "products/japanese_white_pine_negishi.jpg",
-        "_type": "Japanese White Pine ‘Negishi",
-        "category": "Potted Plants",
-        "description": "Japanese White Pine ‘Negishi’, not to be confused with the more commonly known Japanese Black Pine, featuring beautiful silverish-blue short needles. \r\n\r\nThe product image accurately represents the actual product.\r\n\r\n\r\nDimensions:\r\nPotted Plant: W 20-23cm x H 25-28 cm",
-        "rating": "5.00",
-        "numReviews": 12,
-        "price": "698.00",
-        "countInStock": 79,
-        "createdAt": "2024-08-10T17:08:21.198Z"
+      "user": null,
+      "name": "Japanese White Pine ‘Negishi",
+      "image": "products/japanese_white_pine_negishi.jpg",
+      "_type": "Japanese White Pine ‘Negishi",
+      "category": "Potted Plants",
+      "description": "Japanese White Pine ‘Negishi’, not to be confused with the more commonly known Japanese Black Pine, featuring beautiful silverish-blue short needles. \r\n\r\nThe product image accurately represents the actual product.\r\n\r\n\r\nDimensions:\r\nPotted Plant: W 20-23cm x H 25-28 cm",
+      "rating": "5.00",
+      "numReviews": 12,
+      "price": "698.00",
+      "countInStock": 79,
+      "createdAt": "2024-08-10T17:08:21.198Z"
     }
-},
-{
+  },
+  {
     "model": "base.product",
     "pk": 14,
     "fields": {
-        "user": 2,
-        "name": "Bonsai Hedera",
-        "image": "products/bonsai_hedera.jpg",
-        "_type": "Korean Hedera",
-        "category": "Potted Plants",
-        "description": "Korean Hedera, commonly known as Korean ivy, is a variegated evergreen vine with glossy, lobed leaves. It thrives in various conditions, clinging to surfaces with aerial roots, and adds lush greenery to landscapes.\r\n\r\nDimensions:\r\nPotted Plant: W 5-10 cm x H 10-15 cm",
-        "rating": "3.50",
-        "numReviews": 2,
-        "price": "89.00",
-        "countInStock": 28,
-        "createdAt": "2024-08-10T17:09:46.476Z"
+      "user": null,
+      "name": "Bonsai Hedera",
+      "image": "products/bonsai_hedera.jpg",
+      "_type": "Korean Hedera",
+      "category": "Potted Plants",
+      "description": "Korean Hedera, commonly known as Korean ivy, is a variegated evergreen vine with glossy, lobed leaves. It thrives in various conditions, clinging to surfaces with aerial roots, and adds lush greenery to landscapes.\r\n\r\nDimensions:\r\nPotted Plant: W 5-10 cm x H 10-15 cm",
+      "rating": "3.50",
+      "numReviews": 2,
+      "price": "89.00",
+      "countInStock": 28,
+      "createdAt": "2024-08-10T17:09:46.476Z"
     }
-},
-{
+  },
+  {
     "model": "base.product",
     "pk": 15,
     "fields": {
-        "user": 2,
-        "name": "Bonsai Satsuki Azalea",
-        "image": "products/bonsai_satsuk_azalea.png",
-        "_type": "Phyllanthus Mirabilis",
-        "category": "Potted Plants",
-        "description": "A caudiciform plant with reddish and green leaves. Interestingly, the leaves fold up in pairs during the evening.\r\n\r\nDimensions\r\nPotted Plant: W 15-20 cm x H 20-25 cm",
-        "rating": "5.00",
-        "numReviews": 12,
-        "price": "118.00",
-        "countInStock": 47,
-        "createdAt": "2024-08-10T17:11:07.957Z"
+      "user": null,
+      "name": "Bonsai Satsuki Azalea",
+      "image": "products/bonsai_satsuk_azalea.png",
+      "_type": "Phyllanthus Mirabilis",
+      "category": "Potted Plants",
+      "description": "A caudiciform plant with reddish and green leaves. Interestingly, the leaves fold up in pairs during the evening.\r\n\r\nDimensions\r\nPotted Plant: W 15-20 cm x H 20-25 cm",
+      "rating": "5.00",
+      "numReviews": 12,
+      "price": "118.00",
+      "countInStock": 47,
+      "createdAt": "2024-08-10T17:11:07.957Z"
     }
-},
-{
+  },
+  {
     "model": "base.product",
     "pk": 16,
     "fields": {
-        "user": 2,
-        "name": "Stephania Kaweesakii ‘Nova’",
-        "image": "products/stephania_kaweesaki_nova.jpg",
-        "_type": "Stephania Kaweesakii ‘Nova’",
-        "category": "Potted Plants",
-        "description": "The new leaves of Stephania Kaweesakii ‘Nova’ can appear purple or green and change to dark green as it matures. The size of a mature leaf can reach up to 20cm in diameter. \r\n\r\nToxic to children and pets when ingested.\r\n\r\nPlants images depicted are solely for illustration purposes only.",
-        "rating": "4.50",
-        "numReviews": 4,
-        "price": "148.00",
-        "countInStock": 0,
-        "createdAt": "2024-08-10T17:12:48.606Z"
+      "user": null,
+      "name": "Stephania Kaweesakii ‘Nova’",
+      "image": "products/stephania_kaweesaki_nova.jpg",
+      "_type": "Stephania Kaweesakii ‘Nova’",
+      "category": "Potted Plants",
+      "description": "The new leaves of Stephania Kaweesakii ‘Nova’ can appear purple or green and change to dark green as it matures. The size of a mature leaf can reach up to 20cm in diameter. \r\n\r\nToxic to children and pets when ingested.\r\n\r\nPlants images depicted are solely for illustration purposes only.",
+      "rating": "4.50",
+      "numReviews": 4,
+      "price": "148.00",
+      "countInStock": 0,
+      "createdAt": "2024-08-10T17:12:48.606Z"
     }
-},
-{
+  },
+  {
     "model": "base.product",
     "pk": 17,
     "fields": {
-        "user": 2,
-        "name": "Stephania Suberosa",
-        "image": "products/stephania_suberosa.jpg",
-        "_type": "Stephania Suberosa",
-        "category": "Potted Plants",
-        "description": "A caudiciform plant with light green vines and big leaves. This species of Stephania has an interesting cracked caudex. It is toxic to pets and humans when ingested.",
-        "rating": "3.50",
-        "numReviews": 3,
-        "price": "99.00",
-        "countInStock": 19,
-        "createdAt": "2024-08-10T17:13:56.925Z"
+      "user": null,
+      "name": "Stephania Suberosa",
+      "image": "products/stephania_suberosa.jpg",
+      "_type": "Stephania Suberosa",
+      "category": "Potted Plants",
+      "description": "A caudiciform plant with light green vines and big leaves. This species of Stephania has an interesting cracked caudex. It is toxic to pets and humans when ingested.",
+      "rating": "3.50",
+      "numReviews": 3,
+      "price": "99.00",
+      "countInStock": 19,
+      "createdAt": "2024-08-10T17:13:56.925Z"
     }
-},
-{
+  },
+  {
     "model": "base.product",
     "pk": 35,
     "fields": {
-        "user": 2,
-        "name": "White-Seal",
-        "image": "products/white_seal.jpg",
-        "_type": "Planter",
-        "category": "Planter",
-        "description": "Exclusively handmade in Korea.\r\nHandmade Terracotta pots come with a drainage hole. \r\nAll handmade pieces may differ slightly in shape, size and colour.\r\n\r\nDimension: ø 8.5 cm x 8 cm",
-        "rating": "3.00",
-        "numReviews": 1,
-        "price": "34.00",
-        "countInStock": 21,
-        "createdAt": "2024-08-14T15:57:40.830Z"
+      "user": null,
+      "name": "White-Seal",
+      "image": "products/white_seal.jpg",
+      "_type": "Planter",
+      "category": "Planter",
+      "description": "Exclusively handmade in Korea.\r\nHandmade Terracotta pots come with a drainage hole. \r\nAll handmade pieces may differ slightly in shape, size and colour.\r\n\r\nDimension: ø 8.5 cm x 8 cm",
+      "rating": "3.00",
+      "numReviews": 1,
+      "price": "34.00",
+      "countInStock": 21,
+      "createdAt": "2024-08-14T15:57:40.830Z"
     }
-},
-{
+  },
+  {
     "model": "base.product",
     "pk": 36,
     "fields": {
-        "user": 2,
-        "name": "Charcoal Ducku",
-        "image": "products/charcoal_duck.jpg",
-        "_type": "Planter",
-        "category": "Planter",
-        "description": "Exclusively handmade in Korea.\r\nHandmade Terracotta pots come with a drainage hole. \r\nAll handmade pieces may differ slightly in shape, size and color.\r\n\r\nDimension: ø 8.5 cm x 8 cm",
-        "rating": "4.00",
-        "numReviews": 2,
-        "price": "34.60",
-        "countInStock": 9,
-        "createdAt": "2024-08-16T01:15:57.527Z"
+      "user": null,
+      "name": "Charcoal Ducku",
+      "image": "products/charcoal_duck.jpg",
+      "_type": "Planter",
+      "category": "Planter",
+      "description": "Exclusively handmade in Korea.\r\nHandmade Terracotta pots come with a drainage hole. \r\nAll handmade pieces may differ slightly in shape, size and color.\r\n\r\nDimension: ø 8.5 cm x 8 cm",
+      "rating": "4.00",
+      "numReviews": 2,
+      "price": "34.60",
+      "countInStock": 9,
+      "createdAt": "2024-08-16T01:15:57.527Z"
     }
-},
-{
+  },
+  {
     "model": "base.product",
     "pk": 37,
     "fields": {
-        "user": 2,
-        "name": "Bishop-Snow",
-        "image": "products/bishop_snow.jpg",
-        "_type": "Planter",
-        "category": "Planter",
-        "description": "Exclusively handmade in Korea.\r\nHandmade Terracotta pots come with a drainage hole.\r\nAll handmade pieces may differ slightly in shape, size and colour.\r\n\r\nDimension: ø 10.5 cm x 10 cm",
-        "rating": null,
-        "numReviews": 0,
-        "price": "30.00",
-        "countInStock": 12,
-        "createdAt": "2024-08-16T01:18:06.268Z"
+      "user": null,
+      "name": "Bishop-Snow",
+      "image": "products/bishop_snow.jpg",
+      "_type": "Planter",
+      "category": "Planter",
+      "description": "Exclusively handmade in Korea.\r\nHandmade Terracotta pots come with a drainage hole.\r\nAll handmade pieces may differ slightly in shape, size and colour.\r\n\r\nDimension: ø 10.5 cm x 10 cm",
+      "rating": null,
+      "numReviews": 0,
+      "price": "30.00",
+      "countInStock": 12,
+      "createdAt": "2024-08-16T01:18:06.268Z"
     }
-},
-{
+  },
+  {
     "model": "base.product",
     "pk": 38,
     "fields": {
-        "user": 2,
-        "name": "Black-Moon-Pot",
-        "image": "products/black_moon_pot.jpg",
-        "_type": "Planter",
-        "category": "Planter",
-        "description": "The classic shape of a moon jar is reinterpreted into this SPROUT Moon Pot planter design. Comes with a drainage hole.\r\n\r\nThe soft texture of the pot has a warm cream tone with fine black particles on the surface, and the inside of the pot is glazed, allowing the aesthetic of the outer surface to be preserved and be brought to the forefront.\r\n\r\nDimensions: Ø 14.5 cm x H 15 cm",
-        "rating": "1.00",
-        "numReviews": 1,
-        "price": "50.75",
-        "countInStock": 0,
-        "createdAt": "2024-08-16T01:22:11.902Z"
+      "user": null,
+      "name": "Black-Moon-Pot",
+      "image": "products/black_moon_pot.jpg",
+      "_type": "Planter",
+      "category": "Planter",
+      "description": "The classic shape of a moon jar is reinterpreted into this SPROUT Moon Pot planter design. Comes with a drainage hole.\r\n\r\nThe soft texture of the pot has a warm cream tone with fine black particles on the surface, and the inside of the pot is glazed, allowing the aesthetic of the outer surface to be preserved and be brought to the forefront.\r\n\r\nDimensions: Ø 14.5 cm x H 15 cm",
+      "rating": "1.00",
+      "numReviews": 1,
+      "price": "50.75",
+      "countInStock": 0,
+      "createdAt": "2024-08-16T01:22:11.902Z"
     }
-},
-{
+  },
+  {
     "model": "base.product",
     "pk": 39,
     "fields": {
-        "user": 2,
-        "name": "Watering Can (Black)",
-        "image": "products/watering_can_black.jpg",
-        "_type": "Essentials",
-        "category": "Essentials",
-        "description": "Minimal design for your growing plant corner.\r\n\r\nDimensions: 20cm x 37.5cm\r\n\r\nCapacity: 1.3L",
-        "rating": null,
-        "numReviews": 0,
-        "price": "35.00",
-        "countInStock": 6,
-        "createdAt": "2024-08-16T14:48:24.799Z"
+      "user": null,
+      "name": "Watering Can (Black)",
+      "image": "products/watering_can_black.jpg",
+      "_type": "Essentials",
+      "category": "Essentials",
+      "description": "Minimal design for your growing plant corner.\r\n\r\nDimensions: 20cm x 37.5cm\r\n\r\nCapacity: 1.3L",
+      "rating": null,
+      "numReviews": 0,
+      "price": "35.00",
+      "countInStock": 6,
+      "createdAt": "2024-08-16T14:48:24.799Z"
     }
-},
-{
+  },
+  {
     "model": "base.product",
     "pk": 40,
     "fields": {
-        "user": 2,
-        "name": "Watering Can (Silver)",
-        "image": "products/watering_can_silver.jpg",
-        "_type": "Essentials",
-        "category": "Essentials",
-        "description": "Minimal design for your growing plant corner.\r\n\r\nDimensions: 20cm x 37.5cm\r\n\r\nCapacity: 1.3L",
-        "rating": null,
-        "numReviews": 0,
-        "price": "35.00",
-        "countInStock": 0,
-        "createdAt": "2024-08-16T14:49:43.178Z"
+      "user": null,
+      "name": "Watering Can (Silver)",
+      "image": "products/watering_can_silver.jpg",
+      "_type": "Essentials",
+      "category": "Essentials",
+      "description": "Minimal design for your growing plant corner.\r\n\r\nDimensions: 20cm x 37.5cm\r\n\r\nCapacity: 1.3L",
+      "rating": null,
+      "numReviews": 0,
+      "price": "35.00",
+      "countInStock": 0,
+      "createdAt": "2024-08-16T14:49:43.178Z"
     }
-},
-{
+  },
+  {
     "model": "base.product",
     "pk": 41,
     "fields": {
-        "user": 2,
-        "name": "Shovel",
-        "image": "products/shovel.jpg",
-        "_type": "Essentials",
-        "category": "Essentials",
-        "description": "Potting plants has never been easier to scoop soil. With this spade, you don’t have to worry about transferring soil into the planters. You can now do it effortlessly.\r\n\r\nDimensions: 8cm x 32cm",
-        "rating": "2.50",
-        "numReviews": 2,
-        "price": "15.00",
-        "countInStock": 96,
-        "createdAt": "2024-08-16T14:51:24.310Z"
+      "user": null,
+      "name": "Shovel",
+      "image": "products/shovel.jpg",
+      "_type": "Essentials",
+      "category": "Essentials",
+      "description": "Potting plants has never been easier to scoop soil. With this spade, you don’t have to worry about transferring soil into the planters. You can now do it effortlessly.\r\n\r\nDimensions: 8cm x 32cm",
+      "rating": "2.50",
+      "numReviews": 2,
+      "price": "15.00",
+      "countInStock": 96,
+      "createdAt": "2024-08-16T14:51:24.310Z"
     }
-}
+  }
 ]

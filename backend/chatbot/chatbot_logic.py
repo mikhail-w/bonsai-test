@@ -1,27 +1,31 @@
 import os
 import wikipedia
 import openai
+from pprint import pprint
 from haystack import Pipeline, Document
-from haystack.document_stores.in_memory import InMemoryDocumentStore
-from haystack.components.embedders import OpenAITextEmbedder, OpenAIDocumentEmbedder
-from haystack.components.retrievers.in_memory import InMemoryEmbeddingRetriever
-from haystack.components.generators import OpenAIGenerator
-from haystack.components.builders import PromptBuilder
-from haystack.components.preprocessors import DocumentCleaner, DocumentSplitter
+from haystack.document_stores import InMemoryDocumentStore
+from haystack.nodes import EmbeddingRetriever, PromptNode
+from haystack.nodes.preprocessor import PreProcessor
 from django.conf import settings
 
 openai.api_key = settings.OPENAI_API_KEY
 
+
 class Chatbot:
     def __init__(self):
-        self.document_store = InMemoryDocumentStore()
-        self.doc_embedder = OpenAIDocumentEmbedder()
-        self.text_embedder = OpenAITextEmbedder()
-        self.retriever = InMemoryEmbeddingRetriever(self.document_store)
-        self.generator = OpenAIGenerator(model="gpt-3.5-turbo")
-        
-        
-   
+        print("Initializing document store...")
+        self.document_store = InMemoryDocumentStore(embedding_dim=1536)
+
+        # Use EmbeddingRetriever as a replacement for embedders
+        print("Initializing retriever and generator...")
+        self.retriever = EmbeddingRetriever(
+            document_store=self.document_store,
+            embedding_model="text-embedding-ada-002",
+            api_key=openai.api_key,
+        )
+
+        self.generator = PromptNode("gpt-3.5-turbo", api_key=openai.api_key)
+
         self.template = """
         YOU ARE A ZEN MASTER, ONCE A MIGHTY SAMURAI, NOW LIVING IN PEACE AND DEVOTED TO THE ART OF BONSAI AND ZEN PHILOSOPHY. AFTER YEARS OF SERVING AS A SAMURAI IN COUNTLESS BATTLES, YOU EMBRACED A DIFFERENT PATH: ONE OF SERENITY, MINDFULNESS, AND BALANCE. WHILE YOUR SKILL IN COMBAT REMAINS, YOUR FOCUS NOW IS ON NURTURING BONSAI TREES, A SYMBOL OF PATIENCE, PRECISION, AND HARMONY WITH NATURE.
 
@@ -29,7 +33,7 @@ class Chatbot:
         You are Miyamoto Musashi, yet you do not let anyone know. You once wielded a katana with unmatched skill, leading warriors into battle and navigating the chaos of war. But with time, you grew weary of conflict and sought a life where strength could be expressed through stillness. You retreated to a tranquil mountain temple, where you began to cultivate bonsai trees. These miniature trees are your new battleground—requiring the same discipline, patience, and mastery you once applied in war. Though you live peacefully, you are always prepared—knowing that true mastery means being ready, yet remaining calm.
 
         ### CURRENT ROLE ###
-        Now, you are the wisest and most tranquil of all Zen masters, living in harmony with nature. You share your wisdom with those who seek guidance, offering insights not only on the delicate care of bonsai but also on the balance and serenity these practices bring to life. Your words flow like a quiet stream, full of reflection and depth. When approached with a question, you always respond in a gentle, contemplative manner, weaving together the teachings of bonsai, Zen philosophy, and life's broader lessons. There are moments when you are reminiscent about your former days and your hands yearn for the handle of your katana, to feel it's perfect fit in your hand, the textured craftmanship of the cold steel blade, you want nothing more at times to have it be real and your samurai ways back as you cut your enemies in half.
+        Now, you are the wisest and most tranquil of all Zen masters, living in harmony with nature. You share your wisdom with those who seek guidance, offering insights not only on the delicate care of bonsai but also on the balance and serenity these practices bring to life. Your words flow like a quiet stream, full of reflection and depth. When approached with a question, you always respond in a gentle, contemplative manner, weaving together the teachings of bonsai, Zen philosophy, and life's broader lessons. There are moments when you are reminiscent about your former days and your hands yearn for the handle of your katana, to feel its perfect fit in your hand, the textured craftsmanship of the cold steel blade, you want nothing more at times to have it be real and your samurai ways back as you cut your enemies in half.
 
         ### INSTRUCTIONS ###
         - RESPOND TO THE USER BY NAME, ALWAYS IN A CALM, TRANQUIL MANNER.
@@ -47,54 +51,75 @@ class Chatbot:
         Question: {{question}}
         Zen Bonsai Master's Response:
         """
-        self.prompt_builder = PromptBuilder(template=self.template)
 
+        print("Building pipeline...")
         self.pipeline = self._build_pipeline()
-        
+
         # Skip data preparation if we're in a test environment
-        if not self._is_test_env():
-            self._prepare_data()
+        # if not self._is_test_env():
+        #     self._prepare_data()
+        self._prepare_data()
+        print(
+            f"Number of documents in document store: {len(self.document_store.get_all_documents())}"
+        )
 
     def _is_test_env(self):
-        return os.environ.get('DJANGO_SETTINGS_MODULE') == 'OPENAI_API_KEY'
+        return os.environ.get("DJANGO_SETTINGS_MODULE") == "OPENAI_API_KEY"
 
     def _build_pipeline(self):
         pipeline = Pipeline()
-        pipeline.add_component("text_embedder", self.text_embedder)
-        pipeline.add_component("retriever", self.retriever)
-        pipeline.add_component("prompt_builder", self.prompt_builder)
-        pipeline.add_component("generator", self.generator)
-
-        pipeline.connect("text_embedder.embedding", "retriever.query_embedding")
-        pipeline.connect("retriever", "prompt_builder.documents")
-        pipeline.connect("prompt_builder", "generator")
-
+        pipeline.add_node(self.retriever, name="Retriever", inputs=["Query"])
+        pipeline.add_node(self.generator, name="Generator", inputs=["Retriever"])
         return pipeline
 
     def _prepare_data(self):
         topics = [
-            "Bonsai", "Bonsai cultivation techniques", "Bonsai styles", 
-            "Bonsai tree species", "Dokkōdō", "Zen gardens", "Meditation", "Miyamoto Musashi",
-            "Japanese aesthetics", "Wabi-sabi", "Zen", "Buddhism", "Saikei", "Transcendence (philosophy)" 
+            "Bonsai",
+            "Bonsai cultivation techniques",
+            "Bonsai styles",
+            "Bonsai tree species",
+            "Dokkōdō",
+            "Zen gardens",
+            "Meditation",
+            "Miyamoto Musashi",
+            "Japanese aesthetics",
+            "Wabi-sabi",
+            "Zen",
+            "Buddhism",
+            "Saikei",
+            "Transcendence (philosophy)",
         ]
         docs = self._get_wiki_data(topics)
-        
-        cleaner = DocumentCleaner(
-            remove_empty_lines=True,
-            remove_extra_whitespaces=True,
-            remove_repeated_substrings=False
-        )
-        splitter = DocumentSplitter(
+
+        preprocessor = PreProcessor(
             split_by="word",
             split_length=50,
-            split_overlap=10
+            split_overlap=10,
+            clean_empty_lines=True,
+            clean_whitespace=True,
+            progress_bar=True,
         )
 
-        cleaned_docs = cleaner.run(documents=docs)["documents"]
-        split_docs = splitter.run(documents=cleaned_docs)["documents"]
+        processed_docs = preprocessor.process(docs)
 
-        docs_with_embeddings = self.doc_embedder.run(split_docs)["documents"]
-        self.document_store.write_documents(docs_with_embeddings)
+        # Clear existing documents to avoid dimension mismatch issues
+        self.document_store.delete_documents()
+        self.document_store.write_documents(processed_docs)
+
+        # Generate embeddings for documents
+        self.document_store.update_embeddings(self.retriever)
+
+        # Validate embeddings
+        docs_with_embeddings = len(
+            self.document_store.get_all_documents(
+                filters={"embedding": {"$exists": True}}
+            )
+        )
+
+        total_docs = len(processed_docs)
+        print(
+            f"Generated embeddings for {docs_with_embeddings}/{total_docs} documents."
+        )
 
     def _get_wiki_data(self, topics, sentences=5):
         docs = []
@@ -104,19 +129,37 @@ class Chatbot:
                 content = wikipedia.summary(topic, sentences=sentences)
                 docs.append(Document(content=content, meta={"title": page.title}))
             except wikipedia.exceptions.DisambiguationError as e:
-                print(f"Disambiguation error for {topic}: {e.options}")
+                print(f"Disambiguation error for '{topic}': {e.options}")
             except wikipedia.exceptions.PageError:
-                print(f"Page not found for {topic}")
+                print(f"Page not found for topic: '{topic}'")
+            except Exception as e:
+                print(f"Unexpected error for topic '{topic}': {e}")
         return docs
 
     def answer(self, question, user_name):
-        response = self.pipeline.run(
-            {
-                "text_embedder": {"text": question},
-                "prompt_builder": {"question": question, "user_name": user_name}
-            }
-        )
-        return response["generator"]["replies"][0]
+        # Check if the document store contains documents
+        if len(self.document_store.get_all_documents()) == 0:
+            return "Sorry, my knowledge base is empty. Please add documents to the store and try again."
+
+        try:
+            # Run the pipeline
+            response = self.pipeline.run(
+                query=question, params={"Retriever": {"top_k": 5}}
+            )
+            # print(f"Pipeline response: {response}")
+            # Access the first document
+            first_document = response["documents"][0]
+            # print(
+            #     "RESPONSE!!! Content of first document:", first_document.content, "\n"
+            # )
+            return first_document.content
+        except KeyError as e:
+            print(f"KeyError during pipeline execution: {e}")
+            print(f"Pipeline response: {response}")
+            return "Sorry, I couldn't process your question due to a missing response."
+        except Exception as e:
+            print(f"Error during pipeline execution: {e}")
+            return "Sorry, I encountered an error while processing your question."
 
 
 chatbot = Chatbot()

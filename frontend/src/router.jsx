@@ -19,8 +19,8 @@ import ProductListPage from './pages/ProductListPage.jsx';
 import OrderListPage from './pages/OrderListPage.jsx';
 import ProductEditPage from './pages/ProductEditPage.jsx';
 import ProductsPage from './pages/ProductsPage.jsx';
-import Dashboard from './pages/Dashboard.jsx';
-import Trending from './pages/Trending.jsx';
+import Dashboard from './components/Dashboard/Dashboard.jsx';
+import ThreeDModel from './pages/ThreeDModel.jsx';
 import MapPage from './pages/MapPage.jsx';
 import Favorites from './pages/Favorites.jsx';
 import Settings from './pages/Settings.jsx';
@@ -62,7 +62,7 @@ const router = createBrowserRouter([
         element: <Dashboard />,
         children: [
           { path: 'info', element: <MyInfo /> },
-          { path: 'trending', element: <Trending /> },
+          { path: 'threeDModel', element: <ThreeDModel /> },
           { path: 'explore', element: <MapPage /> },
           { path: 'blog', element: <BlogPage /> },
           { path: 'ar', element: <AugmentedReality /> },

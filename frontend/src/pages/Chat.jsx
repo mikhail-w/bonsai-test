@@ -15,6 +15,8 @@ import {
 } from '@chakra-ui/react';
 import c1 from '../assets/images/h3.png';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function Chat() {
   const [messages, setMessages] = useState([
     {
@@ -51,7 +53,7 @@ function Chat() {
       setIsLoading(true);
 
       try {
-        const response = await axios.post('/api/chatbot/chat/', {
+        const response = await axios.post(`${API_URL}chatbot/chat/`, {
           question: inputMessage,
           user_name: userInfo ? userInfo.name : 'friend',
         });

@@ -10,6 +10,7 @@ import {
   CloseButton,
 } from '@chakra-ui/react';
 import { FaChevronRight } from 'react-icons/fa';
+import DefaultImg from '../../assets/images/bonsai-tree-logo.png';
 
 const MapDetailsPanel = ({ selectedLocation, closePanel, isPanelOpen }) => {
   return (
@@ -37,8 +38,11 @@ const MapDetailsPanel = ({ selectedLocation, closePanel, isPanelOpen }) => {
           <VStack align="start" spacing={4}>
             <Box width={'100%'} height={'300px'}>
               <Image
-                src={selectedLocation.photo}
+                src={selectedLocation.photo || DefaultImg}
                 alt={`${selectedLocation.name} thumbnail`}
+                onError={e => {
+                  e.target.src = DefaultImg;
+                }}
                 borderRadius="md"
                 width="100%"
                 height="100%"

@@ -31,7 +31,7 @@ function OrderPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const orderId = id;
-  const PAYPAL_CLIENT_ID = import.meta.env.VITE_PAYPAL_CLIENT_ID_2;
+  const PAYPAL_CLIENT_ID = import.meta.env.VITE_PAYPAL_CLIENT_ID;
   const dispatch = useDispatch();
 
   const [sdkReady, setSdkReady] = useState(false);
@@ -199,7 +199,17 @@ function OrderPage() {
               {order.orderItems.map((item, index) => (
                 <Flex key={index} align="center" w="full">
                   <Image
-                    src={`http://127.0.0.1:8000${item.image}`}
+                    src={
+                      item.image
+                        ? `${import.meta.env.VITE_API_URL.replace(
+                            '/api/',
+                            ''
+                          )}${item.image}`
+                        : `${import.meta.env.VITE_API_URL.replace(
+                            '/api/',
+                            ''
+                          )}/media/default/placeholder.jpg`
+                    }
                     alt={item.name}
                     boxSize="50px"
                     objectFit="cover"

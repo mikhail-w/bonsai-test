@@ -153,7 +153,17 @@ function CartPage() {
                   <HStack spacing={4} minWidth={335}>
                     {/* Product Image */}
                     <Image
-                      src={`http://127.0.0.1:8000${item.image}`}
+                      src={
+                        item.image
+                          ? `${import.meta.env.VITE_API_URL.replace(
+                              '/api/',
+                              ''
+                            )}${item.image}`
+                          : `${import.meta.env.VITE_API_URL.replace(
+                              '/api/',
+                              ''
+                            )}/media/default/placeholder.jpg`
+                      }
                       alt={item.name}
                       boxSize="150px"
                       objectFit="cover"

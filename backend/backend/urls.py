@@ -5,6 +5,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 # from django.views.generic import TemplateView
+print("Root URLs are being loaded.")
 
 urlpatterns = [
     path("admin/", admin.site.urls),

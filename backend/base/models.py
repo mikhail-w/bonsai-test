@@ -5,7 +5,16 @@ from django.contrib.auth.models import User
 # Create your models here.
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
-    avatar = models.ImageField(null=True, blank=True, default="default/avatar.jpg")
+    avatar = models.ImageField(
+        upload_to="avatars/",  # Store uploaded files in 'media/avatars/'
+        null=True,
+        blank=True,
+        default="default/avatar.jpg",
+    )
+
+    def save(self, *args, **kwargs):
+        print(f"Saving UserProfile for User ID: {self.user.id}")  # Log save operations
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.user.email
