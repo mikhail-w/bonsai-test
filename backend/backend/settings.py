@@ -46,8 +46,14 @@ INSTALLED_APPS = [
     "storages",  # Added for S3 storage
     "base",
     "blog",
-    # "chatbot",
+    "chatbot",
 ]
+
+HAYSTACK_CONNECTIONS = {
+    "default": {
+        "ENGINE": "haystack.document_stores.in_memory.InMemoryDocumentStore",
+    }
+}
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
