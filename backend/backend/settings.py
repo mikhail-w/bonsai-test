@@ -30,6 +30,9 @@ DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() in ("true", "1")
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost").split(",")
 # ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
+# OpenAI API Key
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+
 # Application definition
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -175,5 +178,5 @@ if not DEBUG:
         "1",
     )
 
-print(f"DEBUG Mode: {DEBUG}")  # Log if debug mode is on
-print(f"Database Settings: {DATABASES}")  # Log database configuration
+# print(f"DEBUG Mode: {DEBUG}")  # Log if debug mode is on
+# print(f"Database Settings: {DATABASES}")  # Log database configuration

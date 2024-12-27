@@ -12,16 +12,15 @@ from django.conf import settings
 
 openai.api_key = settings.OPENAI_API_KEY
 
+
 class Chatbot:
     def __init__(self):
         self.document_store = InMemoryDocumentStore()
         self.doc_embedder = OpenAIDocumentEmbedder()
         self.text_embedder = OpenAITextEmbedder()
         self.retriever = InMemoryEmbeddingRetriever(self.document_store)
-        self.generator = OpenAIGenerator(model="gpt-3.5-turbo")
-        
-        
-   
+        self.generator = OpenAIGenerator(model="gpt-4o-mini")
+
         self.template = """
         YOU ARE A ZEN MASTER, ONCE A MIGHTY SAMURAI, NOW LIVING IN PEACE AND DEVOTED TO THE ART OF BONSAI AND ZEN PHILOSOPHY. AFTER YEARS OF SERVING AS A SAMURAI IN COUNTLESS BATTLES, YOU EMBRACED A DIFFERENT PATH: ONE OF SERENITY, MINDFULNESS, AND BALANCE. WHILE YOUR SKILL IN COMBAT REMAINS, YOUR FOCUS NOW IS ON NURTURING BONSAI TREES, A SYMBOL OF PATIENCE, PRECISION, AND HARMONY WITH NATURE.
 
@@ -50,13 +49,13 @@ class Chatbot:
         self.prompt_builder = PromptBuilder(template=self.template)
 
         self.pipeline = self._build_pipeline()
-        
+
         # Skip data preparation if we're in a test environment
         if not self._is_test_env():
             self._prepare_data()
 
     def _is_test_env(self):
-        return os.environ.get('DJANGO_SETTINGS_MODULE') == 'OPENAI_API_KEY'
+        return os.environ.get("DJANGO_SETTINGS_MODULE") == "OPENAI_API_KEY"
 
     def _build_pipeline(self):
         pipeline = Pipeline()
@@ -73,22 +72,29 @@ class Chatbot:
 
     def _prepare_data(self):
         topics = [
-            "Bonsai", "Bonsai cultivation techniques", "Bonsai styles", 
-            "Bonsai tree species", "Dokkōdō", "Zen gardens", "Meditation", "Miyamoto Musashi",
-            "Japanese aesthetics", "Wabi-sabi", "Zen", "Buddhism", "Saikei", "Transcendence (philosophy)" 
+            "Bonsai",
+            "Bonsai cultivation techniques",
+            "Bonsai styles",
+            "Bonsai tree species",
+            "Dokkōdō",
+            "Zen gardens",
+            "Meditation",
+            "Miyamoto Musashi",
+            "Japanese aesthetics",
+            "Wabi-sabi",
+            "Zen",
+            "Buddhism",
+            "Saikei",
+            "Transcendence (philosophy)",
         ]
         docs = self._get_wiki_data(topics)
-        
+
         cleaner = DocumentCleaner(
             remove_empty_lines=True,
             remove_extra_whitespaces=True,
-            remove_repeated_substrings=False
+            remove_repeated_substrings=False,
         )
-        splitter = DocumentSplitter(
-            split_by="word",
-            split_length=50,
-            split_overlap=10
-        )
+        splitter = DocumentSplitter(split_by="word", split_length=50, split_overlap=10)
 
         cleaned_docs = cleaner.run(documents=docs)["documents"]
         split_docs = splitter.run(documents=cleaned_docs)["documents"]
@@ -113,7 +119,7 @@ class Chatbot:
         response = self.pipeline.run(
             {
                 "text_embedder": {"text": question},
-                "prompt_builder": {"question": question, "user_name": user_name}
+                "prompt_builder": {"question": question, "user_name": user_name},
             }
         )
         return response["generator"]["replies"][0]
