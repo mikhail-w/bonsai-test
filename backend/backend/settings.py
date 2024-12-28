@@ -27,8 +27,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "your-default-secret-key")
 DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() in ("true", "1")
 
 # ALLOWED_HOSTS from environment or default to localhost
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost").split(",")
-# ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS").split(",")
 
 # OpenAI API Key
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -118,29 +117,15 @@ USE_TZ = True
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
-AWS_S3_REGION_NAME = os.getenv(
-    "AWS_S3_REGION_NAME", "us-east-1"
-)  # Default to us-east-1
+AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME", "us-east-1")
 AWS_QUERYSTRING_AUTH = False  # For public access to files
 
 # Static and Media Files with S3
-# STATICFILES_STORAGE = "backend.storage_backends.StaticStorage"
-# DEFAULT_FILE_STORAGE = "backend.storage_backends.MediaStorage"
+STATICFILES_STORAGE = "backend.storage_backends.StaticStorage"
+DEFAULT_FILE_STORAGE = "backend.storage_backends.MediaStorage"
 
-# STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/static/"
-# MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/"
-
-STATIC_URL = "/static/"
-MEDIA_URL = "/media/"
-
-# Local Static and Media Files (for fallback or local development)
-STATIC_ROOT = BASE_DIR / "staticfiles"
-MEDIA_ROOT = BASE_DIR / "media"
-
-# Use local file storage in development
-if DEBUG:
-    STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
-    DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
+STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/static/"
+MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/"
 
 # REST framework settings
 REST_FRAMEWORK = {
@@ -160,7 +145,6 @@ SIMPLE_JWT = {
 }
 
 # CORS settings
-# CORS_ORIGIN_ALLOW_ALL = os.getenv("CORS_ALLOW_ALL", "True").lower() in ("true", "1")
 CORS_ORIGIN_ALLOW_ALL = True
 
 
@@ -182,6 +166,3 @@ if not DEBUG:
         "true",
         "1",
     )
-
-# print(f"DEBUG Mode: {DEBUG}")  # Log if debug mode is on
-# print(f"Database Settings: {DATABASES}")  # Log database configuration
