@@ -90,10 +90,10 @@ WSGI_APPLICATION = "backend.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("DB_NAME", "default_db"),
-        "USER": os.getenv("DB_USER", "default_user"),
-        "PASSWORD": os.getenv("DB_PASSWORD", "default_password"),
-        "HOST": os.getenv("DB_HOST", "localhost"),
+        "NAME": os.getenv("DB_NAME"),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASSWORD"),
+        "HOST": os.getenv("DB_HOST"),
         "PORT": os.getenv("DB_PORT", "5432"),
     }
 }
@@ -165,10 +165,9 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 
 # Uncomment and configure if you want to restrict allowed origins
-# CORS_ALLOWED_ORIGINS = [
-#     "http://example.com",
-#     "http://anotherdomain.com",
-# ]
+CORS_ALLOWED_ORIGINS = [
+    "http://mikhail-bonsai.s3-website-us-east-1.amazonaws.com",
+]
 
 # Security settings for production
 if not DEBUG:
