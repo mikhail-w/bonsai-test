@@ -92,7 +92,6 @@ numpy==1.26.4
 oauthlib==3.2.2
 openai==1.44.0
 orjson==3.10.11
-packaging==24.0
 pandas==2.2.3
 pbr==6.1.0
 pefile==2024.8.26
@@ -114,7 +113,6 @@ pyasn1==0.6.0
 pyasn1_modules==0.4.0
 pycairo==1.27.0
 pycparser==2.22
-pycurl==7.44.1
 pydantic_core==2.27.2
 PyGObject==3.42.1
 PyHamcrest==2.1.0
@@ -157,7 +155,6 @@ sqlparse==0.5.1
 sseclient-py==1.8.0
 ssh-import-id==5.11
 sympy==1.13.1
-systemd-python==234
 tenacity
 testresources==2.0.1
 threadpoolctl==3.5.0
@@ -178,3 +175,9 @@ wikipedia==1.4.0
 yarl==1.17.2
 zipp==3.20.1
 zope.interface==7.0.3
+langchain-core==0.3.15
+packaging==24.2
+pipdeptree==2.24.0
+pycurl==7.45.4
+pydantic==1.10.19
+systemd-python==235
