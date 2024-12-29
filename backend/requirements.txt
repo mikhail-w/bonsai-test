@@ -41,6 +41,7 @@ filelock==3.14.0
 Flask==3.0.3
 Flask-SQLAlchemy==3.1.1
 greenlet==3.0.3
+gunicorn==23.0.0
 h11==0.14.0
 haystack-ai==2.5.0
 haystack-experimental==0.1.1
@@ -139,6 +140,5 @@ wcwidth==0.2.13
 webencodings==0.5.1
 Werkzeug==3.0.3
 whitenoise==6.7.0
-wikipedia==1.4.0
 wrapt==1.16.0
 zipp==3.19.2
