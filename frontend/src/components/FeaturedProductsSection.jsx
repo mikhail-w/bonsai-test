@@ -6,19 +6,20 @@ import {
   Button,
   Text,
   Image,
+  Flex,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import p3 from '../assets/images/h10.jpg';
 import p4 from '../assets/images/potters.jpg';
 import p5 from '../assets/images/can.jpg';
 import '../assets/styles/card.css';
+import CustomButton from './CustomButton';
 
 const FeaturedProductsSection = () => {
   const products = [
     {
       title: 'Shop   Plants',
       description: 'Discover a wide variety of plants.',
-      price: '$297',
       image: p3,
       path: '/plants',
       gradient:
@@ -27,7 +28,6 @@ const FeaturedProductsSection = () => {
     {
       title: 'Shop Planters',
       description: 'Explore elegant planters for your plants.',
-      price: '$497',
       image: p4,
       path: '/planters',
       gradient:
@@ -36,7 +36,6 @@ const FeaturedProductsSection = () => {
     {
       title: 'Shop Accessories',
       description: 'Find perfect accessories for bonsai care.',
-      price: '$897',
       image: p5,
       path: '/essentials',
       gradient:
@@ -61,7 +60,7 @@ const FeaturedProductsSection = () => {
   return (
     <Box mt={100} mb={100} py={16} textAlign="center" bg="white" minH="100vh">
       <Heading
-        fontFamily="montserrat, sans-serif"
+        fontFamily="lato"
         as="h2"
         size="2xl"
         mb={12}
@@ -90,14 +89,22 @@ const FeaturedProductsSection = () => {
             >
               {/* Front Side */}
               <Box className="card__face card__face--front ">
-                <Image
-                  src={product.image}
-                  alt={product.title}
-                  className="card__image"
+                <Box
+                  className={`card__picture card__picture--${index + 1}`}
+                  position="relative"
                   borderRadius="lg"
-                  objectFit="cover"
-                />
-                <h4 className={`card__heading card__heading--${index + 1}`}>
+                  overflow="hidden"
+                >
+                  <Image
+                    src={product.image}
+                    alt={product.title}
+                    className="card__image"
+                    borderRadius="lg"
+                    objectFit="cover"
+                    zIndex={0} /* Ensures the image is behind the overlay */
+                  />
+                </Box>
+                <h3 className={`card__heading card__heading--${index + 1}`}>
                   <span
                     className={`card__heading-span card__heading-span--${
                       index + 1
@@ -105,29 +112,67 @@ const FeaturedProductsSection = () => {
                   >
                     {product.title}
                   </span>
-                </h4>
+                </h3>
               </Box>
               {/* Back Side */}
-              <Box className="card__face card__face--back">
-                <Box className="card__content">
-                  <Text fontSize="md" mb={4} color="white">
+              <Box
+                className={`card__face card__face--back card__face--back--${
+                  index + 1
+                }`}
+              >
+                <Flex
+                  className="card__content"
+                  flexDirection="column"
+                  alignItems="center"
+                  justifyContent="space-around"
+                  height="100%"
+                >
+                  <Text
+                    fontFamily="lato"
+                    fontWeight={'300'}
+                    fontSize="2rem"
+                    mb={4}
+                    color="white"
+                  >
                     {product.description}
                   </Text>
-                  <Text fontSize="2xl" fontWeight="bold" mb={4} color="white">
-                    {product.price}
-                  </Text>
-                  <Button
-                    as={RouterLink}
+                  <CustomButton
+                    bg="#fff"
+                    color="#777"
+                    fontWeight="200"
                     to={product.path}
-                    bg="green.500"
-                    color="white"
-                    _hover={{ bg: 'green.400' }}
-                    size="lg"
-                    borderRadius="full"
+                    _hover={{
+                      transform: 'translateY(-3px)',
+                      boxShadow: '0 10px 20px rgba(0, 0, 0, 0.2)',
+                    }}
+                    _active={{
+                      transform: 'translateY(-1px)',
+                      boxShadow: '0 5px 10px rgba(0, 0, 0, 0.2)',
+                    }}
+                    _after={{
+                      content: '""',
+                      display: 'inline-block',
+                      height: '100%',
+                      width: '100%',
+                      borderRadius: '100px',
+                      position: 'absolute',
+                      top: '0',
+                      left: '0',
+                      zIndex: '-1',
+                      transition: 'all 0.4s',
+                      // backgroundColor: '#48a169',
+                      backgroundColor: '#ffffff',
+                    }}
+                    sx={{
+                      ':hover::after': {
+                        transform: 'scaleX(1.4) scaleY(1.6)',
+                        opacity: 0,
+                      },
+                    }}
                   >
                     Shop Now
-                  </Button>
-                </Box>
+                  </CustomButton>
+                </Flex>
               </Box>
             </Box>
           </Box>
