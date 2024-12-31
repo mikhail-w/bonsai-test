@@ -24,6 +24,7 @@ function ProductsPage() {
   let keyword = location.search;
 
   useEffect(() => {
+    console.log('Dispatching List Products!');
     dispatch(listProducts(keyword));
   }, [dispatch, keyword]);
 

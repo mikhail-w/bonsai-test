@@ -121,11 +121,18 @@ AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME", "us-east-1")
 AWS_QUERYSTRING_AUTH = False  # For public access to files
 
 # Static and Media Files with S3
-STATICFILES_STORAGE = "backend.storage_backends.StaticStorage"
-DEFAULT_FILE_STORAGE = "backend.storage_backends.MediaStorage"
+# STATICFILES_STORAGE = "backend.storage_backends.StaticStorage"
+# DEFAULT_FILE_STORAGE = "backend.storage_backends.MediaStorage"
 
-STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/static/"
-MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/"
+# STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/static/"
+# MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/"
+
+STATIC_URL = "/static/"
+MEDIA_URL = "/media/"
+
+# Local Static and Media Files (for fallback or local development)
+STATIC_ROOT = BASE_DIR / "staticfiles"
+MEDIA_ROOT = BASE_DIR / "media"
 
 # REST framework settings
 REST_FRAMEWORK = {

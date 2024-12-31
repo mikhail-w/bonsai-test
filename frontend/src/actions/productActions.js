@@ -39,6 +39,8 @@ export const listProducts =
   async dispatch => {
     try {
       dispatch({ type: PRODUCT_LIST_REQUEST });
+      // Log the Axios request URL
+      console.log('Sending GET request to:', `${API_URL}products${keyword}`);
       const { data } = await axios.get(`${API_URL}products${keyword}`);
 
       dispatch({
@@ -46,6 +48,8 @@ export const listProducts =
         payload: data,
       });
     } catch (error) {
+      // Log error details
+      console.error('Request failed with error:', error);
       dispatch({
         type: PRODUCT_LIST_FAIL,
         payload:
