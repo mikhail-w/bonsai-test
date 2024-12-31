@@ -115,8 +115,8 @@ function HeroSection() {
                 transition="all 0.75s cubic-bezier(0.19, 1, 0.22, 1)"
                 _hover={{
                   border: '1px solid',
-                  boxShadow:
-                    'inset 0 0 20px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.2)',
+                  background: 'rgba(255, 255, 255, 0.9)', // Example pinkish hover background
+                  boxShadow: '0 0 10px rgba(255, 255, 255, 0.08)',
                   outlineColor: 'rgba(255, 255, 255, 0)',
                   outlineOffset: '15px',
                   textShadow: '1px 1px 2px #427388',
