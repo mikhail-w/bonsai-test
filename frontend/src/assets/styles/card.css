@@ -1,0 +1,184 @@
+:root {
+  --primary: #ffce00;
+  --secondary: #fe4880;
+  --dark: #212121;
+  --light: #f3f3f3;
+}
+
+body {
+  font-family: montserrat, sans-serif;
+}
+
+.card {
+  width: 300px;
+  height: 400px;
+  perspective: 1000px;
+  margin: 20px auto;
+}
+
+.card__inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.8s;
+}
+
+.card__inner.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.card__face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.card__face--front {
+  /* background: linear-gradient(to bottom right, var(--primary), var(--secondary)); */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card__face--back {
+  color: white;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.card__face--back--1 {
+  background: linear-gradient(to right bottom, #7ed56f, #28b485);
+}
+
+.card__face--back--2 {
+  background: linear-gradient(to right bottom, #ffb900, #ff7730);
+}
+
+.card__face--back--3 {
+  background: linear-gradient(to right bottom, #2998ff, #5643fa);
+}
+
+.card__content {
+  text-align: center;
+}
+
+.card__content h3,
+.card__content p {
+  margin: 10px 0;
+}
+
+.card__picture {
+  background-size: cover;
+  height: 23rem;
+  height: 100%;
+  background-blend-mode: screen;
+  /* -webkit-clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%); */
+  clip-path: polygon(0 0, 100% 0, 100% 55%, 0% 100%);
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+
+.card__picture--1::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right bottom, #7ed56f, #28b485);
+  opacity: 0.4;
+  /* Adjust the opacity for the desired effect */
+  z-index: 1;
+}
+
+.card__picture--2::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right bottom, #ffb900, #ff7730);
+  opacity: 0.2;
+  /* Adjust the opacity for the desired effect */
+  z-index: 1;
+}
+
+.card__picture--3::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right bottom, #2998ff, #5643fa);
+  opacity: 0.2;
+  /* Adjust the opacity for the desired effect */
+  z-index: 1;
+}
+
+.card__heading {
+  font-size: 1.4rem;
+  font-weight: 300;
+  text-transform: uppercase;
+  color: #fff;
+  text-align: right;
+  position: absolute;
+  bottom: 30px;
+  right: 2rem;
+  width: 70%;
+}
+
+.card__heading--1 {
+  width: 55%;
+}
+
+.card__heading-span {
+  padding: .5rem 1.5rem;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  font-weight: 100;
+}
+
+.card__heading-span--1 {
+  background-image: linear-gradient(to right bottom, rgba(126, 213, 111, 0.85), rgba(40, 180, 133, 0.85));
+}
+
+.card__heading-span--2 {
+  background-image: linear-gradient(to right bottom, rgba(255, 185, 0, 0.85), rgba(255, 119, 48, 0.85));
+}
+
+.card__heading-span--3 {
+  background-image: linear-gradient(to right bottom, rgba(41, 152, 255, 0.85), rgba(86, 67, 250, 0.85));
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 50px;
+  background-color: var(--primary);
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: var(--secondary);
+}
