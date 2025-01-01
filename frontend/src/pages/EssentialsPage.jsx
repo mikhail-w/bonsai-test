@@ -8,6 +8,7 @@ import {
   Box,
   Center,
   Text,
+  VStack,
 } from '@chakra-ui/react';
 import Product from '../components/Product';
 import Loader from '../components/Loader';
@@ -40,23 +41,25 @@ function EssentialsPage() {
         marginBottom={100}
         justifyContent={'space-between'}
       >
-        <Heading
-          textTransform={'uppercase'}
-          as="h1"
-          size="2xl"
-          mb={6}
-          fontFamily="roza"
-        >
-          Essentials
-        </Heading>
-        <Text
-          textAlign={'center'}
-          fontFamily={'lato'}
-          fontSize="lg"
-          color="gray.600"
-        >
-          Pick from our selection of must have plant accessories
-        </Text>
+        <VStack marginBottom={{ base: '50', md: '100px' }}>
+          <Heading
+            textTransform={'uppercase'}
+            as="h1"
+            size="2xl"
+            mb={6}
+            fontFamily="roza"
+          >
+            Essentials
+          </Heading>
+          <Text
+            textAlign={'center'}
+            fontFamily={'lato'}
+            fontSize="lg"
+            color="gray.600"
+          >
+            Pick from our selection of must have plant accessories
+          </Text>
+        </VStack>
         <SimpleGrid
           minChildWidth={300}
           spacing="10px"

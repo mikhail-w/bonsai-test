@@ -195,7 +195,7 @@ const Navigation = () => {
           top="0"
           left="0"
           right="0"
-          zIndex="2000" // Adjusted to ensure visibility
+          zIndex="20" // Adjusted to ensure visibility
           width="100%"
           bg={scrolled ? 'white' : 'transparent'} // White background on scroll
           boxShadow={scrolled ? 'md' : 'none'} // Add shadow when scrolled

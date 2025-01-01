@@ -8,18 +8,17 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
-  ModalBody,
   ModalCloseButton,
-  Image,
   useDisclosure,
+  useColorModeValue,
+  VStack,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import h3 from '../../assets/images/hr4.jpg';
 import m1 from '../../assets/images/m1.jpg';
 import m2 from '../../assets/images/m2.jpg';
 import m3 from '../../assets/images/m3.jpg';
-import m4 from '../../assets/images/m4.jpg';
+import m4 from '../../assets/images/h5.jpg';
 import '../../assets/styles/holo.css';
 import CustomHeading from '../../components/CustomHeading';
 
@@ -27,6 +26,7 @@ const BenefitsSection = () => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [modalIndex, setModalIndex] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const bgColor = useColorModeValue('white', 'gray.700');
 
   const benefits = [
     {
@@ -134,6 +134,7 @@ const BenefitsSection = () => {
                     {benefit.icon}
                   </Text>
                   <Heading
+                    className="hoverable-text-heading"
                     fontFamily="lato"
                     as="h3"
                     size="md"
@@ -143,6 +144,7 @@ const BenefitsSection = () => {
                     {benefit.title}
                   </Heading>
                   <Text
+                    className="hoverable-text"
                     fontFamily="lato"
                     fontWeight="400"
                     color="gray.300"
@@ -157,27 +159,70 @@ const BenefitsSection = () => {
         </Box>
       </Box>
 
-      {/* Modal */}
-      <Modal isOpen={isOpen} onClose={onClose} size="xl">
-        <ModalOverlay bg="rgba(0, 0, 0, 0.8)" />
-        <ModalContent>
-          <ModalHeader>
-            {modalIndex !== null && benefits[modalIndex].title}
-          </ModalHeader>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        size={{ base: 'sm', md: '2xl', lg: '3xl' }}
+      >
+        <ModalOverlay
+          bg={
+            modalIndex !== null
+              ? overlayColors[modalIndex]
+              : 'rgba(0, 0, 0, 0.8)'
+          }
+        />
+        <ModalContent
+          maxH={{ base: '90vh', md: '50vh' }}
+          w="90%"
+          h="60%"
+          overflow="hidden"
+          borderRadius="lg"
+          boxShadow="lg"
+          bg="white"
+          display="flex"
+          position="relative"
+          top={{ base: '20%', md: '10%' }}
+          backgroundImage={`url(${
+            modalIndex !== null ? benefits[modalIndex].image : ''
+          })`}
+          backgroundSize="cover"
+          backgroundPosition="20px 0px"
+        >
           <ModalCloseButton />
-          <ModalBody>
-            <Flex direction={{ base: 'column', md: 'row' }} align="center">
-              <Text flex="1" mr={{ md: 4 }}>
+          {/* Left Text Section */}
+          <Box
+            flex="1"
+            bg={bgColor}
+            p={8}
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            className="card__form"
+            clipPath={{
+              base: 'none',
+              md: 'polygon(0 0, 60% 0%, 30% 100%, 0% 100%)',
+            }}
+          >
+            <VStack
+              as="form"
+              spacing={4}
+              maxWidth={{ base: '100%', md: '300px' }}
+            >
+              <Heading
+                fontSize="2xl"
+                fontWeight="bold"
+                color="green.700"
+                textAlign="left"
+                mb={4}
+                textTransform={'uppercase'}
+              >
+                {modalIndex !== null && benefits[modalIndex].title}
+              </Heading>
+              <Text fontSize="md" color="gray.700" mb={4}>
                 {modalIndex !== null && benefits[modalIndex].description}
               </Text>
-              <Image
-                flex="1"
-                src={modalIndex !== null ? benefits[modalIndex].image : ''}
-                alt={modalIndex !== null ? benefits[modalIndex].title : ''}
-                borderRadius="md"
-              />
-            </Flex>
-          </ModalBody>
+            </VStack>
+          </Box>
         </ModalContent>
       </Modal>
     </>
