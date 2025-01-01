@@ -1,6 +1,8 @@
 import { Box, SimpleGrid, Text, Heading, Flex } from '@chakra-ui/react';
+import { motion } from 'framer-motion';
 import h3 from '../assets/images/hr4.jpg';
-import '../assets/styles/holo.css'; // Add this line to include the CSS file
+
+const MotionBox = motion(Box);
 
 const BenefitsSection = () => {
   const benefits = [
@@ -30,14 +32,6 @@ const BenefitsSection = () => {
     },
   ];
 
-  // const hoverColors = ['#90EE90', '#FFD700', '#ADD8E6', '#FFB6C1']; // Define hover colors
-  const hoverColors = [
-    { bg: 'rgba(93, 236, 107, 0.7)', text: '#FFFFFF', heading: '#000' },
-    { bg: ' rgba(166, 152, 218, 0.7)', text: '#000000', heading: '#fff' },
-    { bg: 'rgba(59, 205, 238, 0.7)', text: '#000000', heading: '#fff' },
-    { bg: ' rgba(251, 92, 116, 0.7)', text: '#FFFFFF', heading: '#000' },
-  ];
-
   return (
     <Box
       cursor={'pointer'}
@@ -48,52 +42,53 @@ const BenefitsSection = () => {
       bgSize="cover"
       transform="skewY(-7deg)"
       mt={-40}
-      py={{ base: '10rem', md: '20rem' }}
-      px={{ base: '2rem', md: '4rem', lg: '6rem' }}
+      py={{ base: '10rem', md: '20rem' }} // Responsive padding
+      px={{ base: '2rem', md: '4rem', lg: '6rem' }} // Padding on x-axis for space from viewport edges
     >
       <Box transform="skewY(7deg)">
         <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={10}>
           {benefits.map((benefit, index) => (
-            <div
-              className="holographic-card"
+            <MotionBox
               key={index}
-              style={{
-                '--hover-bg-color': hoverColors[index].bg,
-                '--hover-text-color': hoverColors[index].text,
-                '--hover-heading-color': hoverColors[index].heading,
+              bg="rgba(255, 255, 255, 0.8)"
+              p={{ base: '2rem', md: '2.5rem' }} // Responsive padding
+              borderRadius="lg" // Rounded corners
+              boxShadow="0 1.5rem 4rem rgba(0, 0, 0, 0.15)" // Box shadow for depth
+              transition="transform 0.3s ease"
+              whileHover={{
+                scale: 1.03,
+                translateY: -6,
+                boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.1)',
               }}
+              textAlign="center"
             >
               <Flex
                 direction="column"
                 align="center"
                 justify="center"
                 textAlign="center"
-                height="100%"
+                height="100%" // Ensure content is vertically centered
               >
-                <Text fontSize="6xl" mb={4}>
+                <Text
+                  fontSize="6xl"
+                  mb={4}
+                  bgGradient="linear(to-r, #7ed56f, #28b485)"
+                  bgClip="text"
+                >
                   {benefit.icon}
                 </Text>
                 <Heading
-                  className="hoverable-text-heading"
                   fontFamily={'lato'}
+                  color={'black'}
                   as="h3"
                   size="md"
                   mb={2}
-                  color="cyan.400"
                 >
                   {benefit.title}
                 </Heading>
-                <Text
-                  fontFamily={'lato'}
-                  fontWeight={'300'}
-                  className="hoverable-text"
-                  color="gray.300"
-                  transition="color 0.5s ease"
-                >
-                  {benefit.description}
-                </Text>
+                <Text color="gray.600">{benefit.description}</Text>
               </Flex>
-            </div>
+            </MotionBox>
           ))}
         </SimpleGrid>
       </Box>
