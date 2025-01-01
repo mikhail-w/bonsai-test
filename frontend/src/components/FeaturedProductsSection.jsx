@@ -198,7 +198,7 @@ const FeaturedProductsSection = () => {
       <Button
         as={RouterLink}
         to="/products"
-        mt={10}
+        mt={50}
         mb={50}
         padding={'1rem 2.5rem'}
         size="lg"

@@ -61,15 +61,15 @@ const BenefitsSection = () => {
       bgSize="cover"
       transform="skewY(-7deg)"
       mt={-40}
-      py={{ base: '10rem', md: '20rem' }}
-      px={{ base: '2rem', md: '4rem', lg: '6rem' }}
+      py={{ base: '6rem', md: '10rem', lg: '15rem' }}
+      px={{ base: '1rem', md: '2rem', lg: '4rem' }}
     >
       <Center>
         <Heading
           transform="skewY(7deg)"
           fontFamily="lato"
           as="h2"
-          size="2xl"
+          size={{ base: 'xl', md: '2xl' }}
           mb={12}
           paddingBottom="100px"
           fontWeight="300"
@@ -79,9 +79,12 @@ const BenefitsSection = () => {
         </Heading>
       </Center>
       <Box transform="skewY(7deg)">
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={10}>
+        <SimpleGrid columns={{ base: 1, sm: 2, md: 2, lg: 4 }} spacing={10}>
           {benefits.map((benefit, index) => (
-            <div
+            <Box
+              maxWidth={'350px'}
+              maxHeight={'350px'}
+              minHeight={'300px'}
               className="holographic-card"
               key={index}
               style={{
@@ -91,6 +94,8 @@ const BenefitsSection = () => {
               }}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
+              onTouchStart={() => setHoveredIndex(index)}
+              onTouchEnd={() => setHoveredIndex(null)}
             >
               <Flex
                 cursor={'pointer'}
@@ -100,7 +105,7 @@ const BenefitsSection = () => {
                 textAlign="center"
                 height="100%"
               >
-                <Text fontSize="6xl" mb={4}>
+                <Text fontSize="4xl" mb={4}>
                   {benefit.icon}
                 </Text>
                 <Heading
@@ -123,7 +128,7 @@ const BenefitsSection = () => {
                   {benefit.description}
                 </Text>
               </Flex>
-            </div>
+            </Box>
           ))}
         </SimpleGrid>
       </Box>
