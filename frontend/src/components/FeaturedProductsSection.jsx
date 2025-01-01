@@ -79,7 +79,8 @@ const FeaturedProductsSection = () => {
         as="h2"
         size="2xl"
         mb={12}
-        paddingBottom="50px"
+        padding={'50px'}
+        // paddingBottom="50px"
         fontWeight="300"
         color="green.600"
         textTransform={'uppercase'}
