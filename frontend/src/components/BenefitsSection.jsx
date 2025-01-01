@@ -1,10 +1,11 @@
-import { Box, SimpleGrid, Text, Heading, Flex } from '@chakra-ui/react';
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { Box, SimpleGrid, Text, Heading, Flex, Center } from '@chakra-ui/react';
 import h3 from '../assets/images/hr4.jpg';
-
-const MotionBox = motion(Box);
+import '../assets/styles/holo.css';
 
 const BenefitsSection = () => {
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+
   const benefits = [
     {
       icon: '🌿',
@@ -32,56 +33,102 @@ const BenefitsSection = () => {
     },
   ];
 
+  // const hoverColors = ['#90EE90', '#FFD700', '#ADD8E6', '#FFB6C1']; // Define hover colors
+  const hoverColors = [
+    { bg: 'rgba(93, 236, 107, 0.7)', text: '#000000', heading: '#fff' },
+    { bg: ' rgba(166, 152, 218, 0.7)', text: '#000000', heading: '#fff' },
+    { bg: 'rgba(59, 205, 238, 0.7)', text: '#000000', heading: '#fff' },
+    { bg: ' rgba(251, 92, 116, 0.7)', text: '#000000', heading: '#fff' },
+  ];
+
+  const overlayColors = [
+    'linear-gradient(to right bottom, rgba(93, 236, 107, 0.8), rgba(40, 180, 133, 0.8))',
+    'linear-gradient(to right bottom, rgba(166, 152, 218, 0.8), rgba(142, 68, 173, 0.8))',
+    'linear-gradient(to right bottom, rgba(59, 205, 238, 0.8), rgba(39, 125, 217, 0.8))',
+    'linear-gradient(to right bottom, rgba(251, 92, 116, 0.8), rgba(227, 67, 51, 0.8))',
+  ];
+
   return (
     <Box
       className="section-features"
       bgImage={{
-        base: `linear-gradient(to right bottom, rgba(126, 213, 111, 0.8), rgba(40, 180, 133, 0.8)), url(${h3})`,
+        base: `${
+          hoveredIndex !== null
+            ? overlayColors[hoveredIndex]
+            : `linear-gradient(to right bottom, rgba(126, 213, 111, 0.8), rgba(40, 180, 133, 0.8))`
+        }, url(${h3})`,
       }}
       bgSize="cover"
       transform="skewY(-7deg)"
       mt={-40}
-      py={{ base: '10rem', md: '20rem' }} // Responsive padding
-      px={{ base: '2rem', md: '4rem', lg: '6rem' }} // Padding on x-axis for space from viewport edges
+      py={{ base: '6rem', md: '10rem', lg: '15rem' }}
+      px={{ base: '1rem', md: '2rem', lg: '4rem' }}
     >
+      <Center>
+        <Heading
+          transform="skewY(7deg)"
+          fontFamily="lato"
+          as="h2"
+          size={{ base: 'xl', md: '2xl' }}
+          // mb={12}
+          paddingBottom="100px"
+          fontWeight="300"
+          color="white"
+        >
+          BENEFITS
+        </Heading>
+      </Center>
       <Box transform="skewY(7deg)">
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={10}>
+        <SimpleGrid columns={{ base: 1, sm: 2, md: 2, lg: 4 }} spacing={10}>
           {benefits.map((benefit, index) => (
-            <MotionBox
+            <Box
+              maxWidth={'350px'}
+              maxHeight={'350px'}
+              minHeight={'300px'}
+              className="holographic-card"
               key={index}
-              bg="rgba(255, 255, 255, 0.8)"
-              p={{ base: '2rem', md: '2.5rem' }} // Responsive padding
-              borderRadius="lg" // Rounded corners
-              boxShadow="0 1.5rem 4rem rgba(0, 0, 0, 0.15)" // Box shadow for depth
-              transition="transform 0.3s ease"
-              whileHover={{
-                scale: 1.03,
-                translateY: -6,
-                boxShadow: '0px 10px 30px rgba(0, 0, 0, 0.1)',
+              style={{
+                '--hover-bg-color': hoverColors[index].bg,
+                '--hover-text-color': hoverColors[index].text,
+                '--hover-heading-color': hoverColors[index].heading,
               }}
-              textAlign="center"
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              onTouchStart={() => setHoveredIndex(index)}
+              onTouchEnd={() => setHoveredIndex(null)}
             >
               <Flex
+                cursor={'pointer'}
                 direction="column"
                 align="center"
                 justify="center"
                 textAlign="center"
-                height="100%" // Ensure content is vertically centered
+                height="100%"
               >
-                <Text
-                  fontSize="6xl"
-                  mb={4}
-                  bgGradient="linear(to-r, #7ed56f, #28b485)" // Gradient text
-                  bgClip="text"
-                >
+                <Text fontSize="4xl" mb={4}>
                   {benefit.icon}
                 </Text>
-                <Heading color={'black'} as="h3" size="md" mb={2}>
+                <Heading
+                  className="hoverable-text-heading"
+                  fontFamily={'lato'}
+                  as="h3"
+                  size="md"
+                  mb={2}
+                  color="cyan.400"
+                >
                   {benefit.title}
                 </Heading>
-                <Text color="gray.600">{benefit.description}</Text>
+                <Text
+                  fontFamily={'lato'}
+                  fontWeight={'400'}
+                  className="hoverable-text"
+                  color="gray.300"
+                  transition="color 0.5s ease"
+                >
+                  {benefit.description}
+                </Text>
               </Flex>
-            </MotionBox>
+            </Box>
           ))}
         </SimpleGrid>
       </Box>
