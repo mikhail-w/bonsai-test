@@ -1,5 +1,5 @@
 import React from 'react';
-import bgImage from '../assets/images/nat-10.jpg'; // Replace with your actual image path
+import bgImage from '../../assets/images/nat-10.jpg'; // Replace with your actual image path
 import {
   Box,
   Button,
@@ -14,7 +14,7 @@ import {
   useBreakpointValue,
   useColorModeValue,
 } from '@chakra-ui/react';
-import '../assets/styles/card.css';
+import '../../assets/styles/card.css';
 
 const NewsLetterSection = () => {
   // Determine whether to show the background image based on screen size

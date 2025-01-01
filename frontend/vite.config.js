@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import path from 'path';
 import react from '@vitejs/plugin-react';
 
 // https://vitejs.dev/config/
@@ -11,6 +12,14 @@ export default defineConfig({
         changeOrigin: true, // Changes the origin of the host header to the target URL
         rewrite: path => path.replace(/^\/api/, '/api'), // Optional: This keeps the /api in the path
       },
+    },
+  },
+  resolve: {
+    alias: {
+      '@homepageSections': path.resolve(
+        __dirname,
+        'src/pages/homepage-sections'
+      ),
     },
   },
   // Add support for .glb files as assets

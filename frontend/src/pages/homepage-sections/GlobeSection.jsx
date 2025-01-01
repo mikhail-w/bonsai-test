@@ -4,6 +4,7 @@ import { Environment, OrbitControls } from '@react-three/drei';
 import { Center, useBreakpointValue, Box, Spinner } from '@chakra-ui/react';
 import Earth from '../../../public/Earth';
 import SaveTheWorldText from '../../components/SaveTheWorldText';
+import CustomHeading from '../../components/CustomHeading';
 
 // Modular Orbit Controls with Zoom Limits
 const CustomOrbitControls = ({ minDistance, maxDistance }) => {
@@ -57,7 +58,10 @@ const GlobeSection = () => {
         </Suspense>
       </Center>
       {/* Save the world text is regular HTML */}
-      <SaveTheWorldText />
+      {/* <SaveTheWorldText /> */}
+      <Center>
+        <CustomHeading>Save the World, plant a tree</CustomHeading>
+      </Center>
     </Box>
   );
 };

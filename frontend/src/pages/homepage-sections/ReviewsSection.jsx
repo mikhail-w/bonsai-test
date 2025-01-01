@@ -12,8 +12,8 @@ import {
 import { SlArrowRight, SlArrowLeft } from 'react-icons/sl';
 import { FaQuoteRight } from 'react-icons/fa'; // Import the quote icon
 import Slider from 'react-slick';
-import r1 from '../assets/images/r1.png';
-import r2 from '../assets/images/r2.png';
+import r1 from '../../assets/images/r1.png';
+import r2 from '../../assets/images/r2.png';
 
 // Custom Next Arrow
 const NextArrow = ({ className, onClick }) => {

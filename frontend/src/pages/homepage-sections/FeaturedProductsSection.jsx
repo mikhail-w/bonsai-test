@@ -10,11 +10,12 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
-import p3 from '../assets/images/h10.jpg';
-import p4 from '../assets/images/potters.jpg';
-import p5 from '../assets/images/can.jpg';
-import '../assets/styles/card.css';
+import p3 from '../../assets/images/h10.jpg';
+import p4 from '../../assets/images/potters.jpg';
+import p5 from '../../assets/images/can.jpg';
+import '../../assets/styles/card.css';
 import CustomButton from '../../components/CustomButton';
+import CustomHeading from '../../components/CustomHeading';
 
 const FeaturedProductsSection = () => {
   const bgColor = useColorModeValue('#48a169', 'white');
@@ -74,19 +75,7 @@ const FeaturedProductsSection = () => {
       bg={useColorModeValue('white', 'gray.800')}
       minH="100vh"
     >
-      <Heading
-        fontFamily="lato"
-        as="h2"
-        size="2xl"
-        mb={12}
-        padding={'50px'}
-        // paddingBottom="50px"
-        fontWeight="300"
-        color="green.600"
-        textTransform={'uppercase'}
-      >
-        Featured Products
-      </Heading>
+      <CustomHeading size={'2xl'}>Featured Products</CustomHeading>
       <SimpleGrid
         columns={{ base: 1, md: 2, lg: 3 }}
         spacing={10}
