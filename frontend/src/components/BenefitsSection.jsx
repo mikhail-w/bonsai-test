@@ -70,7 +70,7 @@ const BenefitsSection = () => {
           fontFamily="lato"
           as="h2"
           size={{ base: 'xl', md: '2xl' }}
-          mb={12}
+          // mb={12}
           paddingBottom="100px"
           fontWeight="300"
           color="white"

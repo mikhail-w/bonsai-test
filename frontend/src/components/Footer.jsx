@@ -67,11 +67,7 @@ function Footer() {
   const logoTextColor = useColorModeValue('green.700', 'green.300');
 
   return (
-    <Box
-      bg={backgroundColor}
-      color={useColorModeValue('gray.700', 'gray.200')}
-      mt={50}
-    >
+    <Box bg={backgroundColor} color={useColorModeValue('gray.700', 'gray.200')}>
       <Container as={Stack} maxW="6xl" py={10} spacing={8}>
         <Stack direction="row" align="center" justify="space-between">
           <Flex alignItems="center">

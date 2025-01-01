@@ -40,7 +40,7 @@ const Globe = () => {
   const maxZoom = 8; // Maximum zoom level (Zoom in limit)
 
   return (
-    <Box>
+    <Box marginBottom={'100px'}>
       <Center width={containerSize} height={containerSize} margin="auto">
         {/* Chakra-based spinner outside of Canvas */}
         <Suspense fallback={<LoadingFallback />}>
