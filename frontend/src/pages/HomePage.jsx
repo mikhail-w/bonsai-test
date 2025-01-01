@@ -4,8 +4,9 @@ import ScrollToTopButton from '../components/ScrollToTopButton';
 import BenifitsSection from '../components/BenefitsSection';
 import HeroSection from '../components/HeroSection';
 import ProductsSection from '../components/FeaturedProductsSection';
-import ReviewsSection from './ReviewsSection';
+import ReviewsSection from '../components/ReviewsSection';
 import Globe from '../components/Globe';
+import NewsLetterSection from '../components/NewsLetterSection';
 
 function HomePage() {
   useEffect(() => {
@@ -22,6 +23,7 @@ function HomePage() {
       <BenifitsSection />
       <ReviewsSection />
       <Globe />
+      <NewsLetterSection />
       <ScrollToTopButton />
     </>
   );
