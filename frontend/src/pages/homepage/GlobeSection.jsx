@@ -2,8 +2,8 @@ import React, { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Environment, OrbitControls } from '@react-three/drei';
 import { Center, useBreakpointValue, Box, Spinner } from '@chakra-ui/react';
-import Earth from '../../public/Earth';
-import SaveTheWorldText from './SaveTheWorldText';
+import Earth from '../../../public/Earth';
+import SaveTheWorldText from '../../components/SaveTheWorldText';
 
 // Modular Orbit Controls with Zoom Limits
 const CustomOrbitControls = ({ minDistance, maxDistance }) => {
@@ -26,7 +26,7 @@ const LoadingFallback = () => (
 );
 
 // Main Globe Component
-const Globe = () => {
+const GlobeSection = () => {
   // Responsive container size for the canvas
   const containerSize = useBreakpointValue({
     base: '300px', // Mobile devices
@@ -62,4 +62,4 @@ const Globe = () => {
   );
 };
 
-export default Globe;
+export default GlobeSection;

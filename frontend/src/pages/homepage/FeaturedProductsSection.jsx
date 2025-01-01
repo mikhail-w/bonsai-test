@@ -14,7 +14,7 @@ import p3 from '../assets/images/h10.jpg';
 import p4 from '../assets/images/potters.jpg';
 import p5 from '../assets/images/can.jpg';
 import '../assets/styles/card.css';
-import CustomButton from './CustomButton';
+import CustomButton from '../../components/CustomButton';
 
 const FeaturedProductsSection = () => {
   const bgColor = useColorModeValue('#48a169', 'white');
