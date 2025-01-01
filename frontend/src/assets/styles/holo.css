@@ -18,7 +18,6 @@
   border-radius: 15px;
   --hover-bg-color: #fff;
   --hover-text-color: #000;
-  /* --hover-text-color: rgba(255, 182, 193, 0.688); */
   transition: all 0.5s ease;
 }
 
@@ -42,7 +41,7 @@
   background: var(--hover-bg-color);
   color: var(--hover-text-color);
   transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
 .holographic-card:hover::before {

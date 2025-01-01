@@ -7,6 +7,7 @@ import {
   Text,
   Image,
   Flex,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 import p3 from '../assets/images/h10.jpg';
@@ -16,6 +17,7 @@ import '../assets/styles/card.css';
 import CustomButton from './CustomButton';
 
 const FeaturedProductsSection = () => {
+  const bgColor = useColorModeValue('#48a169', 'white');
   const products = [
     {
       title: 'Shop   Plants',
@@ -57,8 +59,21 @@ const FeaturedProductsSection = () => {
     setFlipped(newFlipped);
   };
 
+  const handleToggleFlip = index => {
+    const newFlipped = [...flipped];
+    newFlipped[index] = !newFlipped[index];
+    setFlipped(newFlipped);
+  };
+
   return (
-    <Box mt={100} mb={100} py={16} textAlign="center" bg="white" minH="100vh">
+    <Box
+      mt={100}
+      mb={100}
+      py={16}
+      textAlign="center"
+      bg={useColorModeValue('white', 'gray.800')}
+      minH="100vh"
+    >
       <Heading
         fontFamily="lato"
         as="h2"
@@ -67,6 +82,7 @@ const FeaturedProductsSection = () => {
         paddingBottom="50px"
         fontWeight="300"
         color="green.600"
+        textTransform={'uppercase'}
       >
         Featured Products
       </Heading>
@@ -82,13 +98,14 @@ const FeaturedProductsSection = () => {
             className="card"
             onMouseEnter={() => handleMouseEnter(index)}
             onMouseLeave={() => handleMouseLeave(index)}
+            onClick={() => handleToggleFlip(index)}
             cursor={'pointer'}
           >
             <Box
               className={`card__inner ${flipped[index] ? 'is-flipped' : ''}`}
             >
               {/* Front Side */}
-              <Box className="card__face card__face--front ">
+              <Box className="card__face card__face--front " bg={'white'}>
                 <Box
                   className={`card__picture card__picture--${index + 1}`}
                   position="relative"
@@ -101,7 +118,7 @@ const FeaturedProductsSection = () => {
                     className="card__image"
                     borderRadius="lg"
                     objectFit="cover"
-                    zIndex={0} /* Ensures the image is behind the overlay */
+                    zIndex={0}
                   />
                 </Box>
                 <h3 className={`card__heading card__heading--${index + 1}`}>
@@ -211,7 +228,7 @@ const FeaturedProductsSection = () => {
           left: '0',
           zIndex: '-1',
           transition: 'all 0.4s',
-          backgroundColor: '#48a169',
+          backgroundColor: bgColor,
         }}
         sx={{
           ':hover::after': {
