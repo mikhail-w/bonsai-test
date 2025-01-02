@@ -20,6 +20,8 @@ export default defineConfig({
         __dirname,
         'src/pages/homepage-sections'
       ),
+      '@components': path.resolve(__dirname, 'src/components'),
+      '@utils': path.resolve(__dirname, 'src/utils'),
     },
   },
   // Add support for .glb files as assets
