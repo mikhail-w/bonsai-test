@@ -169,7 +169,7 @@ function RegisterPage() {
                 />
                 <FormLabel>Confirm Password</FormLabel>
               </FormControl>
-              <FormControl variant="floating" mb={10} id="city" isRequired>
+              {/*  <FormControl variant="floating" mb={10} id="city" isRequired>
                 <Input
                   type="text"
                   value={city}
@@ -186,7 +186,7 @@ function RegisterPage() {
                   placeholder=""
                 />
                 <FormLabel>Enter your State</FormLabel>
-              </FormControl>
+              </FormControl> */}
               <FormControl mb={10} id="profileImage">
                 <FormLabel>Upload Profile Image</FormLabel>
                 <Input

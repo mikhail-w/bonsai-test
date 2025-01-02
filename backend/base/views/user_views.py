@@ -47,7 +47,7 @@ def registerUser(request):
         print(f"User Created: {user}")
 
         # Create a user profile with an optional avatar
-        avatar = request.FILES.get("avatar")
+        avatar = request.FILES.get("avatar", None)
         UserProfile.objects.create(user=user, avatar=avatar)
 
         print(f"UserProfile Created for User ID {user.id}")

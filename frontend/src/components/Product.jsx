@@ -33,6 +33,9 @@ const Product = ({ product }) => {
       });
     }
   };
+  const path = import.meta.env.VITE_API_URL;
+  // console.log('This PATH:', path);
+  // console.log('Image URL:', product.image);
 
   return (
     <Flex p={4} w="full" alignItems="center" justifyContent="center">
@@ -55,16 +58,7 @@ const Product = ({ product }) => {
       >
         <Link to={`/product/${product._id}`}>
           <Image
-            src={
-              product.image
-                ? `${import.meta.env.VITE_API_URL.replace('/api/', '')}${
-                    product.image
-                  }`
-                : `${import.meta.env.VITE_API_URL.replace(
-                    '/api/',
-                    ''
-                  )}/media/default/placeholder.jpg`
-            }
+            src={product.image}
             alt={`Picture of ${product.name}`}
             roundedTop="lg"
             objectFit="cover"

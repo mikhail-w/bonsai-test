@@ -22,6 +22,7 @@ function ProductsPage() {
   const { error, loading, products, page, pages } = productList;
 
   let keyword = location.search;
+  // console.log('PRODUCT LIST PAGE!!');
 
   useEffect(() => {
     dispatch(listProducts(keyword));
@@ -35,9 +36,9 @@ function ProductsPage() {
           top: 0,
           behavior: 'smooth',
         });
-      }, 100); // Small delay to ensure products are rendered before scrolling
+      }, 100);
     }
-  }, [keyword, page, loading]); // Trigger on page, keyword, or loading state change
+  }, [keyword, page, loading]);
 
   return (
     <Container

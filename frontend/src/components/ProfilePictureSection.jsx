@@ -36,13 +36,12 @@ const ProfilePictureSection = () => {
           name={userInfo.name || 'JWT User'} // Display user's name if available
           src={
             userInfo.avatar
-              ? `${import.meta.env.VITE_API_URL.replace('/api/', '')}${
-                  userInfo.avatar
-                }`
-              : `${import.meta.env.VITE_API_URL.replace(
-                  '/api/',
-                  ''
-                )}/media/default/avatar.jpg`
+              ? `https://${import.meta.env.VITE_S3_BUCKET}.s3.${
+                  import.meta.env.VITE_S3_REGION
+                }.amazonaws.com${userInfo.avatar}`
+              : `https://${import.meta.env.VITE_S3_BUCKET}.s3.${
+                  import.meta.env.VITE_S3_REGION
+                }.amazonaws.com/media/default/avatar.jpg`
           }
           mb={4}
         />

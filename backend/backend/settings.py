@@ -124,8 +124,12 @@ AWS_QUERYSTRING_AUTH = False  # For public access to files
 STATICFILES_STORAGE = "backend.storage_backends.StaticStorage"
 DEFAULT_FILE_STORAGE = "backend.storage_backends.MediaStorage"
 
-STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/static/"
-MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/"
+MEDIA_URL = (
+    f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/"
+)
+STATIC_URL = (
+    f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/static/"
+)
 
 
 # Local Static and Media Files (for fallback or local development)
@@ -159,6 +163,8 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 # Uncomment and configure if you want to restrict allowed origins
 CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:5173",  # Local frontend
+    "http://localhost:5173",  # Alternate local URL
     "http://mikhail-bonsai.s3-website-us-east-1.amazonaws.com",
 ]
 

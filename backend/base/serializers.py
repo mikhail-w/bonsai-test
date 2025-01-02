@@ -44,9 +44,9 @@ class UserSerializer(serializers.ModelSerializer):
         try:
             return obj.userprofile.avatar.url
         except UserProfile.DoesNotExist:
-            return None
+            return f"{settings.MEDIA_URL}default/avatar.jpg"
         except AttributeError:
-            return None
+            return f"{settings.MEDIA_URL}default/avatar.jpg"
 
 
 class UserSerializerWithToken(UserSerializer):
