@@ -15,6 +15,7 @@ import {
   Grid,
   GridItem,
   IconButton,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { FaPlusCircle } from 'react-icons/fa';
 import { BiTrash } from 'react-icons/bi';
@@ -33,6 +34,7 @@ function BlogPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [content, setContent] = useState('');
+  const bgColor = useColorModeValue('gray.100', 'gray.500');
   const [image, setImage] = useState(null);
   const [creatingPost, setCreatingPost] = useState(false);
   const [activeHearts, setActiveHearts] = useState({}); // Store heart state locally
@@ -48,6 +50,8 @@ function BlogPage() {
 
   const userLogin = useSelector(state => state.userLogin);
   const { userInfo } = userLogin;
+
+  const textColor = useColorModeValue('green.600', 'white.700');
 
   const blogPostCreate = useSelector(state => state.blogPostCreate);
   const {
@@ -118,13 +122,21 @@ function BlogPage() {
   };
 
   return (
-    <Box mt={100} maxW="800px" mx="auto" px={4} minHeight={'100vh'} mb={100}>
+    <Box
+      bg={bgColor}
+      mt={100}
+      maxW="800px"
+      mx="auto"
+      px={4}
+      minHeight={'100vh'}
+      mb={100}
+    >
       <Flex justify="space-between" align="center" mb={6}>
         <Text
           fontFamily={'rale'}
           fontSize="3xl"
           fontWeight="bold"
-          color="green.600"
+          color={textColor}
         >
           Bonsai Blog
         </Text>
@@ -143,7 +155,7 @@ function BlogPage() {
       </Flex>
 
       {creatingPost && userInfo && (
-        <Box bg="gray.50" p={6} mb={8} borderRadius="lg" shadow="lg">
+        <Box bg={bgColor} p={6} mb={8} borderRadius="lg" shadow="lg">
           <VStack spacing={4}>
             <Textarea
               fontFamily={'rale'}

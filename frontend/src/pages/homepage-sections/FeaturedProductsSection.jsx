@@ -10,11 +10,12 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
-import p3 from '../assets/images/h10.jpg';
-import p4 from '../assets/images/potters.jpg';
-import p5 from '../assets/images/can.jpg';
-import '../assets/styles/card.css';
-import CustomButton from './CustomButton';
+import p3 from '../../assets/images/h10.jpg';
+import p4 from '../../assets/images/potters.jpg';
+import p5 from '../../assets/images/can.jpg';
+import '../../assets/styles/card.css';
+import CustomButton from '../../components/CustomButton';
+import CustomHeading from '../../components/CustomHeading';
 
 const FeaturedProductsSection = () => {
   const bgColor = useColorModeValue('#48a169', 'white');
@@ -74,18 +75,7 @@ const FeaturedProductsSection = () => {
       bg={useColorModeValue('white', 'gray.800')}
       minH="100vh"
     >
-      <Heading
-        fontFamily="lato"
-        as="h2"
-        size="2xl"
-        mb={12}
-        paddingBottom="50px"
-        fontWeight="300"
-        color="green.600"
-        textTransform={'uppercase'}
-      >
-        Featured Products
-      </Heading>
+      <CustomHeading size={'2xl'}>Featured Products</CustomHeading>
       <SimpleGrid
         columns={{ base: 1, md: 2, lg: 3 }}
         spacing={10}
@@ -153,11 +143,21 @@ const FeaturedProductsSection = () => {
                   >
                     {product.description}
                   </Text>
-                  <CustomButton
-                    bg="#fff"
-                    color="#777"
-                    fontWeight="200"
-                    to={product.path}
+                  {/* <CustomButton to={product.path}>Shop Now</CustomButton> */}
+                  <Button
+                    as={RouterLink}
+                    to="/products"
+                    mt={50}
+                    mb={50}
+                    padding={'1rem 2.5rem'}
+                    size="lg"
+                    textTransform={'uppercase'}
+                    borderRadius={'100px'}
+                    bg="#55c57a"
+                    color="white"
+                    position="relative"
+                    fontFamily="lato"
+                    fontWeight={'350px'}
                     _hover={{
                       transform: 'translateY(-3px)',
                       boxShadow: '0 10px 20px rgba(0, 0, 0, 0.2)',
@@ -177,8 +177,7 @@ const FeaturedProductsSection = () => {
                       left: '0',
                       zIndex: '-1',
                       transition: 'all 0.4s',
-                      // backgroundColor: '#48a169',
-                      backgroundColor: '#ffffff',
+                      backgroundColor: bgColor,
                     }}
                     sx={{
                       ':hover::after': {
@@ -188,14 +187,14 @@ const FeaturedProductsSection = () => {
                     }}
                   >
                     Shop Now
-                  </CustomButton>
+                  </Button>
                 </Flex>
               </Box>
             </Box>
           </Box>
         ))}
       </SimpleGrid>
-      <Button
+      {/* <Button
         as={RouterLink}
         to="/products"
         mt={50}
@@ -238,7 +237,8 @@ const FeaturedProductsSection = () => {
         }}
       >
         Shop All Bonsai
-      </Button>
+      </Button> */}
+      {/* <CustomButton to="/products">Shop All Bonsai</CustomButton> */}
     </Box>
   );
 };

@@ -12,6 +12,7 @@ import {
   Container,
   Heading,
   Text,
+  VStack,
 } from '@chakra-ui/react';
 
 function PlantersPage() {
@@ -34,23 +35,25 @@ function PlantersPage() {
         minH="80vh"
         justifyContent="space-between"
       >
-        <Heading
-          textTransform={'uppercase'}
-          as="h1"
-          size="2xl"
-          mb={6}
-          fontFamily="roza"
-        >
-          Planters
-        </Heading>
-        <Text
-          textAlign={'center'}
-          fontFamily={'lato'}
-          fontSize="lg"
-          color="gray.600"
-        >
-          Choose from our decorative selection of planters
-        </Text>
+        <VStack marginBottom={{ base: '50', md: '100px' }}>
+          <Heading
+            textTransform={'uppercase'}
+            as="h1"
+            size="2xl"
+            mb={6}
+            fontFamily="roza"
+          >
+            Planters
+          </Heading>
+          <Text
+            textAlign={'center'}
+            fontFamily={'lato'}
+            fontSize="lg"
+            color="gray.600"
+          >
+            Choose from our decorative selection of planters
+          </Text>
+        </VStack>
         <SimpleGrid minChildWidth="300px" spacing="10px" width="100%" px={5}>
           {loading ? (
             <Loader />

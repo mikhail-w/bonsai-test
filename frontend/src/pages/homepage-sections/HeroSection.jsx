@@ -2,8 +2,8 @@ import React from 'react';
 import { Box, Heading, Text, Button, Flex } from '@chakra-ui/react';
 import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import heroSmall from '../assets/images/h3.png';
-import heroLarge from '../assets/images/h3.png';
+import heroSmall from '../../assets/images/h3.png';
+import heroLarge from '../../assets/images/h3.png';
 
 function HeroSection() {
   const fadeInUp = {
