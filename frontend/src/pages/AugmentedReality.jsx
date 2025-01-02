@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import QRCode from 'qrcode';
-import { Box, VStack, Text, Button } from '@chakra-ui/react';
+import { Box, VStack, Text, Button, useColorModeValue } from '@chakra-ui/react';
 
 const AugmentedReality = () => {
   const canvasRef = useRef();
@@ -20,19 +20,21 @@ const AugmentedReality = () => {
     ? usdzUrl // iOS uses .usdz files for Quick Look
     : `https://arvr.google.com/scene-viewer/1.0?file=${gltfUrl}&mode=ar-only`; // Android uses .glb files for Scene Viewer
 
+  const textColor = useColorModeValue('green.600', 'white.700');
+
   useEffect(() => {
     // Generate a QR code for the AR link
     QRCode.toCanvas(canvasRef.current, arLink, { width: 200 });
   }, [arLink]);
 
   return (
-    <Box textAlign="center" fontSize="xl" p={5}>
+    <Box textAlign="center" fontSize="xl" p={5} mt={'100px'}>
       <VStack spacing={5}>
         <Text
           fontFamily={'rale'}
           fontSize="2xl"
           fontWeight="bold"
-          color="green.600"
+          color={textColor}
         >
           View Bonsai in AR
         </Text>

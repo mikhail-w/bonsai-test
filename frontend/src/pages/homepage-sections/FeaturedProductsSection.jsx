@@ -143,11 +143,21 @@ const FeaturedProductsSection = () => {
                   >
                     {product.description}
                   </Text>
-                  <CustomButton
-                    bg="#fff"
-                    color="#777"
-                    fontWeight="200"
-                    to={product.path}
+                  {/* <CustomButton to={product.path}>Shop Now</CustomButton> */}
+                  <Button
+                    as={RouterLink}
+                    to="/products"
+                    mt={50}
+                    mb={50}
+                    padding={'1rem 2.5rem'}
+                    size="lg"
+                    textTransform={'uppercase'}
+                    borderRadius={'100px'}
+                    bg="#55c57a"
+                    color="white"
+                    position="relative"
+                    fontFamily="lato"
+                    fontWeight={'350px'}
                     _hover={{
                       transform: 'translateY(-3px)',
                       boxShadow: '0 10px 20px rgba(0, 0, 0, 0.2)',
@@ -167,8 +177,7 @@ const FeaturedProductsSection = () => {
                       left: '0',
                       zIndex: '-1',
                       transition: 'all 0.4s',
-                      // backgroundColor: '#48a169',
-                      backgroundColor: '#ffffff',
+                      backgroundColor: bgColor,
                     }}
                     sx={{
                       ':hover::after': {
@@ -178,14 +187,14 @@ const FeaturedProductsSection = () => {
                     }}
                   >
                     Shop Now
-                  </CustomButton>
+                  </Button>
                 </Flex>
               </Box>
             </Box>
           </Box>
         ))}
       </SimpleGrid>
-      <Button
+      {/* <Button
         as={RouterLink}
         to="/products"
         mt={50}
@@ -228,7 +237,8 @@ const FeaturedProductsSection = () => {
         }}
       >
         Shop All Bonsai
-      </Button>
+      </Button> */}
+      {/* <CustomButton to="/products">Shop All Bonsai</CustomButton> */}
     </Box>
   );
 };

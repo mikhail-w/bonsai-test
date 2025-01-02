@@ -27,6 +27,7 @@ const DashNav = ({ onOpen }) => {
   const dispatch = useDispatch();
   const { cartItems } = useSelector(state => state.cart);
   const bgColor = useColorModeValue('white', 'gray.900');
+  const textColor = useColorModeValue('gray.900', 'white');
   const isMobile = useBreakpointValue({ base: true, md: false });
   const { userInfo } = useSelector(state => state.userLogin);
 
@@ -42,9 +43,8 @@ const DashNav = ({ onOpen }) => {
       px={{ base: 4, md: 4 }}
       height="20"
       alignItems="center"
-      justifyContent="space-between"
+      justifyContent={{ base: 'space-between', md: 'right' }}
       bg={bgColor}
-      borderBottom={'.1px solid'}
       position={'sticky'}
       top={'0px'}
       zIndex={'1000'}
@@ -54,10 +54,10 @@ const DashNav = ({ onOpen }) => {
         onClick={onOpen}
         icon={<FiMenu />}
       />
-      <Text fontSize="2xl" onClick={() => navigate('/')} cursor="pointer">
+      {/* <Text fontSize="2xl" onClick={() => navigate('/')} cursor="pointer">
         BONSAI
-      </Text>
-      <HStack spacing={isMobile ? '' : '30px'}>
+      </Text> */}
+      <HStack spacing={isMobile ? '30px' : '30px'}>
         <ColorModeSwitcher />
         <RouterLink to="/cart">
           <Button variant="link">
@@ -80,7 +80,7 @@ const DashNav = ({ onOpen }) => {
                       )}/media/default/avatar.jpg`
                 }
               />
-              {isMobile ? '' : <Text>{userInfo.name}</Text>}
+              {isMobile ? '' : <Text color={textColor}>{userInfo.name}</Text>}
               <FiChevronDown />
             </HStack>
           </MenuButton>

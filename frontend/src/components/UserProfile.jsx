@@ -1,38 +1,40 @@
 import React from 'react';
-import { Box, Flex, Heading, Text } from '@chakra-ui/react';
+import { Box, Flex, Heading, Text, useColorModeValue } from '@chakra-ui/react';
 import ProfilePictureSection from './ProfilePictureSection';
 import AccountDetailsSection from './AccountDetailsSection';
 import Weather from './Weather';
+import ZenQuotes from './Dashboard/ZenQuotes';
 import { useSelector } from 'react-redux';
 
 import MyOrders from './MyOrders';
 
 const UserProfile = () => {
   const userLogin = useSelector(state => state.userLogin);
+
+  const bgColor = useColorModeValue('gray.100', 'gray.500');
   const { userInfo } = userLogin;
   return (
     <>
       <Flex
         direction={'column'}
         p={6}
-        bg="gray.50"
+        bg={bgColor}
         borderRadius="md"
         boxShadow="lg"
         gap={8}
-        fontFamily="rale"
+        fontFamily="lato"
       >
-        <Text ml={10} fontFamily="rale" fontWeight="300">
+        <Text fontSize="2xl" ml={10} fontFamily="lato" fontWeight="300">
           Welcome Back{' '}
           <Text as="span" fontSize="xl" fontWeight="bold">
             {userInfo.name}
           </Text>
         </Text>
         <Flex
-          // direction={{ base: 'column', md: 'row' }}
           direction={{ base: 'column', md: 'row' }}
           align="center"
           p={6}
-          bg="gray.50"
+          bg={bgColor}
           borderRadius="md"
           boxShadow="sm"
           gap={8}
@@ -40,7 +42,20 @@ const UserProfile = () => {
           <ProfilePictureSection />
           {!userInfo.isAdmin ? <AccountDetailsSection /> : null}
         </Flex>
-        <Weather />
+        <Flex
+          direction={{ base: 'column', md: 'row' }}
+          justify="space-between"
+          align="flex-start"
+          gap={4}
+        >
+          <Box flex="1" minW="300px">
+            <ZenQuotes />
+          </Box>
+          <Box flex="1" minW="300px">
+            <Weather />
+          </Box>
+        </Flex>
+
         {!userInfo.isAdmin ? (
           <>
             <Heading fontFamily="rale">My Orders</Heading>

@@ -139,6 +139,15 @@ const Navigation = () => {
     });
   };
 
+  const toggleShopMenu = e => {
+    e.preventDefault();
+    if (isMobile) {
+      setIsShopOpen(!isShopOpen);
+    } else {
+      navigate('/products');
+    }
+  };
+
   // Array with both labels and their corresponding URLs
   const navLinks = [
     userInfo

@@ -7,50 +7,64 @@ import {
   FormLabel,
   Input,
   SimpleGrid,
+  useColorModeValue,
 } from '@chakra-ui/react';
+import CustomButton from './CustomButton';
 
 const AccountDetailsSection = () => {
+  // Dynamically set text and background colors based on color mode
+  const textColor = useColorModeValue('gray.900', 'green.500');
+  const inputBg = useColorModeValue('gray.100', 'gray.700');
+  const formLabelColor = useColorModeValue('gray.700', 'gray.300');
+
   return (
     <Box
-      // boxShadow="outline"
-      bg="white"
+      bg={useColorModeValue('white', 'gray.800')}
       p={6}
       borderRadius="md"
-      // boxShadow="md"
       w={{ base: '100%', md: '65%', sm: '100%' }}
+      boxShadow={useColorModeValue('md', 'dark-lg')}
     >
       <VStack spacing={4}>
         <FormControl id="name">
-          <FormLabel>Name</FormLabel>
-          <Input type="text" placeholder="JWT User" />
+          <FormLabel color={formLabelColor}>Name</FormLabel>
+          <Input
+            bg={inputBg}
+            color={textColor}
+            type="text"
+            placeholder="JWT User"
+          />
         </FormControl>
         <FormControl id="email">
-          <FormLabel>Email address</FormLabel>
-          <Input type="email" placeholder="name@example.com" />
+          <FormLabel color={formLabelColor}>Email address</FormLabel>
+          <Input
+            bg={inputBg}
+            color={textColor}
+            type="email"
+            placeholder="name@example.com"
+          />
         </FormControl>
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4} w="full">
-          <FormControl id="company">
-            <FormLabel>Password</FormLabel>
-            <Input type="text" placeholder="Password" />
+          <FormControl id="password">
+            <FormLabel color={formLabelColor}>Password</FormLabel>
+            <Input
+              bg={inputBg}
+              color={textColor}
+              type="password"
+              placeholder="Password"
+            />
           </FormControl>
-          <FormControl id="country">
-            <FormLabel>Confirm Password</FormLabel>
-            <Input type="text" placeholder="Confirm Password" />
+          <FormControl id="confirm-password">
+            <FormLabel color={formLabelColor}>Confirm Password</FormLabel>
+            <Input
+              bg={inputBg}
+              color={textColor}
+              type="password"
+              placeholder="Confirm Password"
+            />
           </FormControl>
         </SimpleGrid>
-        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4} w="full">
-          <FormControl id="phone">
-            <FormLabel>Phone number</FormLabel>
-            <Input type="text" placeholder="4578-420-410" />
-          </FormControl>
-          <FormControl id="birthday">
-            <FormLabel>Birthday</FormLabel>
-            <Input type="date" />
-          </FormControl>
-        </SimpleGrid>
-        <Button colorScheme="green" variant="solid">
-          Change Details
-        </Button>
+        <CustomButton>Change Details</CustomButton>
       </VStack>
     </Box>
   );
