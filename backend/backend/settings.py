@@ -127,6 +127,15 @@ DEFAULT_FILE_STORAGE = "backend.storage_backends.MediaStorage"
 STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/static/"
 MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/"
 
+
+# Local Static and Media Files (for fallback or local development)
+# STATIC_URL = "/static/"
+# MEDIA_URL = "/media/"
+
+# STATIC_ROOT = BASE_DIR / "staticfiles"
+# MEDIA_ROOT = BASE_DIR / "media"
+
+
 # REST framework settings
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (

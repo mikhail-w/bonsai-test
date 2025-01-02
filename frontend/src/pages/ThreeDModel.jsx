@@ -1,6 +1,6 @@
 import React, { Suspense, useRef, useEffect, forwardRef } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
-import { OrbitControls, useGLTF } from '@react-three/drei';
+import { OrbitControls, useGLTF, Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { useColorModeValue, Box } from '@chakra-ui/react';
 
@@ -20,7 +20,9 @@ const Model = forwardRef(({ url }, ref) => {
       modelRef.current.scale.set(scale, scale, scale);
 
       // Center the model
-      modelRef.current.position.copy(center).multiplyScalar(-1);
+      box.setFromObject(modelRef.current);
+      const adjustedCenter = box.getCenter(new THREE.Vector3());
+      modelRef.current.position.copy(adjustedCenter).multiplyScalar(-1);
     }
   }, [scene]);
 
@@ -28,36 +30,47 @@ const Model = forwardRef(({ url }, ref) => {
 });
 
 function Scene({ url }) {
-  const { camera } = useThree();
-  const modelRef = useRef();
+  const { camera } = useThree(); // Access the camera
+  const modelRef = useRef(); // Reference for the model
 
   useEffect(() => {
     if (modelRef.current) {
+      // Calculate the model's bounding box
       const box = new THREE.Box3().setFromObject(modelRef.current);
       const size = box.getSize(new THREE.Vector3());
       const center = box.getCenter(new THREE.Vector3());
 
-      // Adjust camera distance based on model size
+      // Camera closeness (distance from the model)
       const maxDim = Math.max(size.x, size.y, size.z);
-      const cameraDistance = maxDim * 2.5;
+      const cameraDistance = maxDim * 2; // Adjust multiplier for closeness
 
-      // Position the camera
-      camera.position.set(center.x, center.y + size.y / 2, cameraDistance);
-      camera.lookAt(center);
+      // Camera height (above the model)
+      const cameraHeight = center.y + 3; // Increase for higher camera positioning
+
+      // Set camera position
+      camera.position.set(center.x, cameraHeight, cameraDistance);
+
+      // Camera angle (focus point)
+      camera.lookAt(center.x, center.y, center.z); // Focus on the model's center
     }
-  }, [camera, modelRef]);
+  }, [camera, modelRef]); // Re-run if camera or modelRef changes
 
   return (
     <>
+      {/* Lighting */}
       <ambientLight intensity={1.5} />
       <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
       <pointLight position={[-10, -10, -10]} />
+
+      {/* Model */}
       <Model url={url} ref={modelRef} />
+
+      {/* Camera Controls */}
       <OrbitControls
         enablePan={true}
         enableZoom={true}
         enableRotate={true}
-        target={[0, 0.5, 0]} // Adjust dynamically based on the model
+        target={[0, 0.5, 0]} // Match model's center for smoother controls
       />
     </>
   );
@@ -76,7 +89,13 @@ export default function ThreeDModel() {
       justifyContent="center"
     >
       <Canvas>
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense
+          fallback={
+            <Html center>
+              <div>Loading...</div>
+            </Html>
+          }
+        >
           {/* <Scene url="/bonsairoom.glb" /> */}
           <Scene url="https://mikhail-bonsai.s3.us-east-1.amazonaws.com/media/bonsairoom.glb" />
         </Suspense>
