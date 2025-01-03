@@ -199,17 +199,7 @@ function OrderPage() {
               {order.orderItems.map((item, index) => (
                 <Flex key={index} align="center" w="full">
                   <Image
-                    src={
-                      item.image
-                        ? `${import.meta.env.VITE_API_URL.replace(
-                            '/api/',
-                            ''
-                          )}${item.image}`
-                        : `${import.meta.env.VITE_API_URL.replace(
-                            '/api/',
-                            ''
-                          )}/media/default/placeholder.jpg`
-                    }
+                    src={item.image}
                     alt={item.name}
                     boxSize="50px"
                     objectFit="cover"

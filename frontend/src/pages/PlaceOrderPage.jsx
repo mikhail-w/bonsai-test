@@ -112,17 +112,7 @@ function PlaceOrderPage() {
                 {cart.cartItems.map((item, index) => (
                   <Flex key={index} align="center" justify="space-between">
                     <Image
-                      src={
-                        item.image
-                          ? `${import.meta.env.VITE_API_URL.replace(
-                              '/api/',
-                              ''
-                            )}${item.image}`
-                          : `${import.meta.env.VITE_API_URL.replace(
-                              '/api/',
-                              ''
-                            )}/media/default/placeholder.jpg`
-                      }
+                      src={item.image}
                       alt={item.name}
                       width="100px"
                       height="100px"

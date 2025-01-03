@@ -12,7 +12,7 @@
       "rating": "5.00",
       "numReviews": 1,
       "price": "118.00",
-      "countInStock": 0,
+      "countInStock": 30,
       "createdAt": "2024-08-10T16:44:58.527Z"
     }
   },
@@ -46,7 +46,7 @@
       "rating": "5.00",
       "numReviews": 8,
       "price": "1705.00",
-      "countInStock": 0,
+      "countInStock": 20,
       "createdAt": "2024-08-10T16:54:49.425Z"
     }
   },
@@ -63,7 +63,7 @@
       "rating": "5.00",
       "numReviews": 7,
       "price": "1899.00",
-      "countInStock": 12,
+      "countInStock": 142,
       "createdAt": "2024-08-10T16:57:30.456Z"
     }
   },
@@ -80,7 +80,7 @@
       "rating": "5.00",
       "numReviews": 4,
       "price": "158.00",
-      "countInStock": 0,
+      "countInStock": 40,
       "createdAt": "2024-08-10T16:59:22.701Z"
     }
   },
@@ -97,7 +97,7 @@
       "rating": "5.00",
       "numReviews": 15,
       "price": "459.00",
-      "countInStock": 1,
+      "countInStock": 21,
       "createdAt": "2024-08-10T17:00:59.338Z"
     }
   },
@@ -318,7 +318,7 @@
       "rating": null,
       "numReviews": 0,
       "price": "35.00",
-      "countInStock": 6,
+      "countInStock": 64,
       "createdAt": "2024-08-16T14:48:24.799Z"
     }
   },

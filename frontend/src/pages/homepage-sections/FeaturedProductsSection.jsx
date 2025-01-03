@@ -146,7 +146,7 @@ const FeaturedProductsSection = () => {
                   {/* <CustomButton to={product.path}>Shop Now</CustomButton> */}
                   <Button
                     as={RouterLink}
-                    to="/products"
+                    to={product.path}
                     mt={50}
                     mb={50}
                     padding={'1rem 2.5rem'}
@@ -160,7 +160,11 @@ const FeaturedProductsSection = () => {
                     fontWeight={'350px'}
                     _hover={{
                       transform: 'translateY(-3px)',
-                      boxShadow: '0 10px 20px rgba(0, 0, 0, 0.2)',
+                      // boxShadow: '0 10px 20px rgba(0, 0, 0, 0.2)',
+                      border: '1px solid',
+                      outlineColor: 'rgba(255, 255, 255, 0)',
+                      outlineOffset: '15px',
+                      // textShadow: '1px 1px 2px #427388',
                     }}
                     _active={{
                       transform: 'translateY(-1px)',
@@ -177,7 +181,7 @@ const FeaturedProductsSection = () => {
                       left: '0',
                       zIndex: '-1',
                       transition: 'all 0.4s',
-                      backgroundColor: bgColor,
+                      backgroundColor: 'white',
                     }}
                     sx={{
                       ':hover::after': {
@@ -194,7 +198,7 @@ const FeaturedProductsSection = () => {
           </Box>
         ))}
       </SimpleGrid>
-      {/* <Button
+      <Button
         as={RouterLink}
         to="/products"
         mt={50}
@@ -237,7 +241,7 @@ const FeaturedProductsSection = () => {
         }}
       >
         Shop All Bonsai
-      </Button> */}
+      </Button>
       {/* <CustomButton to="/products">Shop All Bonsai</CustomButton> */}
     </Box>
   );

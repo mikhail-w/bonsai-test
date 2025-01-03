@@ -44,6 +44,8 @@ function CartPage() {
   const backgroundColor = useColorModeValue('white', 'gray.700');
   const subtotalColor = useColorModeValue('black', 'white');
 
+  console.log('CART ITEM:', cartItems);
+
   useEffect(() => {
     if (productId) {
       dispatch(addToCart(productId, qty));
@@ -153,17 +155,7 @@ function CartPage() {
                   <HStack spacing={4} minWidth={335}>
                     {/* Product Image */}
                     <Image
-                      src={
-                        item.image
-                          ? `${import.meta.env.VITE_API_URL.replace(
-                              '/api/',
-                              ''
-                            )}${item.image}`
-                          : `${import.meta.env.VITE_API_URL.replace(
-                              '/api/',
-                              ''
-                            )}/media/default/placeholder.jpg`
-                      }
+                      src={item.image}
                       alt={item.name}
                       boxSize="150px"
                       objectFit="cover"

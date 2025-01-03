@@ -24,17 +24,12 @@ function EssentialsPage() {
 
   let keyword = location.search;
 
-  // Scroll to top on location (route) change
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [location]);
-
   useEffect(() => {
     dispatch(listEssentialProducts());
   }, [dispatch]);
 
   return (
-    <Container maxW="container.xlg" mt="100px" minH="100vh">
+    <Container maxW="container.xl" mt="100px" minH="100vh">
       <Center
         flexDirection={'column'}
         marginTop={50}

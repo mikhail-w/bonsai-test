@@ -8,6 +8,7 @@ import {
 } from '@chakra-ui/react';
 import CustomHeading from '../../components/CustomHeading';
 import '../../assets/styles/expanded-cards-section.css';
+import { useTheme } from '@chakra-ui/react';
 
 const images = [
   {
@@ -45,12 +46,14 @@ const ExpandingCardsSection = () => {
       justify="center"
       align="center"
       bg={useColorModeValue('white', 'gray.800')}
-      direction={{ base: 'column', md: 'row' }}
+      direction={{ base: 'column', xl: 'row' }}
       height={{ base: '100vh', md: '110vh' }}
       marginTop={'100px'}
       // overflow="hidden"
     >
-      <CustomHeading>Explore Nature</CustomHeading>
+      <Box outline={'2px solid red'}>
+        <CustomHeading mb={0}>Explore Nature</CustomHeading>
+      </Box>
       <Flex width="90vw" direction={{ base: 'column', md: 'row' }}>
         {images.map((image, index) => (
           <Box
