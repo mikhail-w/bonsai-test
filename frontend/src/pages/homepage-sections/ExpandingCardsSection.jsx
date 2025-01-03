@@ -41,6 +41,16 @@ const ExpandingCardsSection = () => {
     setActiveIndex(prevIndex => (prevIndex === index ? null : index));
   };
 
+  // Array of gradients
+  const gradients = [
+    'linear-gradient(to right bottom, rgba(41, 152, 255, 0.85), rgba(86, 67, 250, 0.85))',
+    'linear-gradient(to right bottom, rgba(255, 185, 0, 0.85), rgba(255, 119, 48, 0.85))',
+    'linear-gradient(to right bottom, rgba(255, 223, 186, 0.85), rgba(135, 206, 250, 0.85))',
+    'linear-gradient(to right bottom,  rgba(0, 242, 96, 0.85), rgba(5, 117, 230, 0.85))',
+    'linear-gradient(to right bottom, rgba(72, 239, 128, 0.85), rgba(0, 210, 255, 0.85))',
+    'linear-gradient(to right bottom, rgba(232, 94, 255, 0.85), rgba(255, 204, 255, 0.85))',
+  ];
+
   return (
     <Flex
       justify="center"
@@ -48,10 +58,10 @@ const ExpandingCardsSection = () => {
       bg={useColorModeValue('white', 'gray.800')}
       direction={{ base: 'column', xl: 'row' }}
       height={{ base: '100vh', md: '110vh' }}
-      marginTop={'100px'}
-      // overflow="hidden"
+      // marginTop={'100px'}
+      marginBottom={'100px'}
     >
-      <Box outline={'2px solid red'}>
+      <Box>
         <CustomHeading mb={0}>Explore Nature</CustomHeading>
       </Box>
       <Flex width="90vw" direction={{ base: 'column', md: 'row' }}>
@@ -63,24 +73,43 @@ const ExpandingCardsSection = () => {
             bgPosition="center"
             bgRepeat="no-repeat"
             borderRadius="3xl"
-            flex={
-              isMobile
-                ? activeIndex === index
-                  ? '1'
-                  : 'none'
-                : activeIndex === index
-                ? 5
-                : 0.2
-            }
+            cursor="pointer"
+            position={'relative'}
+            m={2}
+            flex={isMobile ? 'none' : activeIndex === index ? 5 : 0.1}
             height={
+              // isMobile ? (activeIndex === index ? '300px' : '100px') : '80vh'
               isMobile ? (activeIndex === index ? '50vh' : '10vh') : '80vh'
             }
-            m={2}
-            cursor="pointer"
-            position="relative"
             transition="all 0.5s ease-in-out"
             onClick={() => handleClick(index)}
           >
+            <Flex
+              bg={
+                activeIndex === index
+                  ? 'transparent'
+                  : gradients[index % gradients.length]
+              }
+              borderRadius={'3xl'}
+              height="100%"
+              align={isMobile ? 'flex-end' : 'center'}
+              justify="center"
+              color="white"
+              p={4}
+            >
+              {activeIndex === index ? (
+                ''
+              ) : (
+                <Text
+                  style={{ fontWeight: 100 }}
+                  className={`${
+                    isMobile ? 'horizontal-text' : 'vertical-text'
+                  }`}
+                >
+                  {image.title}
+                </Text>
+              )}
+            </Flex>
             <Box
               position="absolute"
               bottom="30px"

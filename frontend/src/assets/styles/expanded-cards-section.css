@@ -26,6 +26,10 @@
   white-space: nowrap;
 }
 
+.overlay__title {
+  font-weight: 100;
+}
+
 .card__title-span--1 {
   background-image: linear-gradient(to right bottom, rgba(41, 152, 255, 0.85), rgba(86, 67, 250, 0.85));
 }
@@ -48,4 +52,30 @@
 
 .card__title-span--6 {
   background-image: linear-gradient(to right bottom, rgba(232, 94, 255, 0.85), rgba(255, 204, 255, 0.85));
+}
+
+.vertical-text {
+  position: absolute;
+  font-family: roboto;
+  text-transform: uppercase;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) rotate(180deg);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  white-space: nowrap;
+  color: white;
+  font-size: 2rem;
+  font-weight: 100px;
+  text-align: center;
+}
+
+.horizontal-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+  white-space: nowrap;
+  font-weight: 800px;
 }
