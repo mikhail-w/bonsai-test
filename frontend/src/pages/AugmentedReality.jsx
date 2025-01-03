@@ -2,13 +2,12 @@ import { useEffect, useRef } from 'react';
 import QRCode from 'qrcode';
 import { Box, VStack, Text, Button, useColorModeValue } from '@chakra-ui/react';
 
-const AugmentedReality = () => {
+const AugmentedReality = ({ setQrCodeUrl }) => {
   const canvasRef = useRef();
 
   // URL for the `.glb` and `.usdz` files hosted on AWS S3
   const gltfUrl =
     'https://mikhail-bonsai.s3.us-east-1.amazonaws.com/media/ficus_bonsai.glb';
-  // 'https://mikhail-bonsai-model.s3.us-east-1.amazonaws.com/pergolesi-side-chair.glb';
   const usdzUrl =
     'https://mikhail-bonsai.s3.us-east-1.amazonaws.com/media/ficus_bonsai.usdz'; // For iOS devices
 
@@ -25,7 +24,14 @@ const AugmentedReality = () => {
   useEffect(() => {
     // Generate a QR code for the AR link
     QRCode.toCanvas(canvasRef.current, arLink, { width: 200 });
-  }, [arLink]);
+
+    // Generate the QR code as a data URL and pass it to the parent component
+    QRCode.toDataURL(arLink, { width: 200 }, (err, dataUrl) => {
+      if (!err && setQrCodeUrl) {
+        setQrCodeUrl(dataUrl); // Pass the data URL to the parent component if setQrCodeUrl is provided
+      }
+    });
+  }, [arLink, setQrCodeUrl]);
 
   return (
     <Box textAlign="center" fontSize="xl" p={5} mt={'100px'}>

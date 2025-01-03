@@ -3,7 +3,9 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment, useGLTF } from '@react-three/drei';
 
 const Model = () => {
-  const { scene } = useGLTF('../../public/ficus.glb');
+  const { scene } = useGLTF(
+    'https://mikhail-bonsai.s3.us-east-1.amazonaws.com/media/ficus.glb'
+  );
   return (
     <Canvas camera={{ position: [0, 0, 1] }}>
       <OrbitControls enableZoom={true} minDistance={0.6} maxDistance={3} />

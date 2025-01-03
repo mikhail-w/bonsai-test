@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Flex,
   HStack,
@@ -18,6 +18,7 @@ import {
 } from '@chakra-ui/react';
 import { FaCube, FaArrowsAlt } from 'react-icons/fa';
 import ThreeDModelViewer from './3DModel/ThreeDModelViewer';
+import AugmentedReality from '../../pages/AugmentedReality';
 
 const ProductButtons = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -26,6 +27,15 @@ const ProductButtons = () => {
     onOpen: onQrOpen,
     onClose: onQrClose,
   } = useDisclosure();
+  const [qrCodeUrl, setQrCodeUrl] = useState('');
+
+  const handleQrCodeGeneration = () => {
+    const qrCodeGenerator = new AugmentedReality({
+      generateQrCode: setQrCodeUrl,
+    });
+    qrCodeGenerator();
+    onQrOpen();
+  };
 
   return (
     <>
@@ -60,7 +70,12 @@ const ProductButtons = () => {
             cursor="pointer"
             _hover={{ boxShadow: 'lg' }}
           >
-            <Button variant="unstyled" onClick={onQrOpen} h="100%" w="100%">
+            <Button
+              variant="unstyled"
+              onClick={handleQrCodeGeneration}
+              h="100%"
+              w="100%"
+            >
               <Flex direction="column" align="center" justify="center" h="100%">
                 <Icon as={FaArrowsAlt} boxSize={5} mb={1} />
                 <Text fontSize="sm">See it in your space</Text>
@@ -72,11 +87,7 @@ const ProductButtons = () => {
       {/* 3D Model Modal */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent
-          maxW="800px" // Set maximum width
-          h="600px" // Set height
-          mt="100px" // Center vertically
-        >
+        <ModalContent maxW="800px" h="600px" mt="100px">
           <ModalHeader>3D Model Viewer</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -96,7 +107,11 @@ const ProductButtons = () => {
           <ModalHeader>Scan to See in Augmented Reality</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Image src="https://www.echo3d.com/qrcode" alt="QR Code" />
+            {qrCodeUrl ? (
+              <Image src={qrCodeUrl} alt="QR Code" />
+            ) : (
+              <Text>Loading QR Code...</Text>
+            )}
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="green" onClick={onQrClose}>
