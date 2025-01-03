@@ -124,17 +124,17 @@ AWS_QUERYSTRING_AUTH = False  # For public access to files
 STATICFILES_STORAGE = "backend.storage_backends.StaticStorage"
 DEFAULT_FILE_STORAGE = "backend.storage_backends.MediaStorage"
 
-MEDIA_URL = (
-    f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/"
-)
-STATIC_URL = (
-    f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/static/"
-)
+# MEDIA_URL = (
+#     f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/"
+# )
+# STATIC_URL = (
+#     f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/static/"
+# )
 
 
 # Local Static and Media Files (for fallback or local development)
-# STATIC_URL = "/static/"
-# MEDIA_URL = "/media/"
+STATIC_URL = "/static/"
+MEDIA_URL = "/media/"
 
 # STATIC_ROOT = BASE_DIR / "staticfiles"
 # MEDIA_ROOT = BASE_DIR / "media"
