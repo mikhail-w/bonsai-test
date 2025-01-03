@@ -130,7 +130,7 @@ function BlogPage() {
       maxW="800px"
       mx="auto"
       px={4}
-      // paddingTop={'50px'}
+      paddingTop={'50px'}
       minHeight={'100vh'}
       mb={100}
     >
