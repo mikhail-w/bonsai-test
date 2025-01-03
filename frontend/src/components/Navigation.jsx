@@ -29,7 +29,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import ColorModeSwitcher from './ColorModeSwitcher';
-import { Link as ChakraLink } from '@chakra-ui/react';
+import { Link as ChakraLink, useBreakpointValue } from '@chakra-ui/react';
 import { FaUser, FaBlog, FaShoppingCart, FaStore } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom';
@@ -61,6 +61,7 @@ const Navigation = () => {
 
   const cart = useSelector(state => state.cart);
   const { cartItems } = cart;
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   // Close the menu when a link is clicked
   const handleLinkClick = () => {
@@ -350,7 +351,7 @@ const Navigation = () => {
                             </Flex>
                           </RouterLink>
                           {/* Submenu Links */}
-                          {isShopHovered && (
+                          {(isShopHovered || isMobile) && (
                             <Box
                               position="absolute"
                               top="100%" // Position below the Shop link

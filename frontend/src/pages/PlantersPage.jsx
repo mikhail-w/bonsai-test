@@ -61,7 +61,9 @@ function PlantersPage() {
         </VStack>
         <SimpleGrid minChildWidth="300px" spacing="10px" width="100%" px={5}>
           {loading ? (
-            <Loader />
+            <Center marginBottom={'50vh'}>
+              <Loader />
+            </Center>
           ) : error ? (
             <Message variant="danger">{error}</Message>
           ) : (

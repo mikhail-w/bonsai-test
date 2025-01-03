@@ -43,33 +43,60 @@ const DashNav = ({ onOpen }) => {
       px={{ base: 4, md: 4 }}
       height="20"
       alignItems="center"
-      justifyContent={{ base: 'space-between', md: 'right' }}
+      justifyContent={{ base: 'space-between', md: 'flex-end' }}
       bg={bgColor}
-      position={'sticky'}
-      top={'0px'}
-      zIndex={'1000'}
+      position="sticky"
+      top="0px"
+      zIndex="1000"
+      boxShadow="sm"
     >
+      {/* Mobile Menu Button */}
       <IconButton
         display={{ base: 'flex', md: 'none' }}
         onClick={onOpen}
         icon={<FiMenu />}
+        aria-label="Open Menu"
       />
-      {/* <Text fontSize="2xl" onClick={() => navigate('/')} cursor="pointer">
-        BONSAI
-      </Text> */}
-      <HStack spacing={isMobile ? '30px' : '30px'}>
+
+      {/* Right Section */}
+      <HStack spacing={isMobile ? '20px' : '30px'}>
         <ColorModeSwitcher />
+
+        {/* Cart Icon with Badge */}
         <RouterLink to="/cart">
-          <Button variant="link">
+          <Button variant="link" position="relative" aria-label="Cart">
             <ShoppingCart />
-            <Badge>{cartItems.reduce((acc, item) => acc + item.qty, 0)}</Badge>
+            <Badge
+              position="absolute"
+              top="-2px"
+              right="-10px"
+              bg="green.500"
+              color="white"
+              borderRadius="full"
+              px={2}
+              fontSize="0.8em"
+              display={
+                cartItems.reduce((acc, item) => acc + item.qty, 0) > 0
+                  ? 'inline'
+                  : 'none'
+              }
+            >
+              {cartItems.reduce((acc, item) => acc + item.qty, 0)}
+            </Badge>
           </Button>
         </RouterLink>
+
+        {/* User Menu */}
         <Menu>
-          <MenuButton>
+          <MenuButton as={Button} variant="link">
             <HStack>
-              <Avatar src={userInfo.avatar} />
-              {isMobile ? '' : <Text color={textColor}>{userInfo.name}</Text>}
+              <Avatar
+                src={userInfo?.avatar || 'https://via.placeholder.com/150'}
+                name={userInfo?.name || 'Guest'}
+              />
+              {!isMobile && (
+                <Text color={textColor}>{userInfo?.name || 'Guest'}</Text>
+              )}
               <FiChevronDown />
             </HStack>
           </MenuButton>

@@ -62,7 +62,9 @@ function PlantsPage() {
             px={5} // Padding to add spacing on small screens
           >
             {loading ? (
-              <Loader />
+              <Center marginBottom={'80vh'}>
+                <Loader />
+              </Center>
             ) : error ? (
               <Message variant={'danger'}>{error}</Message>
             ) : (

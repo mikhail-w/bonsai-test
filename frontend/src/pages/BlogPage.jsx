@@ -16,6 +16,7 @@ import {
   GridItem,
   IconButton,
   useColorModeValue,
+  Center,
 } from '@chakra-ui/react';
 import { FaPlusCircle } from 'react-icons/fa';
 import { BiTrash } from 'react-icons/bi';
@@ -29,6 +30,7 @@ import {
   deleteBlogPost,
 } from '../actions/blogActions';
 import { BLOG_POST_CREATE_RESET } from '../constants/blogConstants';
+import Loader from '../components/Loader';
 
 function BlogPage() {
   const dispatch = useDispatch();
@@ -128,6 +130,7 @@ function BlogPage() {
       maxW="800px"
       mx="auto"
       px={4}
+      // paddingTop={'50px'}
       minHeight={'100vh'}
       mb={100}
     >
@@ -186,7 +189,9 @@ function BlogPage() {
       )}
 
       {loading ? (
-        <Spinner size="xl" />
+        <Center marginBottom={'50vh'}>
+          <Loader />
+        </Center>
       ) : error ? (
         <Text color="red.500">{error}</Text>
       ) : (
