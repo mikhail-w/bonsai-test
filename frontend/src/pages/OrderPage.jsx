@@ -199,13 +199,27 @@ function OrderPage() {
               {order.orderItems.map((item, index) => (
                 <Flex key={index} align="center" w="full">
                   <Image
-                    src={item.image}
-                    alt={item.name}
+                    src={
+                      item.image
+                        ? `${import.meta.env.VITE_API_BASE_URL}${item.image}`
+                        : `${
+                            import.meta.env.VITE_API_BASE_URL
+                          }/media/default/placeholder.jpg`
+                    }
+                    alt={
+                      item.image
+                        ? `Picture of ${item.name}`
+                        : 'Placeholder image for product'
+                    }
+                    fallbackSrc={`${
+                      import.meta.env.VITE_API_BASE_URL
+                    }/media/default/placeholder.jpg`}
                     boxSize="50px"
                     objectFit="cover"
                     mr={4}
                     rounded="md"
                   />
+
                   <Link to={`/product/${item.product}`}>
                     <Text fontWeight={300} fontFamily={'lato'}>
                       {item.name}

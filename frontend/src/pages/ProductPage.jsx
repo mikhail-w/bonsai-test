@@ -44,6 +44,8 @@ const ProductPage = () => {
     dispatch(createProductReview(id, { rating, comment }));
   };
 
+  console.log('PRODUCT DETAILS: ', productDetails);
+
   return (
     <Container
       mt={130}

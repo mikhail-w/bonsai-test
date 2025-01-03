@@ -195,7 +195,13 @@ const Navigation = () => {
   const withoutSidebarRoutes = ['/profile', '/login', '/register'];
   if (withoutSidebarRoutes.some(item => pathname.includes(item))) return null;
 
-  // console.log('NAV BAR OPENED!!', userInfo.avatar);
+  // console.log('NAV BAR OPENED!! CORE:', userInfo.avatar);
+  // console.log(
+  //   'LOCAL PATH: ',
+  //   `${import.meta.env.VITE_API_BASE_URL}${userInfo.avatar}`,
+  //   '\n'
+  // );
+
   // console.log(
   //   `https://${import.meta.env.VITE_S3_BUCKET}.s3.${
   //     import.meta.env.VITE_S3_REGION
@@ -284,7 +290,13 @@ const Navigation = () => {
             {userInfo && isOpen && isCircleAnimationDone && (
               <RouterLink to="/profile">
                 <Avatar
-                  src={userInfo.avatar}
+                  src={
+                    userInfo.avatar
+                      ? `${import.meta.env.VITE_API_BASE_URL}${userInfo.avatar}`
+                      : `${
+                          import.meta.env.VITE_API_BASE_URL
+                        }/media/default/avatar.jpg`
+                  }
                   size="md"
                   position="absolute"
                   top="0px"

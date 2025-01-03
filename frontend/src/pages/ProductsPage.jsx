@@ -4,7 +4,6 @@ import Product from '../components/Product';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Paginate from '../components/Paginate';
-import { useNavigate } from 'react-router-dom';
 import { listProducts } from '../actions/productActions';
 import {
   SimpleGrid,
@@ -17,12 +16,11 @@ import {
 
 function ProductsPage() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const productList = useSelector(state => state.productList);
   const { error, loading, products, page, pages } = productList;
 
   let keyword = location.search;
-  // console.log('PRODUCT LIST PAGE!!');
+  console.log('PRODUCT LIST PAGE!!');
 
   useEffect(() => {
     dispatch(listProducts(keyword));

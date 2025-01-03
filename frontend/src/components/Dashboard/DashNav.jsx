@@ -91,7 +91,13 @@ const DashNav = ({ onOpen }) => {
           <MenuButton as={Button} variant="link">
             <HStack>
               <Avatar
-                src={userInfo?.avatar || 'https://via.placeholder.com/150'}
+                src={
+                  userInfo.avatar
+                    ? `${import.meta.env.VITE_API_BASE_URL}${userInfo.avatar}`
+                    : `${
+                        import.meta.env.VITE_API_BASE_URL
+                      }/media/default/avatar.jpg`
+                }
                 name={userInfo?.name || 'Guest'}
               />
               {!isMobile && (

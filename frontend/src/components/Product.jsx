@@ -33,9 +33,16 @@ const Product = ({ product }) => {
       });
     }
   };
-  const path = import.meta.env.VITE_API_URL;
-  // console.log('This PATH:', path);
-  // console.log('Image URL:', product.image);
+  const path = import.meta.env.VITE_API_BASE_URL;
+  console.log('This PATH:', path);
+  console.log(
+    'Image URL:',
+    `${import.meta.env.VITE_API_BASE_URL}${product.image}`
+  );
+  console.log(
+    'DEFAULT:',
+    `${import.meta.env.VITE_API_BASE_URL}/media/default/placeholder.jpg`
+  );
 
   return (
     <Flex p={4} w="full" alignItems="center" justifyContent="center">
@@ -58,14 +65,26 @@ const Product = ({ product }) => {
       >
         <Link to={`/product/${product._id}`}>
           <Image
-            src={product.image}
-            alt={`Picture of ${product.name}`}
+            src={
+              product.image
+                ? `${import.meta.env.VITE_API_BASE_URL}${product.image}`
+                : `${
+                    import.meta.env.VITE_API_BASE_URL
+                  }/media/default/placeholder.jpg`
+            }
+            alt={
+              product.image
+                ? `Picture of ${product.name}`
+                : 'Placeholder image for product'
+            }
+            fallbackSrc={`${
+              import.meta.env.VITE_API_BASE_URL
+            }/media/default/placeholder.jpg`}
             roundedTop="lg"
             objectFit="cover"
             height="300px"
             width="100%"
             transition="all 0.3s ease"
-            // _hover={{ transform: 'scale(1.1)', }}
           />
         </Link>
 
