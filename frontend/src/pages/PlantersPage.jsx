@@ -27,7 +27,12 @@ function PlantersPage() {
   }, [dispatch]);
 
   return (
-    <Container maxW="container.xl" mt="100px" minH="100vh">
+    <Container
+      maxW="container.xl"
+      mt="100px"
+      minH="100vh"
+      marginBottom={'100px'}
+    >
       <Center
         flexDirection="column"
         mt={12}

@@ -58,7 +58,6 @@ const ExpandingCardsSection = () => {
       bg={useColorModeValue('white', 'gray.800')}
       direction={{ base: 'column', xl: 'row' }}
       height={{ base: '100vh', md: '110vh' }}
-      // marginTop={'100px'}
       marginBottom={'100px'}
     >
       <Box>
@@ -78,8 +77,7 @@ const ExpandingCardsSection = () => {
             m={2}
             flex={isMobile ? 'none' : activeIndex === index ? 5 : 0.1}
             height={
-              // isMobile ? (activeIndex === index ? '300px' : '100px') : '80vh'
-              isMobile ? (activeIndex === index ? '50vh' : '10vh') : '80vh'
+              isMobile ? (activeIndex === index ? '300px' : '100px') : '80vh'
             }
             transition="all 0.5s ease-in-out"
             onClick={() => handleClick(index)}

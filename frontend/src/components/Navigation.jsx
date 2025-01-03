@@ -26,6 +26,7 @@ import {
   Avatar,
   useDisclosure,
   useToast,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import ColorModeSwitcher from './ColorModeSwitcher';
 import { Link as ChakraLink } from '@chakra-ui/react';
@@ -49,6 +50,8 @@ const Navigation = () => {
   const { pathname } = useLocation();
   const toast = useToast();
   const menuRef = useRef(null);
+  // const bgColor = useColorModeValue('white', 'gray.500');
+  const bgColor = useColorModeValue('white', '#2A3439');
 
   // Determine the logo to display based on current route and scroll position
   const logoSrc = pathname === '/' && !scrolled ? logo_white : logo;
@@ -173,7 +176,7 @@ const Navigation = () => {
     Cart: 'radial-gradient(circle, rgba(11, 163, 96, 0.8), rgba(50, 205, 50, 0.8))',
     Shop: 'radial-gradient(circle,  rgba(63, 181, 63, 0.8) 2.3%, rgba(168, 251, 60, 0.9) 98.3%)',
     Logout:
-      'radial-gradient(circle, rgba(19, 78, 94, 0.8), rgba(113, 178, 128, 0.6))',
+      'radial-gradient(circle, rgba(63, 173, 141, 0.8), rgba(212, 242, 234, 0.8))',
   };
 
   useEffect(() => {
@@ -213,7 +216,7 @@ const Navigation = () => {
           right="0"
           zIndex="20" // Adjusted to ensure visibility
           width="100%"
-          bg={scrolled ? 'white' : 'transparent'} // White background on scroll
+          bg={scrolled ? bgColor : 'transparent'} // White background on scroll
           boxShadow={scrolled ? 'md' : 'none'} // Add shadow when scrolled
           transition="background-color 0.3s ease" // Smooth transition for background color
         >
@@ -280,15 +283,7 @@ const Navigation = () => {
             {userInfo && isOpen && isCircleAnimationDone && (
               <RouterLink to="/profile">
                 <Avatar
-                  src={
-                    userInfo.avatar
-                      ? `https://${import.meta.env.VITE_S3_BUCKET}.s3.${
-                          import.meta.env.VITE_S3_REGION
-                        }.amazonaws.com${userInfo.avatar}`
-                      : `https://${import.meta.env.VITE_S3_BUCKET}.s3.${
-                          import.meta.env.VITE_S3_REGION
-                        }.amazonaws.com/media/default/avatar.jpg`
-                  }
+                  src={userInfo.avatar}
                   size="md"
                   position="absolute"
                   top="0px"

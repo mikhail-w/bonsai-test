@@ -60,10 +60,15 @@ const BenefitsSection = () => {
   ];
 
   const hoverColors = [
-    { bg: 'rgba(93, 236, 107, 0.7)', text: '#000000', heading: '#fff' },
-    { bg: 'rgba(166, 152, 218, 0.7)', text: '#000000', heading: '#fff' },
-    { bg: 'rgba(59, 205, 238, 0.7)', text: '#000000', heading: '#fff' },
-    { bg: 'rgba(251, 92, 116, 0.7)', text: '#000000', heading: '#fff' },
+    {
+      bg: 'linear-gradient(180deg, #E6F4EA 0%, #B4D6B4 100%)',
+      text: '#000000',
+      heading: '#fff',
+    },
+    { bg: 'rgba(93, 236, 107, 0.7)', text: '#000000', heading: '#F9F8F6' },
+    { bg: 'rgba(166, 152, 218, 0.7)', text: '#000000', heading: '#FAFAED' },
+    { bg: 'rgba(59, 205, 238, 0.7)', text: '#000000', heading: '#FAFAED' },
+    { bg: 'rgba(251, 92, 116, 0.7)', text: '#000000', heading: '#F9F8F6' },
   ];
 
   const overlayColors = [

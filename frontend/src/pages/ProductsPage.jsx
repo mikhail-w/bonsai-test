@@ -47,12 +47,12 @@ function ProductsPage() {
       minH="100vh"
       pt={{ base: 10, md: 0 }} // Padding at the top for mobile view
     >
-      <Center flexDirection="column" mb={12} textAlign="center">
+      <Center flexDirection="column" mb={5} textAlign="center">
         <Heading
           textTransform={'uppercase'}
           as="h1"
           size="2xl"
-          mb={6}
+          mb={100}
           fontFamily="roza"
         >
           All Products
@@ -70,10 +70,9 @@ function ProductsPage() {
         <>
           <SimpleGrid
             columns={{ base: 1, sm: 2, md: 3, lg: 4 }}
-            spacing={10} // Adjusted spacing for better separation between cards
+            spacing={15}
             mb={16}
-            minChildWidth="260px" // Ensure that each product card has a minimum width
-            // boxShadow={'outline'}
+            minChildWidth="260px"
           >
             {products.map(product => (
               <Box key={product._id} w="100%" m="auto">
@@ -81,7 +80,7 @@ function ProductsPage() {
               </Box>
             ))}
           </SimpleGrid>
-          <Center>
+          <Center marginBottom={'100px'}>
             <Paginate page={page} pages={pages} keyword={keyword} />
           </Center>
         </>

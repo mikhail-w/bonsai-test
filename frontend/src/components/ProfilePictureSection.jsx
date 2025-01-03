@@ -34,15 +34,7 @@ const ProfilePictureSection = () => {
         <Avatar
           size="2xl"
           name={userInfo.name || 'JWT User'} // Display user's name if available
-          src={
-            userInfo.avatar
-              ? `https://${import.meta.env.VITE_S3_BUCKET}.s3.${
-                  import.meta.env.VITE_S3_REGION
-                }.amazonaws.com${userInfo.avatar}`
-              : `https://${import.meta.env.VITE_S3_BUCKET}.s3.${
-                  import.meta.env.VITE_S3_REGION
-                }.amazonaws.com/media/default/avatar.jpg`
-          }
+          src={userInfo.avatar}
           mb={4}
         />
         <Text fontFamily="rale" mb={2} fontWeight="500" color={textColor}>

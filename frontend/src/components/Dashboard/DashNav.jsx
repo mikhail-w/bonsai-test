@@ -68,17 +68,7 @@ const DashNav = ({ onOpen }) => {
         <Menu>
           <MenuButton>
             <HStack>
-              <Avatar
-                src={
-                  userInfo.avatar
-                    ? `https://${import.meta.env.VITE_S3_BUCKET}.s3.${
-                        import.meta.env.VITE_S3_REGION
-                      }.amazonaws.com${userInfo.avatar}`
-                    : `https://${import.meta.env.VITE_S3_BUCKET}.s3.${
-                        import.meta.env.VITE_S3_REGION
-                      }.amazonaws.com/media/default/avatar.jpg`
-                }
-              />
+              <Avatar src={userInfo.avatar} />
               {isMobile ? '' : <Text color={textColor}>{userInfo.name}</Text>}
               <FiChevronDown />
             </HStack>

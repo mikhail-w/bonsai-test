@@ -23,6 +23,7 @@ const CustomHeading = ({
       fontWeight={fontWeight}
       color={color}
       textTransform={textTransform}
+      textAlign="center"
       {...rest}
     >
       {children}
