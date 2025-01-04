@@ -4,6 +4,7 @@ import Product from '../components/Product';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Paginate from '../components/Paginate';
+import { useNavigate } from 'react-router-dom';
 import { listProducts } from '../actions/productActions';
 import {
   SimpleGrid,
@@ -18,9 +19,8 @@ function ProductsPage() {
   const dispatch = useDispatch();
   const productList = useSelector(state => state.productList);
   const { error, loading, products, page, pages } = productList;
-
+  const navigate = useNavigate();
   let keyword = location.search;
-  console.log('PRODUCT LIST PAGE!!');
 
   useEffect(() => {
     dispatch(listProducts(keyword));
@@ -67,8 +67,8 @@ function ProductsPage() {
       ) : (
         <>
           <SimpleGrid
-            columns={{ base: 1, sm: 2, md: 3, lg: 4 }}
-            spacing={15}
+            columns={{ base: 1, sm: 2, lg: 4 }}
+            spacing={16}
             mb={16}
             minChildWidth="260px"
           >
@@ -78,7 +78,8 @@ function ProductsPage() {
               </Box>
             ))}
           </SimpleGrid>
-          <Center marginBottom={'100px'}>
+          {/* <Center marginBottom={'100px'}> */}
+          <Center>
             <Paginate page={page} pages={pages} keyword={keyword} />
           </Center>
         </>

@@ -12,11 +12,13 @@ function Paginate({ page, pages, keyword = '', isAdmin = false }) {
 
   // Handle page click
   const handleClick = pageNumber => {
+    console.log('Clicked:', keyword, pageNumber);
     if (isAdmin) {
       navigate(
         `/profile/admin/productlist/?keyword=${keyword}&page=${pageNumber}`
       );
     } else {
+      console.log('In Else: ', `?keyword=${keyword}&page=${pageNumber}`);
       navigate(`?keyword=${keyword}&page=${pageNumber}`);
     }
   };

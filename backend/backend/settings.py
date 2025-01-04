@@ -48,11 +48,11 @@ INSTALLED_APPS = [
     # "chatbot",
 ]
 
-HAYSTACK_CONNECTIONS = {
-    "default": {
-        "ENGINE": "haystack.document_stores.in_memory.InMemoryDocumentStore",
-    }
-}
+# HAYSTACK_CONNECTIONS = {
+#     "default": {
+#         "ENGINE": "haystack.document_stores.in_memory.InMemoryDocumentStore",
+#     }
+# }
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
@@ -136,8 +136,8 @@ DEFAULT_FILE_STORAGE = "backend.storage_backends.MediaStorage"
 STATIC_URL = "/static/"
 MEDIA_URL = "/media/"
 
-# STATIC_ROOT = BASE_DIR / "staticfiles"
-# MEDIA_ROOT = BASE_DIR / "media"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+MEDIA_ROOT = BASE_DIR / "media"
 
 
 # REST framework settings
@@ -162,11 +162,11 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 
 # Uncomment and configure if you want to restrict allowed origins
-CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:5173",  # Local frontend
-    "http://localhost:5173",  # Alternate local URL
-    "http://mikhail-bonsai.s3-website-us-east-1.amazonaws.com",
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://127.0.0.1:5173",  # Local frontend
+#     "http://localhost:5173",  # Alternate local URL
+#     "http://mikhail-bonsai.s3-website-us-east-1.amazonaws.com",
+# ]
 
 # Security settings for production
 if not DEBUG:

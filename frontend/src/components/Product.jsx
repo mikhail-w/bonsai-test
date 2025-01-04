@@ -33,16 +33,6 @@ const Product = ({ product }) => {
       });
     }
   };
-  const path = import.meta.env.VITE_API_BASE_URL;
-  console.log('This PATH:', path);
-  console.log(
-    'Image URL:',
-    `${import.meta.env.VITE_API_BASE_URL}${product.image}`
-  );
-  console.log(
-    'DEFAULT:',
-    `${import.meta.env.VITE_API_BASE_URL}/media/default/placeholder.jpg`
-  );
 
   return (
     <Flex p={4} w="full" alignItems="center" justifyContent="center">
