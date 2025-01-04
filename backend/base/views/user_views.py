@@ -28,6 +28,7 @@ def registerUser(request):
     print("RegisterUser View Called")  # Indicate the view was reached
     print(f"Request Data: {request.data}")  # Log incoming request data
     data = request.data
+    avatar = request.FILES.get("avatar", None)
     try:
         # Check if user with email already exists
         if User.objects.filter(email=data.get("email")).exists():

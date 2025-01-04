@@ -119,22 +119,30 @@ AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
 AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME", "us-east-1")
 AWS_QUERYSTRING_AUTH = False  # For public access to files
+AWS_S3_FILE_OVERWRITE = False
+
+# Default storage for uploaded media files
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+# Storage for static files
+STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+
+MEDIA_URL = (
+    f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/"
+)
+STATIC_URL = (
+    f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/static/"
+)
 
 # Static and Media Files with S3
-STATICFILES_STORAGE = "backend.storage_backends.StaticStorage"
-DEFAULT_FILE_STORAGE = "backend.storage_backends.MediaStorage"
-
-# MEDIA_URL = (
-#     f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/"
-# )
-# STATIC_URL = (
-#     f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/static/"
-# )
+# STATICFILES_STORAGE = "backend.storage_backends.StaticStorage"
+# DEFAULT_FILE_STORAGE = "backend.storage_backends.MediaStorage"
 
 
 # Local Static and Media Files (for fallback or local development)
-STATIC_URL = "/static/"
-MEDIA_URL = "/media/"
+# STATIC_URL = "/static/"
+# MEDIA_URL = "/media/"
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_ROOT = BASE_DIR / "media"
