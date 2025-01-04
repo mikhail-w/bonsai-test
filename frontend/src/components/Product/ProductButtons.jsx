@@ -87,7 +87,7 @@ const ProductButtons = () => {
       {/* 3D Model Modal */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent maxW="800px" h="600px" mt="100px">
+        <ModalContent maxW="500px" h="600px" mt="100px">
           <ModalHeader>3D Model Viewer</ModalHeader>
           <ModalCloseButton />
           <ModalBody>

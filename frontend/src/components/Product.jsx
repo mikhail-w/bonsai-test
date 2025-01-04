@@ -55,20 +55,26 @@ const Product = ({ product }) => {
       >
         <Link to={`/product/${product._id}`}>
           <Image
-            src={
-              product.image
+            src={(() => {
+              const imagePath = product.image
                 ? `${import.meta.env.VITE_API_BASE_URL}${product.image}`
                 : `${
-                    import.meta.env.VITE_API_BASE_URL
-                  }/media/default/placeholder.jpg`
-            }
+                    import.meta.env.VITE_S3_PATH
+                  }/media/default/placeholder.jpg`;
+              console.log(
+                'VITE_API_BASE_URL:',
+                `${import.meta.env.VITE_API_BASE_URL}${product.image}`
+              );
+              console.log('PRODUCT IMAGE: ', `${product.image}`);
+              return imagePath;
+            })()}
             alt={
               product.image
                 ? `Picture of ${product.name}`
                 : 'Placeholder image for product'
             }
             fallbackSrc={`${
-              import.meta.env.VITE_API_BASE_URL
+              import.meta.env.VITE_S3_PATH
             }/media/default/placeholder.jpg`}
             roundedTop="lg"
             objectFit="cover"

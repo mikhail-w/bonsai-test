@@ -5,10 +5,10 @@ import { OrbitControls, Environment, useGLTF } from '@react-three/drei';
 const Model = () => {
   console.log(
     'MODEL: ',
-    `${import.meta.env.VITE_API_BASE_URL}${'/media/ficus.glb'}`
+    `${import.meta.env.VITE_S3_PATH}${'/media/ficus.glb'}`
   );
   const { scene } = useGLTF(
-    `${import.meta.env.VITE_API_BASE_URL}${'/media/ficus.glb'}`
+    `${import.meta.env.VITE_S3_PATH}${'/media/ficus.glb'}`
   );
   return (
     <Canvas camera={{ position: [0, 0, 1] }}>
