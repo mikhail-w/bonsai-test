@@ -127,7 +127,8 @@ AWS_DEFAULT_ACL = None
 
 # Create custom storage classes
 class MediaStorage(S3Boto3Storage):
-    location = "media"  # store files under 'media/' directory
+    location = ""  # Deployed
+    # location = "media"  # Local
     file_overwrite = False
 
 
