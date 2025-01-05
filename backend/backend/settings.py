@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 from datetime import timedelta
+from storages.backends.s3boto3 import S3Boto3Storage
 
 
 # Load environment variables from .env file
@@ -121,17 +122,28 @@ AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME", "us-east-1")
 AWS_S3_CUSTOM_DOMAIN = os.getenv("AWS_S3_CUSTOM_DOMAIN")
 AWS_QUERYSTRING_AUTH = False  # For public access to files
 AWS_S3_FILE_OVERWRITE = False
-AWS_DEFAULT_ACL = ""
+AWS_DEFAULT_ACL = None
+
+
+# Create custom storage classes
+class MediaStorage(S3Boto3Storage):
+    location = "media"  # store files under 'media/' directory
+    file_overwrite = False
+
+
+class StaticStorage(S3Boto3Storage):
+    location = "static"  # store files under 'static/' directory
+
 
 # Storage configuration
 STORAGES = {
     # Media file (uploaded files) management
     "default": {
-        "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+        "BACKEND": "backend.settings.MediaStorage",  # Use your actual path
     },
-    # Static file management (CSS, JS, images)
+    # Static file management
     "staticfiles": {
-        "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+        "BACKEND": "backend.settings.StaticStorage",  # Use your actual path
     },
 }
 
