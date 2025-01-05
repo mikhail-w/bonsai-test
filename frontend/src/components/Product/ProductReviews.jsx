@@ -58,7 +58,9 @@ const ProductReviews = ({
         loadingProductReview={loadingProductReview}
       />
     ) : (
-      <Message variant="info">Please log in to write a review</Message>
+      <Box w="100%" display="flex" justifyContent="center" maxW="600px" mb={10}>
+        <Message variant="info">Please log in to write a review</Message>
+      </Box>
     )}
   </Box>
 );
