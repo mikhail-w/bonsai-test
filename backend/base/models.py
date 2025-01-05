@@ -39,6 +39,20 @@ class Product(models.Model):
     createdAt = models.DateTimeField(auto_now_add=True)
     _id = models.AutoField(primary_key=True, editable=False)
 
+    def save(self, *args, **kwargs):
+        print("\n=== Product Save ===")
+        print(f"Product ID: {self._id if hasattr(self, '_id') else 'New'}")
+        print(f"Image field: {self.image}")
+        if self.image:
+            print(f"Image name: {self.image.name}")
+            print(
+                f"Image path: {self.image.path if hasattr(self.image, 'path') else 'No path'}"
+            )
+            print(
+                f"Image URL: {self.image.url if hasattr(self.image, 'url') else 'No URL'}"
+            )
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 

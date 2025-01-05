@@ -56,26 +56,24 @@ const Product = ({ product }) => {
         <Link to={`/product/${product._id}`}>
           <Image
             src={(() => {
-              const imagePath = product.image
-                ? `${import.meta.env.VITE_API_BASE_URL}${product.image}`
-                : `${
-                    import.meta.env.VITE_S3_PATH
-                  }/media/default/placeholder.jpg`;
-              console.log(
-                'VITE_API_BASE_URL:',
-                `${import.meta.env.VITE_API_BASE_URL}${product.image}`
-              );
-              console.log('PRODUCT IMAGE: ', `${product.image}`);
-              return imagePath;
+              if (product.image) {
+                // If image starts with http, use it as is
+                if (product.image.startsWith('http')) {
+                  return product.image;
+                }
+                // Otherwise, construct the full URL
+                return `${import.meta.env.VITE_S3_PATH}/media${product.image}`;
+              }
+              return `${
+                import.meta.env.VITE_S3_PATH
+              }/media/products/placeholder.jpg`;
             })()}
             alt={
-              product.image
-                ? `Picture of ${product.name}`
-                : 'Placeholder image for product'
+              product.image ? `Picture of ${product.name}` : 'Placeholder image'
             }
             fallbackSrc={`${
               import.meta.env.VITE_S3_PATH
-            }/media/default/placeholder.jpg`}
+            }/media/products/placeholder.jpg`}
             roundedTop="lg"
             objectFit="cover"
             height="300px"
