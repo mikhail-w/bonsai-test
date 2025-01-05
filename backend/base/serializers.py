@@ -104,7 +104,7 @@ class ProductSerializer(serializers.ModelSerializer):
             print(f"SERIALIZER (get_image_url) Image URL:\n\t {url}")
             return url
         # Otherwise, return the default static image path
-        return settings.PLACEHOLDER_IMAGE_URL
+        return f"{settings.MEDIA_URL}products/placeholder.jpg"
 
     def get_reviews(self, obj):
         reviews = obj.review_set.all()
