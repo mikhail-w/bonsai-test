@@ -62,18 +62,16 @@ const Product = ({ product }) => {
                   return product.image;
                 }
                 // Otherwise, construct the full URL
-                return `${import.meta.env.VITE_S3_PATH}/media${product.image}`;
+                return `${import.meta.env.VITE_S3_PATH}${product.image}`;
               }
-              return `${
-                import.meta.env.VITE_S3_PATH
-              }/media/products/placeholder.jpg`;
+              return `${import.meta.env.VITE_S3_PATH}/products/placeholder.jpg`;
             })()}
             alt={
               product.image ? `Picture of ${product.name}` : 'Placeholder image'
             }
             fallbackSrc={`${
               import.meta.env.VITE_S3_PATH
-            }/media/products/placeholder.jpg`}
+            }/products/placeholder.jpg`}
             roundedTop="lg"
             objectFit="cover"
             height="300px"
