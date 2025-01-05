@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Post, Comment
+from django.conf import settings
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -36,6 +37,14 @@ class PostSerializer(serializers.ModelSerializer):
                 id=request.user.id
             ).exists()  # Check if the logged-in user has liked the post
         return False
+
+    def get_image_url(self, obj):
+        if obj.image and hasattr(obj.image, "url"):
+            url = obj.image.url
+            print(f"\n\POST IMG URL: {url}\n\n")
+            print(f"MEDIA URL: {settings.MEDIA_URL}")
+            return obj.image.url  # S3 automatically provides the full URL
+        return None
 
 
 class CommentSerializer(serializers.ModelSerializer):

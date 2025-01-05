@@ -49,7 +49,7 @@ def registerUser(request):
 
         # Create a user profile with an optional avatar
         avatar = request.FILES.get("avatar", None)
-        print(f"Saving avatar for user {user.id}: {avatar}")
+        print(f"======\n\nSaving avatar for user {user.id}: {avatar}\n\n")
         UserProfile.objects.create(user=user, avatar=avatar)
         print(f"Avatar saved for user {user.id}")
 

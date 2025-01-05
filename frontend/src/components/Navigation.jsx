@@ -198,7 +198,7 @@ const Navigation = () => {
   // console.log('NAV BAR OPENED!! CORE:', userInfo.avatar);
   // console.log(
   //   'LOCAL PATH: ',
-  //   `${import.meta.env.VITE_API_BASE_URL}${userInfo.avatar}`,
+  //   `${import.meta.env.VITE_API_BASE_URL} \n++avatar++ ${userInfo.avatar}`,
   //   '\n'
   // );
 
