@@ -127,7 +127,7 @@ AWS_DEFAULT_ACL = ""
 STORAGES = {
     # Media file (uploaded files) management
     "default": {
-        "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
     },
     # Static file management (CSS, JS, images)
     "staticfiles": {

@@ -232,14 +232,45 @@ function BlogPage() {
                     {post.content}
                   </Text>
                   {post.image && (
-                    <Image
-                      src={post.image}
-                      alt="post"
-                      borderRadius="md"
-                      maxH="250px"
-                      objectFit="cover"
-                      w="full"
-                    />
+                    <>
+                      {console.log('Image Path:', post.image)}
+                      <Image
+                        src={post.image}
+                        alt="post"
+                        borderRadius="md"
+                        maxH="250px"
+                        objectFit="cover"
+                        w="full"
+                      />
+                    </>
+                    //           <Image
+                    //   src={(() => {
+                    //     const imagePath = product.image
+                    //       ? `${import.meta.env.VITE_API_BASE_URL}${product.image}`
+                    //       : `${
+                    //           import.meta.env.VITE_S3_PATH
+                    //         }/media/default/placeholder.jpg`;
+                    //     console.log(
+                    //       'VITE_API_BASE_URL:',
+                    //       `${import.meta.env.VITE_API_BASE_URL}${product.image}`
+                    //     );
+                    //     console.log('PRODUCT IMAGE: ', `${product.image}`);
+                    //     return imagePath;
+                    //   })()}
+                    //   alt={
+                    //     product.image
+                    //       ? `Picture of ${product.name}`
+                    //       : 'Placeholder image for product'
+                    //   }
+                    //   fallbackSrc={`${
+                    //     import.meta.env.VITE_S3_PATH
+                    //   }/media/default/placeholder.jpg`}
+                    //   roundedTop="lg"
+                    //   objectFit="cover"
+                    //   height="300px"
+                    //   width="100%"
+                    //   transition="all 0.3s ease"
+                    // />
                   )}
                   <HStack justify="space-between" w="full">
                     <Text fontFamily={'lato'} color="gray.500" fontSize="sm">
