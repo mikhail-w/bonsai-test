@@ -12,8 +12,8 @@ import {
 import { SlArrowRight, SlArrowLeft } from 'react-icons/sl';
 import { FaQuoteRight } from 'react-icons/fa'; // Import the quote icon
 import Slider from 'react-slick';
-import r1 from '../assets/images/r1.png';
-import r2 from '../assets/images/r2.png';
+import r1 from '../../assets/images/r1.png';
+import r2 from '../../assets/images/r2.png';
 
 // Custom Next Arrow
 const NextArrow = ({ className, onClick }) => {
@@ -154,6 +154,7 @@ const ReviewsSection = () => {
 
   // Use Chakra UI's useColorModeValue to dynamically set dot color
   const dotColor = useColorModeValue('black', 'white');
+  const headerColor = useColorModeValue('rgba(126, 213, 111, 0.8)', 'white');
   const activeDotColor = useColorModeValue('teal.500', 'teal.300');
 
   const sliderSettings = {
@@ -190,7 +191,17 @@ const ReviewsSection = () => {
 
   return (
     <Box mt={100} mb={50} py={10} px={15} mx={2}>
-      <Heading fontFamily={'lato'} as="h2" size="xl" textAlign="center" mb={10}>
+      <Heading
+        fontFamily="lato"
+        as="h2"
+        size="2xl"
+        mb={12}
+        paddingBottom="100px"
+        fontWeight="300"
+        color="green.600"
+        textAlign="center"
+        textTransform={'uppercase'}
+      >
         What Our Customers Say
       </Heading>
 

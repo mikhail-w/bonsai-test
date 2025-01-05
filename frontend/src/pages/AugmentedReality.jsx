@@ -1,16 +1,15 @@
 import { useEffect, useRef } from 'react';
 import QRCode from 'qrcode';
-import { Box, VStack, Text, Button } from '@chakra-ui/react';
+import { Box, VStack, Text, Button, useColorModeValue } from '@chakra-ui/react';
 
-const AugmentedReality = () => {
+const AugmentedReality = ({ setQrCodeUrl }) => {
   const canvasRef = useRef();
 
   // URL for the `.glb` and `.usdz` files hosted on AWS S3
   const gltfUrl =
-    'https://mikhail-bonsai-model.s3-accelerate.amazonaws.com/ficus_bonsai.glb';
-  // 'https://mikhail-bonsai-model.s3.us-east-1.amazonaws.com/pergolesi-side-chair.glb';
+    'https://mikhail-bonsai.s3.us-east-1.amazonaws.com/media/ficus_bonsai.glb';
   const usdzUrl =
-    'https://mikhail-bonsai-model.s3-accelerate.amazonaws.com/ficus_bonsai.usdz'; // For iOS devices
+    'https://mikhail-bonsai.s3.us-east-1.amazonaws.com/media/ficus_bonsai.usdz'; // For iOS devices
 
   // Detect if the user is on an iOS device
   const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
@@ -20,19 +19,28 @@ const AugmentedReality = () => {
     ? usdzUrl // iOS uses .usdz files for Quick Look
     : `https://arvr.google.com/scene-viewer/1.0?file=${gltfUrl}&mode=ar-only`; // Android uses .glb files for Scene Viewer
 
+  const textColor = useColorModeValue('green.600', 'white.700');
+
   useEffect(() => {
     // Generate a QR code for the AR link
     QRCode.toCanvas(canvasRef.current, arLink, { width: 200 });
-  }, [arLink]);
+
+    // Generate the QR code as a data URL and pass it to the parent component
+    QRCode.toDataURL(arLink, { width: 200 }, (err, dataUrl) => {
+      if (!err && setQrCodeUrl) {
+        setQrCodeUrl(dataUrl); // Pass the data URL to the parent component if setQrCodeUrl is provided
+      }
+    });
+  }, [arLink, setQrCodeUrl]);
 
   return (
-    <Box textAlign="center" fontSize="xl" p={5}>
+    <Box textAlign="center" fontSize="xl" p={5} mt={'100px'}>
       <VStack spacing={5}>
         <Text
           fontFamily={'rale'}
           fontSize="2xl"
           fontWeight="bold"
-          color="green.600"
+          color={textColor}
         >
           View Bonsai in AR
         </Text>

@@ -25,6 +25,7 @@ const ProductPage = () => {
   const { dispatch, state } = useDispatchSelector();
   const { productDetails, userLogin, productReviewCreate } = state;
 
+  // console.log('ON PRODUCT PAGE!!');
   useEffect(() => {
     if (productReviewCreate.success) {
       setRating(0);
@@ -42,6 +43,8 @@ const ProductPage = () => {
     e.preventDefault();
     dispatch(createProductReview(id, { rating, comment }));
   };
+
+  // console.log('PRODUCT DETAILS: ', productDetails);
 
   return (
     <Container

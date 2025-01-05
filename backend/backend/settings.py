@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 from datetime import timedelta
+from storages.backends.s3boto3 import S3Boto3Storage
 
 
 # Load environment variables from .env file
@@ -27,8 +28,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "your-default-secret-key")
 DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() in ("true", "1")
 
 # ALLOWED_HOSTS from environment or default to localhost
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost").split(",")
-# ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS").split(",")
 
 # OpenAI API Key
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -46,14 +46,14 @@ INSTALLED_APPS = [
     "storages",  # Added for S3 storage
     "base",
     "blog",
-    "chatbot",
+    # "chatbot",
 ]
 
-HAYSTACK_CONNECTIONS = {
-    "default": {
-        "ENGINE": "haystack.document_stores.in_memory.InMemoryDocumentStore",
-    }
-}
+# HAYSTACK_CONNECTIONS = {
+#     "default": {
+#         "ENGINE": "haystack.document_stores.in_memory.InMemoryDocumentStore",
+#     }
+# }
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
@@ -90,10 +90,10 @@ WSGI_APPLICATION = "backend.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("DB_NAME", "default_db"),
-        "USER": os.getenv("DB_USER", "default_user"),
-        "PASSWORD": os.getenv("DB_PASSWORD", "default_password"),
-        "HOST": os.getenv("DB_HOST", "localhost"),
+        "NAME": os.getenv("DB_NAME"),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASSWORD"),
+        "HOST": os.getenv("DB_HOST"),
         "PORT": os.getenv("DB_PORT", "5432"),
     }
 }
@@ -118,29 +118,51 @@ USE_TZ = True
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
-AWS_S3_REGION_NAME = os.getenv(
-    "AWS_S3_REGION_NAME", "us-east-1"
-)  # Default to us-east-1
+AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME", "us-east-1")
+AWS_S3_CUSTOM_DOMAIN = os.getenv("AWS_S3_CUSTOM_DOMAIN")
 AWS_QUERYSTRING_AUTH = False  # For public access to files
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
 
-# Static and Media Files with S3
-# STATICFILES_STORAGE = "backend.storage_backends.StaticStorage"
-# DEFAULT_FILE_STORAGE = "backend.storage_backends.MediaStorage"
 
-# STATIC_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/static/"
-# MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/media/"
+# Create custom storage classes
+class MediaStorage(S3Boto3Storage):
+    location = "media"  # store files under 'media/' directory
+    file_overwrite = False
 
-STATIC_URL = "/static/"
-MEDIA_URL = "/media/"
+
+class StaticStorage(S3Boto3Storage):
+    location = "static"  # store files under 'static/' directory
+
+
+# Storage configuration
+STORAGES = {
+    # Media file (uploaded files) management
+    "default": {
+        "BACKEND": "backend.settings.MediaStorage",  # Use your actual path
+    },
+    # Static file management
+    "staticfiles": {
+        "BACKEND": "backend.settings.StaticStorage",  # Use your actual path
+    },
+}
+
+
+MEDIA_URL = (
+    f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/"
+)
+STATIC_URL = (
+    f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/static/"
+)
+
 
 # Local Static and Media Files (for fallback or local development)
+# STATIC_URL = "/static/"
+# MEDIA_URL = "/media/"
+
 STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_ROOT = BASE_DIR / "media"
 
-# Use local file storage in development
-if DEBUG:
-    STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
-    DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 
 # REST framework settings
 REST_FRAMEWORK = {
@@ -160,14 +182,14 @@ SIMPLE_JWT = {
 }
 
 # CORS settings
-# CORS_ORIGIN_ALLOW_ALL = os.getenv("CORS_ALLOW_ALL", "True").lower() in ("true", "1")
 CORS_ORIGIN_ALLOW_ALL = True
 
 
 # Uncomment and configure if you want to restrict allowed origins
 # CORS_ALLOWED_ORIGINS = [
-#     "http://example.com",
-#     "http://anotherdomain.com",
+#     "http://127.0.0.1:5173",  # Local frontend
+#     "http://localhost:5173",  # Alternate local URL
+#     "http://mikhail-bonsai.s3-website-us-east-1.amazonaws.com",
 # ]
 
 # Security settings for production
@@ -183,6 +205,3 @@ if not DEBUG:
         "true",
         "1",
     )
-
-# print(f"DEBUG Mode: {DEBUG}")  # Log if debug mode is on
-# print(f"Database Settings: {DATABASES}")  # Log database configuration

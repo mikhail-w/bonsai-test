@@ -201,21 +201,25 @@ function OrderPage() {
                   <Image
                     src={
                       item.image
-                        ? `${import.meta.env.VITE_API_URL.replace(
-                            '/api/',
-                            ''
-                          )}${item.image}`
-                        : `${import.meta.env.VITE_API_URL.replace(
-                            '/api/',
-                            ''
-                          )}/media/default/placeholder.jpg`
+                        ? `${import.meta.env.VITE_API_BASE_URL}${item.image}`
+                        : `${
+                            import.meta.env.VITE_API_BASE_URL
+                          }/media/default/placeholder.jpg`
                     }
-                    alt={item.name}
+                    alt={
+                      item.image
+                        ? `Picture of ${item.name}`
+                        : 'Placeholder image for product'
+                    }
+                    fallbackSrc={`${
+                      import.meta.env.VITE_API_BASE_URL
+                    }/media/default/placeholder.jpg`}
                     boxSize="50px"
                     objectFit="cover"
                     mr={4}
                     rounded="md"
                   />
+
                   <Link to={`/product/${item.product}`}>
                     <Text fontWeight={300} fontFamily={'lato'}>
                       {item.name}

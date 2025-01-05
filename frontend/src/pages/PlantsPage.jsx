@@ -5,7 +5,14 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Paginate from '../components/Paginate';
 import { listPlantProducts } from '../actions/productActions';
-import { SimpleGrid, Center, Container, Text, Heading } from '@chakra-ui/react';
+import {
+  SimpleGrid,
+  Center,
+  Container,
+  Text,
+  Heading,
+  VStack,
+} from '@chakra-ui/react';
 import ScrollToTopButton from '../components/ScrollToTopButton';
 
 function PlantsPage() {
@@ -21,7 +28,7 @@ function PlantsPage() {
 
   return (
     <>
-      <Container maxW="container.lg" mt="100px" minH="100vh">
+      <Container maxW="container.xl" mt="100px" minH="100vh">
         <Center
           flexDirection={'column'}
           marginTop={50}
@@ -29,23 +36,25 @@ function PlantsPage() {
           minH={'100vh'}
           justifyContent={'space-between'}
         >
-          <Heading
-            textTransform={'uppercase'}
-            as="h1"
-            size="2xl"
-            mb={6}
-            fontFamily="roza"
-          >
-            Latest Plants
-          </Heading>
-          <Text
-            textAlign={'center'}
-            fontFamily={'lato'}
-            fontSize="lg"
-            color="gray.600"
-          >
-            Discover our wide selection of expertly curated bonsai plants
-          </Text>
+          <VStack marginBottom={{ base: '50', md: '100px' }}>
+            <Heading
+              textTransform={'uppercase'}
+              as="h1"
+              size="2xl"
+              mb={6}
+              fontFamily="roza"
+            >
+              Latest Plants
+            </Heading>
+            <Text
+              textAlign={'center'}
+              fontFamily={'lato'}
+              fontSize="lg"
+              color="gray.600"
+            >
+              Discover our wide selection of expertly curated bonsai plants
+            </Text>
+          </VStack>
           <SimpleGrid
             minChildWidth={300}
             spacing="10px"
@@ -53,7 +62,9 @@ function PlantsPage() {
             px={5} // Padding to add spacing on small screens
           >
             {loading ? (
-              <Loader />
+              <Center marginBottom={'80vh'}>
+                <Loader />
+              </Center>
             ) : error ? (
               <Message variant={'danger'}>{error}</Message>
             ) : (

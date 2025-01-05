@@ -17,10 +17,9 @@ import {
 
 function ProductsPage() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const productList = useSelector(state => state.productList);
   const { error, loading, products, page, pages } = productList;
-
+  const navigate = useNavigate();
   let keyword = location.search;
 
   useEffect(() => {
@@ -35,9 +34,9 @@ function ProductsPage() {
           top: 0,
           behavior: 'smooth',
         });
-      }, 100); // Small delay to ensure products are rendered before scrolling
+      }, 100);
     }
-  }, [keyword, page, loading]); // Trigger on page, keyword, or loading state change
+  }, [keyword, page, loading]);
 
   return (
     <Container
@@ -46,12 +45,12 @@ function ProductsPage() {
       minH="100vh"
       pt={{ base: 10, md: 0 }} // Padding at the top for mobile view
     >
-      <Center flexDirection="column" mb={12} textAlign="center">
+      <Center flexDirection="column" mb={5} textAlign="center">
         <Heading
           textTransform={'uppercase'}
           as="h1"
           size="2xl"
-          mb={6}
+          mb={100}
           fontFamily="roza"
         >
           All Products
@@ -68,11 +67,10 @@ function ProductsPage() {
       ) : (
         <>
           <SimpleGrid
-            columns={{ base: 1, sm: 2, md: 3, lg: 4 }}
-            spacing={10} // Adjusted spacing for better separation between cards
+            columns={{ base: 1, sm: 2, lg: 4 }}
+            spacing={16}
             mb={16}
-            minChildWidth="260px" // Ensure that each product card has a minimum width
-            // boxShadow={'outline'}
+            minChildWidth="260px"
           >
             {products.map(product => (
               <Box key={product._id} w="100%" m="auto">
@@ -80,6 +78,7 @@ function ProductsPage() {
               </Box>
             ))}
           </SimpleGrid>
+          {/* <Center marginBottom={'100px'}> */}
           <Center>
             <Paginate page={page} pages={pages} keyword={keyword} />
           </Center>

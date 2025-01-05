@@ -1,0 +1,81 @@
+.card__title {
+  font-size: 1.4rem;
+  font-weight: 300;
+  text-transform: uppercase;
+  color: #fff;
+  text-align: left;
+  position: absolute;
+  bottom: 30px;
+  left: 20px;
+  width: auto;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .1s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.card__title--active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card__title-span {
+  padding: 0.5rem 1.5rem;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  font-weight: 100;
+  white-space: nowrap;
+}
+
+.overlay__title {
+  font-weight: 100;
+}
+
+.card__title-span--1 {
+  background-image: linear-gradient(to right bottom, rgba(41, 152, 255, 0.85), rgba(86, 67, 250, 0.85));
+}
+
+.card__title-span--4 {
+  background-image: linear-gradient(to right bottom, rgba(126, 213, 111, 0.85), rgba(40, 180, 133, 0.85));
+}
+
+.card__title-span--2 {
+  background-image: linear-gradient(to right bottom, rgba(255, 185, 0, 0.85), rgba(255, 119, 48, 0.85));
+}
+
+.card__title-span--3 {
+  background-image: linear-gradient(to right bottom, rgba(255, 223, 186, 0.85), rgba(135, 206, 250, 0.85));
+}
+
+.card__title-span--5 {
+  background-image: linear-gradient(to right bottom, rgba(72, 239, 128, 0.85), rgba(0, 210, 255, 0.85));
+}
+
+.card__title-span--6 {
+  background-image: linear-gradient(to right bottom, rgba(232, 94, 255, 0.85), rgba(255, 204, 255, 0.85));
+}
+
+.vertical-text {
+  position: absolute;
+  font-family: roboto;
+  text-transform: uppercase;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) rotate(180deg);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  white-space: nowrap;
+  color: white;
+  font-size: 2rem;
+  font-weight: 100px;
+  text-align: center;
+}
+
+.horizontal-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+  white-space: nowrap;
+  font-weight: 800px;
+}

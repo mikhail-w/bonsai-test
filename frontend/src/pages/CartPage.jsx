@@ -44,6 +44,8 @@ function CartPage() {
   const backgroundColor = useColorModeValue('white', 'gray.700');
   const subtotalColor = useColorModeValue('black', 'white');
 
+  console.log('CART ITEM:', cartItems);
+
   useEffect(() => {
     if (productId) {
       dispatch(addToCart(productId, qty));
@@ -155,16 +157,19 @@ function CartPage() {
                     <Image
                       src={
                         item.image
-                          ? `${import.meta.env.VITE_API_URL.replace(
-                              '/api/',
-                              ''
-                            )}${item.image}`
-                          : `${import.meta.env.VITE_API_URL.replace(
-                              '/api/',
-                              ''
-                            )}/media/default/placeholder.jpg`
+                          ? `${import.meta.env.VITE_API_BASE_URL}${item.image}`
+                          : `${
+                              import.meta.env.VITE_API_BASE_URL
+                            }/media/default/placeholder.jpg`
                       }
-                      alt={item.name}
+                      alt={
+                        item.image
+                          ? `Picture of ${item.name}`
+                          : 'Placeholder image for product'
+                      }
+                      fallbackSrc={`${
+                        import.meta.env.VITE_API_BASE_URL
+                      }/media/default/placeholder.jpg`}
                       boxSize="150px"
                       objectFit="cover"
                       borderRadius="md"

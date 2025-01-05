@@ -1,9 +1,9 @@
 import React, { Suspense, useRef, useEffect, forwardRef } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
-import { OrbitControls, useGLTF } from '@react-three/drei';
+import { OrbitControls, useGLTF, Html } from '@react-three/drei';
 import * as THREE from 'three';
+import { useColorModeValue, Box } from '@chakra-ui/react';
 
-// Use forwardRef to allow ref passing to the Model component
 const Model = forwardRef(({ url }, ref) => {
   const { scene } = useGLTF(url);
   const modelRef = ref || useRef();
@@ -12,14 +12,17 @@ const Model = forwardRef(({ url }, ref) => {
     if (modelRef.current) {
       const box = new THREE.Box3().setFromObject(modelRef.current);
       const size = box.getSize(new THREE.Vector3());
+      const center = box.getCenter(new THREE.Vector3());
+
+      // Scale the model to fit within a predefined size (2 units)
       const maxDim = Math.max(size.x, size.y, size.z);
       const scale = 2 / maxDim;
       modelRef.current.scale.set(scale, scale, scale);
 
-      // Adjust the position of the model to be centered
+      // Center the model
       box.setFromObject(modelRef.current);
-      const center = box.getCenter(new THREE.Vector3());
-      modelRef.current.position.copy(center).multiplyScalar(-1);
+      const adjustedCenter = box.getCenter(new THREE.Vector3());
+      modelRef.current.position.copy(adjustedCenter).multiplyScalar(-1);
     }
   }, [scene]);
 
@@ -27,51 +30,76 @@ const Model = forwardRef(({ url }, ref) => {
 });
 
 function Scene({ url }) {
-  const { camera } = useThree();
-  const modelRef = useRef();
+  const { camera } = useThree(); // Access the camera
+  const modelRef = useRef(); // Reference for the model
 
   useEffect(() => {
     if (modelRef.current) {
+      // Calculate the model's bounding box
       const box = new THREE.Box3().setFromObject(modelRef.current);
       const size = box.getSize(new THREE.Vector3());
       const center = box.getCenter(new THREE.Vector3());
 
-      // Adjust camera position based on the model's bounding box size
+      // Camera closeness (distance from the model)
       const maxDim = Math.max(size.x, size.y, size.z);
-      const cameraDistance = maxDim * 2; // Adjust this factor to control zoom
+      const cameraDistance = maxDim * 2; // Adjust multiplier for closeness
 
-      // Lower the camera position on the y-axis to make the model appear higher
-      camera.position.set(center.x, center.y - size.y * 0.5, cameraDistance);
+      // Camera height (above the model)
+      const cameraHeight = center.y + 3; // Increase for higher camera positioning
 
-      // Make the camera look at the center of the model
-      camera.lookAt(center);
+      // Set camera position
+      camera.position.set(center.x, cameraHeight, cameraDistance);
+
+      // Camera angle (focus point)
+      camera.lookAt(center.x, center.y, center.z); // Focus on the model's center
     }
-  }, [camera]);
+  }, [camera, modelRef]); // Re-run if camera or modelRef changes
 
   return (
     <>
+      {/* Lighting */}
       <ambientLight intensity={1.5} />
       <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
       <pointLight position={[-10, -10, -10]} />
-      <Model url={url} ref={modelRef} /> {/* Pass ref to Model */}
+
+      {/* Model */}
+      <Model url={url} ref={modelRef} />
+
+      {/* Camera Controls */}
       <OrbitControls
         enablePan={true}
         enableZoom={true}
         enableRotate={true}
-        target={[0, 1, 0]} // You can adjust the target dynamically
+        target={[0, 0.5, 0]} // Match model's center for smoother controls
       />
     </>
   );
 }
 
 export default function ThreeDModel() {
+  const bgColor = useColorModeValue('white', 'gray.800');
+
   return (
-    <div style={{ width: '100%', height: '100vh' }}>
+    <Box
+      w="100%"
+      h="100vh"
+      bgColor={bgColor}
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+    >
       <Canvas>
-        <Suspense fallback={null}>
-          <Scene url="/bonsairoom.glb" />
+        <Suspense
+          fallback={
+            <Html center>
+              <div>Loading...</div>
+            </Html>
+          }
+        >
+          {/* <Scene url="/bonsairoom.glb" /> */}
+          <Scene url={`${import.meta.env.VITE_S3_PATH}/media/bonsairoom.glb`} />
         </Suspense>
       </Canvas>
-    </div>
+    </Box>
   );
 }

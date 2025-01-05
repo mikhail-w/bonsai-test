@@ -26,9 +26,10 @@ import {
   Avatar,
   useDisclosure,
   useToast,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import ColorModeSwitcher from './ColorModeSwitcher';
-import { Link as ChakraLink } from '@chakra-ui/react';
+import { Link as ChakraLink, useBreakpointValue } from '@chakra-ui/react';
 import { FaUser, FaBlog, FaShoppingCart, FaStore } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink, useNavigate, useLocation } from 'react-router-dom';
@@ -49,6 +50,8 @@ const Navigation = () => {
   const { pathname } = useLocation();
   const toast = useToast();
   const menuRef = useRef(null);
+  // const bgColor = useColorModeValue('white', 'gray.500');
+  const bgColor = useColorModeValue('white', '#2A3439');
 
   // Determine the logo to display based on current route and scroll position
   const logoSrc = pathname === '/' && !scrolled ? logo_white : logo;
@@ -58,6 +61,7 @@ const Navigation = () => {
 
   const cart = useSelector(state => state.cart);
   const { cartItems } = cart;
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   // Close the menu when a link is clicked
   const handleLinkClick = () => {
@@ -139,6 +143,15 @@ const Navigation = () => {
     });
   };
 
+  const toggleShopMenu = e => {
+    e.preventDefault();
+    if (isMobile) {
+      setIsShopOpen(!isShopOpen);
+    } else {
+      navigate('/products');
+    }
+  };
+
   // Array with both labels and their corresponding URLs
   const navLinks = [
     userInfo
@@ -164,7 +177,7 @@ const Navigation = () => {
     Cart: 'radial-gradient(circle, rgba(11, 163, 96, 0.8), rgba(50, 205, 50, 0.8))',
     Shop: 'radial-gradient(circle,  rgba(63, 181, 63, 0.8) 2.3%, rgba(168, 251, 60, 0.9) 98.3%)',
     Logout:
-      'radial-gradient(circle, rgba(19, 78, 94, 0.8), rgba(113, 178, 128, 0.6))',
+      'radial-gradient(circle, rgba(63, 173, 141, 0.8), rgba(212, 242, 234, 0.8))',
   };
 
   useEffect(() => {
@@ -182,6 +195,19 @@ const Navigation = () => {
   const withoutSidebarRoutes = ['/profile', '/login', '/register'];
   if (withoutSidebarRoutes.some(item => pathname.includes(item))) return null;
 
+  // console.log('NAV BAR OPENED!! CORE:', userInfo.avatar);
+  // console.log(
+  //   'LOCAL PATH: ',
+  //   `${import.meta.env.VITE_API_BASE_URL}${userInfo.avatar}`,
+  //   '\n'
+  // );
+
+  // console.log(
+  //   `https://${import.meta.env.VITE_S3_BUCKET}.s3.${
+  //     import.meta.env.VITE_S3_REGION
+  //   }.amazonaws.com${userInfo.avatar}`
+  // );
+
   return (
     <Box ref={menuRef}>
       <Box>
@@ -195,9 +221,9 @@ const Navigation = () => {
           top="0"
           left="0"
           right="0"
-          zIndex="2000" // Adjusted to ensure visibility
+          zIndex="20" // Adjusted to ensure visibility
           width="100%"
-          bg={scrolled ? 'white' : 'transparent'} // White background on scroll
+          bg={scrolled ? bgColor : 'transparent'} // White background on scroll
           boxShadow={scrolled ? 'md' : 'none'} // Add shadow when scrolled
           transition="background-color 0.3s ease" // Smooth transition for background color
         >
@@ -266,13 +292,10 @@ const Navigation = () => {
                 <Avatar
                   src={
                     userInfo.avatar
-                      ? `${import.meta.env.VITE_API_URL.replace('/api/', '')}${
-                          userInfo.avatar
-                        }`
-                      : `${import.meta.env.VITE_API_URL.replace(
-                          '/api/',
-                          ''
-                        )}/media/default/avatar.jpg`
+                      ? `${import.meta.env.VITE_API_BASE_URL}${userInfo.avatar}`
+                      : `${
+                          import.meta.env.VITE_API_BASE_URL
+                        }/media/default/avatar.jpg`
                   }
                   size="md"
                   position="absolute"
@@ -340,7 +363,7 @@ const Navigation = () => {
                             </Flex>
                           </RouterLink>
                           {/* Submenu Links */}
-                          {isShopHovered && (
+                          {(isShopHovered || isMobile) && (
                             <Box
                               position="absolute"
                               top="100%" // Position below the Shop link

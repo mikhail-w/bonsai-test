@@ -1,11 +1,15 @@
 import { useEffect } from 'react';
 import '../index.css';
 import ScrollToTopButton from '../components/ScrollToTopButton';
-import BenifitsSection from '../components/BenefitsSection';
-import HeroSection from '../components/HeroSection';
-import ProductsSection from '../components/FeaturedProductsSection';
-import ReviewsSection from './ReviewsSection';
-import Globe from '../components/Globe';
+import {
+  HeroSection,
+  FeaturedProductsSection,
+  BenefitsSection,
+  ExpandingCardsSection,
+  ReviewsSection,
+  GlobeSection,
+  NewsLetterSection,
+} from '@homepageSections';
 
 function HomePage() {
   useEffect(() => {
@@ -18,10 +22,12 @@ function HomePage() {
   return (
     <>
       <HeroSection />
-      <ProductsSection />
-      <BenifitsSection />
+      <FeaturedProductsSection />
+      <BenefitsSection />
       <ReviewsSection />
-      <Globe />
+      <ExpandingCardsSection />
+      <GlobeSection />
+      <NewsLetterSection />
       <ScrollToTopButton />
     </>
   );

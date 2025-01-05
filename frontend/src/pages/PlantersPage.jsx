@@ -12,6 +12,7 @@ import {
   Container,
   Heading,
   Text,
+  VStack,
 } from '@chakra-ui/react';
 
 function PlantersPage() {
@@ -26,7 +27,12 @@ function PlantersPage() {
   }, [dispatch]);
 
   return (
-    <Container maxW="container.xl" mt="100px" minH="100vh">
+    <Container
+      maxW="container.xl"
+      mt="100px"
+      minH="100vh"
+      marginBottom={'100px'}
+    >
       <Center
         flexDirection="column"
         mt={12}
@@ -34,26 +40,30 @@ function PlantersPage() {
         minH="80vh"
         justifyContent="space-between"
       >
-        <Heading
-          textTransform={'uppercase'}
-          as="h1"
-          size="2xl"
-          mb={6}
-          fontFamily="roza"
-        >
-          Planters
-        </Heading>
-        <Text
-          textAlign={'center'}
-          fontFamily={'lato'}
-          fontSize="lg"
-          color="gray.600"
-        >
-          Choose from our decorative selection of planters
-        </Text>
+        <VStack marginBottom={{ base: '50', md: '100px' }}>
+          <Heading
+            textTransform={'uppercase'}
+            as="h1"
+            size="2xl"
+            mb={6}
+            fontFamily="roza"
+          >
+            Planters
+          </Heading>
+          <Text
+            textAlign={'center'}
+            fontFamily={'lato'}
+            fontSize="lg"
+            color="gray.600"
+          >
+            Choose from our decorative selection of planters
+          </Text>
+        </VStack>
         <SimpleGrid minChildWidth="300px" spacing="10px" width="100%" px={5}>
           {loading ? (
-            <Loader />
+            <Center marginBottom={'50vh'}>
+              <Loader />
+            </Center>
           ) : error ? (
             <Message variant="danger">{error}</Message>
           ) : (

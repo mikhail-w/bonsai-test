@@ -1,23 +1,29 @@
 import React from 'react';
-import { Box, Avatar, Button, Text, Flex } from '@chakra-ui/react';
+import {
+  Box,
+  Avatar,
+  Button,
+  Text,
+  Flex,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
+import CustomButton from './CustomButton';
 
 const ProfilePictureSection = () => {
   const dispatch = useDispatch();
   const userLogin = useSelector(state => state.userLogin);
   const { userInfo } = userLogin;
+  const textColor = useColorModeValue('gray.700', 'gray.300');
 
   return (
     <Flex
       direction={{ base: 'column' }}
-      // boxShadow="outline"
-      // gap={10}
       justifyContent="center"
       alignItems="center"
-      // p={5}
     >
       <Box
-        bg="white"
+        bg={useColorModeValue('white', 'gray.800')}
         p={6}
         borderRadius="md"
         boxShadow="md"
@@ -30,22 +36,15 @@ const ProfilePictureSection = () => {
           name={userInfo.name || 'JWT User'} // Display user's name if available
           src={
             userInfo.avatar
-              ? `${import.meta.env.VITE_API_URL.replace('/api/', '')}${
-                  userInfo.avatar
-                }`
-              : `${import.meta.env.VITE_API_URL.replace(
-                  '/api/',
-                  ''
-                )}/media/default/avatar.jpg`
+              ? `${import.meta.env.VITE_API_BASE_URL}${userInfo.avatar}`
+              : `${import.meta.env.VITE_API_BASE_URL}/media/default/avatar.jpg`
           }
           mb={4}
         />
-        <Text fontFamily="rale" mb={2} fontWeight="500">
+        <Text fontFamily="rale" mb={2} fontWeight="500" color={textColor}>
           Upload/Change Your Profile Image
         </Text>
-        <Button colorScheme="green" variant="solid">
-          Upload Avatar
-        </Button>
+        <CustomButton>Upload Avatar</CustomButton>
       </Box>
     </Flex>
   );

@@ -44,9 +44,9 @@ class UserSerializer(serializers.ModelSerializer):
         try:
             return obj.userprofile.avatar.url
         except UserProfile.DoesNotExist:
-            return None
+            return f"{settings.MEDIA_URL}default/avatar.jpg"
         except AttributeError:
-            return None
+            return f"{settings.MEDIA_URL}default/avatar.jpg"
 
 
 class UserSerializerWithToken(UserSerializer):
@@ -88,6 +88,9 @@ class ProductSerializer(serializers.ModelSerializer):
     def get_image_url(self, obj):
         # If image exists, return the media URL
         if obj.image and hasattr(obj.image, "url"):
+            url = obj.image.url
+            print(f"\n\nImage URL: {url}\n\n")
+            print(f"MEDIA URL: {settings.MEDIA_URL}")
             return obj.image.url
         # Otherwise, return the default static image path
         return settings.PLACEHOLDER_IMAGE_URL

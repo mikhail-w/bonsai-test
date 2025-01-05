@@ -31,12 +31,10 @@ function Chat() {
 
   const userLogin = useSelector(state => state.userLogin);
   const { userInfo } = userLogin;
+  const textColor = useColorModeValue('gray.600', 'white.700');
 
   // Updated color scheme
-  const bgColor = useColorModeValue(
-    'rgba(255, 255, 255, 0.3)',
-    'rgba(0, 0, 0, 0.7)'
-  );
+  const bgColor = useColorModeValue('gray.100', 'gray.500');
   // const userMsgColor = useColorModeValue('blue.100', 'blue.700');
   const userMsgColor = '#d9fdd3';
   const botMsgColor = 'white';
@@ -94,7 +92,7 @@ function Chat() {
             fontFamily={'rale'}
             fontSize="2xl"
             fontWeight="400"
-            color="gray.600"
+            color={textColor}
             textAlign="center"
           >
             Zen Master Welcomes You

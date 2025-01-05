@@ -28,6 +28,7 @@ def registerUser(request):
     print("RegisterUser View Called")  # Indicate the view was reached
     print(f"Request Data: {request.data}")  # Log incoming request data
     data = request.data
+    avatar = request.FILES.get("avatar", None)
     try:
         # Check if user with email already exists
         if User.objects.filter(email=data.get("email")).exists():
@@ -47,8 +48,10 @@ def registerUser(request):
         print(f"User Created: {user}")
 
         # Create a user profile with an optional avatar
-        avatar = request.FILES.get("avatar")
+        avatar = request.FILES.get("avatar", None)
+        print(f"Saving avatar for user {user.id}: {avatar}")
         UserProfile.objects.create(user=user, avatar=avatar)
+        print(f"Avatar saved for user {user.id}")
 
         print(f"UserProfile Created for User ID {user.id}")
 

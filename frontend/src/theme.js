@@ -19,6 +19,14 @@ const theme = extendTheme({
       dark: '#28b485',
     },
   },
+  breakpoints: {
+    xs: '20em', // Extra small devices (320px)
+    sm: '30em', // Small devices (480px)
+    md: '48em', // Medium devices (768px)
+    lg: '64em', // Large devices (1024px)
+    xl: '81em', // Extra large devices (1280px)
+    '2xl': '96em', // Extra extra large devices (1536px)
+  },
 });
 
 export default theme;
