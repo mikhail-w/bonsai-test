@@ -31,6 +31,7 @@ import {
 } from '../actions/blogActions';
 import { BLOG_POST_CREATE_RESET } from '../constants/blogConstants';
 import Loader from '../components/Loader';
+import { cleanMediaPath } from '../utils/urlUtils';
 
 function BlogPage() {
   const dispatch = useDispatch();
@@ -235,7 +236,17 @@ function BlogPage() {
                     <>
                       {console.log('Image Path:', post.image)}
                       <Image
-                        src={post.image}
+                        src={
+                          post.image
+                            ? cleanMediaPath(
+                                post.image,
+                                import.meta.env.VITE_API_BASE_URL
+                              )
+                            : cleanMediaPath(
+                                'default/paceholder.jpg',
+                                import.meta.env.VITE_API_BASE_URL
+                              )
+                        }
                         alt="post"
                         borderRadius="md"
                         maxH="250px"

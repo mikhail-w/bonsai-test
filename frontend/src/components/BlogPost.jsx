@@ -12,6 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { getBlogPostDetails, createComment } from '../actions/blogActions';
 import Comment from '../components/Comment'; // Comment component for displaying individual comments
+import { cleanMediaPath } from '../utils/urlUtils';
 
 function BlogPost({ post, commentsCount }) {
   const { id } = useParams();
@@ -38,7 +39,20 @@ function BlogPost({ post, commentsCount }) {
       <Heading fontFamily={'lato'} mb={10}>
         {post.content}
       </Heading>
-      {post.image && <Image src={post.image} alt={post.content} />}
+      {post.image && (
+        <Image
+          // src={post.image}
+          src={
+            post.image
+              ? cleanMediaPath(post.image, import.meta.env.VITE_API_BASE_URL)
+              : cleanMediaPath(
+                  'default/paceholder.jpg',
+                  import.meta.env.VITE_API_BASE_URL
+                )
+          }
+          alt={post.content}
+        />
+      )}
       <HStack mt={10}>
         <Text fontFamily={'lato'} fontWeight={800}>
           Created At:{' '}
