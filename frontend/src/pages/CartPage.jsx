@@ -5,7 +5,6 @@ import {
   Box,
   Image,
   Button,
-  Select,
   Stack,
   Text,
   Container,
@@ -23,8 +22,8 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { addToCart, removeFromCart } from '../actions/cartActions';
-// import EmptyCart from '../assets/images/emptycart2.png';
 import EmptyCart from '../assets/images/wp.png';
+import { cleanMediaPath } from '../utils/urlUtils';
 
 function CartPage() {
   const { id } = useParams();
@@ -44,7 +43,15 @@ function CartPage() {
   const backgroundColor = useColorModeValue('white', 'gray.700');
   const subtotalColor = useColorModeValue('black', 'white');
 
-  console.log('CART ITEM:', cartItems);
+  // Create a function to get the proper image URL for a cart item
+  const getItemImageUrl = itemImage => {
+    return itemImage
+      ? cleanMediaPath(itemImage, import.meta.env.VITE_API_BASE_URL)
+      : cleanMediaPath(
+          'default/placeholder.jpg',
+          import.meta.env.VITE_API_BASE_URL
+        );
+  };
 
   useEffect(() => {
     if (productId) {
@@ -139,40 +146,28 @@ function CartPage() {
             {cartItems.map(item => (
               <Box
                 key={item.product}
-                p={4} // Padding inside the box
-                borderWidth="1px" // 1px border
-                borderRadius="lg" // Rounded corners for the box
-                mb={6} // Margin bottom between items
-                shadow="md" // Box shadow for a slightly elevated look
+                p={4}
+                borderWidth="1px"
+                borderRadius="lg"
+                mb={6}
+                shadow="md"
                 bg={backgroundColor}
               >
                 <Stack
-                  direction={{ base: 'column', md: 'row' }} // Column for mobile, row for larger screens
-                  spacing={6} // Spacing between image, text, and button
-                  alignItems={{ base: 'flex-start', md: 'center' }} // Align items differently on mobile and desktop
+                  direction={{ base: 'column', md: 'row' }}
+                  spacing={6}
+                  alignItems={{ base: 'flex-start', md: 'center' }}
                 >
                   {/* Image and product details in a VStack */}
                   <HStack spacing={4} minWidth={335}>
                     {/* Product Image */}
                     <Image
-                      src={
-                        item.image
-                          ? `${import.meta.env.VITE_API_BASE_URL}${item.image}`
-                          : `${
-                              import.meta.env.VITE_API_BASE_URL
-                            }/media/default/placeholder.jpg`
-                      }
-                      alt={
-                        item.image
-                          ? `Picture of ${item.name}`
-                          : 'Placeholder image for product'
-                      }
-                      fallbackSrc={`${
-                        import.meta.env.VITE_API_BASE_URL
-                      }/media/default/placeholder.jpg`}
+                      src={getItemImageUrl(item.image)}
+                      alt={item.name}
                       boxSize="150px"
                       objectFit="cover"
                       borderRadius="md"
+                      fallbackSrc={getItemImageUrl('default/placeholder.jpg')}
                     />
 
                     {/* Product Info (Name, Price, Quantity) */}
@@ -193,8 +188,6 @@ function CartPage() {
                       <Text fontFamily={'lato'} fontSize="lg" color={textColor}>
                         ${item.price}
                       </Text>
-
-                      {/* Quantity Selector */}
                       <NumberInput
                         value={item.qty}
                         min={1}
@@ -215,14 +208,12 @@ function CartPage() {
                       </NumberInput>
                     </VStack>
                   </HStack>
-
-                  {/* Remove Button */}
                   <Button
                     fontFamily={'lato'}
                     variant="outline"
                     colorScheme="red"
-                    alignSelf={{ base: 'flex-end' }} // Place at the bottom in mobile, align in center in desktop
-                    mt={{ base: 4, md: 0 }} // Add margin-top in mobile mode
+                    alignSelf={{ base: 'flex-end' }}
+                    mt={{ base: 4, md: 0 }}
                     onClick={() =>
                       removeFromCartHandler(item.product, item.name)
                     }
@@ -233,7 +224,6 @@ function CartPage() {
               </Box>
             ))}
           </Box>
-
           <Box margin={{ base: 'auto', lg: 0 }} alignSelf="flex-start">
             <Box
               p={6}

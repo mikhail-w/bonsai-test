@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import Hamburger from 'hamburger-react';
 import logo from '../assets/images/logo.png';
 import logo_white from '../assets/images/logo_white.png';
+import { cleanMediaPath } from '../utils/urlUtils';
 
 import {
   Box,
@@ -292,10 +293,14 @@ const Navigation = () => {
                 <Avatar
                   src={
                     userInfo.avatar
-                      ? `${import.meta.env.VITE_API_BASE_URL}${userInfo.avatar}`
-                      : `${
+                      ? cleanMediaPath(
+                          userInfo.avatar,
                           import.meta.env.VITE_API_BASE_URL
-                        }/media/default/avatar.jpg`
+                        )
+                      : cleanMediaPath(
+                          'default/avatar.jpg',
+                          import.meta.env.VITE_API_BASE_URL
+                        )
                   }
                   size="md"
                   position="absolute"

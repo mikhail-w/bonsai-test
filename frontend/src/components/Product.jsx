@@ -13,6 +13,7 @@ import { FiShoppingCart } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../actions/cartActions';
+import S3ImageHandler from './S3ImageHandler';
 import Rating from './Rating';
 
 const Product = ({ product }) => {
@@ -54,28 +55,39 @@ const Product = ({ product }) => {
         }}
       >
         <Link to={`/product/${product._id}`}>
-          <Image
+          {/* Print both the raw image path and the computed final URL */}
+          {console.log('Raw product image path:', product.image)}
+          {/* <Image
             src={(() => {
-              const imagePath = product.image
-                ? `${import.meta.env.VITE_API_BASE_URL}${product.image}`
-                : `${
-                    import.meta.env.VITE_S3_PATH
-                  }/media/default/placeholder.jpg`;
-              console.log(
-                'VITE_API_BASE_URL:',
-                `${import.meta.env.VITE_API_BASE_URL}${product.image}`
-              );
-              console.log('PRODUCT IMAGE: ', `${product.image}`);
-              return imagePath;
+              if (product.image) {
+                // Print the final computed URL
+                const finalUrl = product.image.startsWith('http')
+                  ? product.image
+                  : `${import.meta.env.VITE_S3_PATH}${product.image}`;
+                console.log('Final computed image URL:', finalUrl);
+                return finalUrl;
+              }
+              const placeholderUrl = `${
+                import.meta.env.VITE_S3_PATH
+              }/default/placeholder.jpg`;
+              console.log('Using placeholder image:', placeholderUrl);
+              return placeholderUrl;
             })()}
             alt={
-              product.image
-                ? `Picture of ${product.name}`
-                : 'Placeholder image for product'
+              product.image ? `Picture of ${product.name}` : 'Placeholder image'
             }
             fallbackSrc={`${
               import.meta.env.VITE_S3_PATH
             }/media/default/placeholder.jpg`}
+            roundedTop="lg"
+            objectFit="cover"
+            height="300px"
+            width="100%"
+            transition="all 0.3s ease"
+          /> */}
+          <S3ImageHandler
+            imagePath={product.image}
+            alt={`Picture of ${product.name}`}
             roundedTop="lg"
             objectFit="cover"
             height="300px"

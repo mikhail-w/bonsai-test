@@ -21,6 +21,7 @@ import {
 import { FiMenu, FiChevronDown } from 'react-icons/fi';
 import { ShoppingCart } from 'lucide-react';
 import ColorModeSwitcher from '../ColorModeSwitcher';
+import { cleanMediaPath } from '../../utils/urlUtils';
 
 const DashNav = ({ onOpen }) => {
   const navigate = useNavigate();
@@ -93,10 +94,14 @@ const DashNav = ({ onOpen }) => {
               <Avatar
                 src={
                   userInfo.avatar
-                    ? `${import.meta.env.VITE_API_BASE_URL}${userInfo.avatar}`
-                    : `${
+                    ? cleanMediaPath(
+                        userInfo.avatar,
                         import.meta.env.VITE_API_BASE_URL
-                      }/media/default/avatar.jpg`
+                      )
+                    : cleanMediaPath(
+                        'default/avatar.jpg',
+                        import.meta.env.VITE_API_BASE_URL
+                      )
                 }
                 name={userInfo?.name || 'Guest'}
               />

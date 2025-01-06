@@ -33,6 +33,11 @@ ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS").split(",")
 # OpenAI API Key
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
+# Print initial configuration
+print("\n=== Django Configuration ===")
+print(f"DEBUG: {DEBUG}")
+print(f"ALLOWED_HOSTS: {ALLOWED_HOSTS}")
+
 # Application definition
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -124,11 +129,45 @@ AWS_QUERYSTRING_AUTH = False  # For public access to files
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
 
+# Print S3 configuration
+print("\n=== S3 Configuration ===")
+print(f"AWS_STORAGE_BUCKET_NAME: {AWS_STORAGE_BUCKET_NAME}")
+print(f"AWS_S3_REGION_NAME: {AWS_S3_REGION_NAME}")
+print(f"AWS_S3_CUSTOM_DOMAIN: {AWS_S3_CUSTOM_DOMAIN}")
+
 
 # Create custom storage classes
 class MediaStorage(S3Boto3Storage):
-    location = "media"  # store files under 'media/' directory
+    location = "media"
     file_overwrite = False
+
+    def _save(self, name, content):
+        print(f"\n=== MediaStorage Save ===")
+        print(f"Saving file: {name}")
+        print(f"Location: {self.location}")
+        return super()._save(name, content)
+
+
+class DebugMediaStorage(MediaStorage):
+    def _save(self, name, content):
+        """
+        Enhanced debug version of MediaStorage that prints detailed information
+        about file uploads\n\n======= WORKING ON LOCAL MACHINE.=======\n\n
+        """
+        print("\n=== Debug S3 Storage ===")
+        print(f"Saving file: {name}")
+        print(f"Content type: {getattr(content, 'content_type', 'unknown')}")
+        print(f"Size: {getattr(content, 'size', 'unknown')}")
+        print(f"Storage location: {self.location}")
+        print(f"Full path: {os.path.join(self.location, name)}")
+        try:
+            result = super()._save(name, content)
+            print(f"File saved successfully: {result}")
+            print(f"Expected URL: {self.url(result)}")
+            return result
+        except Exception as e:
+            print(f"Error saving file: {str(e)}")
+            raise
 
 
 class StaticStorage(S3Boto3Storage):
@@ -139,7 +178,7 @@ class StaticStorage(S3Boto3Storage):
 STORAGES = {
     # Media file (uploaded files) management
     "default": {
-        "BACKEND": "backend.settings.MediaStorage",  # Use your actual path
+        "BACKEND": "backend.settings.DebugMediaStorage",  # Use your actual path
     },
     # Static file management
     "staticfiles": {
@@ -148,8 +187,11 @@ STORAGES = {
 }
 
 
+# Update MEDIA_URL to ensure it includes 'media'
 MEDIA_URL = (
-    f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/"
+    f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+    if AWS_S3_CUSTOM_DOMAIN
+    else f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/"
 )
 STATIC_URL = (
     f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/static/"
@@ -159,6 +201,11 @@ STATIC_URL = (
 # Local Static and Media Files (for fallback or local development)
 # STATIC_URL = "/static/"
 # MEDIA_URL = "/media/"
+
+# Print URL configurations
+print("\n=== URL Configuration ===")
+print(f"MEDIA_URL: {MEDIA_URL}")
+print(f"STATIC_URL: {STATIC_URL}")
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_ROOT = BASE_DIR / "media"
@@ -205,3 +252,5 @@ if not DEBUG:
         "true",
         "1",
     )
+
+print("\n=== Settings Loaded Successfully ===")

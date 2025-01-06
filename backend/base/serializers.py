@@ -43,11 +43,15 @@ class UserSerializer(serializers.ModelSerializer):
     def get_avatar(self, obj):
         try:
             avatar_url = obj.userprofile.avatar.url
-            print(f"++++++\n\nAvatar URL for User ID {obj.id}: {avatar_url}")
+            print(
+                f"SERIALIZER (get_avatar)\n\t++++++\n\nAvatar URL for User ID {obj.id}: {avatar_url}"
+            )
             return obj.userprofile.avatar.url
         except UserProfile.DoesNotExist:
             default_url = f"{settings.MEDIA_URL}default/avatar.jpg"
-            print(f"Default Avatar URL for User ID {obj.id}: {default_url}")
+            print(
+                f"SERIALIZER (get_avatar)\n\t(Default Avatar URL for User ID {obj.id}: {default_url}"
+            )
             return f"{settings.MEDIA_URL}default/avatar.jpg"
         except AttributeError:
             default_url = f"{settings.MEDIA_URL}default/avatar.jpg"
@@ -92,14 +96,15 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def get_image_url(self, obj):
+        print("\n=== ProductSerializer get_image_url ===")
+        print(f"Product: {obj.name}")
         # If image exists, return the media URL
         if obj.image and hasattr(obj.image, "url"):
             url = obj.image.url
-            print(f"\n\nImage URL: {url}\n\n")
-            print(f"MEDIA URL: {settings.MEDIA_URL}")
-            return obj.image.url
+            print(f"SERIALIZER (get_image_url) Image URL:\n\t {url}")
+            return url
         # Otherwise, return the default static image path
-        return settings.PLACEHOLDER_IMAGE_URL
+        return f"{settings.MEDIA_URL}products/placeholder.jpg"
 
     def get_reviews(self, obj):
         reviews = obj.review_set.all()
