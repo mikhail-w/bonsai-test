@@ -1,0 +1,17 @@
+# Core AI/ML dependencies with versions compatible with your environment
+openai==1.3.0
+langchain==0.0.319
+faiss-cpu==1.7.4
+
+# Ensure these stay at your current versions since they're widely used by other packages
+pydantic==2.8.2  # Keeping your current version since it's newer and working
+numpy==1.26.4    # Matching your existing version
+pandas==2.2.2    # Matching your existing version
+
+# Additional required packages
+tiktoken==0.5.1
+wikipedia-api==0.6.0
+
+# Checking for existing version compatibility
+torch>=2.0.0,<3.0.0
+requests>=2.32.3  # Matching your current version

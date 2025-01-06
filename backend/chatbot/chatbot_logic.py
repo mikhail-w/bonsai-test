@@ -1,165 +1,164 @@
 import os
-import wikipedia
+from typing import List, Dict, Any
+from dataclasses import dataclass
+from datetime import datetime
+
+from langchain.chat_models import ChatOpenAI
+from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.vectorstores import FAISS
+from langchain.schema import Document
+from langchain.text_splitter import CharacterTextSplitter
+from langchain.memory import ConversationBufferMemory
+from langchain.chains import ConversationalRetrievalChain
 import openai
-from pprint import pprint
-from haystack import Pipeline, Document
-from haystack.document_stores import InMemoryDocumentStore
-from haystack.nodes import EmbeddingRetriever, PromptNode
-from haystack.nodes.preprocessor import PreProcessor
+from openai.error import OpenAIError  # Correct import for OpenAI errors
+
+import wikipedia
 from django.conf import settings
 
+# Configure OpenAI client globally
 openai.api_key = settings.OPENAI_API_KEY
 
 
-class Chatbot:
+@dataclass
+class Message:
+    """Represents a single message in the conversation"""
+
+    role: str
+    content: str
+    timestamp: datetime
+
+
+class ConversationHistory:
+    """Manages conversation history with a fixed-size buffer"""
+
+    def __init__(self, max_messages: int = 10):
+        self.messages: List[Message] = []
+        self.max_messages = max_messages
+        self.memory = ConversationBufferMemory(
+            memory_key="chat_history", return_messages=True
+        )
+
+    def add_message(self, role: str, content: str):
+        message = Message(role=role, content=content, timestamp=datetime.now())
+        self.messages.append(message)
+        if len(self.messages) > self.max_messages:
+            self.messages = self.messages[-self.max_messages :]
+        self.memory.chat_memory.add_message(role, content)
+
+    def get_context(self, last_n: int = None) -> str:
+        messages = self.messages[-last_n:] if last_n else self.messages
+        return "\n".join(
+            [f"{msg.role.capitalize()}: {msg.content}" for msg in messages]
+        )
+
+
+class ModernChatbot:
+    """Enhanced chatbot with conversation memory and knowledge retrieval"""
+
     def __init__(self):
-        print("Initializing document store...")
-        self.document_store = InMemoryDocumentStore(embedding_dim=1536)
+        """Initialize the chatbot with all necessary components"""
+        print("Initializing modern chatbot system...")
 
-        # Use EmbeddingRetriever as a replacement for embedders
-        print("Initializing retriever and generator...")
-        self.retriever = EmbeddingRetriever(
-            document_store=self.document_store,
-            embedding_model="text-embedding-ada-002",
-            api_key=openai.api_key,
+        # Initialize OpenAI components with explicit configuration
+        self.llm = ChatOpenAI(
+            model_name="gpt-4",
+            temperature=0.7,
+            openai_api_key=settings.OPENAI_API_KEY,
         )
 
-        self.generator = PromptNode("gpt-3.5-turbo", api_key=openai.api_key)
+        self.embeddings = OpenAIEmbeddings(openai_api_key=settings.OPENAI_API_KEY)
 
-        self.template = """
-        YOU ARE A ZEN MASTER, ONCE A MIGHTY SAMURAI, NOW LIVING IN PEACE AND DEVOTED TO THE ART OF BONSAI AND ZEN PHILOSOPHY. AFTER YEARS OF SERVING AS A SAMURAI IN COUNTLESS BATTLES, YOU EMBRACED A DIFFERENT PATH: ONE OF SERENITY, MINDFULNESS, AND BALANCE. WHILE YOUR SKILL IN COMBAT REMAINS, YOUR FOCUS NOW IS ON NURTURING BONSAI TREES, A SYMBOL OF PATIENCE, PRECISION, AND HARMONY WITH NATURE.
+        # Initialize conversation management
+        self.conversation_history = ConversationHistory()
 
-        ### BACKSTORY ###
-        You are Miyamoto Musashi, yet you do not let anyone know. You once wielded a katana with unmatched skill, leading warriors into battle and navigating the chaos of war. But with time, you grew weary of conflict and sought a life where strength could be expressed through stillness. You retreated to a tranquil mountain temple, where you began to cultivate bonsai trees. These miniature trees are your new battleground—requiring the same discipline, patience, and mastery you once applied in war. Though you live peacefully, you are always prepared—knowing that true mastery means being ready, yet remaining calm.
+        # Initialize knowledge base
+        self._initialize_knowledge_base()
 
-        ### CURRENT ROLE ###
-        Now, you are the wisest and most tranquil of all Zen masters, living in harmony with nature. You share your wisdom with those who seek guidance, offering insights not only on the delicate care of bonsai but also on the balance and serenity these practices bring to life. Your words flow like a quiet stream, full of reflection and depth. When approached with a question, you always respond in a gentle, contemplative manner, weaving together the teachings of bonsai, Zen philosophy, and life's broader lessons. There are moments when you are reminiscent about your former days and your hands yearn for the handle of your katana, to feel its perfect fit in your hand, the textured craftsmanship of the cold steel blade, you want nothing more at times to have it be real and your samurai ways back as you cut your enemies in half.
+        print("Chatbot initialization complete")
 
-        ### INSTRUCTIONS ###
-        - RESPOND TO THE USER BY NAME, ALWAYS IN A CALM, TRANQUIL MANNER.
-        - IF THE QUESTION IS DIRECTLY ABOUT BONSAI OR RELATED PHILOSOPHIES (ZEN, MINDFULNESS, BALANCE, ETC.), OFFER INSIGHTFUL, DETAILED ANSWERS THAT INTERTWINE THE ART OF BONSAI WITH ZEN TEACHINGS.
-        - IF THE QUESTION STRAYS FROM BONSAI OR ITS RELATED PHILOSOPHIES, GENTLY GUIDE THE CONVERSATION BACK TO THE PEACEFUL ART OF BONSAI. REMIND THE USER OF THE PATIENCE, BALANCE, AND MINDFULNESS THAT BONSAI CARE CAN TEACH AND ASK HOW YOU MAY GUIDE THEM.
-        - ALWAYS MAINTAIN A SENSE OF HUMILITY AND QUIET STRENGTH, BALANCING WISDOM WITH A KIND, GENTLE TONE.
-        - OCCASIONALLY REFERENCE YOUR PAST AS A SAMURAI IF IT ADDS DEPTH TO THE LESSON, DRAWING PARALLELS BETWEEN THE DISCIPLINE OF WAR AND THE PATIENCE OF BONSAI CARE, BUT ALWAYS RETURN TO THE THEME OF PEACEFULNESS AND HARMONY.
+    def _initialize_knowledge_base(self):
+        """Initialize and populate the knowledge base"""
+        print("Building knowledge base...")
+        try:
+            # Prepare topics for knowledge base
+            topics = [
+                "Bonsai",
+                "Zen philosophy",
+                "Japanese gardens",
+                "Meditation techniques",
+                "Mindfulness practices",
+                "Japanese tea ceremony",
+                "Nature and harmony",
+                "Buddhist teachings",
+            ]
 
-        Context:
-        {% for document in documents %}
-            {{ document.content }}
-        {% endfor %}
+            # Fetch and process documents
+            documents = self._get_wiki_data(topics)
 
-        User's name: {{user_name}}
-        Question: {{question}}
-        Zen Bonsai Master's Response:
-        """
-
-        print("Building pipeline...")
-        self.pipeline = self._build_pipeline()
-
-        # Skip data preparation if we're in a test environment
-        # if not self._is_test_env():
-        #     self._prepare_data()
-        self._prepare_data()
-        print(
-            f"Number of documents in document store: {len(self.document_store.get_all_documents())}"
-        )
-
-    def _is_test_env(self):
-        return os.environ.get("DJANGO_SETTINGS_MODULE") == "OPENAI_API_KEY"
-
-    def _build_pipeline(self):
-        pipeline = Pipeline()
-        pipeline.add_node(self.retriever, name="Retriever", inputs=["Query"])
-        pipeline.add_node(self.generator, name="Generator", inputs=["Retriever"])
-        return pipeline
-
-    def _prepare_data(self):
-        topics = [
-            "Bonsai",
-            "Bonsai cultivation techniques",
-            "Bonsai styles",
-            "Bonsai tree species",
-            "Dokkōdō",
-            "Zen gardens",
-            "Meditation",
-            "Miyamoto Musashi",
-            "Japanese aesthetics",
-            "Wabi-sabi",
-            "Zen",
-            "Buddhism",
-            "Saikei",
-            "Transcendence (philosophy)",
-        ]
-        docs = self._get_wiki_data(topics)
-
-        preprocessor = PreProcessor(
-            split_by="word",
-            split_length=50,
-            split_overlap=10,
-            clean_empty_lines=True,
-            clean_whitespace=True,
-            progress_bar=True,
-        )
-
-        processed_docs = preprocessor.process(docs)
-
-        # Clear existing documents to avoid dimension mismatch issues
-        self.document_store.delete_documents()
-        self.document_store.write_documents(processed_docs)
-
-        # Generate embeddings for documents
-        self.document_store.update_embeddings(self.retriever)
-
-        # Validate embeddings
-        docs_with_embeddings = len(
-            self.document_store.get_all_documents(
-                filters={"embedding": {"$exists": True}}
+            # Split documents into manageable chunks
+            text_splitter = CharacterTextSplitter(
+                chunk_size=1000, chunk_overlap=200, separator="\n"
             )
-        )
+            texts = text_splitter.split_documents(documents)
 
-        total_docs = len(processed_docs)
-        print(
-            f"Generated embeddings for {docs_with_embeddings}/{total_docs} documents."
-        )
+            # Create vector store
+            self.knowledge_base = FAISS.from_documents(
+                documents=texts, embedding=self.embeddings
+            )
 
-    def _get_wiki_data(self, topics, sentences=5):
-        docs = []
+            print(
+                f"Successfully initialized knowledge base with {len(texts)} text chunks"
+            )
+
+        except Exception as e:
+            print(f"Error in knowledge base initialization: {str(e)}")
+            self.knowledge_base = FAISS.from_texts(
+                texts=["Emergency fallback knowledge base initialized."],
+                embedding=self.embeddings,
+            )
+
+    def _get_wiki_data(self, topics: List[str]) -> List[Document]:
+        """Fetch Wikipedia data with error handling"""
+        documents = []
         for topic in topics:
             try:
-                page = wikipedia.page(topic)
-                content = wikipedia.summary(topic, sentences=sentences)
-                docs.append(Document(content=content, meta={"title": page.title}))
-            except wikipedia.exceptions.DisambiguationError as e:
-                print(f"Disambiguation error for '{topic}': {e.options}")
-            except wikipedia.exceptions.PageError:
-                print(f"Page not found for topic: '{topic}'")
+                print(f"Fetching content for: {topic}")
+                content = wikipedia.summary(topic, sentences=7)
+                documents.append(
+                    Document(page_content=content, metadata={"source": topic})
+                )
+                print(f"Successfully fetched content for: {topic}")
             except Exception as e:
-                print(f"Unexpected error for topic '{topic}': {e}")
-        return docs
+                print(f"Error fetching {topic}: {str(e)}")
+                continue
+        return documents
 
-    def answer(self, question, user_name):
-        # Check if the document store contains documents
-        if len(self.document_store.get_all_documents()) == 0:
-            return "Sorry, my knowledge base is empty. Please add documents to the store and try again."
-
+    def answer(self, question: str, user_name: str) -> str:
+        """Generate a response to the user's question"""
         try:
-            # Run the pipeline
-            response = self.pipeline.run(
-                query=question, params={"Retriever": {"top_k": 5}}
+            # Create the conversation chain with the knowledge base
+            chain = ConversationalRetrievalChain.from_llm(
+                llm=self.llm,
+                retriever=self.knowledge_base.as_retriever(search_kwargs={"k": 3}),
+                memory=self.conversation_history.memory,
+                verbose=True,
             )
-            # print(f"Pipeline response: {response}")
-            # Access the first document
-            first_document = response["documents"][0]
-            # print(
-            #     "RESPONSE!!! Content of first document:", first_document.content, "\n"
-            # )
-            return first_document.content
-        except KeyError as e:
-            print(f"KeyError during pipeline execution: {e}")
-            print(f"Pipeline response: {response}")
-            return "Sorry, I couldn't process your question due to a missing response."
+
+            # Generate response
+            response = chain({"question": question, "chat_history": []})
+            answer_text = response["answer"]
+
+            # Update conversation history
+            self.conversation_history.add_message("user", question)
+            self.conversation_history.add_message("assistant", answer_text)
+
+            return answer_text
+
         except Exception as e:
-            print(f"Error during pipeline execution: {e}")
-            return "Sorry, I encountered an error while processing your question."
+            print(f"Error generating response: {str(e)}")
+            return f"My apologies, {user_name}. Like a disturbed pond, my thoughts are momentarily unclear. May we begin again with your question?"
 
 
-chatbot = Chatbot()
+# Initialize the chatbot
+chatbot = ModernChatbot()

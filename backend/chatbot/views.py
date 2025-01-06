@@ -3,31 +3,76 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.views import View
 import json
-from .chatbot_logic import chatbot
+import asyncio
+from django.conf import settings
 
-# API view for chatbot interaction
-@method_decorator(csrf_exempt, name='dispatch')  # Disable CSRF for API endpoints if using POST requests from React
+# from chatbot.chatbot_logic import chatbot
+from .simple_chatbot import SimpleChatbot  # Update import to use new chatbot
+
+from datetime import datetime
+
+
+# @method_decorator(csrf_exempt, name="dispatch")
+# class ChatbotView(View):
+#     async def post(self, request):
+#         try:
+#             # Parse JSON data
+#             data = json.loads(request.body)
+#             question = data.get("question")
+#             user_name = data.get("user_name", "Friend")
+
+#             # Validate input
+#             if not question:
+#                 return JsonResponse(
+#                     {"error": "No question provided", "status": "error"}, status=400
+#                 )
+
+#             # Get chatbot response
+#             response = await chatbot.answer(question, user_name)
+
+#             # Return response with metadata
+#             return JsonResponse(
+#                 {
+#                     "status": "success",
+#                     "answer": response,
+#                     "metadata": {
+#                         "timestamp": datetime.now().isoformat(),
+#                     },
+#                 }
+#             )
+
+#         except json.JSONDecodeError:
+#             return JsonResponse(
+#                 {"error": "Invalid JSON format", "status": "error"}, status=400
+#             )
+
+
+#         except Exception as e:
+#             return JsonResponse({"error": str(e), "status": "error"}, status=500)
+@method_decorator(csrf_exempt, name="dispatch")
 class ChatbotView(View):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.chatbot = SimpleChatbot(api_key=settings.OPENAI_API_KEY)
+
     def post(self, request):
         try:
-            # Parse JSON from the request
             data = json.loads(request.body)
-            question = data.get('question')
-            user_name = data.get('user_name', 'Friend')  # Default to 'Friend' if no user_name is provided
-            
-            # Validate that a question is provided
-            if not question:
-                return JsonResponse({'error': 'No question provided'}, status=400)
+            question = data.get("question")
+            user_name = data.get("user_name", "User")
 
-            # Call the chatbot logic and return the response
-            answer = chatbot.answer(question, user_name)
-            return JsonResponse({'answer': answer})
+            if not question:
+                return JsonResponse(
+                    {"status": "error", "error": "No question provided"}, status=400
+                )
+
+            response = self.chatbot.get_response(question, user_name)
+            return JsonResponse(response)
 
         except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON'}, status=400)
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=500)
+            return JsonResponse(
+                {"status": "error", "error": "Invalid JSON format"}, status=400
+            )
 
-# Optional view for serving the chatbot page if needed (rare in React setups)
-def chat_page(request):
-    return JsonResponse({'message': 'This is the chat page, but React handles the frontend.'})
+        except Exception as e:
+            return JsonResponse({"status": "error", "error": str(e)}, status=500)
