@@ -152,7 +152,7 @@ class DebugMediaStorage(MediaStorage):
     def _save(self, name, content):
         """
         Enhanced debug version of MediaStorage that prints detailed information
-        about file uploads.
+        about file uploads\n\n======= WORKING ON LOCAL MACHINE.=======\n\n
         """
         print("\n=== Debug S3 Storage ===")
         print(f"Saving file: {name}")
