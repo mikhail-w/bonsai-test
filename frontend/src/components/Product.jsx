@@ -13,6 +13,7 @@ import { FiShoppingCart } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../actions/cartActions';
+import S3ImageHandler from './S3ImageHandler';
 import Rating from './Rating';
 
 const Product = ({ product }) => {
@@ -56,7 +57,7 @@ const Product = ({ product }) => {
         <Link to={`/product/${product._id}`}>
           {/* Print both the raw image path and the computed final URL */}
           {console.log('Raw product image path:', product.image)}
-          <Image
+          {/* <Image
             src={(() => {
               if (product.image) {
                 // Print the final computed URL
@@ -78,6 +79,15 @@ const Product = ({ product }) => {
             fallbackSrc={`${
               import.meta.env.VITE_S3_PATH
             }/media/default/placeholder.jpg`}
+            roundedTop="lg"
+            objectFit="cover"
+            height="300px"
+            width="100%"
+            transition="all 0.3s ease"
+          /> */}
+          <S3ImageHandler
+            imagePath={product.image}
+            alt={`Picture of ${product.name}`}
             roundedTop="lg"
             objectFit="cover"
             height="300px"

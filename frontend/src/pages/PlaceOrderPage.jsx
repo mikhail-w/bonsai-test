@@ -19,6 +19,8 @@ import CheckoutSteps from '../components/CheckoutSteps';
 import { createOrder } from '../actions/orderActions';
 import { ORDER_CREATE_RESET } from '../constants/orderConstants';
 import Message from '../components/Message';
+import { cleanMediaPath } from '../utils/urlUtils';
+import { getImagePath } from '../utils/imageUtils';
 
 function PlaceOrderPage() {
   const dispatch = useDispatch();
@@ -112,25 +114,22 @@ function PlaceOrderPage() {
                 {cart.cartItems.map((item, index) => (
                   <Flex key={index} align="center" justify="space-between">
                     <Image
-                      src={
-                        item.image
-                          ? `${import.meta.env.VITE_API_BASE_URL}${item.image}`
-                          : `${
-                              import.meta.env.VITE_API_BASE_URL
-                            }/media/default/placeholder.jpg`
-                      }
-                      alt={
-                        item.image
-                          ? `Picture of ${item.name}`
-                          : 'Placeholder image for product'
-                      }
-                      fallbackSrc={`${
+                      src={cleanMediaPath(
+                        item.image,
                         import.meta.env.VITE_API_BASE_URL
-                      }/media/default/placeholder.jpg`}
+                      )}
                       width="100px"
                       height="100px"
                       objectFit="contain"
                       borderRadius="md"
+                      fallback={
+                        <Box
+                          width="100px"
+                          height="100px"
+                          bg="gray.100"
+                          borderRadius="md"
+                        />
+                      }
                     />
                     <Link to={`/product/${item.product}`}>
                       <Text pl={5} fontFamily={'lato'} fontWeight={300}>

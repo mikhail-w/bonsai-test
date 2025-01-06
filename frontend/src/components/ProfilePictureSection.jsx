@@ -9,6 +9,7 @@ import {
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import CustomButton from './CustomButton';
+import { cleanMediaPath } from '../utils/urlUtils';
 
 const ProfilePictureSection = () => {
   const dispatch = useDispatch();
@@ -36,8 +37,14 @@ const ProfilePictureSection = () => {
           name={userInfo.name || 'JWT User'} // Display user's name if available
           src={
             userInfo.avatar
-              ? `${import.meta.env.VITE_API_BASE_URL}${userInfo.avatar}`
-              : `${import.meta.env.VITE_API_BASE_URL}/media/default/avatar.jpg`
+              ? cleanMediaPath(
+                  userInfo.avatar,
+                  import.meta.env.VITE_API_BASE_URL
+                )
+              : cleanMediaPath(
+                  'default/avatar.jpg',
+                  import.meta.env.VITE_API_BASE_URL
+                )
           }
           mb={4}
         />
