@@ -187,8 +187,11 @@ STORAGES = {
 }
 
 
+# Update MEDIA_URL to ensure it includes 'media'
 MEDIA_URL = (
-    f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/"
+    f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+    if AWS_S3_CUSTOM_DOMAIN
+    else f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/"
 )
 STATIC_URL = (
     f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/static/"

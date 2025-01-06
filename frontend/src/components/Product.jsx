@@ -54,24 +54,30 @@ const Product = ({ product }) => {
         }}
       >
         <Link to={`/product/${product._id}`}>
+          {/* Print both the raw image path and the computed final URL */}
+          {console.log('Raw product image path:', product.image)}
           <Image
             src={(() => {
               if (product.image) {
-                // If image starts with http, use it as is
-                if (product.image.startsWith('http')) {
-                  return product.image;
-                }
-                // Otherwise, construct the full URL
-                return `${import.meta.env.VITE_S3_PATH}${product.image}`;
+                // Print the final computed URL
+                const finalUrl = product.image.startsWith('http')
+                  ? product.image
+                  : `${import.meta.env.VITE_S3_PATH}${product.image}`;
+                console.log('Final computed image URL:', finalUrl);
+                return finalUrl;
               }
-              return `${import.meta.env.VITE_S3_PATH}/products/placeholder.jpg`;
+              const placeholderUrl = `${
+                import.meta.env.VITE_S3_PATH
+              }/default/placeholder.jpg`;
+              console.log('Using placeholder image:', placeholderUrl);
+              return placeholderUrl;
             })()}
             alt={
               product.image ? `Picture of ${product.name}` : 'Placeholder image'
             }
             fallbackSrc={`${
               import.meta.env.VITE_S3_PATH
-            }/products/placeholder.jpg`}
+            }/media/default/placeholder.jpg`}
             roundedTop="lg"
             objectFit="cover"
             height="300px"
