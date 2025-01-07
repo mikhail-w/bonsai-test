@@ -13,7 +13,7 @@ import {
   useToast,
   Flex,
 } from '@chakra-ui/react';
-import c1 from '../assets/images/h3.png';
+import c1 from '../../assets/images/h3.png';
 
 const API_URL = import.meta.env.VITE_API_URL;
 

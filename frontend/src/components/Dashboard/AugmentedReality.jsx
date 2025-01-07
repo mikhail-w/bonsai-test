@@ -39,8 +39,9 @@ const AugmentedReality = ({ setQrCodeUrl }) => {
         <Text
           fontFamily={'rale'}
           fontSize="2xl"
-          fontWeight="bold"
+          fontWeight="400"
           color={textColor}
+          textAlign="center"
         >
           View Bonsai in AR
         </Text>
@@ -53,6 +54,7 @@ const AugmentedReality = ({ setQrCodeUrl }) => {
           href={arLink}
           target="_blank"
           rel="noopener noreferrer"
+          visibility={{ base: 'visible', md: 'hidden', lg: 'hidden' }}
         >
           Open in AR
         </Button>

@@ -32,6 +32,8 @@ def addOrderItems(request):
 
     orderItems = data["orderItems"]
 
+    print("BACKEND ORDER ITEMS:", orderItems)
+
     if orderItems and len(orderItems) == 0:
         return Response(
             {"detail": "No Order Items"}, status=status.HTTP_400_BAD_REQUEST
@@ -68,13 +70,13 @@ def addOrderItems(request):
                 name=product.name,
                 qty=i["qty"],
                 price=i["price"],
-                image=product.image.url,
+                image=i["image"],
             )
 
             # (4) Update stock
 
             product.countInStock -= item.qty
-            product.save()
+            product.save(update_fields=["countInStock"])
 
         serializer = OrderSerializer(order, many=False)
         return Response(serializer.data)

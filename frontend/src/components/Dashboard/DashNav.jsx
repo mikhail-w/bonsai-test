@@ -123,7 +123,9 @@ const DashNav = ({ onOpen }) => {
                 name={userInfo?.name || 'Guest'}
               />
               {!isMobile && (
-                <Text color={textColor}>{userInfo?.name || 'Guest'}</Text>
+                <Text textTransform={'capitalize'} color={textColor}>
+                  {userInfo?.name || 'Guest'}
+                </Text>
               )}
               <FiChevronDown />
             </HStack>

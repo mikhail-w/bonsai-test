@@ -139,8 +139,9 @@ function BlogPage() {
         <Text
           fontFamily={'rale'}
           fontSize="3xl"
-          fontWeight="bold"
+          fontWeight="600"
           color={textColor}
+          textAlign="center"
         >
           Bonsai Blog
         </Text>
@@ -273,7 +274,7 @@ function BlogPage() {
                         variant="ghost"
                         leftIcon={
                           activeHearts[post.id] ? (
-                            <AiFillHeart color="red.500" />
+                            <AiFillHeart color="red" />
                           ) : (
                             <AiOutlineHeart />
                           )
@@ -299,6 +300,18 @@ function BlogPage() {
                         flex="1"
                         variant="ghost"
                         leftIcon={<BiChat />}
+                        color="gray.700"
+                        _dark={{
+                          color: 'gray.700',
+                        }}
+                        _hover={{
+                          bg: 'green.50',
+                          color: 'green.600',
+                          _dark: {
+                            bg: 'green.200',
+                            color: 'gray.500',
+                          },
+                        }}
                       >
                         Comment
                       </Button>

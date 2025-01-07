@@ -152,6 +152,7 @@ function CartPage() {
                 mb={6}
                 shadow="md"
                 bg={backgroundColor}
+                maxW={'500px'}
               >
                 <Stack
                   direction={{ base: 'column', md: 'row' }}

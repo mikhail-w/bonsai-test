@@ -6,7 +6,9 @@ function Comment({ comment }) {
       <Text fontFamily={'lato'} fontWeight="bold" color="green.600">
         {comment.user}
       </Text>
-      <Text fontFamily={'lato'}>{comment.content}</Text>
+      <Text color="gray.900" fontFamily={'lato'}>
+        {comment.content}
+      </Text>
       <Text fontFamily={'lato'} fontSize="xs" color="gray.500">
         {new Date(comment.created_at).toLocaleString()}
       </Text>

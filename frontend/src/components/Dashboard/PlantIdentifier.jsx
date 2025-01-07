@@ -130,9 +130,16 @@ const PlantIdentifier = () => {
       boxShadow="lg"
       textAlign="center"
     >
-      <Heading mb={6} color="green.600" fontSize="2xl" fontWeight="semibold">
+      <Text
+        fontFamily={'rale'}
+        fontSize="2xl"
+        fontWeight="400"
+        color={'green.400'}
+        textAlign="center"
+        mb={'50px'}
+      >
         Plant Identifier
-      </Heading>
+      </Text>
 
       <VStack spacing={4}>
         <Input
