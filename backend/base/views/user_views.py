@@ -58,8 +58,11 @@ def registerUser(request):
         # Delete user if profile creation fails
         if "user" in locals():
             user.delete()
+        message = str(e)
+        if "avatar" in message.lower():
+            message = "Error processing profile image. Please try again with a different image or no image."
         return Response(
-            {"detail": str(e)},
+            {"detail": message},
             status=status.HTTP_400_BAD_REQUEST,
         )
 

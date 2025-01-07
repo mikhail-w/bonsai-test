@@ -129,8 +129,26 @@ const DashNav = ({ onOpen }) => {
             </HStack>
           </MenuButton>
           <MenuList>
-            <MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem>
-            <MenuItem onClick={logoutHandler}>Logout</MenuItem>
+            <MenuItem
+              _hover={{ bg: 'gray.100' }}
+              _dark={{
+                color: 'gray.200',
+                _hover: { bg: 'gray.500' },
+              }}
+              onClick={() => navigate('/profile')}
+            >
+              Profile
+            </MenuItem>
+            <MenuItem
+              _hover={{ bg: 'gray.100' }}
+              _dark={{
+                color: 'gray.200',
+                _hover: { bg: 'gray.500' },
+              }}
+              onClick={logoutHandler}
+            >
+              Logout
+            </MenuItem>
           </MenuList>
         </Menu>
       </HStack>
