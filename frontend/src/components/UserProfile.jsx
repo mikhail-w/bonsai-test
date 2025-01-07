@@ -24,9 +24,14 @@ const UserProfile = () => {
         gap={8}
         fontFamily="lato"
       >
-        <Text fontSize="2xl" ml={10} fontFamily="lato" fontWeight="300">
+        <Text fontSize="lg" ml={10} fontFamily="lato" fontWeight="400">
           Welcome Back{' '}
-          <Text as="span" fontSize="xl" fontWeight="bold">
+          <Text
+            textTransform={'capitalize'}
+            as="span"
+            fontSize="2xl"
+            fontWeight="bold"
+          >
             {userInfo.name}
           </Text>
         </Text>

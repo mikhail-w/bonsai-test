@@ -138,18 +138,16 @@ function RegisterPage() {
       return;
     }
 
-    // Create FormData for file upload
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('email', email);
-    formData.append('password', password);
-    if (avatar) {
-      formData.append('avatar', avatar);
-    }
-    if (city) formData.append('city', city);
-    if (state) formData.append('state', state);
-
     try {
+      // Create FormData for file upload
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('email', email);
+      formData.append('password', password);
+      if (avatar) {
+        formData.append('avatar', avatar);
+      }
+
       // Dispatch register action with formData
       await dispatch(register(formData));
     } catch (error) {

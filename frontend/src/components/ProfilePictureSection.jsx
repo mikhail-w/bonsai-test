@@ -34,7 +34,7 @@ const ProfilePictureSection = () => {
       >
         <Avatar
           size="2xl"
-          name={userInfo.name || 'JWT User'} // Display user's name if available
+          name={userInfo.name || 'User'} // Display user's name if available
           src={
             userInfo.avatar
               ? cleanMediaPath(

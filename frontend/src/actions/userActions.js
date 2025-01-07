@@ -95,25 +95,13 @@ export const logout = () => dispatch => {
 };
 
 // Register User
-export const register = (name, email, password, avatar) => async dispatch => {
+export const register = formData => async dispatch => {
   console.log('Register function triggered with:', {
-    name,
-    email,
-    password,
-    avatar,
+    formData,
   });
   try {
     dispatch({ type: USER_REGISTER_REQUEST });
     console.log('USER_REGISTER_REQUEST dispatched');
-
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('email', email);
-    formData.append('password', password);
-    if (avatar) {
-      formData.append('avatar', avatar);
-      console.log('Avatar file appended to formData');
-    }
 
     const config = {
       headers: { 'Content-Type': 'multipart/form-data' },
