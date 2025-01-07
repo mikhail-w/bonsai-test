@@ -301,12 +301,24 @@ function BlogPage() {
                         variant="ghost"
                         leftIcon={
                           activeHearts[post.id] ? (
-                            <AiFillHeart color="red" />
+                            <AiFillHeart color="red.500" />
                           ) : (
                             <AiOutlineHeart />
                           )
                         }
                         onClick={() => likeUnlikeHandler(post.id)}
+                        color="gray.700" // Light mode text color
+                        _dark={{
+                          color: 'gray.700', // Dark mode text color
+                        }}
+                        _hover={{
+                          bg: 'red.50', // Light mode hover background
+                          color: 'red.600', // Light mode hover text color
+                          _dark: {
+                            bg: 'red.200', // Dark mode hover background
+                            color: 'red.500', // Dark mode hover text color
+                          },
+                        }}
                       >
                         {activeHearts[post.id] ? 'Unlike' : 'Like'}
                       </Button>

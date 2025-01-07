@@ -25,19 +25,16 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
 @api_view(["POST"])
 def registerUser(request):
-    print("RegisterUser View Called")  # Indicate the view was reached
-    print(f"Request Data: {request.data}")  # Log incoming request data
     data = request.data
-    avatar = request.FILES.get("avatar", None)
     try:
         # Check if user with email already exists
         if User.objects.filter(email=data.get("email")).exists():
-            print(f"Email already exists: {data.get('email')}")
             return Response(
                 {"detail": "User with this email already exists"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
+        # Create user
         user = User.objects.create(
             first_name=data.get("name", ""),
             username=data.get("email"),
@@ -45,30 +42,25 @@ def registerUser(request):
             password=make_password(data.get("password")),
         )
 
-        print(f"User Created: {user}")
+        # Create user profile
+        user_profile = UserProfile.objects.create(user=user)
 
-        # Create a user profile with an optional avatar
-        avatar = request.FILES.get("avatar", None)
-        print(f"======\n\nSaving avatar for user {user.id}: {avatar}\n\n")
-        UserProfile.objects.create(user=user, avatar=avatar)
-        print(f"Avatar saved for user {user.id}")
-
-        print(f"UserProfile Created for User ID {user.id}")
+        # Handle avatar if provided
+        avatar = request.FILES.get("avatar")
+        if avatar:
+            user_profile.avatar = avatar
+            user_profile.save()
 
         serializer = UserSerializerWithToken(user, many=False)
-        print(f"Serialized User Data: {serializer.data}")
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    except KeyError as e:
-        return Response(
-            {"detail": f"Missing field: {str(e)}"},
-            status=status.HTTP_400_BAD_REQUEST,
-        )
     except Exception as e:
-        print(f"Error in registerUser: {e}")
+        # Delete user if profile creation fails
+        if "user" in locals():
+            user.delete()
         return Response(
-            {"detail": f"An error occurred: {str(e)}"},
-            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            {"detail": str(e)},
+            status=status.HTTP_400_BAD_REQUEST,
         )
 
 

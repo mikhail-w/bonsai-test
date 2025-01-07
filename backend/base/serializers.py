@@ -42,21 +42,22 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_avatar(self, obj):
         try:
-            avatar_url = obj.userprofile.avatar.url
-            print(
-                f"SERIALIZER (get_avatar)\n\t++++++\n\nAvatar URL for User ID {obj.id}: {avatar_url}"
-            )
-            return obj.userprofile.avatar.url
+            if hasattr(obj, "userprofile") and obj.userprofile.avatar:
+                avatar_url = obj.userprofile.avatar.url
+                print(
+                    f"SERIALIZER (get_avatar)\n\t++++++\n\nAvatar URL for User ID {obj.id}: {avatar_url}"
+                )
+                return avatar_url
         except UserProfile.DoesNotExist:
             default_url = f"{settings.MEDIA_URL}default/avatar.jpg"
             print(
                 f"SERIALIZER (get_avatar)\n\t(Default Avatar URL for User ID {obj.id}: {default_url}"
             )
-            return f"{settings.MEDIA_URL}default/avatar.jpg"
+            return default_url
         except AttributeError:
             default_url = f"{settings.MEDIA_URL}default/avatar.jpg"
             print(f"Default Avatar URL for User ID {obj.id}: {default_url}")
-            return f"{settings.MEDIA_URL}default/avatar.jpg"
+            return default_url
 
 
 class UserSerializerWithToken(UserSerializer):

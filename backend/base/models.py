@@ -17,7 +17,7 @@ class UserProfile(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.user.email
+        return f"{self.user.email}'s profile"
 
 
 class Product(models.Model):
