@@ -141,7 +141,16 @@ function LoginPage() {
                     onChange={e => setEmail(e.target.value)}
                     placeholder=" "
                   />
-                  <FormLabel>Email address</FormLabel>
+                  <FormLabel
+                    color="gray.700" // Light mode text color
+                    bg="white" // Light mode background color
+                    _dark={{
+                      color: 'gray.200', // Dark mode text color
+                      bg: 'gray.800', // Dark mode background color
+                    }}
+                  >
+                    Email address
+                  </FormLabel>
                   <FormHelperText>We'll never share your email.</FormHelperText>
                   <FormErrorMessage>Email is required.</FormErrorMessage>
                 </FormControl>
@@ -153,7 +162,16 @@ function LoginPage() {
                     onChange={e => setPassword(e.target.value)}
                     placeholder=" "
                   />
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel
+                    color="gray.700" // Light mode text color
+                    bg="white" // Light mode background color
+                    _dark={{
+                      color: 'gray.200', // Dark mode text color
+                      bg: 'gray.800', // Dark mode background color
+                    }}
+                  >
+                    Password
+                  </FormLabel>
                   <FormHelperText>Keep your password secure.</FormHelperText>
                   <FormErrorMessage>Password is required.</FormErrorMessage>
                 </FormControl>
@@ -184,7 +202,15 @@ function LoginPage() {
                 color="gray.500"
               >
                 New Customer?{' '}
-                <Button variant="link" colorScheme="green">
+                <Button
+                  _hover={{ bg: 'gray.100' }}
+                  _dark={{
+                    color: 'gray.200',
+                    _hover: { bg: 'gray.700' },
+                  }}
+                  variant="link"
+                  colorScheme="green"
+                >
                   <Link fontFamily={'lato'} to={'/register/'}>
                     Register
                   </Link>

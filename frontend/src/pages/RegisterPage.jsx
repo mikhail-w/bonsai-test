@@ -135,7 +135,16 @@ function RegisterPage() {
                   onChange={e => setName(e.target.value)}
                   placeholder=""
                 />
-                <FormLabel>Enter your Name</FormLabel>
+                <FormLabel
+                  color="gray.700" // Light mode text color
+                  bg="white" // Light mode background color
+                  _dark={{
+                    color: 'gray.200', // Dark mode text color
+                    bg: 'gray.800', // Dark mode background color
+                  }}
+                >
+                  Enter your Name
+                </FormLabel>
               </FormControl>
               <FormControl variant="floating" mb={10} id="email" isRequired>
                 <Input
@@ -144,7 +153,16 @@ function RegisterPage() {
                   onChange={e => setEmail(e.target.value)}
                   placeholder=""
                 />
-                <FormLabel>Enter your Email</FormLabel>
+                <FormLabel
+                  color="gray.700" // Light mode text color
+                  bg="white" // Light mode background color
+                  _dark={{
+                    color: 'gray.200', // Dark mode text color
+                    bg: 'gray.800', // Dark mode background color
+                  }}
+                >
+                  Enter your Email
+                </FormLabel>
               </FormControl>
               <FormControl variant="floating" mb={10} id="password" isRequired>
                 <Input
@@ -153,7 +171,16 @@ function RegisterPage() {
                   onChange={e => setPassword(e.target.value)}
                   placeholder=""
                 />
-                <FormLabel>Enter your Password</FormLabel>
+                <FormLabel
+                  color="gray.700" // Light mode text color
+                  bg="white" // Light mode background color
+                  _dark={{
+                    color: 'gray.200', // Dark mode text color
+                    bg: 'gray.800', // Dark mode background color
+                  }}
+                >
+                  Enter your Password
+                </FormLabel>
               </FormControl>
               <FormControl
                 variant="floating"
@@ -167,7 +194,16 @@ function RegisterPage() {
                   onChange={e => setConfirmPassword(e.target.value)}
                   placeholder=""
                 />
-                <FormLabel>Confirm Password</FormLabel>
+                <FormLabel
+                  color="gray.700" // Light mode text color
+                  bg="white" // Light mode background color
+                  _dark={{
+                    color: 'gray.200', // Dark mode text color
+                    bg: 'gray.800', // Dark mode background color
+                  }}
+                >
+                  Confirm Password
+                </FormLabel>
               </FormControl>
               {/*  <FormControl variant="floating" mb={10} id="city" isRequired>
                 <Input
@@ -213,7 +249,15 @@ function RegisterPage() {
             </form>
             <Text textAlign="center" mt={4} color="gray.500">
               Have an Account?{' '}
-              <Button variant="link" colorScheme="green">
+              <Button
+                _hover={{ bg: 'gray.100' }}
+                _dark={{
+                  color: 'gray.200',
+                  _hover: { bg: 'gray.700' },
+                }}
+                variant="link"
+                colorScheme="green"
+              >
                 <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>
                   Sign In
                 </Link>

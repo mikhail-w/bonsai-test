@@ -50,9 +50,23 @@ const ProductButtons = () => {
             flex="1"
             h="80px"
             cursor="pointer"
-            _hover={{ boxShadow: 'lg' }}
+            _hover={{ bg: 'gray.100' }}
+            _dark={{
+              color: 'gray.200',
+              _hover: { bg: 'gray.700' },
+            }}
           >
-            <Button variant="unstyled" onClick={onOpen} h="100%" w="100%">
+            <Button
+              _hover={{ bg: 'gray.100' }}
+              _dark={{
+                color: 'gray.200',
+                _hover: { bg: 'gray.700' },
+              }}
+              variant="unstyled"
+              onClick={onOpen}
+              h="100%"
+              w="100%"
+            >
               <Flex direction="column" align="center" justify="center" h="100%">
                 <Icon as={FaCube} boxSize={5} mb={1} />
                 <Text fontSize="sm">See this item in 3D</Text>
@@ -68,13 +82,22 @@ const ProductButtons = () => {
             flex="1"
             h="80px"
             cursor="pointer"
-            _hover={{ boxShadow: 'lg' }}
+            _hover={{ bg: 'gray.100' }}
+            _dark={{
+              color: 'gray.200',
+              _hover: { bg: 'gray.700' },
+            }}
           >
             <Button
               variant="unstyled"
               onClick={handleQrCodeGeneration}
               h="100%"
               w="100%"
+              _hover={{ bg: 'gray.100' }}
+              _dark={{
+                color: 'gray.200',
+                _hover: { bg: 'gray.700' },
+              }}
             >
               <Flex direction="column" align="center" justify="center" h="100%">
                 <Icon as={FaArrowsAlt} boxSize={5} mb={1} />

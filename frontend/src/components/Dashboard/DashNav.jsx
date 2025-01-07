@@ -65,7 +65,16 @@ const DashNav = ({ onOpen }) => {
 
         {/* Cart Icon with Badge */}
         <RouterLink to="/cart">
-          <Button variant="link" position="relative" aria-label="Cart">
+          <Button
+            _hover={{ bg: 'gray.100' }}
+            _dark={{
+              color: 'gray.200',
+              _hover: { bg: 'gray.700' },
+            }}
+            variant="link"
+            position="relative"
+            aria-label="Cart"
+          >
             <ShoppingCart />
             <Badge
               position="absolute"
@@ -89,7 +98,15 @@ const DashNav = ({ onOpen }) => {
 
         {/* User Menu */}
         <Menu>
-          <MenuButton as={Button} variant="link">
+          <MenuButton
+            _hover={{ bg: 'gray.100' }}
+            _dark={{
+              color: 'gray.200',
+              _hover: { bg: 'gray.700' },
+            }}
+            as={Button}
+            variant="link"
+          >
             <HStack>
               <Avatar
                 src={
