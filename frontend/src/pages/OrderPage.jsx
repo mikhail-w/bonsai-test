@@ -26,6 +26,7 @@ import {
 } from '../constants/orderConstants';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import Loader from '../components/Loader';
+import { cleanMediaPath } from '../utils/urlUtils';
 
 function OrderPage() {
   const { id } = useParams();
@@ -54,6 +55,23 @@ function OrderPage() {
   const borderColor = useColorModeValue('gray.200', 'gray.600');
   const badgeColorSchemePaid = useColorModeValue('green', 'green');
   const badgeColorSchemeUnpaid = useColorModeValue('red', 'red');
+
+  const getImageUrl = imagePath => {
+    if (!imagePath) {
+      return `${
+        import.meta.env.VITE_API_BASE_URL
+      }/media/default/placeholder.jpg`;
+    }
+    console.log('ORDER PAGE:', imagePath);
+    // If the image path is already a full URL, return it as is
+    if (imagePath.startsWith('http')) {
+      console.log('ORDER PAGE:', imagePath);
+      return imagePath;
+    }
+
+    // Otherwise, clean and construct the full URL
+    return cleanMediaPath(imagePath, import.meta.env.VITE_S3_PATH);
+  };
 
   if (!loading && !error) {
     order.itemsPrice = order.orderItems
@@ -199,25 +217,20 @@ function OrderPage() {
               {order.orderItems.map((item, index) => (
                 <Flex key={index} align="center" w="full">
                   <Image
-                    src={
-                      item.image
-                        ? `${import.meta.env.VITE_API_BASE_URL}${item.image}`
-                        : `${
-                            import.meta.env.VITE_API_BASE_URL
-                          }/media/default/placeholder.jpg`
-                    }
-                    alt={
-                      item.image
-                        ? `Picture of ${item.name}`
-                        : 'Placeholder image for product'
-                    }
-                    fallbackSrc={`${
-                      import.meta.env.VITE_API_BASE_URL
-                    }/media/default/placeholder.jpg`}
+                    src={getImageUrl(item.image)}
+                    alt={item.name}
                     boxSize="50px"
                     objectFit="cover"
                     mr={4}
                     rounded="md"
+                    fallbackSrc={`${
+                      import.meta.env.VITE_API_BASE_URL
+                    }/media/default/placeholder.jpg`}
+                    onError={e => {
+                      e.target.src = `${
+                        import.meta.env.VITE_API_BASE_URL
+                      }/media/default/placeholder.jpg`;
+                    }}
                   />
 
                   <Link to={`/product/${item.product}`}>

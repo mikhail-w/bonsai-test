@@ -20,7 +20,6 @@ import { createOrder } from '../actions/orderActions';
 import { ORDER_CREATE_RESET } from '../constants/orderConstants';
 import Message from '../components/Message';
 import { cleanMediaPath } from '../utils/urlUtils';
-import { getImagePath } from '../utils/imageUtils';
 
 function PlaceOrderPage() {
   const dispatch = useDispatch();

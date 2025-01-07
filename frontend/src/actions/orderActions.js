@@ -28,42 +28,64 @@ const API_URL = import.meta.env.VITE_API_URL;
 // Main order creation action
 export const createOrder = order => async (dispatch, getState) => {
   let config;
-
   try {
-    // Dispatch the initial request action to update loading state
     dispatch({
       type: ORDER_CREATE_REQUEST,
     });
 
-    // Get user info from Redux state for authentication
     const {
       userLogin: { userInfo },
     } = getState();
 
-    // Format the order data with proper number types for prices
     const orderData = {
       ...order,
-      // Convert string prices to numbers for the main order
       itemsPrice: Number(order.itemsPrice),
       shippingPrice: Number(order.shippingPrice),
       taxPrice: Number(order.taxPrice),
       totalPrice: Number(order.totalPrice),
       orderItems: order.orderItems.map(item => {
-        // Log each item for debugging
+        // Extract just the relative path portion of the image URL
+        let relativePath;
+        try {
+          const imageUrl = new URL(item.image, window.location.origin);
+          let pathname = imageUrl.pathname;
+
+          // Remove duplicate media/ if it exists
+          pathname = pathname.replace(/^\/media\/media\//, '/media/');
+
+          // Get the final path without leading /media/
+          relativePath = pathname.replace(/^\/media\//, '');
+
+          console.log('ORDER ACTIONS Image Path Processing:', {
+            original: item.image,
+            pathname,
+            relativePath,
+          });
+        } catch (e) {
+          // If URL parsing fails, handle as relative path
+          relativePath = item.image
+            .replace(/^media\/media\//, '')
+            .replace(/^media\//, '');
+          console.log('ORDER ACTIONS Fallback Path Processing:', {
+            original: item.image,
+            relativePath,
+          });
+        }
+
         console.log('Processing order item:', {
           name: item.name,
-          image: item.image,
-          price: Number(item.price), // Ensure price is a number
-          qty: Number(item.qty), // Ensure quantity is a number
+          image: relativePath,
+          price: Number(item.price),
+          qty: Number(item.qty),
           product: item.product,
         });
 
         return {
           product: item.product,
           name: item.name,
-          qty: Number(item.qty), // Convert to number
-          price: Number(item.price), // Convert to number
-          image: item.image,
+          qty: Number(item.qty),
+          price: Number(item.price),
+          image: relativePath,
         };
       }),
     };
@@ -75,12 +97,11 @@ export const createOrder = order => async (dispatch, getState) => {
       },
     };
 
-    // Enhanced logging to verify data structure
     console.log('Sending complete order data:', {
       orderItems: orderData.orderItems.map(item => ({
         ...item,
-        price: typeof item.price, // Log price type
-        qty: typeof item.qty, // Log quantity type
+        price: typeof item.price,
+        qty: typeof item.qty,
       })),
       pricing: {
         items: typeof orderData.itemsPrice,
@@ -96,7 +117,6 @@ export const createOrder = order => async (dispatch, getState) => {
       config
     );
 
-    // If successful, dispatch success actions and clear cart
     dispatch({
       type: ORDER_CREATE_SUCCESS,
       payload: data,
@@ -108,7 +128,6 @@ export const createOrder = order => async (dispatch, getState) => {
 
     localStorage.removeItem('cartItems');
   } catch (error) {
-    // Enhanced error logging
     console.error('Order creation failed:', {
       error: error.response?.data || error.message,
       statusCode: error.response?.status,
