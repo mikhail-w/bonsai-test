@@ -26,11 +26,11 @@ import Favorites from './pages/Favorites.jsx';
 import Settings from './pages/Settings.jsx';
 import BlogPage from './pages/BlogPage.jsx'; // List of all blog posts
 import BlogPostPage from './pages/BlogPostPage.jsx'; // Individual blog post page
-import AugmentedReality from './pages/AugmentedReality.jsx';
+import AugmentedReality from './components/Dashboard/AugmentedReality.jsx';
 import ContactPage from './pages/ContactPage.jsx';
 import AboutPage from './pages/AboutPage.jsx';
 import PlantIdentifier from './components/Dashboard/PlantIdentifier.jsx';
-import Chat from './pages/Chat.jsx';
+import Chat from './components/Dashboard/Chat.jsx';
 
 //Instruction page
 import CarePage_Style from './pages/CarePage_Style.jsx';

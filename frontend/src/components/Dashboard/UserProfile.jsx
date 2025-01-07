@@ -28,6 +28,7 @@ const UserProfile = () => {
         boxShadow="lg"
         gap={8}
         fontFamily="lato"
+        minH={'100vh'}
       >
         <Text fontSize="lg" fontFamily="lato" fontWeight="400">
           Welcome Back{' '}
@@ -59,8 +60,10 @@ const UserProfile = () => {
 
         {!userInfo.isAdmin ? (
           <>
-            <Heading fontFamily="rale">My Orders</Heading>
-            <MyOrders />
+            <Box mt={'30px'}>
+              <Heading fontFamily="rale">My Orders</Heading>
+              <MyOrders />
+            </Box>
           </>
         ) : null}
         <Flex mb={20}></Flex>

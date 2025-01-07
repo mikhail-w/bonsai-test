@@ -23,7 +23,7 @@ const CarePage = () => {
         {isBaseCareRoute && (
           <Center flexDirection="column">
             <Heading
-              fontFamily="Lato"
+              fontFamily="rale"
               fontWeight={400}
               fontSize={{ base: '2xl', md: '3xl', lg: '4xl' }}
               textAlign="center"
@@ -44,7 +44,7 @@ const CarePage = () => {
               <Card boxShadow="lg" borderRadius="md" overflow="hidden">
                 <CardHeader>
                   <Heading
-                    fontFamily="Roza"
+                    fontFamily="rale"
                     size="md"
                     textAlign="center"
                     minHeight="70px" // Set a fixed minimum height for headings
@@ -74,7 +74,7 @@ const CarePage = () => {
               <Card boxShadow="lg" borderRadius="md" overflow="hidden">
                 <CardHeader>
                   <Heading
-                    fontFamily="Roza"
+                    fontFamily="rale"
                     size="md"
                     textAlign="center"
                     minHeight="70px" // Ensure consistent height
@@ -104,7 +104,7 @@ const CarePage = () => {
               <Card boxShadow="lg" borderRadius="md" overflow="hidden">
                 <CardHeader>
                   <Heading
-                    fontFamily="Roza"
+                    fontFamily="rale"
                     size="md"
                     textAlign="center"
                     minHeight="70px" // Ensure consistent height
