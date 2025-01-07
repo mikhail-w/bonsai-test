@@ -70,27 +70,48 @@ def registerUser(request):
 @api_view(["PUT"])
 @permission_classes([IsAuthenticated])
 def updateUserProfile(request):
-    print("UpdateUserProfile view called.")  # Log the view call
-    print(f"Authenticated User: {request.user}")  # Log authenticated user
-    print(f"Request Data: {request.data}")  # Log incoming request data
-
     try:
         user = request.user
-        user.first_name = request.data.get("name", user.first_name)
-        user.username = request.data.get("email", user.username)
-        user.email = request.data.get("email", user.email)
-        if request.data.get("password"):
+        user_profile = UserProfile.objects.get_or_create(user=user)[0]
+
+        # Handle avatar upload
+        if "avatar" in request.FILES:
+            # Delete old avatar file if it exists and is not the default
+            if (
+                user_profile.avatar
+                and "default/avatar.jpg" not in user_profile.avatar.name
+            ):
+                try:
+                    user_profile.avatar.delete(save=False)
+                except Exception as e:
+                    print(f"Error deleting old avatar: {e}")
+
+            # Save new avatar
+            user_profile.avatar = request.FILES["avatar"]
+            user_profile.save()
+
+        # Update user details
+        if "name" in request.data:
+            user.first_name = request.data["name"]
+        if "email" in request.data:
+            user.username = request.data["email"]
+            user.email = request.data["email"]
+        if "password" in request.data and request.data["password"]:
             user.password = make_password(request.data["password"])
 
         user.save()
-        print(f"Updated User: {user}")  # Log the updated user object
 
         serializer = UserSerializerWithToken(user, many=False)
-        print(f"Serialized Updated User Data: {serializer.data}")  # Log serialized data
         return Response(serializer.data)
+
     except Exception as e:
-        print(f"Error in updateUserProfile: {e}")  # Log unexpected errors
-        return Response({"detail": str(e)}, status=500)
+        message = str(e)
+        if "avatar" in message.lower():
+            message = "Error processing profile image. Please try again with a different image."
+        return Response(
+            {"detail": message},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
 
 @api_view(["GET"])

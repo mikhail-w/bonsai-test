@@ -7,6 +7,7 @@ import ZenQuotes from './Dashboard/ZenQuotes';
 import { useSelector } from 'react-redux';
 
 import MyOrders from './MyOrders';
+import ProfileUpdateSection from './ProfileUpdateSection';
 
 const UserProfile = () => {
   const userLogin = useSelector(state => state.userLogin);
@@ -44,8 +45,9 @@ const UserProfile = () => {
           boxShadow="sm"
           gap={8}
         >
-          <ProfilePictureSection />
-          {!userInfo.isAdmin ? <AccountDetailsSection /> : null}
+          {/* <ProfilePictureSection />
+          {!userInfo.isAdmin ? <AccountDetailsSection /> : null} */}
+          <ProfileUpdateSection />
         </Flex>
         <Flex
           direction={{ base: 'column', md: 'row' }}
