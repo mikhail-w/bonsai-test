@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateUserProfile } from '../actions/userActions';
+import { updateUserProfile } from '../../actions/userActions';
 import {
   Box,
   Avatar,
@@ -22,7 +22,8 @@ import {
   useToast,
   Image,
 } from '@chakra-ui/react';
-import { cleanMediaPath } from '../utils/urlUtils';
+import { cleanMediaPath } from '../../utils/urlUtils';
+import CustomButton from '../CustomButton';
 
 const ProfileUpdateSection = () => {
   const dispatch = useDispatch();
@@ -52,7 +53,7 @@ const ProfileUpdateSection = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const bgColor = useColorModeValue('white', 'gray.800');
-  const textColor = useColorModeValue('gray.700', 'gray.300');
+  const borderColor = useColorModeValue('gray.100', 'gray.700');
 
   const handleAvatarChange = e => {
     const file = e.target.files[0];
@@ -198,6 +199,8 @@ const ProfileUpdateSection = () => {
         textAlign="center"
         w={{ base: '100%', md: '45%', lg: '30%' }}
         minW="300px"
+        borderColor={borderColor}
+        borderWidth="1px"
       >
         <Avatar
           size="2xl"
@@ -215,21 +218,37 @@ const ProfileUpdateSection = () => {
           }
           mb={4}
         />
-        <VStack spacing={4}>
-          <Button
-            colorScheme="green"
+        <VStack spacing={1}>
+          <CustomButton
+            size="sm"
+            fontSize="xs"
+            fontWeight="600"
+            padding="1rem "
             onClick={onAvatarOpen}
             isLoading={isLoading}
+            mt={'10px'}
+            mb={'10px'}
           >
-            Upload Avatar
-          </Button>
-          <Button
-            colorScheme="blue"
+            Change Avatar
+          </CustomButton>
+          <CustomButton
+            size="sm"
+            fontSize="xs"
+            fontWeight="600"
+            padding="1rem "
+            bg="#4891ef"
             onClick={onDetailsOpen}
             isLoading={isLoading}
+            mt={'10px'}
+            mb={'10px'}
+            _hover={{
+              backgroundColor: '#4891ef',
+              transform: 'translateY(-2px)',
+              boxShadow: '0 8px 15px rgba(0, 0, 0, 0.1)',
+            }}
           >
             Change Details
-          </Button>
+          </CustomButton>
         </VStack>
       </Box>
 

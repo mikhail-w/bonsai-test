@@ -19,8 +19,8 @@ import {
 import { FaTimes } from 'react-icons/fa';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { listMyOrders } from '../actions/orderActions';
-import Loader from '../components/Loader';
+import { listMyOrders } from '../../actions/orderActions';
+import Loader from '../../components/Loader';
 
 const MyOrders = () => {
   const dispatch = useDispatch();

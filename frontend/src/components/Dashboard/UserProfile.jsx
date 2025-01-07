@@ -1,18 +1,23 @@
 import React from 'react';
-import { Box, Flex, Heading, Text, useColorModeValue } from '@chakra-ui/react';
-import ProfilePictureSection from './ProfilePictureSection';
-import AccountDetailsSection from './AccountDetailsSection';
 import Weather from './Weather';
-import ZenQuotes from './Dashboard/ZenQuotes';
-import { useSelector } from 'react-redux';
-
 import MyOrders from './MyOrders';
+import ZenQuotes from './ZenQuotes';
+import { useSelector } from 'react-redux';
 import ProfileUpdateSection from './ProfileUpdateSection';
+import {
+  Box,
+  Center,
+  Flex,
+  Heading,
+  Text,
+  useColorModeValue,
+} from '@chakra-ui/react';
 
 const UserProfile = () => {
   const userLogin = useSelector(state => state.userLogin);
 
-  const bgColor = useColorModeValue('gray.100', 'gray.500');
+  // const bgColor = useColorModeValue('gray.100', 'gray.500');
+  const bgColor = useColorModeValue('white', 'gray.800');
   const { userInfo } = userLogin;
   return (
     <>
@@ -20,12 +25,11 @@ const UserProfile = () => {
         direction={'column'}
         p={6}
         bg={bgColor}
-        borderRadius="md"
         boxShadow="lg"
         gap={8}
         fontFamily="lato"
       >
-        <Text fontSize="lg" ml={10} fontFamily="lato" fontWeight="400">
+        <Text fontSize="lg" fontFamily="lato" fontWeight="400">
           Welcome Back{' '}
           <Text
             textTransform={'capitalize'}
@@ -37,31 +41,21 @@ const UserProfile = () => {
           </Text>
         </Text>
         <Flex
-          direction={{ base: 'column', md: 'row' }}
+          direction={{ base: 'column', sm: 'column', md: 'column', lg: 'row' }}
           align="center"
           p={6}
           bg={bgColor}
           borderRadius="md"
           boxShadow="sm"
-          gap={8}
+          gap={10}
         >
-          {/* <ProfilePictureSection />
-          {!userInfo.isAdmin ? <AccountDetailsSection /> : null} */}
           <ProfileUpdateSection />
+          <ZenQuotes />
         </Flex>
-        <Flex
-          direction={{ base: 'column', md: 'row' }}
-          justify="space-between"
-          align="flex-start"
-          gap={4}
-        >
-          <Box flex="1" minW="300px">
-            <ZenQuotes />
-          </Box>
-          <Box flex="1" minW="300px">
-            <Weather />
-          </Box>
-        </Flex>
+
+        <Center>
+          <Weather />
+        </Center>
 
         {!userInfo.isAdmin ? (
           <>

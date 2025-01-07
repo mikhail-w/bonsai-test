@@ -20,6 +20,7 @@ const CustomButton = ({
   fontWeight = '350',
   fontSize = 'md',
   _hover = {
+    backgroundColor: '#55c57a',
     transform: 'translateY(-3px)',
     boxShadow: '0 10px 20px rgba(0, 0, 0, 0.2)',
   },
@@ -46,6 +47,8 @@ const CustomButton = ({
       opacity: 0,
     },
   },
+  leftIcon, // Add leftIcon prop
+  rightIcon, // Add rightIcon prop
 }) => {
   return (
     <ChakraButton
@@ -68,6 +71,8 @@ const CustomButton = ({
       _active={_active}
       _after={_after}
       sx={sx}
+      leftIcon={leftIcon} // Pass leftIcon to ChakraButton
+      rightIcon={rightIcon} // Pass rightIcon to ChakraButton
     >
       {children}
     </ChakraButton>

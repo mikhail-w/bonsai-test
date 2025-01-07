@@ -254,34 +254,6 @@ function BlogPage() {
                         w="full"
                       />
                     </>
-                    //           <Image
-                    //   src={(() => {
-                    //     const imagePath = product.image
-                    //       ? `${import.meta.env.VITE_API_BASE_URL}${product.image}`
-                    //       : `${
-                    //           import.meta.env.VITE_S3_PATH
-                    //         }/media/default/placeholder.jpg`;
-                    //     console.log(
-                    //       'VITE_API_BASE_URL:',
-                    //       `${import.meta.env.VITE_API_BASE_URL}${product.image}`
-                    //     );
-                    //     console.log('PRODUCT IMAGE: ', `${product.image}`);
-                    //     return imagePath;
-                    //   })()}
-                    //   alt={
-                    //     product.image
-                    //       ? `Picture of ${product.name}`
-                    //       : 'Placeholder image for product'
-                    //   }
-                    //   fallbackSrc={`${
-                    //     import.meta.env.VITE_S3_PATH
-                    //   }/media/default/placeholder.jpg`}
-                    //   roundedTop="lg"
-                    //   objectFit="cover"
-                    //   height="300px"
-                    //   width="100%"
-                    //   transition="all 0.3s ease"
-                    // />
                   )}
                   <HStack justify="space-between" w="full">
                     <Text fontFamily={'lato'} color="gray.500" fontSize="sm">
@@ -307,16 +279,16 @@ function BlogPage() {
                           )
                         }
                         onClick={() => likeUnlikeHandler(post.id)}
-                        color="gray.700" // Light mode text color
+                        color="gray.700"
                         _dark={{
-                          color: 'gray.700', // Dark mode text color
+                          color: 'gray.700',
                         }}
                         _hover={{
-                          bg: 'red.50', // Light mode hover background
-                          color: 'red.600', // Light mode hover text color
+                          bg: 'red.50',
+                          color: 'red.600',
                           _dark: {
-                            bg: 'red.200', // Dark mode hover background
-                            color: 'red.500', // Dark mode hover text color
+                            bg: 'red.200',
+                            color: 'red.500',
                           },
                         }}
                       >
