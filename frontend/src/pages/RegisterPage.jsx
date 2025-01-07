@@ -81,13 +81,52 @@ function RegisterPage() {
 
   useEffect(() => {
     if (userInfo) {
+      toast({
+        title: 'Account created.',
+        description: "We've created your account for you.",
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
       navigate(redirect);
     }
-  }, [navigate, userInfo, redirect]);
+  }, [navigate, userInfo, redirect, toast]);
 
-  const handleSubmit = e => {
+  const validateEmail = email => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
+  const handleSubmit = async e => {
     e.preventDefault();
-    if (password.trim() !== confirmPassword.trim()) {
+    setMessage('');
+
+    // Input validation
+    if (!name.trim()) {
+      setMessage('Name is required');
+      toast({
+        title: 'Error',
+        description: 'Please enter your name.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setMessage('Please enter a valid email address');
+      toast({
+        title: 'Error',
+        description: 'Please enter a valid email address.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    if (password !== confirmPassword) {
       setMessage('Passwords do not match');
       toast({
         title: 'Error',
@@ -98,18 +137,59 @@ function RegisterPage() {
       });
       return;
     }
-    dispatch(register(name, email, password, avatar));
-    toast({
-      title: 'Account created.',
-      description: "We've created your account for you.",
-      status: 'success',
-      duration: 3000,
-      isClosable: true,
-    });
+
+    try {
+      // Create FormData for file upload
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('email', email);
+      formData.append('password', password);
+      if (avatar) {
+        formData.append('avatar', avatar);
+      }
+
+      // Dispatch register action with formData
+      await dispatch(register(formData));
+    } catch (error) {
+      setMessage(error.response?.data?.message || 'Registration failed');
+      toast({
+        title: 'Error',
+        description: error.response?.data?.message || 'Registration failed',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
   };
 
   const handleAvatarImageChange = e => {
-    setAvatar(e.target.files[0]);
+    const file = e.target.files[0];
+    if (file) {
+      // Validate file type
+      const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+      if (!validTypes.includes(file.type)) {
+        toast({
+          title: 'Error',
+          description: 'Please upload a valid image file (JPEG, PNG, or GIF)',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+        return;
+      }
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        toast({
+          title: 'Error',
+          description: 'Image size should be less than 5MB',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+        return;
+      }
+      setAvatar(file);
+    }
   };
 
   return (
@@ -136,11 +216,11 @@ function RegisterPage() {
                   placeholder=""
                 />
                 <FormLabel
-                  color="gray.700" // Light mode text color
-                  bg="white" // Light mode background color
+                  color="gray.700"
+                  bg="white"
                   _dark={{
-                    color: 'gray.200', // Dark mode text color
-                    bg: 'gray.800', // Dark mode background color
+                    color: 'gray.200',
+                    bg: 'gray.800',
                   }}
                 >
                   Enter your Name
@@ -154,11 +234,11 @@ function RegisterPage() {
                   placeholder=""
                 />
                 <FormLabel
-                  color="gray.700" // Light mode text color
-                  bg="white" // Light mode background color
+                  color="gray.700"
+                  bg="white"
                   _dark={{
-                    color: 'gray.200', // Dark mode text color
-                    bg: 'gray.800', // Dark mode background color
+                    color: 'gray.200',
+                    bg: 'gray.800',
                   }}
                 >
                   Enter your Email
@@ -172,11 +252,11 @@ function RegisterPage() {
                   placeholder=""
                 />
                 <FormLabel
-                  color="gray.700" // Light mode text color
-                  bg="white" // Light mode background color
+                  color="gray.700"
+                  bg="white"
                   _dark={{
-                    color: 'gray.200', // Dark mode text color
-                    bg: 'gray.800', // Dark mode background color
+                    color: 'gray.200',
+                    bg: 'gray.800',
                   }}
                 >
                   Enter your Password
@@ -195,43 +275,27 @@ function RegisterPage() {
                   placeholder=""
                 />
                 <FormLabel
-                  color="gray.700" // Light mode text color
-                  bg="white" // Light mode background color
+                  color="gray.700"
+                  bg="white"
                   _dark={{
-                    color: 'gray.200', // Dark mode text color
-                    bg: 'gray.800', // Dark mode background color
+                    color: 'gray.200',
+                    bg: 'gray.800',
                   }}
                 >
                   Confirm Password
                 </FormLabel>
               </FormControl>
-              {/*  <FormControl variant="floating" mb={10} id="city" isRequired>
-                <Input
-                  type="text"
-                  value={city}
-                  onChange={e => setCity(e.target.value)}
-                  placeholder=""
-                />
-                <FormLabel>Enter your City</FormLabel>
-              </FormControl>
-              <FormControl variant="floating" mb={10} id="state" isRequired>
-                <Input
-                  type="text"
-                  value={state}
-                  onChange={e => setState(e.target.value)}
-                  placeholder=""
-                />
-                <FormLabel>Enter your State</FormLabel>
-              </FormControl> */}
               <FormControl mb={10} id="profileImage">
                 <FormLabel>Upload Profile Image</FormLabel>
                 <Input
                   type="file"
                   accept="image/*"
                   onChange={handleAvatarImageChange}
+                  disabled={loading}
                 />
                 <FormHelperText>
-                  Optional: Upload your profile image.
+                  Optional: Upload your profile image (max 5MB). Accepted
+                  formats: JPEG, PNG, GIF.
                 </FormHelperText>
               </FormControl>
               <Stack spacing={6}>
@@ -241,6 +305,8 @@ function RegisterPage() {
                   type="submit"
                   width="full"
                   mt={4}
+                  isLoading={loading}
+                  loadingText="Registering..."
                 >
                   Register
                 </Button>

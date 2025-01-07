@@ -95,25 +95,13 @@ export const logout = () => dispatch => {
 };
 
 // Register User
-export const register = (name, email, password, avatar) => async dispatch => {
+export const register = formData => async dispatch => {
   console.log('Register function triggered with:', {
-    name,
-    email,
-    password,
-    avatar,
+    formData,
   });
   try {
     dispatch({ type: USER_REGISTER_REQUEST });
     console.log('USER_REGISTER_REQUEST dispatched');
-
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('email', email);
-    formData.append('password', password);
-    if (avatar) {
-      formData.append('avatar', avatar);
-      console.log('Avatar file appended to formData');
-    }
 
     const config = {
       headers: { 'Content-Type': 'multipart/form-data' },
@@ -167,35 +155,46 @@ export const getUserDetails = id => async (dispatch, getState) => {
 };
 
 // Update User Profile
-export const updateUserProfile = user => async (dispatch, getState) => {
+export const updateUserProfile = userData => async (dispatch, getState) => {
   try {
     dispatch({ type: USER_UPDATE_PROFILE_REQUEST });
 
     const {
       userLogin: { userInfo },
     } = getState();
+
+    // Determine if we're sending JSON or FormData based on whether there's a file
+    const isFormData = userData instanceof FormData;
+
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': isFormData ? 'multipart/form-data' : 'application/json',
         Authorization: userInfo ? `Bearer ${userInfo.token}` : '',
       },
     };
 
+    // If not FormData, convert to JSON
+    const dataToSend = isFormData ? userData : JSON.stringify(userData);
+
     const { data } = await axios.put(
       `${API_URL}users/profile/update/`,
-      user,
+      dataToSend,
       config
     );
 
     dispatch({ type: USER_UPDATE_PROFILE_SUCCESS, payload: data });
-    dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
+    dispatch({ type: USER_LOGIN_SUCCESS, payload: data }); // Update login state
 
+    // Update localStorage with new user data
     localStorage.setItem('userInfo', JSON.stringify(data));
+
+    return data; // Return data for component use
   } catch (error) {
     dispatch({
       type: USER_UPDATE_PROFILE_FAIL,
       payload: getErrorPayload(error),
     });
+    throw error; // Re-throw for component error handling
   }
 };
 

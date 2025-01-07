@@ -19,7 +19,9 @@ const SidebarContent = ({ onClose, links, userInfo, ...rest }) => {
     <Box
       transition="3s ease"
       bg={bgColor}
-      borderRight="0.51px"
+      // borderRight="1px"
+      // borderColor="gray.600"
+      boxShadow="md"
       w={{ base: 'full', md: 60 }}
       pos="fixed"
       h="full"

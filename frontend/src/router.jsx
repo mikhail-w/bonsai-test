@@ -24,14 +24,12 @@ import ThreeDModel from './pages/ThreeDModel.jsx';
 import MapPage from './pages/MapPage.jsx';
 import Favorites from './pages/Favorites.jsx';
 import Settings from './pages/Settings.jsx';
-import MyInfo from './pages/MyInfo.jsx';
 import BlogPage from './pages/BlogPage.jsx'; // List of all blog posts
 import BlogPostPage from './pages/BlogPostPage.jsx'; // Individual blog post page
 import AugmentedReality from './pages/AugmentedReality.jsx';
 import ContactPage from './pages/ContactPage.jsx';
 import AboutPage from './pages/AboutPage.jsx';
-import PlantID from './pages/PlantID.jsx';
-import PlantIdentifier from './pages/PlantIdentifier.jsx';
+import PlantIdentifier from './components/Dashboard/PlantIdentifier.jsx';
 import Chat from './pages/Chat.jsx';
 
 //Instruction page
@@ -39,6 +37,7 @@ import CarePage_Style from './pages/CarePage_Style.jsx';
 import CarePage from './pages/CarePage.jsx';
 import CarePage_Prepare from './pages/CarePage_Prepare.jsx';
 import CarePage_Care from './pages/CarePage_Care.jsx';
+import UserProfile from './components/Dashboard/UserProfile.jsx';
 
 const router = createBrowserRouter([
   {
@@ -61,7 +60,7 @@ const router = createBrowserRouter([
         path: '/profile',
         element: <Dashboard />,
         children: [
-          { path: 'info', element: <MyInfo /> },
+          { path: 'info', element: <UserProfile /> },
           { path: 'threeDModel', element: <ThreeDModel /> },
           { path: 'explore', element: <MapPage /> },
           { path: 'blog', element: <BlogPage /> },

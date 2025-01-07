@@ -25,24 +25,21 @@ const FeaturedProductsSection = () => {
       description: 'Discover a wide variety of plants.',
       image: p3,
       path: '/plants',
-      gradient:
-        'linear-gradient(to bottom right, rgba(255, 159, 64, 0.8), rgba(255, 206, 0, 0.8))',
+      gradient: 'linear-gradient(to bottom right, #ff9f40, #ffce00)',
     },
     {
       title: 'Shop Planters',
       description: 'Explore elegant planters for your plants.',
       image: p4,
       path: '/planters',
-      gradient:
-        'linear-gradient(to bottom right, rgba(72, 239, 128, 0.8), rgba(72, 191, 145, 0.8))',
+      gradient: 'linear-gradient(to bottom right, #48ef80, #48bf91)',
     },
     {
       title: 'Shop Accessories',
       description: 'Find perfect accessories for bonsai care.',
       image: p5,
       path: '/essentials',
-      gradient:
-        'linear-gradient(to bottom right, rgba(72, 145, 239, 0.8), rgba(72, 191, 255, 0.8))',
+      gradient: 'linear-gradient(to bottom right, #4891ef, #48bfff)',
     },
   ];
 
