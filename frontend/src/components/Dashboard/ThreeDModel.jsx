@@ -78,6 +78,10 @@ function Scene({ url }) {
 
 export default function ThreeDModel() {
   const bgColor = useColorModeValue('white', 'gray.800');
+  console.log(
+    'THREEDMODEL: ',
+    `${import.meta.env.VITE_S3_PATH}/media/bonsairoom.glb`
+  );
 
   return (
     <Box
@@ -96,8 +100,7 @@ export default function ThreeDModel() {
             </Html>
           }
         >
-          {/* <Scene url="/bonsairoom.glb" /> */}
-          <Scene url={`${import.meta.env.VITE_S3_PATH}/media/bonsairoom.glb`} />
+          <Scene url="/bonsairoom.glb" />
         </Suspense>
       </Canvas>
     </Box>

@@ -20,7 +20,7 @@ import OrderListPage from './pages/OrderListPage.jsx';
 import ProductEditPage from './pages/ProductEditPage.jsx';
 import ProductsPage from './pages/ProductsPage.jsx';
 import Dashboard from './components/Dashboard/Dashboard.jsx';
-import ThreeDModel from './pages/ThreeDModel.jsx';
+import ThreeDModel from './components/Dashboard/ThreeDModel.jsx';
 import MapPage from './pages/MapPage.jsx';
 import Favorites from './pages/Favorites.jsx';
 import Settings from './pages/Settings.jsx';
