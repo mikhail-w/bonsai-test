@@ -239,6 +239,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Alternate local URL
     "http://mikhail-bonsai.s3-website-us-east-1.amazonaws.com",
     "http://mwbonsai.s3-website-us-east-1.amazonaws.com",
+    "https://mwbonsai.com",
+    "https://www.mwbonsai.com",
 ]
 
 # Add CORS_ALLOW_CREDENTIALS if you're using cookies/sessions
