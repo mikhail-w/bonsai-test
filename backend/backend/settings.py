@@ -229,15 +229,19 @@ SIMPLE_JWT = {
 }
 
 # CORS settings
-CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_ALLOW_ALL = True
 
 
 # Uncomment and configure if you want to restrict allowed origins
-# CORS_ALLOWED_ORIGINS = [
-#     "http://127.0.0.1:5173",  # Local frontend
-#     "http://localhost:5173",  # Alternate local URL
-#     "http://mikhail-bonsai.s3-website-us-east-1.amazonaws.com",
-# ]
+CORS_ALLOWED_ORIGINS = [
+    "https://dk98p7gurowa.cloudfront.net",  # CloudFront URL
+    "http://127.0.0.1:5173",  # Local frontend
+    "http://localhost:5173",  # Alternate local URL
+    "http://mikhail-bonsai.s3-website-us-east-1.amazonaws.com",
+]
+
+# Add CORS_ALLOW_CREDENTIALS if you're using cookies/sessions
+CORS_ALLOW_CREDENTIALS = True
 
 # Security settings for production
 if not DEBUG:
