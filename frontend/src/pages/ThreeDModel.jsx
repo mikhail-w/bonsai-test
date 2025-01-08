@@ -97,7 +97,7 @@ export default function ThreeDModel() {
           }
         >
           {/* <Scene url="/bonsairoom.glb" /> */}
-          <Scene url={`${import.meta.env.VITE_S3_PATH}/bonsairoom.glb`} />
+          <Scene url={`${import.meta.env.VITE_S3_PATH}/MEDIA/bonsairoom.glb`} />
         </Suspense>
       </Canvas>
     </Box>
