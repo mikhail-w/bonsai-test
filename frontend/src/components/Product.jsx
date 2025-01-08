@@ -35,6 +35,8 @@ const Product = ({ product }) => {
     }
   };
 
+  console.log('PRODUCT: ', product.image);
+
   return (
     <Flex p={4} w="full" alignItems="center" justifyContent="center">
       <Box
