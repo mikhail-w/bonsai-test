@@ -10,12 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-from pathlib import Path
 import os
-from dotenv import load_dotenv
 from datetime import timedelta
-from storages.backends.s3boto3 import S3Boto3Storage
+from pathlib import Path
 
+from dotenv import load_dotenv
+from storages.backends.s3boto3 import S3Boto3Storage
 
 # Load environment variables from .env file
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -188,14 +188,18 @@ STORAGES = {
 
 
 # Update MEDIA_URL to ensure it includes 'media'
-MEDIA_URL = (
-    f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
-    if AWS_S3_CUSTOM_DOMAIN
-    else f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/"
-)
-STATIC_URL = (
-    f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/static/"
-)
+# MEDIA_URL = (
+#     f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+#     if AWS_S3_CUSTOM_DOMAIN
+#     else f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/media/"
+# )
+# STATIC_URL = (
+#     f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/static/"
+# )
+
+# CloudFront Settings
+STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static/"
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
 
 
 # Local Static and Media Files (for fallback or local development)
@@ -234,13 +238,13 @@ SIMPLE_JWT = {
 
 # Uncomment and configure if you want to restrict allowed origins
 CORS_ALLOWED_ORIGINS = [
-    "https://dk98p7gurowa.cloudfront.net",  # CloudFront URL
-    "http://127.0.0.1:5173",  # Local frontend
-    "http://localhost:5173",  # Alternate local URL
-    "http://mikhail-bonsai.s3-website-us-east-1.amazonaws.com",
-    "http://mwbonsai.s3-website-us-east-1.amazonaws.com",
     "https://mwbonsai.com",
     "https://www.mwbonsai.com",
+    "https://d2v41dj0jm6bl1.cloudfront.net",
+    "http://127.0.0.1:5173",
+    "http://localhost:5173",
+    "http://mikhail-bonsai.s3-website-us-east-1.amazonaws.com",
+    "http://mwbonsai.s3-website-us-east-1.amazonaws.com",
 ]
 
 # Add CORS_ALLOW_CREDENTIALS if you're using cookies/sessions

@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { Box, Image } from '@chakra-ui/react';
 
+// Use the VITE_S3_PATH environment variable for the base URL
+const S3_BASE_URL =
+  import.meta.env.VITE_S3_PATH || 'https://d2v41dj0jm6bl1.cloudfront.net';
+
 const S3ImageHandler = ({
   imagePath,
   alt,
@@ -15,33 +19,22 @@ const S3ImageHandler = ({
   const getS3Url = path => {
     if (!path) return null;
 
-    // If it's already a full URL, just clean up any duplicate media segments
-    if (path.startsWith('http')) {
-      return path.replace(/\/media\/media\//g, '/media/');
-    }
-
-    // Clean the path:
-    // 1. Remove all leading/trailing slashes
-    // 2. Remove any standalone 'media' segments
-    // 3. Ensure single slashes between segments
+    // Clean the path to ensure consistent formatting
     const cleanPath = path
       .replace(/^\/+|\/+$/g, '') // Remove leading/trailing slashes
       .replace(/^media\/|\/media$/g, '') // Remove media at start/end
-      .replace(/\/media\//g, '/') // Remove media in middle
+      .replace(/\/media\//g, '/') // Remove extra media segments
       .replace(/\/+/g, '/'); // Replace multiple slashes with single
 
     // Construct the full S3 URL
-    return `https://mikhail-bonsai.s3.us-east-1.amazonaws.com/media/${cleanPath}`;
+    return `${S3_BASE_URL}/media/${cleanPath}`;
   };
 
   const handleError = () => {
-    // Log both the original path and the computed URL for debugging
-    console.log(`Original path: ${imagePath}`);
-    console.log(`Computed URL: ${getS3Url(imagePath)}`);
+    console.error(`Image failed to load: ${imagePath}`);
     setImageError(true);
   };
 
-  // If there's an error or no image path, show placeholder
   if (imageError || !imagePath) {
     return (
       <Box
@@ -53,6 +46,7 @@ const S3ImageHandler = ({
         justifyContent="center"
         roundedTop={roundedTop}
       >
+        {/* Placeholder for failed image */}
         <svg
           width="60"
           height="60"
