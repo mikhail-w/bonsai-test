@@ -1,12 +1,12 @@
 export const getImagePath = imagePath => {
   if (!imagePath) {
-    console.log('No image path provided, using placeholder');
+    // console.log('No image path provided, using placeholder');
     return 'default/placeholder.jpg';
   }
 
   // If it's already a full S3 URL, return it as is
   if (imagePath.includes('amazonaws.com')) {
-    console.log('Using existing S3 URL:', imagePath);
+    // console.log('Using existing S3 URL:', imagePath);
     return imagePath;
   }
 

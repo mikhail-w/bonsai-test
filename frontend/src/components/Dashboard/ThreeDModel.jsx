@@ -78,10 +78,10 @@ function Scene({ url }) {
 
 export default function ThreeDModel() {
   const bgColor = useColorModeValue('white', 'gray.800');
-  console.log(
-    'THREEDMODEL: ',
-    `${import.meta.env.VITE_S3_PATH}/media/bonsairoom.glb`
-  );
+  // console.log(
+  //   'THREEDMODEL: ',
+  //   `${import.meta.env.VITE_S3_PATH}/media/bonsairoom.glb`
+  // );
 
   return (
     <Box

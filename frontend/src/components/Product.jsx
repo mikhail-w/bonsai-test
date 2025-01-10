@@ -1,7 +1,6 @@
 import {
   Flex,
   Box,
-  Image,
   Tooltip,
   Button,
   Icon,
@@ -35,7 +34,12 @@ const Product = ({ product }) => {
     }
   };
 
-  console.log('PRODUCT: ', product.image);
+  // Ensure image path is properly formatted
+  const getImagePath = image => {
+    if (!image) return '';
+    // Remove any duplicate media prefixes and ensure clean path
+    return image.replace(/^media\/|\/media\//g, '');
+  };
 
   return (
     <Flex p={4} w="full" alignItems="center" justifyContent="center">
@@ -58,7 +62,7 @@ const Product = ({ product }) => {
       >
         <Link to={`/product/${product._id}`}>
           <S3ImageHandler
-            imagePath={product.image}
+            imagePath={getImagePath(product.image)}
             alt={`Picture of ${product.name}`}
             roundedTop="lg"
             objectFit="cover"
@@ -100,7 +104,7 @@ const Product = ({ product }) => {
                   transition: 'transform 0.2s',
                 }}
                 size="sm"
-                isDisabled={product.countInStock === 0} // Disable if out of stock
+                isDisabled={product.countInStock === 0}
               >
                 <Icon as={FiShoppingCart} h={5} w={5} />
               </Button>

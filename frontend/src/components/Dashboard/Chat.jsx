@@ -179,6 +179,7 @@ function Chat() {
               onChange={e => setInputMessage(e.target.value)}
               placeholder="Free your wandering mind..."
               bg="white"
+              color={'gray.600'}
               borderColor="gray.300"
               _hover={{ borderColor: 'gray.400' }}
               _focus={{

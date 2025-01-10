@@ -235,7 +235,7 @@ function BlogPage() {
                   </Text>
                   {post.image && (
                     <>
-                      {console.log('Image Path:', post.image)}
+                      {/* {console.log('Image Path:', post.image)} */}
                       <Image
                         src={
                           post.image

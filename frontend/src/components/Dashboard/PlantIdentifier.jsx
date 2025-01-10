@@ -49,7 +49,7 @@ const PlantIdentifier = () => {
       const base64Image = await toBase64(file);
       // Make sure we only send the base64 data without the prefix
       const imageWithoutPrefix = base64Image.split(',')[1];
-      console.log('Image data length:', imageWithoutPrefix.length);
+      // console.log('Image data length:', imageWithoutPrefix.length);
       await identifyPlant(imageWithoutPrefix);
     } catch (err) {
       setError('Error processing image: ' + err.message);
@@ -95,7 +95,7 @@ const PlantIdentifier = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.log('Full API Error:', errorData);
+        // console.log('Full API Error:', errorData);
         throw new Error(
           `API Error: ${errorData.error?.message || response.statusText}`
         );

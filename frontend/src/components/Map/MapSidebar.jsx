@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import DefaultImg from '../../assets/images/bonsai-tree-logo.png';
 import {
   Box,
   HStack,
@@ -43,7 +44,7 @@ const MapSidebar = ({
         zIndex="1"
         p={4}
       >
-        <HStack>
+        {/* <HStack>
           <Input
             placeholder="Search bonsai locations..."
             value={searchTerm}
@@ -59,7 +60,7 @@ const MapSidebar = ({
             colorScheme="green"
             aria-label="Search"
           />
-        </HStack>
+        </HStack> */}
         <Text size="md" mt={4} fontFamily="rale">
           Nearby Bonsai Locations:
         </Text>
@@ -120,7 +121,11 @@ const MapSidebar = ({
                   <Image
                     boxSize="100%"
                     objectFit="cover"
-                    src={location.photos ? location.photos[0].getUrl() : null}
+                    src={
+                      location.photos
+                        ? location.photos[0].getUrl({ maxWidth: 400 })
+                        : DefaultImg
+                    }
                     alt={`${location.name} thumbnail`}
                   />
                 </Box>

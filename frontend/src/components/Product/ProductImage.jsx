@@ -17,8 +17,8 @@ const ProductImage = ({ image, name }) => {
   );
 
   // Log paths for debugging if needed
-  console.log('Main Image Path:', mainImagePath);
-  console.log('Fallback Image Path:', fallbackImagePath);
+  // console.log('Main Image Path:', mainImagePath);
+  // console.log('Fallback Image Path:', fallbackImagePath);
 
   return (
     <VStack spacing={4} align="center">

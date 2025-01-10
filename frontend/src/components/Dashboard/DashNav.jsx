@@ -109,12 +109,12 @@ const DashNav = ({ onOpen }) => {
           >
             <HStack>
               {/* Debug log for constructed URL */}
-              {console.log(
+              {/* {console.log(
                 cleanMediaPath(
                   userInfo.avatar || 'media/avatars/default.jpg',
                   import.meta.env.VITE_API_BASE_URL
                 )
-              )}
+              )} */}
               <Avatar
                 src={
                   userInfo.avatar

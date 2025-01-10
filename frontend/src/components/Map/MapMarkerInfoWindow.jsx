@@ -1,15 +1,15 @@
 import { InfoWindow } from '@react-google-maps/api';
 import {
-  HStack,
+  Box,
   VStack,
+  HStack,
   Text,
   Image,
-  IconButton,
-  Box,
+  Link,
   Icon,
   Tooltip,
 } from '@chakra-ui/react';
-import { FaStar, FaDirections } from 'react-icons/fa';
+import { MapPin, Navigation2, Star } from 'lucide-react';
 
 const MapMarkerInfoWindow = ({
   selectedMarker,
@@ -18,8 +18,51 @@ const MapMarkerInfoWindow = ({
 }) => {
   const renderStars = rating => {
     const stars = [];
-    for (let i = 0; i < Math.floor(rating); i++) {
-      stars.push(<Icon as={FaStar} color="yellow.500" boxSize="3" key={i} />);
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.5;
+
+    for (let i = 0; i < 5; i++) {
+      if (i < fullStars) {
+        stars.push(
+          <Icon
+            key={i}
+            as={Star}
+            color="yellow.400"
+            boxSize={4}
+            fill="currentColor"
+          />
+        );
+      } else if (i === fullStars && hasHalfStar) {
+        stars.push(
+          <Box key={i} position="relative" width="16px" height="16px">
+            <Icon
+              as={Star}
+              color="yellow.400"
+              boxSize={4}
+              fill="currentColor"
+              position="absolute"
+              clipPath="inset(0 50% 0 0)"
+            />
+            <Icon
+              as={Star}
+              color="gray.200"
+              boxSize={4}
+              fill="currentColor"
+              position="absolute"
+            />
+          </Box>
+        );
+      } else {
+        stars.push(
+          <Icon
+            key={i}
+            as={Star}
+            color="gray.200"
+            boxSize={4}
+            fill="currentColor"
+          />
+        );
+      }
     }
     return stars;
   };
@@ -35,90 +78,84 @@ const MapMarkerInfoWindow = ({
         disableAutoPan: true,
         pixelOffset: new window.google.maps.Size(0, -90),
       }}
-      onCloseClick={null} // Disable the close button
+      onCloseClick={null}
     >
-      <VStack
-        align="start"
-        spacing={1}
+      <Box
         width="300px"
-        height="230px"
-        p={0}
+        bg="white"
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
       >
-        {/* Image Section */}
-        <Image
-          src={selectedMarker.photo}
-          alt={`${selectedMarker.name} thumbnail`}
-          width="100%"
-          height="100px"
-          objectFit="cover"
-          borderTopRadius="0"
-          marginTop="0"
-        />
+        <VStack align="stretch" spacing={0}>
+          {/* Image Section */}
+          <Image
+            src={selectedMarker.photo}
+            alt={`${selectedMarker.name} thumbnail`}
+            height="128px"
+            objectFit="cover"
+            width="100%"
+          />
 
-        {/* Title and Directions Button */}
-        <HStack
-          justifyContent="space-between"
-          width="100%"
-          p={0}
-          pt={1}
-          color={'black'}
-        >
-          <Text
-            fontWeight="bold"
-            fontSize="md"
-            noOfLines={1}
-            fontFamily="rale"
-            isTruncated
-            maxWidth="70%" // Limit the text width to 70% of the container
-            display="inline-block"
-            whiteSpace="normal"
-            overflow="visible"
-            wordwrap="break-word"
-          >
-            {selectedMarker.name}
-          </Text>
-          <Box>
-            <Tooltip
-              label={'Get Directions'}
-              bg="white"
-              placement="top"
-              color="gray.800"
-              fontSize="md"
-            >
-              <IconButton
-                icon={<FaDirections />}
-                size="lg"
-                variant="ghost"
-                color="green"
-                aria-label="Get Directions"
-                as="a"
-                href={directionsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                position="absolute"
-                right={4}
-                transition="transform 0.2s" // Smooth transition effect
-                _hover={{
-                  transform: 'scale(1.6)', // Increase the size to 160% on hover
-                }}
-              />
-            </Tooltip>
+          {/* Content Container */}
+          <Box p={4}>
+            {/* Title and Directions */}
+            <HStack justify="space-between" align="flex-start" mb={2}>
+              <Text
+                fontWeight="bold"
+                fontSize="lg"
+                noOfLines={1}
+                maxWidth="70%"
+              >
+                {selectedMarker.name}
+              </Text>
+              <Tooltip
+                label="Get Directions"
+                placement="top"
+                bg="white"
+                color="gray.800"
+              >
+                <Link
+                  href={directionsUrl}
+                  isExternal
+                  color="green.500"
+                  _hover={{
+                    color: 'green.600',
+                    transform: 'scale(1.1)',
+                  }}
+                  transition="all 0.2s"
+                  display="block"
+                >
+                  <Icon as={Navigation2} boxSize={6} />
+                </Link>
+              </Tooltip>
+            </HStack>
+
+            {/* Rating Section */}
+            <Box mb={2}>
+              <HStack spacing={1} mb={1}>
+                <Text fontSize="sm" color="gray.700">
+                  Rating:
+                </Text>
+                <HStack spacing={0.5}>
+                  {renderStars(selectedMarker.rating)}
+                </HStack>
+                <Text fontSize="sm" color="gray.700">
+                  {selectedMarker.rating}
+                </Text>
+              </HStack>
+              <Text fontSize="xs" color="gray.500">
+                ({selectedMarker.reviewCount} reviews)
+              </Text>
+            </Box>
+
+            {/* Address */}
+            <HStack spacing={2} color="gray.600">
+              <Icon as={MapPin} boxSize={4} mt={1} flexShrink={0} />
+              <Text fontSize="sm">{selectedMarker.address}</Text>
+            </HStack>
           </Box>
-        </HStack>
-
-        {/* Rating Section */}
-        <HStack spacing={0.5} color={'black'}>
-          <Text>Rating: </Text>
-          {renderStars(selectedMarker.rating)}
-          <Text>{selectedMarker.rating}</Text>
-        </HStack>
-        <Text fontSize="xs" color="gray.500">
-          ({selectedMarker.reviewCount}) reviews
-        </Text>
-        <Text color={'black'}>{selectedMarker.address}</Text>
-      </VStack>
+        </VStack>
+      </Box>
     </InfoWindow>
   );
 };
