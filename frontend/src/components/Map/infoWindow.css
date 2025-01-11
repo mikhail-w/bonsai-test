@@ -1,0 +1,22 @@
+  /* Custom InfoWindow Styles */
+  .custom-info-window .gm-style-iw {
+    background-color: transparent !important;
+    /* Remove default white background */
+    padding: 0 !important;
+    box-shadow: none !important;
+    /* Remove default shadow */
+    border-radius: 12px !important;
+    /* Rounded corners */
+    overflow: hidden;
+  }
+
+  .custom-info-window .gm-style-iw-t {
+    display: none !important;
+    /* Remove the white tip */
+    color: #2c3ce5;
+  }
+
+  .custom-info-window .gm-style-iw-d {
+    overflow: hidden !important;
+    /* Prevent content overflow */
+  }

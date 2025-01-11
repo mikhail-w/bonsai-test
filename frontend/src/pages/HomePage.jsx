@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import '../index.css';
 import ScrollToTopButton from '../components/ScrollToTopButton';
+
 import {
   HeroSection,
   FeaturedProductsSection,
@@ -10,6 +11,8 @@ import {
   GlobeSection,
   NewsLetterSection,
 } from '@homepageSections';
+import FeaturesSection from './homepage-sections/FeaturesSection';
+import { Box } from '@chakra-ui/react';
 
 function HomePage() {
   useEffect(() => {
@@ -23,7 +26,10 @@ function HomePage() {
     <>
       <HeroSection />
       <FeaturedProductsSection />
+      <Box height="120px" bg="transparent" />
       <BenefitsSection />
+      <Box height="120px" bg="transparent" />
+      <FeaturesSection />
       <ReviewsSection />
       <ExpandingCardsSection />
       <GlobeSection />

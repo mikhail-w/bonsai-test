@@ -32,16 +32,12 @@ function Chat() {
   const userLogin = useSelector(state => state.userLogin);
   const { userInfo } = userLogin;
   const textColor = useColorModeValue('gray.600', 'white.700');
+  const inputBgColor = useColorModeValue('gray.50', 'gray.700');
 
   // Updated color scheme
-  const bgColor = useColorModeValue('gray.100', 'gray.500');
-  // const userMsgColor = useColorModeValue('blue.100', 'blue.700');
+  const bgColor = useColorModeValue('white', 'gray.800');
   const userMsgColor = '#d9fdd3';
   const botMsgColor = 'white';
-  const stoneBg = useColorModeValue(
-    'rgba(255, 255, 255, 0.3)',
-    'rgba(0, 0, 0, 0.7)'
-  );
 
   const handleSendMessage = async () => {
     if (inputMessage.trim() !== '') {
@@ -178,7 +174,7 @@ function Chat() {
               value={inputMessage}
               onChange={e => setInputMessage(e.target.value)}
               placeholder="Free your wandering mind..."
-              bg="white"
+              bg={inputBgColor}
               color={'gray.600'}
               borderColor="gray.300"
               _hover={{ borderColor: 'gray.400' }}

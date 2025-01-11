@@ -383,6 +383,7 @@ const FeaturesSection = () => {
                 {/* Button container with fixed position */}
                 <Box width="100%" display="flex" justifyContent="center">
                   <CustomButton
+                    to={'/register/'}
                     size="lg"
                     bg="#228B22"
                     color="white"
@@ -391,7 +392,6 @@ const FeaturesSection = () => {
                     fontWeight="300"
                     mt={5}
                     transition="all 0.3s"
-                    onClick={() => alert('Sign Up feature coming soon!')}
                     _hover={{
                       bg: '#32CD32',
                       transform: 'translateY(-2px)',

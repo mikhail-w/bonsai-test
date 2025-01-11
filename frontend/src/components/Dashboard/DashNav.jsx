@@ -31,6 +31,7 @@ const DashNav = ({ onOpen }) => {
   const textColor = useColorModeValue('gray.900', 'white');
   const isMobile = useBreakpointValue({ base: true, md: false });
   const { userInfo } = useSelector(state => state.userLogin);
+  const borderColor = useColorModeValue('gray.200', 'gray.700');
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -50,6 +51,8 @@ const DashNav = ({ onOpen }) => {
       top="0px"
       zIndex="1000"
       boxShadow="sm"
+      borderBottom="1px solid"
+      borderColor={borderColor}
     >
       {/* Mobile Menu Button */}
       <IconButton
