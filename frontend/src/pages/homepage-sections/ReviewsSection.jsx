@@ -1,5 +1,4 @@
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import React from 'react';
 import {
   Box,
   Text,
@@ -10,152 +9,143 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { SlArrowRight, SlArrowLeft } from 'react-icons/sl';
-import { FaQuoteRight } from 'react-icons/fa'; // Import the quote icon
+import { FaQuoteRight } from 'react-icons/fa';
 import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import r1 from '../../assets/images/r1.png';
 import r2 from '../../assets/images/r2.png';
 
-// Custom Next Arrow
-const NextArrow = ({ className, onClick }) => {
-  return (
-    <Box
-      className={className}
-      onClick={onClick}
-      position="absolute"
-      right="-10px"
-      top="50%"
-      transform="translate(0, -50%)"
-      zIndex={2}
-      cursor="pointer"
-      bg="rgba(0,0,0,0.5)"
-      color="white"
-      borderRadius="full"
-      padding="10px"
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      _hover={{ bg: 'black' }}
-    >
-      <SlArrowRight size="34px" />
-    </Box>
-  );
-};
-
-// Custom Prev Arrow
-const PrevArrow = ({ className, onClick }) => {
-  return (
-    <Box
-      className={className}
-      onClick={onClick}
-      position="absolute"
-      left="-10px"
-      top="50%"
-      transform="translate(0, -50%)"
-      zIndex={2}
-      cursor="pointer"
-      bg="rgba(0,0,0,0.5)"
-      color="white"
-      borderRadius="full"
-      padding="10px"
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      _hover={{ bg: 'black' }}
-    >
-      <SlArrowLeft size="34px" />
-    </Box>
-  );
-};
-
-// Reviews Data
 const reviews = [
   {
     name: 'James Wilson',
     position: 'Project Manager at Microsoft',
     image: r1,
     review:
-      '“This website is a bonsai lover’s dream! The selection is incredible, and the care instructions that come with each tree are so helpful. My mini Japanese Maple arrived in perfect condition, and I can already tell it’s going to thrive in my home. The customer service is top-notch, and I can’t wait to order more!”',
+      "This website is a bonsai lover's dream! The selection is incredible, and the care instructions that come with each tree are so helpful.",
   },
   {
     name: 'Robert Fox',
     position: 'Founder at Brain.co',
     image: r2,
     review:
-      '“I had never owned a bonsai before, but this website made the process so easy and enjoyable. The descriptions for each tree are super detailed, and I love that they provide care tips for beginners. My Juniper Bonsai looks amazing on my desk, and I’ve already gotten so many compliments on it. Highly recommend this site for anyone looking to add a little zen to their space.”',
+      '"I had never owned a bonsai before, but this website made the process so easy and enjoyable. The descriptions for each tree are super detailed."',
   },
   {
     name: 'Kristin Watson',
     position: 'UX Designer at Google',
     image: 'https://randomuser.me/api/portraits/women/50.jpg',
     review:
-      '“As an interior designer, I’m always on the lookout for unique pieces to incorporate into my projects, and this bonsai eCommerce site has become my go-to! The trees are not only beautiful but also come with gorgeous planters that fit any decor. Shipping was fast, and the bonsai arrived in perfect condition. My clients love them!”',
+      "As an interior designer, I'm always on the lookout for unique pieces to incorporate into my projects, and this bonsai eCommerce site has become my go-to!",
   },
 ];
 
-const ReviewCard = ({ review }) => (
-  <Box
-    bg="white"
-    borderRadius="md"
-    boxShadow="md"
-    p={6}
-    textAlign="center"
-    maxW="350px"
-    minW="300px"
-    minH="458px"
-    m="auto"
-    mb={10}
-    position="relative"
-  >
-    {/* Image with Quote Icon */}
-    <Box position="relative" display="inline-block">
-      <Image
-        src={review.image}
-        alt={review.name}
-        borderRadius="full"
-        boxSize="80px"
-        objectFit="cover"
-        mx="auto"
-        mb={4}
-      />
-      <Box
-        position="absolute"
-        top="-5px"
-        right="-5px"
-        bg="green.500"
-        color="white"
-        borderRadius="full"
-        boxSize="24px"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <FaQuoteRight size="12px" />
-      </Box>
-    </Box>
+const SliderArrow = ({ direction, onClick }) => {
+  const isNext = direction === 'next';
+  const Icon = isNext ? SlArrowRight : SlArrowLeft;
 
-    <Text
-      color={'black'}
-      fontFamily={'lato'}
-      fontSize="md"
-      fontStyle="italic"
-      mb={4}
+  return (
+    <Box
+      onClick={onClick}
+      position="absolute"
+      top="50%"
+      transform="translateY(-50%)"
+      {...(isNext ? { right: -5 } : { left: -5 })}
+      zIndex={2}
+      cursor="pointer"
+      bg="green.400"
+      color="white"
+      borderRadius="full"
+      p={3}
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      transition="all 0.2s"
+      _hover={{
+        bg: 'green.500',
+        transform: 'translateY(-50%) scale(1.1)',
+      }}
     >
-      {review.review}
-    </Text>
-    <Heading color={'black'} as="h3" size="md" fontWeight="bold" mb={1}>
-      {review.name}
-    </Heading>
-    <Text color="gray.500">{review.position}</Text>
-  </Box>
-);
+      <Icon size={20} />
+    </Box>
+  );
+};
+
+const ReviewCard = ({ review }) => {
+  const bgColor = useColorModeValue('white', 'gray.800');
+  const textColor = useColorModeValue('gray.700', 'gray.200');
+  const titleColor = useColorModeValue('gray.800', 'white');
+  const isMobile = useBreakpointValue({ base: true, md: false });
+
+  return (
+    <Box
+      bg={bgColor}
+      borderRadius="xl"
+      boxShadow="lg"
+      p={6}
+      textAlign="center"
+      width={isMobile ? 'calc(100vw - 48px)' : '350px'}
+      maxW={isMobile ? 'none' : '350px'}
+      minH="400px"
+      m="auto"
+      position="relative"
+      transition="all 0.3s"
+      _hover={{ transform: 'translateY(-5px)', boxShadow: 'xl' }}
+    >
+      <Box position="relative" display="inline-block" mb={4}>
+        <Image
+          src={review.image}
+          alt={review.name}
+          borderRadius="full"
+          boxSize="80px"
+          objectFit="cover"
+          mx="auto"
+          border="3px solid"
+          borderColor="green.400"
+        />
+        <Box
+          position="absolute"
+          top="-2px"
+          right="-2px"
+          bg="green.400"
+          color="white"
+          borderRadius="full"
+          p={1.5}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <FaQuoteRight size="12px" />
+        </Box>
+      </Box>
+
+      <Text
+        color={textColor}
+        fontSize={isMobile ? 'lg' : 'md'}
+        mb={4}
+        fontStyle="italic"
+        px={isMobile ? 2 : 0}
+      >
+        {review.review}
+      </Text>
+
+      <Heading as="h3" size="md" color={titleColor} mb={1}>
+        {review.name}
+      </Heading>
+
+      <Text color="gray.500" fontSize="sm">
+        {review.position}
+      </Text>
+    </Box>
+  );
+};
 
 const ReviewsSection = () => {
   const isMobile = useBreakpointValue({ base: true, md: false });
-
-  // Use Chakra UI's useColorModeValue to dynamically set dot color
-  const dotColor = useColorModeValue('black', 'white');
-  const headerColor = useColorModeValue('rgba(126, 213, 111, 0.8)', 'white');
-  const activeDotColor = useColorModeValue('teal.500', 'teal.300');
+  const sectionBg = useColorModeValue('gray.50', 'gray.900');
+  const titleColor = useColorModeValue('green.600', 'green.400');
+  const dotColor = useColorModeValue('gray.300', 'gray.600');
+  const activeDotColor = useColorModeValue('green.500', 'green.400');
 
   const sliderSettings = {
     dots: true,
@@ -163,26 +153,37 @@ const ReviewsSection = () => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    pauseOnHover: true,
+    nextArrow: <SliderArrow direction="next" />,
+    prevArrow: <SliderArrow direction="prev" />,
     appendDots: dots => (
       <Box>
-        <ul style={{ margin: 0 }}>{dots}</ul>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          gap={2}
+          mt={4}
+        >
+          {dots}
+        </Box>
       </Box>
     ),
-    customPaging: i => (
+    customPaging: () => (
       <Box
-        as="div"
-        bg={dotColor} // Default dot color
-        w="12px"
-        h="12px"
-        borderRadius="50%"
-        transition="background-color 0.3s ease"
-        _hover={{ bg: activeDotColor }} // Hover color
-        // Ensure active dots are styled differently
+        as="button"
+        w="10px"
+        h="10px"
+        borderRadius="full"
+        bg={dotColor}
+        transition="all 0.2s"
+        _hover={{ bg: activeDotColor }}
         sx={{
-          '.slick-active &': {
+          '&.slick-active': {
             bg: activeDotColor,
+            transform: 'scale(1.2)',
           },
         }}
       />
@@ -190,34 +191,38 @@ const ReviewsSection = () => {
   };
 
   return (
-    <Box mt={100} mb={50} py={10} px={15} mx={2}>
+    <Box bg={sectionBg} py={16} px={4}>
       <Heading
-        fontFamily="lato"
         as="h2"
         size="2xl"
         mb={12}
-        paddingBottom="100px"
-        fontWeight="300"
-        color="green.600"
+        color={titleColor}
         textAlign="center"
-        textTransform={'uppercase'}
+        fontWeight="300"
+        textTransform="uppercase"
       >
         What Our Customers Say
       </Heading>
 
-      {isMobile ? (
-        <Slider {...sliderSettings}>
-          {reviews.map((review, index) => (
-            <ReviewCard key={index} review={review} />
-          ))}
-        </Slider>
-      ) : (
-        <SimpleGrid columns={{ base: 1, md: 3 }} spacing={8}>
-          {reviews.map((review, index) => (
-            <ReviewCard key={index} review={review} />
-          ))}
-        </SimpleGrid>
-      )}
+      <Box maxW="1200px" mx="auto">
+        {isMobile ? (
+          <Box position="relative" mx={2}>
+            <Slider {...sliderSettings}>
+              {reviews.map((review, index) => (
+                <Box key={index}>
+                  <ReviewCard review={review} />
+                </Box>
+              ))}
+            </Slider>
+          </Box>
+        ) : (
+          <SimpleGrid columns={{ base: 1, md: 3 }} spacing={8}>
+            {reviews.map((review, index) => (
+              <ReviewCard key={index} review={review} />
+            ))}
+          </SimpleGrid>
+        )}
+      </Box>
     </Box>
   );
 };

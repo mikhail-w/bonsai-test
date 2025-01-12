@@ -214,34 +214,36 @@ const Navigation = () => {
       <Box>
         {/* Logo and Navigation Button (Hamburger/Close) */}
         <Flex
-          as="nav"
-          align="center"
-          justify="space-between"
-          padding="1.5rem"
-          position="fixed"
-          top="0"
-          left="0"
-          right="0"
-          zIndex="20" // Adjusted to ensure visibility
-          width="100%"
-          bg={scrolled ? bgColor : 'transparent'} // White background on scroll
-          boxShadow={scrolled ? 'md' : 'none'} // Add shadow when scrolled
-          transition="background-color 0.3s ease" // Smooth transition for background color
+        // as="nav"
+        // align="center"
+        // justify-content="flex-end"
+        // padding="1.5rem"
+        // position="fixed"
+        // top="0"
+        // left="0"
+        // right="0"
+        // zIndex="20" // Adjusted to ensure visibility
+        // width="100%"
+        // bg={scrolled ? bgColor : 'transparent'} // White background on scroll
+        // boxShadow={scrolled ? 'md' : 'none'} // Add shadow when scrolled
+        // transition="background-color 0.3s ease" // Smooth transition for background color
         >
           {/* Logo */}
           <RouterLink to="/">
-            <Box>
+            <Box position="fixed" top={9} left={8} zIndex="10">
               <Image src={logoSrc} alt="Logo" boxSize="50px" />
             </Box>
           </RouterLink>
 
           {/* Hamburger Button with Circle Animation */}
           <Box
-            position="relative"
+            position="fixed"
             display="flex"
             alignItems="center"
             justifyContent="center"
             zIndex="10"
+            right={8}
+            top={10}
           >
             {/* Radiating Circle */}
             <motion.div
