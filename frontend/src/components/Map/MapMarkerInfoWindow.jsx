@@ -1,4 +1,4 @@
-import { OverlayView } from '@react-google-maps/api';
+import { InfoWindow } from '@react-google-maps/api';
 import {
   Box,
   VStack,
@@ -8,7 +8,6 @@ import {
   Link,
   Icon,
   Tooltip,
-  useColorModeValue,
 } from '@chakra-ui/react';
 import { MapPin, Navigation2, Star } from 'lucide-react';
 
@@ -46,7 +45,7 @@ const MapMarkerInfoWindow = ({
             />
             <Icon
               as={Star}
-              color={useColorModeValue('gray.200', 'gray.600')}
+              color="gray.200"
               boxSize={4}
               fill="currentColor"
               position="absolute"
@@ -58,7 +57,7 @@ const MapMarkerInfoWindow = ({
           <Icon
             key={i}
             as={Star}
-            color={useColorModeValue('gray.200', 'gray.600')}
+            color="gray.200"
             boxSize={4}
             fill="currentColor"
           />
@@ -72,27 +71,20 @@ const MapMarkerInfoWindow = ({
     selectedMarker.address
   )}`;
 
-  const bgColor = useColorModeValue('white', 'gray.800');
-  const textColor = useColorModeValue('gray.800', 'gray.200');
-  const secondaryTextColor = useColorModeValue('gray.600', 'gray.400');
-  const tooltipBg = useColorModeValue('white', 'gray.700');
-  const tooltipColor = useColorModeValue('gray.800', 'gray.200');
-
   return (
-    <OverlayView
+    <InfoWindow
       position={selectedMarker.position}
-      mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+      options={{
+        disableAutoPan: true,
+        pixelOffset: new window.google.maps.Size(0, -90),
+      }}
+      onCloseClick={null}
     >
       <Box
         width="300px"
-        bg={bgColor}
-        color={textColor}
-        borderRadius="lg"
-        boxShadow="lg"
-        overflow="hidden"
+        bg="white"
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
-        p={4}
       >
         <VStack align="stretch" spacing={0}>
           {/* Image Section */}
@@ -105,24 +97,29 @@ const MapMarkerInfoWindow = ({
           />
 
           {/* Content Container */}
-          <Box>
+          <Box p={4}>
             {/* Title and Directions */}
             <HStack justify="space-between" align="flex-start" mb={2}>
-              <Text fontWeight="bold" fontSize="lg" noOfLines={1}>
+              <Text
+                fontWeight="bold"
+                fontSize="lg"
+                noOfLines={1}
+                maxWidth="70%"
+              >
                 {selectedMarker.name}
               </Text>
               <Tooltip
                 label="Get Directions"
                 placement="top"
-                bg={tooltipBg}
-                color={tooltipColor}
+                bg="white"
+                color="gray.800"
               >
                 <Link
                   href={directionsUrl}
                   isExternal
-                  color="green.400"
+                  color="green.500"
                   _hover={{
-                    color: 'green.500',
+                    color: 'green.600',
                     transform: 'scale(1.1)',
                   }}
                   transition="all 0.2s"
@@ -136,30 +133,30 @@ const MapMarkerInfoWindow = ({
             {/* Rating Section */}
             <Box mb={2}>
               <HStack spacing={1} mb={1}>
-                <Text fontSize="sm" color={secondaryTextColor}>
+                <Text fontSize="sm" color="gray.700">
                   Rating:
                 </Text>
                 <HStack spacing={0.5}>
                   {renderStars(selectedMarker.rating)}
                 </HStack>
-                <Text fontSize="sm" color={secondaryTextColor}>
+                <Text fontSize="sm" color="gray.700">
                   {selectedMarker.rating}
                 </Text>
               </HStack>
-              <Text fontSize="xs" color={secondaryTextColor}>
+              <Text fontSize="xs" color="gray.500">
                 ({selectedMarker.reviewCount} reviews)
               </Text>
             </Box>
 
             {/* Address */}
-            <HStack spacing={2} color={secondaryTextColor}>
+            <HStack spacing={2} color="gray.600">
               <Icon as={MapPin} boxSize={4} mt={1} flexShrink={0} />
               <Text fontSize="sm">{selectedMarker.address}</Text>
             </HStack>
           </Box>
         </VStack>
       </Box>
-    </OverlayView>
+    </InfoWindow>
   );
 };
 
