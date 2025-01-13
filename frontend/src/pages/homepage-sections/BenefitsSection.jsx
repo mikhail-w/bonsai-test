@@ -33,6 +33,7 @@ const BenefitsSection = () => {
   const [modalIndex, setModalIndex] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const bgColor = useColorModeValue('white', 'gray.700');
+  const textColor = useColorModeValue('gray.900', 'white');
 
   // Responsive modal layout
   const modalSize = useBreakpointValue({ base: 'full', md: '2xl', lg: '3xl' });
@@ -243,7 +244,7 @@ const BenefitsSection = () => {
 
               <ModalBody p={0}>
                 {modalIndex !== null && (
-                  <Text fontSize="md" color="gray.700">
+                  <Text fontSize="md" color={textColor}>
                     {benefits[modalIndex].description}
                   </Text>
                 )}
