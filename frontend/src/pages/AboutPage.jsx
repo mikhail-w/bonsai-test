@@ -146,10 +146,13 @@ const AboutPage = () => {
             src={watermark}
             alt="Watermark"
             position="fixed"
-            top={{ md: '80%', sm: '80%' }}
+            top={{ base: '80%', md: '80%' }}
             right={10}
-            transform="translateY(-50%)"
-            width="30%"
+            transform={{
+              base: 'translateY(-50%) translateX(30%)',
+              md: 'translateY(-50%) ',
+            }}
+            width={{ base: '80%', md: '30%' }}
             height="auto"
             objectFit="contain"
             opacity={0.1}
