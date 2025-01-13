@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { RepeatIcon } from '@chakra-ui/icons';
 import CustomButton from '../CustomButton';
+import quoteService from './quoteService';
 
 // Custom hook for quote fetching
 const useQuote = () => {
@@ -27,23 +28,13 @@ const useQuote = () => {
     setError(null);
 
     try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 5000);
-
-      const response = await fetch('http://api.quotable.io/random', {
-        signal: controller.signal,
-      });
-
-      clearTimeout(timeoutId);
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch quote (Status: ${response.status})`);
-      }
-
-      const data = await response.json();
+      const data = await quoteService.getRandomQuote();
       setQuote(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch quote');
+      if (err.message.includes('No authentication token found')) {
+        setError('Please log in to view quotes');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -103,18 +94,20 @@ const ErrorMessage = ({ message, onRetry }) => (
   >
     <AlertIcon boxSize={6} mr={0} mb={2} />
     <AlertDescription mb={4}>{message}</AlertDescription>
-    <CustomButton
-      size="sm"
-      onClick={onRetry}
-      bg="#4891ef"
-      _hover={{
-        backgroundColor: '#55c57a',
-        transform: 'translateY(-2px)',
-        boxShadow: '0 8px 15px rgba(0, 0, 0, 0.1)',
-      }}
-    >
-      Try Again
-    </CustomButton>
+    {!message.includes('Please log in') && (
+      <CustomButton
+        size="sm"
+        onClick={onRetry}
+        bg="#4891ef"
+        _hover={{
+          backgroundColor: '#55c57a',
+          transform: 'translateY(-2px)',
+          boxShadow: '0 8px 15px rgba(0, 0, 0, 0.1)',
+        }}
+      >
+        Try Again
+      </CustomButton>
+    )}
   </Alert>
 );
 
@@ -137,7 +130,7 @@ const ZenQuotes = () => {
             boxShadow="xl"
             position="relative"
             minH="250px"
-            minWidth={{ base: '90vw', md: '300px' }}
+            minW={{ base: '90vw', md: '300px' }}
             display="flex"
             flexDirection="column"
             justifyContent="center"
@@ -166,25 +159,27 @@ const ZenQuotes = () => {
               ) : null}
             </Box>
 
-            <CustomButton
-              leftIcon={<Icon as={RepeatIcon} />}
-              size="sm"
-              fontSize="xs"
-              fontWeight="600"
-              padding="1rem"
-              bg="#4891ef"
-              onClick={refetch}
-              isLoading={isLoading}
-              mt={'20px'}
-              mb={'10px'}
-              _hover={{
-                backgroundColor: '#55c57a',
-                transform: 'translateY(-2px)',
-                boxShadow: '0 8px 15px rgba(0, 0, 0, 0.1)',
-              }}
-            >
-              New Quote
-            </CustomButton>
+            {!error && (
+              <CustomButton
+                leftIcon={<Icon as={RepeatIcon} />}
+                size="sm"
+                fontSize="xs"
+                fontWeight="600"
+                padding="1rem"
+                bg="#4891ef"
+                onClick={refetch}
+                isLoading={isLoading}
+                mt={'20px'}
+                mb={'10px'}
+                _hover={{
+                  backgroundColor: '#55c57a',
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 8px 15px rgba(0, 0, 0, 0.1)',
+                }}
+              >
+                New Quote
+              </CustomButton>
+            )}
           </Box>
         </Center>
       </ScaleFade>
