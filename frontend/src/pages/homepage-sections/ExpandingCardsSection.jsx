@@ -94,9 +94,6 @@ const ExpandingCardsSection = () => {
               '& > .gradient-overlay': {
                 opacity: activeIndex === index ? 0 : 0.7,
               },
-              '& > .bg-image': {
-                transform: 'scale(1.1)',
-              },
             }}
             overflow="hidden"
             borderRadius="3xl"
@@ -113,7 +110,7 @@ const ExpandingCardsSection = () => {
               bgImage={`url(${image.url})`}
               bgSize="cover"
               bgPosition="center"
-              transition="transform 0.5s ease-in-out"
+              // transition="transform 0.5s ease-in-out"
             />
 
             {/* Gradient Overlay */}

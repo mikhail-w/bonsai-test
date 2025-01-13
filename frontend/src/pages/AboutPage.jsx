@@ -8,8 +8,9 @@ import {
   Flex,
   useColorModeValue,
   Image,
+  HStack,
 } from '@chakra-ui/react';
-import { FaLinkedin } from 'react-icons/fa';
+import { FaLinkedin, FaGithub } from 'react-icons/fa';
 import CustomHeading from '../components/CustomHeading';
 import t1 from '../assets/images/team/mikhail.png';
 import t2 from '../assets/images/team/daniel.jpg';
@@ -23,39 +24,46 @@ const teamMembers = [
     name: 'Mikhail Waddell',
     role: 'Full Stack Developer',
     description:
-      'Passionate about leading teams to craft beautiful and responsive web interfaces that deliver exceptional user experiences.',
+      'Driven by a passion for leading teams to design and develop beautiful, responsive web interfaces that provide seamless and memorable user experiences.',
     linkedIn: 'https://www.linkedin.com/in/mikhail-waddell',
+    github: 'https://github.com/mikhail-w',
     image: t1,
   },
   {
     name: 'Daniel Phanachone',
     role: 'Full Stack Developer',
     description:
-      'Combines frontend and backend expertise for seamless solutions.',
+      'Combines deep expertise in frontend and backend development to craft seamless, efficient, and scalable solutions that deliver exceptional user experiences and drive business impact.',
     linkedIn: 'https://www.linkedin.com/in/phanachone',
+    github: 'https://github.com/dp1p',
     image: t2,
   },
   {
     name: 'Dustin Siebold',
     role: 'Full Stack Developer',
     description:
-      'Skilled in leveraging AI technologies to develop intelligent chatbots that enhance user experiences through natural language processing and seamless interactions.',
+      'Experienced in harnessing AI technologies to create intelligent, user-focused chatbots that deliver exceptional experiences through advanced natural language processing and intuitive, seamless interactions.',
     linkedIn: 'https://www.linkedin.com/in/dustinsiebold',
+    github: 'https://github.com/DustinV1976',
     image: t3,
   },
   {
     name: 'Gary Dunnington',
     role: 'Full Stack Developer',
     description:
-      'Proficient in creating and rendering immersive 3D designs with precision and attention to detail.',
+      'Skilled in crafting and rendering immersive, high-quality 3D designs with meticulous attention to detail and a focus on delivering visually compelling experiences.',
     linkedIn: 'https://www.linkedin.com/in/garydunnington',
+    github: 'https://github.com/GD757',
     image: t4,
   },
   {
     name: 'Mourad Mourad',
     role: 'Full Stack Developer',
-    description: 'Loves building scalable and efficient backend solutions.',
+    description:
+      'Passionate about designing and implementing scalable, high-performance backend solutions that drive seamless user experiences and robust system architecture.',
     linkedIn:
+      'https://www.linkedin.com/in/mourad-mourad-ba93aa314?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BjJs8QWxnRlGWJiA3sAOtBw%3D%3D',
+    github:
       'https://www.linkedin.com/in/mourad-mourad-ba93aa314?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BjJs8QWxnRlGWJiA3sAOtBw%3D%3D',
     image: t5,
   },
@@ -119,14 +127,24 @@ const AboutPage = () => {
               <Text textAlign="center" fontSize="sm" color={cardTextColor}>
                 {member.description}
               </Text>
-              <Link
-                href={member.linkedIn}
-                isExternal
-                color="teal.500"
-                _hover={{ color: linkHoverColor }}
-              >
-                <FaLinkedin size={24} />
-              </Link>
+              <HStack>
+                <Link
+                  href={member.linkedIn}
+                  isExternal
+                  color="teal.500"
+                  _hover={{ color: linkHoverColor }}
+                >
+                  <FaLinkedin size={24} />
+                </Link>
+                <Link
+                  href={member.github}
+                  isExternal
+                  color="teal.500"
+                  _hover={{ color: linkHoverColor }}
+                >
+                  <FaGithub size={24} />
+                </Link>
+              </HStack>
             </VStack>
           ))}
         </Flex>
