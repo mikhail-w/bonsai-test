@@ -11,7 +11,8 @@ import {
   GlobeSection,
   NewsLetterSection,
 } from '@homepageSections';
-import FeaturesSection from './homepage-sections/FeaturesSection';
+import FeaturesSection from './homepage-sections/FeaturesSection/FeaturesSection';
+// import FeaturesSection from './homepage-sections/FeaturesSection';
 import { Box } from '@chakra-ui/react';
 
 function HomePage() {

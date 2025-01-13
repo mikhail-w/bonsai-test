@@ -6,13 +6,16 @@ import {
   Image,
   useColorModeValue,
   Container,
-  VStack,
-  useTheme,
   useMediaQuery,
-  HStack,
   useBreakpointValue,
+  Heading,
+  Center,
 } from '@chakra-ui/react';
 import { keyframes } from '@emotion/react';
+import { SlArrowRight, SlArrowLeft } from 'react-icons/sl';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import f1l from '../../assets/images/feature001-light.png';
 import f1d from '../../assets/images/feature001-dark.png';
 import f2l from '../../assets/images/feature002-light.png';
@@ -55,21 +58,71 @@ const fadeIn = keyframes`
   to { opacity: 1; transform: scale(1); }
 `;
 
-const fadeOut = keyframes`
-  from { opacity: 1; transform: scale(1); }
-  to { opacity: 0; transform: scale(0.95); }
-`;
+const DesktopFeatureSlide = ({ feature }) => {
+  return (
+    <Box
+      width="100%"
+      height="100%"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      py={8}
+    >
+      <Image
+        src={feature.image}
+        alt={feature.title}
+        maxH="50vh"
+        objectFit="contain"
+        mx="auto"
+        sx={{
+          animation: `${fadeIn} 0.8s ease-out`,
+        }}
+      />
+    </Box>
+  );
+};
+
+const SliderArrow = ({ direction, onClick }) => {
+  const isNext = direction === 'next';
+  const Icon = isNext ? SlArrowRight : SlArrowLeft;
+
+  return (
+    <Box
+      onClick={onClick}
+      position="absolute"
+      top="45%"
+      transform="translateY(-50%)"
+      {...(isNext ? { right: 4 } : { left: 4 })}
+      zIndex={2}
+      cursor="pointer"
+      bg="green.400"
+      color="white"
+      borderRadius="full"
+      p={3}
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      transition="all 0.2s"
+      _hover={{
+        bg: 'green.500',
+        transform: 'translateY(-50%) scale(1.1)',
+      }}
+    >
+      <Icon size={20} />
+    </Box>
+  );
+};
 
 const ScrollIndicator = ({ total, current, onClick }) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
 
   return (
     <Flex
-      visibility={isMobile ? 'hidden' : 'visible'}
+      visibility={isMobile ? 'visible' : 'visible'}
       position="absolute"
       // position={isMobile ? 'fixed' : 'absolute'}
-      bottom={isMobile ? '10px' : '300px'}
-      left={isMobile ? '50%' : '45%'}
+      bottom={isMobile ? '0px' : '400px'}
+      left={isMobile ? '50%' : '50%'}
       transform={isMobile ? 'translateX(-50%)' : 'translate(-50%, 50%)'}
       direction="row"
       gap="6"
@@ -101,44 +154,14 @@ const ScrollIndicator = ({ total, current, onClick }) => {
   );
 };
 
-const DesktopFeatureSlide = ({ feature, isActive, isPrevious }) => {
-  const imageAnimation = isActive ? fadeIn : isPrevious ? fadeOut : '';
-
-  return (
-    <Box
-      position="absolute"
-      top="-150"
-      left="0"
-      width="90%"
-      height="100%"
-      opacity={isActive ? 1 : 0}
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      transition="opacity 0.5s"
-      sx={{
-        animation: imageAnimation ? `${imageAnimation} 0.8s ease-out` : 'none',
-      }}
-    >
-      <Image
-        src={feature.image}
-        alt={feature.title}
-        maxH="50vh"
-        objectFit="contain"
-        mx="auto"
-      />
-    </Box>
-  );
-};
-
 const MobileFeatureCard = ({ feature, isActive }) => {
   return (
     <Box
       w="100vw"
-      h="70vh"
+      h="85vh"
       flex="none"
       p="6"
-      pb={'200'}
+      pb={'350'}
       display="flex"
       flexDirection="column"
       justifyContent="center"
@@ -188,6 +211,135 @@ const FeaturesSection = () => {
   const [isLargerThan768] = useMediaQuery('(min-width: 48em)');
   const intervalRef = useRef(null);
   const containerRef = useRef(null);
+  const dotColor = useColorModeValue('gray.300', 'gray.600');
+  const activeDotColor = useColorModeValue('green.500', 'green.400');
+  const titleColor = useColorModeValue('green.600', 'green.400');
+
+  // Get color mode values
+  const dotsBg = useColorModeValue('whiteAlpha.800', 'blackAlpha.800');
+  const inactiveDotColor = useColorModeValue('gray.300', 'gray.500');
+  const hoverDotColor = useColorModeValue('gray.400', 'gray.600');
+  // const baseSliderSettings = {
+  //   dots: true,
+  //   infinite: true,
+  //   speed: 500,
+  //   slidesToShow: 1,
+  //   slidesToScroll: 1,
+  //   autoplay: true,
+  //   autoplaySpeed: 5000,
+  //   pauseOnHover: true,
+  //   nextArrow: <SliderArrow direction="next" />,
+  //   prevArrow: <SliderArrow direction="prev" />,
+  //   appendDots: dots => (
+  //     <Box>
+  //       <Box
+  //         display="flex"
+  //         justifyContent="center"
+  //         alignItems="center"
+  //         gap={2}
+  //         mt={4}
+  //       >
+  //         {dots}
+  //       </Box>
+  //     </Box>
+  //   ),
+  //   customPaging: () => (
+  //     <Box
+  //       as="button"
+  //       w="10px"
+  //       h="10px"
+  //       borderRadius="full"
+  //       bg={dotColor}
+  //       transition="all 0.2s"
+  //       _hover={{ bg: activeDotColor }}
+  //       sx={{
+  //         '&.slick-active': {
+  //           bg: activeDotColor,
+  //           transform: 'scale(1.2)',
+  //         },
+  //       }}
+  //     />
+  //   ),
+  // };
+
+  // Define base slider settings
+  const baseSliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 5000,
+    pauseOnHover: true,
+    nextArrow: <SliderArrow direction="next" />,
+    prevArrow: <SliderArrow direction="prev" />,
+    appendDots: dots => (
+      <Flex
+        position="absolute"
+        bottom={isMobile ? '0px' : '-10px'}
+        left="50%"
+        transform="translateX(-50%)"
+        direction="row"
+        gap="6"
+        zIndex="2"
+        bg={dotsBg}
+        p="2"
+        borderRadius="full"
+        boxShadow="lg"
+        justify="center"
+        align="center"
+        maxWidth={'450px'}
+      >
+        {dots}
+      </Flex>
+    ),
+    customPaging: i => (
+      <Box
+        as="button"
+        width="10px"
+        height="10px"
+        borderRadius="full"
+        bg={currentFeature === i ? '#55c57a' : inactiveDotColor}
+        cursor="pointer"
+        transition="all 0.3s ease"
+        _hover={{
+          bg: currentFeature === i ? '#55c57a' : hoverDotColor,
+          transform: 'scale(1.1)',
+        }}
+      />
+    ),
+  };
+
+  // Define mobile slider settings
+  const sliderSettings = {
+    ...baseSliderSettings,
+    beforeChange: (oldIndex, newIndex) => {
+      setPreviousFeature(oldIndex);
+      setCurrentFeature(newIndex);
+    },
+  };
+
+  // Define desktop slider settings
+  const desktopSliderSettings = {
+    ...baseSliderSettings,
+    beforeChange: (oldIndex, newIndex) => {
+      setPreviousFeature(oldIndex);
+      setCurrentFeature(newIndex);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    },
+    afterChange: index => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = setInterval(() => {
+          setPreviousFeature(index);
+          setCurrentFeature(prev => (prev + 1) % features.length);
+        }, 5000);
+      }
+    },
+  };
 
   const features = [
     {
@@ -233,28 +385,6 @@ const FeaturesSection = () => {
     },
   ];
 
-  const handleTouchStart = e => {
-    setTouchStart(e.touches[0].clientX);
-  };
-
-  const handleTouchMove = e => {
-    setTouchEnd(e.touches[0].clientX);
-  };
-
-  const handleTouchEnd = () => {
-    const minSwipeDistance = 50;
-    if (touchStart - touchEnd > minSwipeDistance) {
-      // Swiped left
-      setPreviousFeature(currentFeature);
-      setCurrentFeature(prev => (prev + 1) % features.length);
-    }
-    if (touchEnd - touchStart > minSwipeDistance) {
-      // Swiped right
-      setPreviousFeature(currentFeature);
-      setCurrentFeature(prev => (prev === 0 ? features.length - 1 : prev - 1));
-    }
-  };
-
   useEffect(() => {
     if (isLargerThan768) {
       intervalRef.current = setInterval(() => {
@@ -268,12 +398,23 @@ const FeaturesSection = () => {
 
   const mainBg = useColorModeValue('white', 'gray.800');
   const textColor = useColorModeValue('gray.800', 'gray.200');
-
+  const isMobile = useBreakpointValue({ base: true, md: false });
   return (
     <Suspense fallback={<Box>Loading...</Box>}>
-      <CustomHeading mb={'-50'} size={'2xl'}>
-        Website Features
-      </CustomHeading>
+      <Center mt={100}>
+        <Heading
+          as="h2"
+          size="2xl"
+          mb={12}
+          maxW={isMobile ? '300' : ''}
+          color={titleColor}
+          textAlign="center"
+          fontWeight="300"
+          textTransform="uppercase"
+        >
+          Website Features
+        </Heading>
+      </Center>
       <Box bg={'mainBg'} color={textColor} minH="100vh" w="100%">
         <Flex
           direction={{ base: 'column', md: 'row' }}
@@ -417,58 +558,48 @@ const FeaturesSection = () => {
             height={{ base: '60vh', md: '100vh' }}
             overflow="hidden"
             bg={mainBg}
-            // pb={200}
+            mb={'100'}
           >
-            <ScrollIndicator
-              total={features.length}
-              current={currentFeature}
-              onClick={index => {
-                setPreviousFeature(currentFeature);
-                setCurrentFeature(index);
-                if (intervalRef.current) {
-                  clearInterval(intervalRef.current);
-                  intervalRef.current = setInterval(() => {
-                    setPreviousFeature(currentFeature);
-                    setCurrentFeature(prev => (prev + 1) % features.length);
-                  }, 5000);
-                }
-              }}
-            />
-
             {isLargerThan768 ? (
-              // Desktop: Slideshow
-              features.map((feature, index) => (
-                <DesktopFeatureSlide
-                  key={index}
-                  feature={feature}
-                  isActive={currentFeature === index}
-                  isPrevious={previousFeature === index}
-                />
-              ))
+              <Box position="relative" height="100%" mt="150px">
+                <Slider {...desktopSliderSettings}>
+                  {features.map((feature, index) => (
+                    <DesktopFeatureSlide key={index} feature={feature} />
+                  ))}
+                </Slider>
+                {/* <ScrollIndicator
+                  total={features.length}
+                  current={currentFeature}
+                  onClick={index => {
+                    setPreviousFeature(currentFeature);
+                    setCurrentFeature(index);
+                  }}
+                /> */}
+              </Box>
             ) : (
               // Mobile: Swipeable cards
-              <Box
-                ref={containerRef}
-                overflow="hidden"
-                w="100%"
-                h="100%"
-                onTouchStart={handleTouchStart}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
-              >
-                <Flex
-                  transition="transform 0.3s ease-out"
-                  transform={`translateX(-${currentFeature * 100}%)`}
-                >
-                  {features.map((feature, index) => (
-                    <MobileFeatureCard
-                      key={index}
-                      feature={feature}
-                      isActive={currentFeature === index}
-                    />
-                  ))}
-                </Flex>
-              </Box>
+              <>
+                <Box position="relative" mx={2}>
+                  <Slider {...sliderSettings}>
+                    {features.map((feature, index) => (
+                      <Box key={index}>
+                        <MobileFeatureCard
+                          feature={feature}
+                          isActive={currentFeature === index}
+                        />
+                      </Box>
+                    ))}
+                  </Slider>
+                </Box>
+                <ScrollIndicator
+                  total={features.length}
+                  current={currentFeature}
+                  onClick={index => {
+                    setPreviousFeature(currentFeature);
+                    setCurrentFeature(index);
+                  }}
+                />
+              </>
             )}
           </Box>
         </Flex>

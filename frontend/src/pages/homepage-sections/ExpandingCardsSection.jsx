@@ -5,6 +5,8 @@ import {
   Flex,
   useBreakpointValue,
   useColorModeValue,
+  Heading,
+  Center,
 } from '@chakra-ui/react';
 import CustomHeading from '../../components/CustomHeading';
 import '../../assets/styles/expanded-cards-section.css';
@@ -34,6 +36,8 @@ const images = [
 ];
 
 const ExpandingCardsSection = () => {
+  const titleColor = useColorModeValue('green.600', 'green.400');
+
   const [activeIndex, setActiveIndex] = useState(null);
   const isMobile = useBreakpointValue({ base: true, md: false });
 
@@ -61,7 +65,20 @@ const ExpandingCardsSection = () => {
       marginBottom={'100px'}
     >
       <Box>
-        <CustomHeading mb={0}>Explore Nature</CustomHeading>
+        <Center>
+          <Heading
+            as="h2"
+            size="2xl"
+            maxW={250}
+            mb={12}
+            color={titleColor}
+            textAlign="center"
+            fontWeight="300"
+            textTransform="uppercase"
+          >
+            Explore Nature
+          </Heading>
+        </Center>
       </Box>
       <Flex width="90vw" direction={{ base: 'column', md: 'row' }}>
         {images.map((image, index) => (
