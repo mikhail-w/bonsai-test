@@ -27,16 +27,18 @@ const useQuote = () => {
     setIsLoading(true);
     setError(null);
 
+    // console.log('Fetching a new quote...');
+
     try {
       const data = await quoteService.getRandomQuote();
+      // console.log('Quote fetched successfully:', data);
       setQuote(data);
     } catch (err) {
+      // console.error('Error fetching quote:', err);
       setError(err instanceof Error ? err.message : 'Failed to fetch quote');
-      if (err.message.includes('No authentication token found')) {
-        setError('Please log in to view quotes');
-      }
     } finally {
       setIsLoading(false);
+      // console.log('Fetch process complete.');
     }
   }, []);
 
@@ -60,6 +62,7 @@ const useQuote = () => {
 const QuoteContent = ({ quote }) => {
   const textColor = useColorModeValue('gray.700', 'gray.200');
   const authorColor = useColorModeValue('gray.600', 'gray.400');
+  // console.log('Current state:', { isLoading, error, quote });
 
   return (
     <VStack spacing={4} align="center">
@@ -94,20 +97,18 @@ const ErrorMessage = ({ message, onRetry }) => (
   >
     <AlertIcon boxSize={6} mr={0} mb={2} />
     <AlertDescription mb={4}>{message}</AlertDescription>
-    {!message.includes('Please log in') && (
-      <CustomButton
-        size="sm"
-        onClick={onRetry}
-        bg="#4891ef"
-        _hover={{
-          backgroundColor: '#55c57a',
-          transform: 'translateY(-2px)',
-          boxShadow: '0 8px 15px rgba(0, 0, 0, 0.1)',
-        }}
-      >
-        Try Again
-      </CustomButton>
-    )}
+    <CustomButton
+      size="sm"
+      onClick={onRetry}
+      bg="#4891ef"
+      _hover={{
+        backgroundColor: '#55c57a',
+        transform: 'translateY(-2px)',
+        boxShadow: '0 8px 15px rgba(0, 0, 0, 0.1)',
+      }}
+    >
+      Try Again
+    </CustomButton>
   </Alert>
 );
 
