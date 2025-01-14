@@ -1,0 +1,112 @@
+[
+  {
+    "model": "base.review",
+    "pk": 1,
+    "fields": {
+      "user": 5,
+      "product": 2,
+      "rating": 5,
+      "comment": "Absolutely stunning bonsai! The Korean Yew Bonsai has brought so much life to my living room. Highly recommended for bonsai lovers!",
+      "created_at": "2025-01-12T10:00:00Z"
+    }
+  },
+  {
+    "model": "base.review",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "product": 4,
+      "rating": 4,
+      "comment": "The Procumbens Juniper is beautiful, but it arrived with slightly dry soil. Otherwise, it's thriving!",
+      "created_at": "2025-01-12T11:00:00Z"
+    }
+  },
+  {
+    "model": "base.review",
+    "pk": 3,
+    "fields": {
+      "user": 3,
+      "product": 6,
+      "rating": 5,
+      "comment": "The Spruce Bonsai is worth every penny. It’s a centerpiece in my collection!",
+      "created_at": "2025-01-12T12:00:00Z"
+    }
+  },
+  {
+    "model": "base.review",
+    "pk": 4,
+    "fields": {
+      "user": 1,
+      "product": 7,
+      "rating": 5,
+      "comment": "The Juniperus Chinensis Shimpaku is absolutely perfect. It adds elegance to my patio.",
+      "created_at": "2025-01-12T13:00:00Z"
+    }
+  },
+  {
+    "model": "base.review",
+    "pk": 5,
+    "fields": {
+      "user": 4,
+      "product": 8,
+      "rating": 4,
+      "comment": "The Feroniella Bonsai is quite lovely, but it took a bit longer to arrive than expected.",
+      "created_at": "2025-01-12T14:00:00Z"
+    }
+  },
+  {
+    "model": "base.review",
+    "pk": 6,
+    "fields": {
+      "user": 4,
+      "product": 9,
+      "rating": 5,
+      "comment": "The Hinoki Bonsai is fantastic! It’s been a conversation starter among my friends.",
+      "created_at": "2025-01-12T15:00:00Z"
+    }
+  },
+  {
+    "model": "base.review",
+    "pk": 7,
+    "fields": {
+      "user": 2,
+      "product": 10,
+      "rating": 4,
+      "comment": "The Bonsai Azalea is gorgeous, but I wish the planter was a bit more stylish.",
+      "created_at": "2025-01-12T16:00:00Z"
+    }
+  },
+  {
+    "model": "base.review",
+    "pk": 8,
+    "fields": {
+      "user": 3,
+      "product": 11,
+      "rating": 5,
+      "comment": "I’m in love with the Bending-Black-Pine-Bonsai. Its windswept branches are so unique.",
+      "created_at": "2025-01-12T17:00:00Z"
+    }
+  },
+  {
+    "model": "base.review",
+    "pk": 9,
+    "fields": {
+      "user": 3,
+      "product": 12,
+      "rating": 5,
+      "comment": "The Procumbens Nana Sonare Juniper has exceeded my expectations. It’s thriving in my garden.",
+      "created_at": "2025-01-12T18:00:00Z"
+    }
+  },
+  {
+    "model": "base.review",
+    "pk": 10,
+    "fields": {
+      "user": 2,
+      "product": 13,
+      "rating": 5,
+      "comment": "The Japanese White Pine ‘Negishi’ is breathtaking. Its silverish-blue needles are stunning.",
+      "created_at": "2025-01-12T19:00:00Z"
+    }
+  }
+]

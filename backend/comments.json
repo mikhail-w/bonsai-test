@@ -1,0 +1,102 @@
+[
+  {
+    "model": "blog.comment",
+    "pk": 1,
+    "fields": {
+      "user": 2,
+      "post": 1,
+      "content": "Thanks for the tips! This was very helpful.",
+      "created_at": "2025-01-12T11:00:00Z"
+    }
+  },
+  {
+    "model": "blog.comment",
+    "pk": 2,
+    "fields": {
+      "user": 3,
+      "post": 1,
+      "content": "I've been struggling with pruning; this was great advice.",
+      "created_at": "2025-01-12T11:30:00Z"
+    }
+  },
+  {
+    "model": "blog.comment",
+    "pk": 3,
+    "fields": {
+      "user": 2,
+      "post": 2,
+      "content": "Amazing history! I love learning about bonsai culture.",
+      "created_at": "2025-01-12T12:30:00Z"
+    }
+  },
+  {
+    "model": "blog.comment",
+    "pk": 4,
+    "fields": {
+      "user": 5,
+      "post": 2,
+      "content": "I never knew that! Thanks for sharing.",
+      "created_at": "2025-01-12T13:00:00Z"
+    }
+  },
+  {
+    "model": "blog.comment",
+    "pk": 5,
+    "fields": {
+      "user": 4,
+      "post": 3,
+      "content": "Great list! I started with a Chinese Elm, and it’s been a joy.",
+      "created_at": "2025-01-12T14:30:00Z"
+    }
+  },
+  {
+    "model": "blog.comment",
+    "pk": 6,
+    "fields": {
+      "user": 5,
+      "post": 3,
+      "content": "Thanks for the recommendations! I’ll try a Juniper next.",
+      "created_at": "2025-01-12T15:00:00Z"
+    }
+  },
+  {
+    "model": "blog.comment",
+    "pk": 7,
+    "fields": {
+      "user": 5,
+      "post": 4,
+      "content": "I’ve been looking for a good wiring guide, and this is perfect!",
+      "created_at": "2025-01-12T16:30:00Z"
+    }
+  },
+  {
+    "model": "blog.comment",
+    "pk": 8,
+    "fields": {
+      "user": 3,
+      "post": 4,
+      "content": "Styling is the most challenging part for me. Thanks for the tips!",
+      "created_at": "2025-01-12T17:00:00Z"
+    }
+  },
+  {
+    "model": "blog.comment",
+    "pk": 9,
+    "fields": {
+      "user": 2,
+      "post": 5,
+      "content": "I always worry about my bonsai in winter. These tips are very helpful.",
+      "created_at": "2025-01-12T18:30:00Z"
+    }
+  },
+  {
+    "model": "blog.comment",
+    "pk": 10,
+    "fields": {
+      "user": 4,
+      "post": 5,
+      "content": "Great advice! I’ll start using these techniques this winter.",
+      "created_at": "2025-01-12T19:00:00Z"
+    }
+  }
+]
