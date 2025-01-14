@@ -3,9 +3,9 @@
     "model": "blog.post",
     "pk": 1,
     "fields": {
-      "user": 1,
-      "content": "Bonsai care is an art form that teaches patience and discipline. Here are my tips for keeping your bonsai healthy.",
-      "image": "posts/images/bonsai_care.jpg",
+      "user": 4,
+      "content": "Bonsai care is an art form that teaches patience and discipline.",
+      "image": "posts/images/1.jpg",
       "created_at": "2025-01-12T10:00:00Z",
       "views": 25
     }
@@ -16,7 +16,7 @@
     "fields": {
       "user": 2,
       "content": "The history of bonsai is fascinating. Did you know it originated in China over a thousand years ago?",
-      "image": "posts/images/bonsai_history.jpg",
+      "image": "posts/images/m1.jpg",
       "created_at": "2025-01-12T12:00:00Z",
       "views": 40
     }
@@ -27,7 +27,7 @@
     "fields": {
       "user": 3,
       "content": "Top 5 bonsai species for beginners: 1. Juniper, 2. Chinese Elm, 3. Ficus, 4. Jade, 5. Azalea.",
-      "image": "posts/images/bonsai_species.jpg",
+      "image": "posts/images/m2.jpg",
       "created_at": "2025-01-12T14:00:00Z",
       "views": 35
     }
@@ -38,7 +38,7 @@
     "fields": {
       "user": 4,
       "content": "Bonsai styling techniques can be tricky to master. Here’s a guide to wiring and shaping your bonsai.",
-      "image": "posts/images/bonsai_styling.jpg",
+      "image": "posts/images/m5.jpg",
       "created_at": "2025-01-12T16:00:00Z",
       "views": 20
     }
@@ -49,7 +49,7 @@
     "fields": {
       "user": 5,
       "content": "Winter care for bonsai: Protect your trees from frost and ensure proper watering.",
-      "image": "posts/images/bonsai_winter_care.jpg",
+      "image": "posts/images/m6.jpg",
       "created_at": "2025-01-12T18:00:00Z",
       "views": 30
     }
