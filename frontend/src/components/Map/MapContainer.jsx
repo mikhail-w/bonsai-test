@@ -24,6 +24,15 @@ const defaultCenter = {
   lng: -98.5795,
 };
 
+// Options to reduce initial loading time
+const mapOptions = {
+  disableDefaultUI: true, // Disable default UI controls
+  gestureHandling: 'greedy',
+  clickableIcons: false, // Disable default POI clicks
+  maxZoom: 18,
+  minZoom: 3,
+};
+
 const MapContainer = ({
   center,
   setCenter,
@@ -44,8 +53,23 @@ const MapContainer = ({
   const [isLoadingPlaces, setIsLoadingPlaces] = useState(false);
   const [cachedResults, setCachedResults] = useState(new Map());
   const hoverTimeoutRef = useRef(null);
+  const searchTimeoutRef = useRef(null);
 
-  // Define handler functions using useCallback to prevent recreation
+  // Memoize marker icon options
+  const markerIcons = useMemo(
+    () => ({
+      default: {
+        url: CustomMarker,
+        scaledSize: new window.google.maps.Size(38, 95),
+      },
+      active: {
+        url: ActiveMarker,
+        scaledSize: new window.google.maps.Size(38, 95),
+      },
+    }),
+    []
+  );
+
   const handleMouseOver = useCallback(
     marker => {
       clearTimeout(hoverTimeoutRef.current);
@@ -62,29 +86,18 @@ const MapContainer = ({
     }, 200);
   }, [setSelectedMarker]);
 
-  const handleInfoWindowMouseOver = useCallback(() => {
-    clearTimeout(hoverTimeoutRef.current);
-    setInfoWindowVisible(true);
-  }, []);
-
-  const handleInfoWindowMouseOut = useCallback(() => {
-    hoverTimeoutRef.current = setTimeout(() => {
-      setInfoWindowVisible(false);
-      setSelectedMarker(null);
-    }, 200);
-  }, [setSelectedMarker]);
-
-  // Memoize markers after handler functions are defined
+  // Optimized marker rendering with lazy loading
   const memoizedMarkers = useMemo(
     () =>
       markers.map(marker => (
         <Marker
           key={marker.id}
           position={marker.position}
-          icon={{
-            url: selectedMarker?.id === marker.id ? ActiveMarker : CustomMarker,
-            scaledSize: new window.google.maps.Size(38, 95),
-          }}
+          icon={
+            selectedMarker?.id === marker.id
+              ? markerIcons.active
+              : markerIcons.default
+          }
           zIndex={selectedMarker?.id === marker.id ? 999 : 1}
           onMouseOver={() => handleMouseOver(marker)}
           onMouseOut={handleMouseOut}
@@ -95,133 +108,150 @@ const MapContainer = ({
           }}
         />
       )),
-    [markers, selectedMarker, handleMouseOver, handleMouseOut]
+    [markers, selectedMarker, handleMouseOver, handleMouseOut, markerIcons]
   );
 
+  // Set up geolocation immediately
   useEffect(() => {
     if (!center.lat && !center.lng) {
-      setCenter(defaultCenter);
-    }
-  }, [center, setCenter]);
-
-  useEffect(() => {
-    setPanTo((latLng, zoom = 20) => {
-      if (mapRef.current) {
-        mapRef.current.panTo(latLng);
-        mapRef.current.setZoom(zoom);
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            const { latitude, longitude } = position.coords;
+            setCenter({ lat: latitude, lng: longitude });
+          },
+          () => setCenter(defaultCenter),
+          { timeout: 5000, maximumAge: 60000 }
+        );
+      } else {
+        setCenter(defaultCenter);
       }
-    });
-  }, [setPanTo]);
-
-  useEffect(() => {
-    if (loadError) {
-      console.error('Error loading Google Maps:', loadError);
-      setError('Error loading Google Maps');
     }
-  }, [loadError]);
+  }, [center.lat, center.lng, setCenter]);
 
+  // Optimized places search with error handling
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        position => {
-          const { latitude, longitude } = position.coords;
-          setCenter({ lat: latitude, lng: longitude });
-        },
-        error => {
-          setError('Geolocation not enabled or denied.');
-          setCenter(defaultCenter);
-        }
-      );
-    } else {
-      setError('Geolocation is not supported by this browser.');
-      setCenter(defaultCenter);
-    }
-  }, [setCenter]);
+    if (!isLoaded || !center.lat || !center.lng) return;
 
-  useEffect(() => {
-    if (isLoaded && center.lat && center.lng) {
-      const map = mapRef.current;
-      const service = new window.google.maps.places.PlacesService(map);
+    const map = mapRef.current;
+    const service = new window.google.maps.places.PlacesService(map);
 
-      const refinedSearchTerm =
-        searchTerm ||
-        'bonsai OR bonsai trees OR bonsai nursery OR garden OR bonsai club OR bonsai potter OR plant nursery';
+    const refinedSearchTerm =
+      searchTerm ||
+      'bonsai OR bonsai trees OR bonsai nursery OR garden OR bonsai club OR bonsai potter OR plant nursery';
 
-      const cacheKey = `${center.lat},${center.lng}-${refinedSearchTerm}`;
+    const cacheKey = `${center.lat},${center.lng}-${refinedSearchTerm}`;
 
-      if (cachedResults.has(cacheKey)) {
-        const cached = cachedResults.get(cacheKey);
-        const cacheAge = Date.now() - cached.timestamp;
-        if (cacheAge < 30 * 60 * 1000) {
-          setMarkers(cached.markers);
-          if (!locationList.length) {
-            setLocationList(cached.locations);
-          }
-          return;
-        }
+    // Check cache first
+    if (cachedResults.has(cacheKey)) {
+      const cached = cachedResults.get(cacheKey);
+      if (Date.now() - cached.timestamp < 30 * 60 * 1000) {
+        setMarkers(cached.markers);
+        !locationList.length && setLocationList(cached.locations);
+        return;
       }
+    }
 
-      const request = {
-        location: new window.google.maps.LatLng(center.lat, center.lng),
-        radius: '20000',
-        type: ['store', 'plant_nursery', 'florist', 'park'],
-        keyword: refinedSearchTerm,
-      };
+    // Clear previous timeout
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
 
-      const handleSearch = debounce(() => {
-        setIsLoadingPlaces(true);
-        setError('');
+    const request = {
+      location: new window.google.maps.LatLng(center.lat, center.lng),
+      radius: '20000',
+      type: ['store', 'plant_nursery', 'florist', 'park'],
+      keyword: refinedSearchTerm,
+    };
 
-        service.nearbySearch(request, (results, status) => {
-          setIsLoadingPlaces(false);
+    const handleSearch = debounce(() => {
+      setIsLoadingPlaces(true);
+      setError('');
 
-          if (status === window.google.maps.places.PlacesServiceStatus.OK) {
-            const filteredResults = results.filter(
-              place =>
-                place.name.toLowerCase().includes('bonsai') ||
-                place.types.includes('store')
+      service.nearbySearch(request, (results, status) => {
+        setIsLoadingPlaces(false);
+
+        if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+          const filteredResults = results.filter(
+            place =>
+              place.name.toLowerCase().includes('bonsai') ||
+              place.types.includes('store')
+          );
+
+          if (filteredResults.length === 0) {
+            // No results found - stay at current location and clear existing markers/locations
+            setError(
+              'No Bonsai-related locations found nearby. Showing current location.'
             );
-
-            const processedMarkers = filteredResults.map(place => ({
-              id: place.place_id,
-              name: place.name,
-              position: place.geometry.location,
-              type: place.types || [],
-              address: place.vicinity,
-              photo: place.photos?.[0]?.getUrl({ maxWidth: 200 }) || DefaultImg,
-              rating: place.rating || 0,
-              reviewCount: place.user_ratings_total || 0,
-              isOpen: place.opening_hours?.isOpen() || false,
-              closingTime:
-                place.opening_hours?.periods?.[0]?.close?.time || 'N/A',
-            }));
-
-            setCachedResults(prev =>
-              prev.set(cacheKey, {
-                markers: processedMarkers,
-                locations: filteredResults,
-                timestamp: Date.now(),
-              })
-            );
-
-            setMarkers(processedMarkers);
-            if (!locationList.length) {
-              setLocationList(filteredResults);
+            setMarkers([]);
+            setLocationList([]);
+            // Only clear selected marker if it no longer exists in the results
+            if (
+              selectedMarker &&
+              !filteredResults.find(
+                place => place.place_id === selectedMarker.id
+              )
+            ) {
+              setSelectedMarker(null);
+              setInfoWindowVisible(false);
             }
-          } else if (
-            status ===
-            window.google.maps.places.PlacesServiceStatus.ZERO_RESULTS
-          ) {
-            setError('No Bonsai-related locations found nearby.');
-          } else {
-            setError(`Error fetching places: ${status}`);
+            return;
           }
-        });
-      }, 1000);
 
-      handleSearch();
-      return () => handleSearch.cancel();
-    }
+          const processedMarkers = filteredResults.map(place => ({
+            id: place.place_id,
+            name: place.name,
+            position: {
+              lat: place.geometry.location.lat(),
+              lng: place.geometry.location.lng(),
+            },
+            type: place.types || [],
+            address: place.vicinity,
+            photo: place.photos?.[0]?.getUrl({ maxWidth: 200 }) || DefaultImg,
+            rating: place.rating || 0,
+            reviewCount: place.user_ratings_total || 0,
+            isOpen: place.opening_hours?.isOpen() || false,
+          }));
+
+          setCachedResults(prev =>
+            prev.set(cacheKey, {
+              markers: processedMarkers,
+              locations: filteredResults,
+              timestamp: Date.now(),
+            })
+          );
+
+          // Update markers and location list while preserving selection
+          setMarkers(processedMarkers);
+          setLocationList(filteredResults);
+
+          // If there's a selected marker, update its data but maintain selection
+          if (selectedMarker) {
+            const updatedSelectedMarker = processedMarkers.find(
+              marker => marker.id === selectedMarker.id
+            );
+            if (updatedSelectedMarker) {
+              setSelectedMarker(updatedSelectedMarker);
+              setInfoWindowVisible(true);
+            }
+          }
+        } else if (
+          status === window.google.maps.places.PlacesServiceStatus.ZERO_RESULTS
+        ) {
+          setError(
+            'No Bonsai-related locations found nearby. Showing current location.'
+          );
+        } else {
+          setError(`Error fetching places: ${status}`);
+        }
+      });
+    }, 500); // Reduced debounce time
+
+    searchTimeoutRef.current = setTimeout(handleSearch, 100);
+    return () => {
+      clearTimeout(searchTimeoutRef.current);
+      handleSearch.cancel();
+    };
   }, [
     isLoaded,
     center.lat,
@@ -232,10 +262,12 @@ const MapContainer = ({
     locationList.length,
   ]);
 
-  if (error) {
+  if (loadError) {
     return (
       <Box p={4} textAlign="center">
-        <Text color="red.500">{error}</Text>
+        <Text color="red.500">
+          Error loading Google Maps. Please try again later.
+        </Text>
       </Box>
     );
   }
@@ -272,6 +304,7 @@ const MapContainer = ({
             mapContainerStyle={mapContainerStyle}
             zoom={10}
             center={center}
+            options={mapOptions}
             onLoad={map => (mapRef.current = map)}
             onClick={() => {
               setInfoWindowVisible(false);
@@ -282,8 +315,8 @@ const MapContainer = ({
             {selectedMarker && infoWindowVisible && selectedMarker.position && (
               <MapMarkerInfoWindow
                 selectedMarker={selectedMarker}
-                onMouseEnter={handleInfoWindowMouseOver}
-                onMouseLeave={handleInfoWindowMouseOut}
+                onMouseEnter={() => clearTimeout(hoverTimeoutRef.current)}
+                onMouseLeave={handleMouseOut}
               />
             )}
           </GoogleMap>
