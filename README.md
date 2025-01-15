@@ -10,7 +10,7 @@ purchase, and explore curated bonsai plants, accessories, and information.
 
 Bonsai combines cutting-edge technology with a tranquil design to create the
 ultimate platform for bonsai lovers. Visit the live application at
-[mwbonsai.com](https://www.mwbonsai.com).
+<a href="https://www.mwbonsai.com" target="_blank" rel="noopener noreferrer">mwbonsai.com</a>.
 
 ---
 
