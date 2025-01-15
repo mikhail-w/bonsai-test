@@ -1,7 +1,7 @@
 # Bonsai
 
 <div align="center">
-  <img src="./src/assets/images/readme/logo_brand.png" alt="Bonsai Logo"width="250" height="250"style="margin-bottom: 50px;">
+  <img src="./frontend/src/assets/images/readme/logo_brand.png" alt="Bonsai Logo"width="250" height="250"style="margin-bottom: 50px;">
 </div>
 
 Welcome to Bonsai, a full-stack web application that offers a seamless eCommerce
@@ -76,12 +76,12 @@ ultimate platform for bonsai lovers. Visit the live application at
 <table>
   <tr>
     <td align="center">
-      <img src="./src/assets/images/readme/readme001.png" alt="Hero Section" width="60%">
-      <img src="./src/assets/images/readme/readme001b.png" alt="Hero Section" width="60%">
+      <img src="./frontend/src/assets/images/readme/readme001.png" alt="Hero Section" width="60%">
+      <img src="./frontend/src/assets/images/readme/readme001b.png" alt="Hero Section" width="60%">
     </td>
   </tr>
     <td align="center">
-      <img src="./src/assets/images/readme/readme002.png" alt="Hero Section (Mobile)" width="35%">
+      <img src="./frontend/src/assets/images/readme/readme002.png" alt="Hero Section (Mobile)" width="35%">
     </td>
 </table>
 A captivating hero section with a zen-inspired design, inviting users to explore nature and bonsai art.
@@ -91,7 +91,7 @@ A captivating hero section with a zen-inspired design, inviting users to explore
 ### 2. Explore Nature
 
 <div align="center">
-  <img src="./src/assets/images/readme/readme003.png" alt="Explore Nature" width="80%">
+  <img src="./frontend/src/assets/images/readme/readme003.png" alt="Explore Nature" width="80%">
 </div>  
 Navigate through stunning imagery and curated experiences showcasing the beauty of nature.
 
@@ -100,7 +100,7 @@ Navigate through stunning imagery and curated experiences showcasing the beauty 
 ### 3. Product Listings
 
 <div align="center">
-  <img src="./src/assets/images/readme/readme004.png" alt="Product Listings" width="80%">
+  <img src="./frontend/src/assets/images/readme/readme004.png" alt="Product Listings" width="80%">
 </div>  
 Browse through a wide variety of bonsai plants and accessories with detailed product information.
 
@@ -109,7 +109,7 @@ Browse through a wide variety of bonsai plants and accessories with detailed pro
 ### 4. Product Details
 
 <div align="center">
-  <img src="./src/assets/images/readme/readme005.png" alt="Product Details" width="80%">
+  <img src="./frontend/src/assets/images/readme/readme005.png" alt="Product Details" width="80%">
 </div>  
 Discover detailed product descriptions, customer reviews, and pricing.
 
@@ -118,7 +118,7 @@ Discover detailed product descriptions, customer reviews, and pricing.
 ### 5. Smooth Checkout Process
 
 <div align="center">
-  <img src="./src/assets/images/readme/readme006.png" alt="Checkout Process" width="80%">
+  <img src="./frontend/src/assets/images/readme/readme006.png" alt="Checkout Process" width="80%">
 </div>  
 An intuitive and secure checkout process with integrated PayPal support.
 
@@ -127,8 +127,8 @@ An intuitive and secure checkout process with integrated PayPal support.
 ### 6. User Dashboard
 
 <div align="center">
-  <img src="./src/assets/images/readme/readme007.png" alt="User Dashboard" width="80%">
-  <img src="./src/assets/images/readme/readme008.png" alt="User Dashboard" width="80%">
+  <img src="./frontend/src/assets/images/readme/readme007.png" alt="User Dashboard" width="80%">
+  <img src="./frontend/src/assets/images/readme/readme008.png" alt="User Dashboard" width="80%">
 </div>  
 Personalized user dashboard with avatar updates, weather insights, and Zen quotes.
 
@@ -137,11 +137,11 @@ Personalized user dashboard with avatar updates, weather insights, and Zen quote
 ### 7. Additional Interactive Features
 
 <div align="center">
-  <img src="./src/assets/images/readme/readme009.png" alt="Interactive Features" width="80%">
-  <img src="./src/assets/images/readme/readme0010a.png" alt="Interactive Features" width="80%">
-  <img src="./src/assets/images/readme/readme0011.png" alt="Interactive Features" width="80%">
-  <img src="./src/assets/images/readme/readme0012.png" alt="Interactive Features" width="80%">
-  <img src="./src/assets/images/readme/readme0013.png" alt="Interactive Features" width="80%">
+  <img src="./frontend/src/assets/images/readme/readme009.png" alt="Interactive Features" width="80%">
+  <img src="./frontend/src/assets/images/readme/readme0010a.png" alt="Interactive Features" width="80%">
+  <img src="./frontend/src/assets/images/readme/readme0011.png" alt="Interactive Features" width="80%">
+  <img src="./frontend/src/assets/images/readme/readme0012.png" alt="Interactive Features" width="80%">
+  <img src="./frontend/src/assets/images/readme/readme0013.png" alt="Interactive Features" width="80%">
 </div>  
 Advanced 3D model interactions, augmented reality, google maps integration, plant ID, and more to enhance the user experience.
 
