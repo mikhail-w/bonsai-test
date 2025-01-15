@@ -14,13 +14,14 @@ import Logo from './Logo';
 const SidebarContent = ({ onClose, links, userInfo, ...rest }) => {
   const bgColor = useColorModeValue('white', 'gray.900');
   const textColor = useColorModeValue('black', 'white');
+  const borderColor = useColorModeValue('gray.200', 'gray.700');
 
   return (
     <Box
       transition="3s ease"
       bg={bgColor}
-      // borderRight="1px"
-      // borderColor="gray.600"
+      borderRight="1px solid"
+      borderColor={borderColor}
       boxShadow="md"
       w={{ base: 'full', md: 60 }}
       pos="fixed"

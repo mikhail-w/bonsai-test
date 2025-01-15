@@ -38,7 +38,11 @@ const MapDetailsPanel = ({ selectedLocation, closePanel, isPanelOpen }) => {
           <VStack align="start" spacing={4}>
             <Box width={'100%'} height={'300px'}>
               <Image
-                src={selectedLocation.photo || DefaultImg}
+                src={
+                  selectedLocation.photos
+                    ? selectedLocation.photos[0].getUrl({ maxWidth: 400 })
+                    : DefaultImg
+                }
                 alt={`${selectedLocation.name} thumbnail`}
                 onError={e => {
                   e.target.src = DefaultImg;

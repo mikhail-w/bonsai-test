@@ -6,10 +6,8 @@ const AugmentedReality = ({ setQrCodeUrl }) => {
   const canvasRef = useRef();
 
   // URL for the `.glb` and `.usdz` files hosted on AWS S3
-  const gltfUrl =
-    'https://mikhail-bonsai.s3.us-east-1.amazonaws.com/media/ficus_bonsai.glb';
-  const usdzUrl =
-    'https://mikhail-bonsai.s3.us-east-1.amazonaws.com/media/ficus_bonsai.usdz'; // For iOS devices
+  const gltfUrl = `${import.meta.env.VITE_S3_PATH}/media/ficus_bonsai.glb`;
+  const usdzUrl = `${import.meta.env.VITE_S3_PATH}/media/ficus_bonsai.usdz`; // For iOS devices
 
   // Detect if the user is on an iOS device
   const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);

@@ -14,6 +14,7 @@ import {
   ListItem,
   ListIcon,
   useToast,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { CheckCircleIcon } from '@chakra-ui/icons';
 
@@ -23,6 +24,15 @@ const PlantIdentifier = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const toast = useToast();
+
+  // Color mode-aware design tokens
+  const bgColor = useColorModeValue('white', 'gray.800');
+  const textColor = useColorModeValue('gray.800', 'gray.100');
+  const inputBgColor = useColorModeValue('gray.50', 'gray.700');
+  const inputBorderColor = useColorModeValue('green.300', 'green.500');
+  const inputFocusColor = useColorModeValue('green.500', 'green.300');
+  const hoverBgColor = useColorModeValue('gray.50', 'gray.600');
+  const alertBgColor = useColorModeValue('red.50', 'red.900');
 
   // Convert image to base64
   const toBase64 = file => {
@@ -47,9 +57,7 @@ const PlantIdentifier = () => {
 
       setImage(file);
       const base64Image = await toBase64(file);
-      // Make sure we only send the base64 data without the prefix
       const imageWithoutPrefix = base64Image.split(',')[1];
-      console.log('Image data length:', imageWithoutPrefix.length);
       await identifyPlant(imageWithoutPrefix);
     } catch (err) {
       setError('Error processing image: ' + err.message);
@@ -95,7 +103,6 @@ const PlantIdentifier = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.log('Full API Error:', errorData);
         throw new Error(
           `API Error: ${errorData.error?.message || response.statusText}`
         );
@@ -126,7 +133,7 @@ const PlantIdentifier = () => {
       p={6}
       mt={10}
       borderRadius="lg"
-      bg="white"
+      bg={bgColor}
       boxShadow="lg"
       textAlign="center"
     >
@@ -147,13 +154,13 @@ const PlantIdentifier = () => {
           onChange={handleImageUpload}
           accept="image/*"
           size="lg"
-          borderColor="green.300"
-          focusBorderColor="green.500"
-          bg="gray.50"
+          borderColor={inputBorderColor}
+          focusBorderColor={inputFocusColor}
+          bg={inputBgColor}
         />
 
         {error && (
-          <Alert status="error" borderRadius="md">
+          <Alert status="error" borderRadius="md" bg={alertBgColor}>
             <AlertIcon />
             {error}
           </Alert>
@@ -161,7 +168,7 @@ const PlantIdentifier = () => {
 
         {image && (
           <Box>
-            <Text fontSize="md" color="gray.500" mt={2}>
+            <Text fontSize="md" color={textColor} mt={2}>
               Uploaded Image Preview:
             </Text>
             <Image
@@ -204,7 +211,7 @@ const PlantIdentifier = () => {
                   px={2}
                   py={1}
                   borderRadius="md"
-                  _hover={{ bg: 'gray.50' }}
+                  _hover={{ bg: hoverBgColor }}
                   flexWrap="nowrap"
                   w={{ base: '100%', md: 'auto' }}
                   maxW={{ base: '100%', md: '80%' }}

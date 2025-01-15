@@ -37,7 +37,7 @@ function BlogPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [content, setContent] = useState('');
-  const bgColor = useColorModeValue('gray.100', 'gray.500');
+  const bgColor = useColorModeValue('white', 'gray.800');
   const [image, setImage] = useState(null);
   const [creatingPost, setCreatingPost] = useState(false);
   const [activeHearts, setActiveHearts] = useState({}); // Store heart state locally
@@ -235,7 +235,7 @@ function BlogPage() {
                   </Text>
                   {post.image && (
                     <>
-                      {console.log('Image Path:', post.image)}
+                      {/* {console.log('Image Path:', post.image)} */}
                       <Image
                         src={
                           post.image

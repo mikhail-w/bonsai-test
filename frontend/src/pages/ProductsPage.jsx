@@ -44,6 +44,7 @@ function ProductsPage() {
       mt={100}
       minH="100vh"
       pt={{ base: 10, md: 0 }} // Padding at the top for mobile view
+      mb={100}
     >
       <Center flexDirection="column" mb={5} textAlign="center">
         <Heading

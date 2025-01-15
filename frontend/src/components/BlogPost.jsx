@@ -31,8 +31,8 @@ function BlogPost({ post, commentsCount }) {
       alert('Please log in to comment');
     }
   };
-  console.log('BLOG:', post);
-  console.log('BLOG:', post.image);
+  // console.log('BLOG:', post);
+  // console.log('BLOG:', post.image);
 
   return (
     <Box p={5} mt={50}>

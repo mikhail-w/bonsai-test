@@ -56,29 +56,29 @@ export const createOrder = order => async (dispatch, getState) => {
           // Get the final path without leading /media/
           relativePath = pathname.replace(/^\/media\//, '');
 
-          console.log('ORDER ACTIONS Image Path Processing:', {
-            original: item.image,
-            pathname,
-            relativePath,
-          });
+          // console.log('ORDER ACTIONS Image Path Processing:', {
+          //   original: item.image,
+          //   pathname,
+          //   relativePath,
+          // });
         } catch (e) {
           // If URL parsing fails, handle as relative path
           relativePath = item.image
             .replace(/^media\/media\//, '')
             .replace(/^media\//, '');
-          console.log('ORDER ACTIONS Fallback Path Processing:', {
-            original: item.image,
-            relativePath,
-          });
+          // console.log('ORDER ACTIONS Fallback Path Processing:', {
+          //   original: item.image,
+          //   relativePath,
+          // });
         }
 
-        console.log('Processing order item:', {
-          name: item.name,
-          image: relativePath,
-          price: Number(item.price),
-          qty: Number(item.qty),
-          product: item.product,
-        });
+        // console.log('Processing order item:', {
+        //   name: item.name,
+        //   image: relativePath,
+        //   price: Number(item.price),
+        //   qty: Number(item.qty),
+        //   product: item.product,
+        // });
 
         return {
           product: item.product,
@@ -97,19 +97,19 @@ export const createOrder = order => async (dispatch, getState) => {
       },
     };
 
-    console.log('Sending complete order data:', {
-      orderItems: orderData.orderItems.map(item => ({
-        ...item,
-        price: typeof item.price,
-        qty: typeof item.qty,
-      })),
-      pricing: {
-        items: typeof orderData.itemsPrice,
-        shipping: typeof orderData.shippingPrice,
-        tax: typeof orderData.taxPrice,
-        total: typeof orderData.totalPrice,
-      },
-    });
+    // console.log('Sending complete order data:', {
+    //   orderItems: orderData.orderItems.map(item => ({
+    //     ...item,
+    //     price: typeof item.price,
+    //     qty: typeof item.qty,
+    //   })),
+    //   pricing: {
+    //     items: typeof orderData.itemsPrice,
+    //     shipping: typeof orderData.shippingPrice,
+    //     tax: typeof orderData.taxPrice,
+    //     total: typeof orderData.totalPrice,
+    //   },
+    // });
 
     const { data } = await axios.post(
       `${API_URL}orders/add/`,

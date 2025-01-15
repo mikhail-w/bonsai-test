@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import DefaultImg from '../../assets/images/bonsai-tree-logo.png';
 import {
   Box,
   HStack,
@@ -24,6 +25,11 @@ const MapSidebar = ({
   setSelectedMarker,
 }) => {
   const [selectedLocationId, setSelectedLocationId] = useState(null);
+  const bgColor = useColorModeValue('white', 'gray.700');
+  const hoverBgColor = useColorModeValue('green.50', 'green.800');
+  const selectedBgColor = useColorModeValue('green.100', 'green.600');
+  const textColor = useColorModeValue('gray.900', 'gray.200');
+  const secondaryTextColor = useColorModeValue('gray.600', 'gray.400');
 
   return (
     <Box
@@ -43,23 +49,6 @@ const MapSidebar = ({
         zIndex="1"
         p={4}
       >
-        <HStack>
-          <Input
-            placeholder="Search bonsai locations..."
-            value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
-            bg={useColorModeValue('white', 'gray.700')}
-            borderRadius="lg"
-            boxShadow="sm"
-            _focus={{ borderColor: 'green.400' }}
-          />
-          <IconButton
-            icon={<FaSearch />}
-            onClick={handleSearch}
-            colorScheme="green"
-            aria-label="Search"
-          />
-        </HStack>
         <Text size="md" mt={4} fontFamily="rale">
           Nearby Bonsai Locations:
         </Text>
@@ -74,14 +63,16 @@ const MapSidebar = ({
               borderRadius="lg"
               width="100%"
               bg={
-                selectedLocationId === location.place_id ? 'green.100' : 'white'
+                selectedLocationId === location.place_id
+                  ? selectedBgColor
+                  : bgColor
               }
               transition="all 0.3s"
               _hover={{
                 bg:
                   selectedLocationId === location.place_id
-                    ? 'green.100'
-                    : 'green.100',
+                    ? selectedBgColor
+                    : hoverBgColor,
                 transform: 'scale(1.02)',
                 boxShadow: 'xl',
                 cursor: 'pointer',
@@ -120,7 +111,11 @@ const MapSidebar = ({
                   <Image
                     boxSize="100%"
                     objectFit="cover"
-                    src={location.photos ? location.photos[0].getUrl() : null}
+                    src={
+                      location.photos
+                        ? location.photos[0].getUrl({ maxWidth: 400 })
+                        : DefaultImg
+                    }
                     alt={`${location.name} thumbnail`}
                   />
                 </Box>
@@ -129,14 +124,14 @@ const MapSidebar = ({
                     fontFamily="rale"
                     fontWeight="bold"
                     fontSize={{ base: 'md', md: 'lg' }}
-                    color={'black'}
+                    color={textColor}
                   >
                     {location.name}
                   </Text>
                   <Text
                     fontFamily="rale"
                     fontSize={{ base: 'sm', md: 'md' }}
-                    color="gray.600"
+                    color={secondaryTextColor}
                   >
                     {location.vicinity}
                   </Text>

@@ -9,9 +9,15 @@ import {
   ModalOverlay,
   ModalContent,
   ModalCloseButton,
+  ModalBody,
+  ModalHeader,
+  ModalFooter,
+  Button,
   useDisclosure,
   useColorModeValue,
   VStack,
+  Image,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import h3 from '../../assets/images/hr4.jpg';
@@ -27,6 +33,13 @@ const BenefitsSection = () => {
   const [modalIndex, setModalIndex] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const bgColor = useColorModeValue('white', 'gray.700');
+  const textColor = useColorModeValue('gray.900', 'white');
+
+  // Responsive modal layout
+  const modalSize = useBreakpointValue({ base: 'full', md: '2xl', lg: '3xl' });
+  const modalLayout = useBreakpointValue({ base: 'column', md: 'row' });
+  const modalPadding = useBreakpointValue({ base: 4, md: 8 });
+  const modalImageHeight = useBreakpointValue({ base: '200px', md: 'auto' });
 
   const benefits = [
     {
@@ -68,7 +81,6 @@ const BenefitsSection = () => {
     { bg: 'rgba(93, 236, 107, 0.7)', text: '#000000', heading: '#F9F8F6' },
     { bg: 'rgba(166, 152, 218, 0.7)', text: '#000000', heading: '#FAFAED' },
     { bg: 'rgba(59, 205, 238, 0.7)', text: '#000000', heading: '#FAFAED' },
-    { bg: 'rgba(251, 92, 116, 0.7)', text: '#000000', heading: '#F9F8F6' },
   ];
 
   const overlayColors = [
@@ -91,7 +103,7 @@ const BenefitsSection = () => {
           base: `${
             hoveredIndex !== null
               ? overlayColors[hoveredIndex]
-              : `linear-gradient(to right bottom, rgba(126, 213, 111, 0.8), rgba(40, 180, 133, 0.8))`
+              : 'linear-gradient(to right bottom, rgba(126, 213, 111, 0.8), rgba(40, 180, 133, 0.8))'
           }, url(${h3})`,
         }}
         bgSize="cover"
@@ -167,7 +179,8 @@ const BenefitsSection = () => {
       <Modal
         isOpen={isOpen}
         onClose={onClose}
-        size={{ base: 'sm', md: '2xl', lg: '3xl' }}
+        size={modalSize}
+        motionPreset="slideInBottom"
       >
         <ModalOverlay
           bg={
@@ -177,57 +190,73 @@ const BenefitsSection = () => {
           }
         />
         <ModalContent
-          maxH={{ base: '90vh', md: '50vh' }}
-          w="90%"
-          h="60%"
+          my={{ base: 0, md: '10vh' }}
+          borderRadius={{ base: 0, md: 'lg' }}
           overflow="hidden"
-          borderRadius="lg"
-          boxShadow="lg"
-          bg="white"
-          display="flex"
-          position="relative"
-          top={{ base: '20%', md: '10%' }}
-          backgroundImage={`url(${
-            modalIndex !== null ? benefits[modalIndex].image : ''
-          })`}
-          backgroundSize="cover"
-          backgroundPosition="20px 0px"
+          height={{ base: '100vh', md: 'auto' }}
+          maxHeight={{ base: '100vh', md: '80vh' }}
+          marginTop={{ base: 0 }}
         >
-          <ModalCloseButton />
-          {/* Left Text Section */}
-          <Box
-            flex="1"
-            bg={bgColor}
-            p={8}
-            display="flex"
-            flexDirection="column"
-            justifyContent="center"
-            className="card__form"
-            clipPath={{
-              base: 'none',
-              md: 'polygon(0 0, 60% 0%, 30% 100%, 0% 100%)',
-            }}
-          >
-            <VStack
-              as="form"
-              spacing={4}
-              maxWidth={{ base: '100%', md: '300px' }}
+          <ModalCloseButton
+            zIndex="10"
+            color={{ base: 'white', md: 'gray.800' }}
+            bg={{ base: 'blackAlpha.400', md: 'transparent' }}
+            borderRadius="full"
+            size="lg"
+            p={2}
+          />
+
+          <Flex direction={modalLayout} height="100%">
+            {/* Image Section */}
+            <Box
+              flex={{ base: '0 0 auto', md: '1' }}
+              height={modalImageHeight}
+              position="relative"
             >
-              <Heading
-                fontSize="2xl"
-                fontWeight="bold"
-                color="green.700"
-                textAlign="left"
-                mb={4}
-                textTransform={'uppercase'}
-              >
-                {modalIndex !== null && benefits[modalIndex].title}
-              </Heading>
-              <Text fontSize="md" color="gray.700" mb={4}>
-                {modalIndex !== null && benefits[modalIndex].description}
-              </Text>
+              {modalIndex !== null && (
+                <Image
+                  src={benefits[modalIndex].image}
+                  alt={benefits[modalIndex].title}
+                  objectFit="cover"
+                  width="100%"
+                  height="100%"
+                />
+              )}
+            </Box>
+
+            {/* Content Section */}
+            <VStack
+              flex="1"
+              p={modalPadding}
+              bg={bgColor}
+              align="stretch"
+              spacing={4}
+              justify="center"
+            >
+              <ModalHeader p={0} color="green.700">
+                {modalIndex !== null && (
+                  <Flex align="center" gap={4}>
+                    <Text fontSize="3xl">{benefits[modalIndex].icon}</Text>
+                    <Heading size="lg">{benefits[modalIndex].title}</Heading>
+                  </Flex>
+                )}
+              </ModalHeader>
+
+              <ModalBody p={0}>
+                {modalIndex !== null && (
+                  <Text fontSize="md" color={textColor}>
+                    {benefits[modalIndex].description}
+                  </Text>
+                )}
+              </ModalBody>
+
+              <ModalFooter p={0} mt={4}>
+                <Button colorScheme="green" onClick={onClose}>
+                  Close
+                </Button>
+              </ModalFooter>
             </VStack>
-          </Box>
+          </Flex>
         </ModalContent>
       </Modal>
     </>

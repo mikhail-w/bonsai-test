@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   Box,
-  Button,
   Container,
   Text,
   VStack,
@@ -16,12 +15,54 @@ import {
 } from '@chakra-ui/react';
 import { RepeatIcon } from '@chakra-ui/icons';
 import CustomButton from '../CustomButton';
-import Loader from '../Loader';
+import quoteService from './quoteService';
+
+// Custom hook for quote fetching
+const useQuote = () => {
+  const [quote, setQuote] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchRandomQuote = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+
+    // console.log('Fetching a new quote...');
+
+    try {
+      const data = await quoteService.getRandomQuote();
+      // console.log('Quote fetched successfully:', data);
+      setQuote(data);
+    } catch (err) {
+      // console.error('Error fetching quote:', err);
+      setError(err instanceof Error ? err.message : 'Failed to fetch quote');
+    } finally {
+      setIsLoading(false);
+      // console.log('Fetch process complete.');
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchRandomQuote();
+    return () => {
+      setQuote(null);
+      setError(null);
+    };
+  }, [fetchRandomQuote]);
+
+  return {
+    quote,
+    isLoading,
+    error,
+    refetch: fetchRandomQuote,
+  };
+};
 
 // Quote Content Component
 const QuoteContent = ({ quote }) => {
   const textColor = useColorModeValue('gray.700', 'gray.200');
   const authorColor = useColorModeValue('gray.600', 'gray.400');
+  // console.log('Current state:', { isLoading, error, quote });
 
   return (
     <VStack spacing={4} align="center">
@@ -43,7 +84,7 @@ const QuoteContent = ({ quote }) => {
 };
 
 // Error Message Component
-const ErrorMessage = ({ message }) => (
+const ErrorMessage = ({ message, onRetry }) => (
   <Alert
     status="error"
     variant="subtle"
@@ -55,38 +96,25 @@ const ErrorMessage = ({ message }) => (
     p={6}
   >
     <AlertIcon boxSize={6} mr={0} mb={2} />
-    <AlertDescription>{message}</AlertDescription>
+    <AlertDescription mb={4}>{message}</AlertDescription>
+    <CustomButton
+      size="sm"
+      onClick={onRetry}
+      bg="#4891ef"
+      _hover={{
+        backgroundColor: '#55c57a',
+        transform: 'translateY(-2px)',
+        boxShadow: '0 8px 15px rgba(0, 0, 0, 0.1)',
+      }}
+    >
+      Try Again
+    </CustomButton>
   </Alert>
 );
 
 // Main Component
 const ZenQuotes = () => {
-  const [quote, setQuote] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  const fetchRandomQuote = async () => {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const response = await fetch('https://api.quotable.io/random');
-      if (!response.ok) {
-        throw new Error('Failed to fetch quote');
-      }
-      const data = await response.json();
-      setQuote(data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchRandomQuote();
-  }, []);
-
+  const { quote, isLoading, error, refetch } = useQuote();
   const bgColor = useColorModeValue('white', 'gray.800');
   const borderColor = useColorModeValue('gray.100', 'gray.700');
 
@@ -103,7 +131,7 @@ const ZenQuotes = () => {
             boxShadow="xl"
             position="relative"
             minH="250px"
-            minWidth={{ base: '90vw', md: '300px' }}
+            minW={{ base: '90vw', md: '300px' }}
             display="flex"
             flexDirection="column"
             justifyContent="center"
@@ -125,33 +153,34 @@ const ZenQuotes = () => {
                   color="blue.500"
                   size="xl"
                 />
-              ) : // <Loader />
-              error ? (
-                <ErrorMessage message={error} />
+              ) : error ? (
+                <ErrorMessage message={error} onRetry={refetch} />
               ) : quote ? (
                 <QuoteContent quote={quote} />
               ) : null}
             </Box>
 
-            <CustomButton
-              leftIcon={<Icon as={RepeatIcon} />}
-              size="sm"
-              fontSize="xs"
-              fontWeight="600"
-              padding="1rem "
-              bg="#4891ef"
-              onClick={fetchRandomQuote}
-              isLoading={isLoading}
-              mt={'20px'}
-              mb={'10px'}
-              _hover={{
-                backgroundColor: '#55c57a',
-                transform: 'translateY(-2px)',
-                boxShadow: '0 8px 15px rgba(0, 0, 0, 0.1)',
-              }}
-            >
-              New Quote
-            </CustomButton>
+            {!error && (
+              <CustomButton
+                leftIcon={<Icon as={RepeatIcon} />}
+                size="sm"
+                fontSize="xs"
+                fontWeight="600"
+                padding="1rem"
+                bg="#4891ef"
+                onClick={refetch}
+                isLoading={isLoading}
+                mt={'20px'}
+                mb={'10px'}
+                _hover={{
+                  backgroundColor: '#55c57a',
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 8px 15px rgba(0, 0, 0, 0.1)',
+                }}
+              >
+                New Quote
+              </CustomButton>
+            )}
           </Box>
         </Center>
       </ScaleFade>

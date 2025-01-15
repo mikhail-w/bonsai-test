@@ -17,7 +17,8 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const userInfo = useSelector(state => state.userLogin.userInfo);
-  const bgColor = useColorModeValue('gray.100', 'gray.500');
+  // const bgColor = useColorModeValue('gray.100', 'gray.500');
+  const bgColor = useColorModeValue('white', 'gray.800');
   const [links, setLinks] = useState(defaultLinks);
 
   useEffect(() => {

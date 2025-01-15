@@ -1,0 +1,67 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "username": "Admin",
+      "password": "adminpassword",
+      "email": "admin@adminmail.com",
+      "is_superuser": true,
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2023-12-01T12:00:00Z"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "username": "James",
+      "password": "password",
+      "email": "james@mail.com",
+      "is_superuser": false,
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2023-12-01T12:00:00Z"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+      "username": "Mary",
+      "password": "password",
+      "email": "mary@mail.com",
+      "is_superuser": false,
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2023-12-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 4,
+    "fields": {
+      "username": "Olivia",
+      "password": "password",
+      "email": "olivia@mail.com",
+      "is_superuser": false,
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2023-12-02T12:00:00Z"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 5,
+    "fields": {
+      "username": "Hank",
+      "password": "password",
+      "email": "hank@mail.com",
+      "is_superuser": false,
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2023-12-02T12:00:00Z"
+    }
+  }
+]

@@ -1,7 +1,6 @@
 import {
   Flex,
   Box,
-  Image,
   Tooltip,
   Button,
   Icon,
@@ -35,6 +34,13 @@ const Product = ({ product }) => {
     }
   };
 
+  // Ensure image path is properly formatted
+  const getImagePath = image => {
+    if (!image) return '';
+    // Remove any duplicate media prefixes and ensure clean path
+    return image.replace(/^media\/|\/media\//g, '');
+  };
+
   return (
     <Flex p={4} w="full" alignItems="center" justifyContent="center">
       <Box
@@ -55,38 +61,8 @@ const Product = ({ product }) => {
         }}
       >
         <Link to={`/product/${product._id}`}>
-          {/* Print both the raw image path and the computed final URL */}
-          {console.log('Raw product image path:', product.image)}
-          {/* <Image
-            src={(() => {
-              if (product.image) {
-                // Print the final computed URL
-                const finalUrl = product.image.startsWith('http')
-                  ? product.image
-                  : `${import.meta.env.VITE_S3_PATH}${product.image}`;
-                console.log('Final computed image URL:', finalUrl);
-                return finalUrl;
-              }
-              const placeholderUrl = `${
-                import.meta.env.VITE_S3_PATH
-              }/default/placeholder.jpg`;
-              console.log('Using placeholder image:', placeholderUrl);
-              return placeholderUrl;
-            })()}
-            alt={
-              product.image ? `Picture of ${product.name}` : 'Placeholder image'
-            }
-            fallbackSrc={`${
-              import.meta.env.VITE_S3_PATH
-            }/media/default/placeholder.jpg`}
-            roundedTop="lg"
-            objectFit="cover"
-            height="300px"
-            width="100%"
-            transition="all 0.3s ease"
-          /> */}
           <S3ImageHandler
-            imagePath={product.image}
+            imagePath={getImagePath(product.image)}
             alt={`Picture of ${product.name}`}
             roundedTop="lg"
             objectFit="cover"
@@ -128,7 +104,7 @@ const Product = ({ product }) => {
                   transition: 'transform 0.2s',
                 }}
                 size="sm"
-                isDisabled={product.countInStock === 0} // Disable if out of stock
+                isDisabled={product.countInStock === 0}
               >
                 <Icon as={FiShoppingCart} h={5} w={5} />
               </Button>

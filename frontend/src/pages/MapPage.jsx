@@ -78,7 +78,7 @@ function MapPage() {
   };
 
   const handleSearch = () => {
-    console.log('Search Term: ', searchTerm);
+    // console.log('Search Term: ', searchTerm);
     setSearchTerm(searchTerm);
     if (searchTerm.trim()) {
       setMarkers([]);
@@ -87,7 +87,7 @@ function MapPage() {
   };
 
   const handleIconClick = location => {
-    console.log('Selected Marker:', location);
+    // console.log('Selected Marker:', location);
     setSelectedLocation(location);
     const selectedMarker = markers.find(marker => marker.id === location.id);
     setActiveMarker(selectedMarker); // Update the active marker when a location link is clicked

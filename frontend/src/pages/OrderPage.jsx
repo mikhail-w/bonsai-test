@@ -62,12 +62,17 @@ function OrderPage() {
         import.meta.env.VITE_API_BASE_URL
       }/media/default/placeholder.jpg`;
     }
-    console.log('ORDER PAGE:', imagePath);
+    // console.log('ORDER PAGE:', imagePath);
     // If the image path is already a full URL, return it as is
     if (imagePath.startsWith('http')) {
-      console.log('ORDER PAGE:', imagePath);
+      // console.log('ORDER PAGE:', imagePath);
       return imagePath;
     }
+
+    // console.log(
+    //   'Cleaned Image URL:',
+    //   cleanMediaPath(imagePath, import.meta.env.VITE_S3_PATH)
+    // );
 
     // Otherwise, clean and construct the full URL
     return cleanMediaPath(imagePath, import.meta.env.VITE_S3_PATH);
