@@ -73,56 +73,16 @@ ultimate platform for bonsai lovers. Visit the live application at
 - **Authentication:** Secure user authentication and authorization powered by
   JWT.
 
-### 1. Beautiful Hero Section
-
 <table>
   <tr>
-    <td align="center">
-      <img src="./frontend/src/assets/images/readme/readme001.png" alt="Hero Section" width="60%">
-      <img src="./frontend/src/assets/images/readme/readme001b.png" alt="Hero Section" width="60%">
-    </td>
+<br><br><br>
+
+![Demo](./frontend/src/assets/images/readme/readme001.gif)
+
   </tr>
     <td align="center">
       <img src="./frontend/src/assets/images/readme/readme002.png" alt="Hero Section (Mobile)" width="35%">
     </td>
-</table>
-A captivating hero section with a zen-inspired design, inviting users to explore nature and bonsai art.
-
----
-
-### 2. Explore Nature
-
-<div align="center">
-  <img src="./frontend/src/assets/images/readme/readme003.png" alt="Explore Nature" width="80%">
-</div>  
-Navigate through stunning imagery and curated experiences showcasing the beauty of nature.
-
----
-
-### 3. Product Listings
-
-<div align="center">
-  <img src="./frontend/src/assets/images/readme/readme004.png" alt="Product Listings" width="80%">
-</div>  
-Browse through a wide variety of bonsai plants and accessories with detailed product information.
-
----
-
-### 4. Product Details
-
-<div align="center">
-  <img src="./frontend/src/assets/images/readme/readme005.png" alt="Product Details" width="80%">
-</div>  
-Discover detailed product descriptions, customer reviews, and pricing.
-
----
-
-### 5. Smooth Checkout Process
-
-<div align="center">
-  <img src="./frontend/src/assets/images/readme/readme006.png" alt="Checkout Process" width="80%">
-</div>  
-An intuitive and secure checkout process with integrated PayPal support.
 
 ---
 
