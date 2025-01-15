@@ -1,7 +1,7 @@
 # Bonsai
 
 <div align="center">
-  <img src="./frontend/src/assets/images/readme/logo_brand.png" alt="Bonsai Logo"width="250" height="250"style="margin-bottom: 50px;">
+  <img src="./frontend/src/assets/images/readme/logo_brand.png" alt="Bonsai Logo"width="250" height="250"style="margin-bottom: 100px;">
 </div>
 
 Welcome to Bonsai, a full-stack web application that offers a seamless eCommerce
