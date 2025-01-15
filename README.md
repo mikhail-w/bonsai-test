@@ -1,8 +1,10 @@
 # Bonsai
 
 <div align="center">
-  <img src="./frontend/src/assets/images/readme/logo_brand.png" alt="Bonsai Logo"width="250" height="250"style="margin-bottom: 100px;">
+  <img src="./frontend/src/assets/images/readme/logo_brand.png" alt="Bonsai Logo"width="250" height="250">
 </div>
+
+<br><br><br>
 
 Welcome to Bonsai, a full-stack web application that offers a seamless eCommerce
 experience for bonsai enthusiasts. The platform allows users to browse,
