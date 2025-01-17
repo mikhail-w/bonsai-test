@@ -184,7 +184,7 @@ Bonsai is deployed on AWS using the following services:
 
 ## Contribution
 
-We welcome contributions to MW Bonsai! Follow these steps to get started:
+We welcome contributions to Bonsai! Follow these steps to get started:
 
 1. Fork the repository.
 2. Create a new branch for your feature or bug fix:
