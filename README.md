@@ -80,13 +80,10 @@ ultimate platform for bonsai lovers. Visit the live application at
 ![Demo](./frontend/src/assets/images/readme/readme001.gif)
 
   </tr>
-    <td align="center">
-      <img src="./frontend/src/assets/images/readme/readme002.png" alt="Hero Section (Mobile)" width="35%">
-    </td>
 
 ---
 
-### 6. User Dashboard
+### User Dashboard
 
 <div align="center">
   <img src="./frontend/src/assets/images/readme/readme007.png" alt="User Dashboard" width="80%">
@@ -96,7 +93,7 @@ Personalized user dashboard with avatar updates, weather insights, and Zen quote
 
 ---
 
-### 7. Additional Interactive Features
+### Additional Interactive Features
 
 <div align="center">
   <img src="./frontend/src/assets/images/readme/readme009.png" alt="Interactive Features" width="80%">
@@ -182,9 +179,6 @@ Bonsai is deployed on AWS using the following services:
 - **Frontend:** Hosted on AWS S3 with CloudFront for content delivery.
 - **Backend:** Deployed on an EC2 instance with Nginx and Gunicorn.
 - **Domain:** Registered with AWS Route 53 and configured to support HTTPS.
-
-For detailed deployment instructions, refer to the
-[Deployment Guide](./docs/deployment-guide.md).
 
 ---
 
